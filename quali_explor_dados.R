@@ -7,6 +7,7 @@ library(tidyverse)
 library(skimr)
 library(ggthemes)
 library(hrbrthemes)
+library(MetBrewer)
 library(extrafont)
 library(summarytools)
 library(writexl)
@@ -22,10 +23,8 @@ df <- data_geral_clean <- readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissA
 colSums(is.na(df))
 
 
-
 # Estatistica descritiva basica e frequencias
 
-sum_ <- summary(df)
 
 summarize(df)
 
@@ -79,14 +78,94 @@ write.table(teste, file = "teste.txt", sep = ",", quote = FALSE, row.names = F) 
 
 # Figuras variaveis fator
 
+# EX
+df %>% ggplot(aes(x = year, y = n, color = sex)) +
+  geom_line(size = 1, alpha = 0.8) +
+  labs(y = "Frequência", x = "Ano", title = "Número de estudos por sexo ao decorrrer do tempo", color = "Sexo") +
+    theme_classic +
+    scale_color_manual(values=met.brewer("Cross", 3))
 
-#1. species + strain + sex
+
+# Populacao -----
+
+#Freq especia
+
+fsp <- df %>% ggplot(aes(x = species)) +
+  geom_bar() +
+  labs(y = "Nº de estudos", x = "Espécie") +
+  scale_x_discrete(labels = c('Rato','Camundongo')) +
+  theme_classic()
+
+# especie no tempo
+
+species_time <- df %>% 
+  group_by(species, year) %>% 
+  count(species, year)
+
+species_time  %>% 
+  ggplot(aes(x = year, y = n, color = species)) +
+  geom_point() +
+  geom_line(size = 1, alpha = 0.8) +
+  scale_color_hue(labels = c('Camundongo', 'Rato')) +
+  labs(y = "Frequência", x = "Ano", title = "Número de estudos por espécie ao decorrrer do tempo", color = "Espécie") + 
+  theme_classic()
 
 
-#2. atd_type + atd class
+spt <- df  %>% 
+  ggplot(aes(x = year, fill = species)) +
+  geom_bar()+
+  scale_fill_discrete(label = c('Camundongo', 'Rato')) +
+  labs(y = "Frequência", x = "Ano", title = "Número de estudos por espécie ao decorrrer do tempo", fill = "Espécie") + 
+  theme_classic()
+
+# Freq sexo
+
+fse <- df %>% 
+  ggplot(aes(x = forcats::fct_infreq(sex))) +
+  geom_bar() +
+  labs(y = "Nº de estudos", x = "Sexo") +
+  scale_x_discrete(labels = c("Macho", "Fêmea", "Ambos", "Sem informação")) +
+  theme_classic()
 
 
-#3. measure_unit + fst_protcol + measurement_method
+# sexo no tempo
+
+sex_time <- df %>% 
+  group_by(sex, year) %>% 
+  count(sex, year)
+
+sex_time  %>% 
+  ggplot(aes(x = year, y = n, color = sex)) +
+  geom_point(size = 0.5) +
+  geom_line(size = 1, alpha = 0.8) +
+  scale_color_hue(labels = c("Fêmea", "Macho", "Ambos", "Sem informação")) +
+  labs(y = "Frequência", x = "Ano", title = "Número de estudos por sexo ao decorrrer do tempo", color = "Sexo") + 
+  theme_classic() + 
+  scale_color_manual(values=met.brewer("Cross", 4))
+
+set <- df  %>% 
+  ggplot(aes(x = year, fill = sex, order = (sex))) +
+  geom_bar()+
+  scale_fill_discrete(label = c("Fêmea", "Macho", "Ambos", "Sem informação")) +
+  labs(y = "Frequência", x = "Ano", title = "Número de estudos por sexo ao decorrrer do tempo", fill = "Sexo") + 
+  theme_classic() +
+  scale_fill_manual(values=met.brewer("Cross", 4)) # Preferi esse
+
+
+# Todas juntas
+
+figure <- ggarrange(fsp, spt, fse, set,
+                    ncol = 2, nrow = 2)
+annotate_figure(figure,
+                top = text_grob("Visualizing mpg", color = "red", face = "bold", size = 14),
+                bottom = text_grob("Data source: \n mtcars data set", color = "blue",
+                                   hjust = 1, x = 1, face = "italic", size = 10),
+                left = text_grob("Figure arranged using ggpubr", color = "green", rot = 90),
+                right = "I'm done, thanks :-)!",
+                fig.lab = "Figure 1", fig.lab.face = "bold"
+)
+
+
 
 
 
