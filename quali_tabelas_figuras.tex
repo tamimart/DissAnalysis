@@ -1,0 +1,2476 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{quali\_tabelas\_e\_figuras}
+\author{Tamires}
+\date{12/01/2022}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={quali\_tabelas\_e\_figuras},
+  pdfauthor={Tamires},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+Tabelas sumarizando varáveis
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{skim}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Data summary}\tabularnewline
+\toprule
+\endhead
+Name & df \\
+Number of rows & 562 \\
+Number of columns & 76 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Column type frequency: & \\
+character & 21 \\
+Date & 1 \\
+factor & 32 \\
+numeric & 22 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Group variables & None \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: character}
+
+\begin{longtable}[]{@{}lrrrrrrr@{}}
+\toprule
+skim\_variable & n\_missing & complete\_rate & min & max & empty &
+n\_unique & whitespace \\
+\midrule
+\endhead
+line & 0 & 1.00 & 1 & 3 & 0 & 562 & 0 \\
+idgeral & 0 & 1.00 & 1 & 4 & 0 & 197 & 0 \\
+id & 0 & 1.00 & 1 & 3 & 0 & 197 & 0 \\
+study\_reference & 0 & 1.00 & 93 & 320 & 0 & 197 & 0 \\
+authors & 0 & 1.00 & 19 & 236 & 0 & 196 & 0 \\
+first\_author & 0 & 1.00 & 9 & 23 & 0 & 184 & 0 \\
+title & 0 & 1.00 & 37 & 254 & 0 & 197 & 0 \\
+language & 0 & 1.00 & 7 & 7 & 0 & 3 & 0 \\
+source & 0 & 1.00 & 6 & 9 & 0 & 44 & 0 \\
+outcome & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+treemore\_arms & 429 & 0.24 & 3 & 28 & 0 & 6 & 0 \\
+ctr\_n\_ext & 0 & 1.00 & 1 & 7 & 0 & 49 & 0 \\
+atd\_se & 3 & 0.99 & 1 & 19 & 0 & 495 & 0 \\
+atd\_n\_ext & 0 & 1.00 & 1 & 7 & 0 & 46 & 0 \\
+obs\_design & 561 & 0.00 & 9 & 9 & 0 & 1 & 0 \\
+model\_phenotype & 0 & 1.00 & 2 & 61 & 0 & 42 & 0 \\
+cage\_measures & 0 & 1.00 & 2 & 10 & 0 & 27 & 0 \\
+animals\_percage & 0 & 1.00 & 1 & 4 & 0 & 21 & 0 \\
+bioterium\_lightcycle & 0 & 1.00 & 2 & 13 & 0 & 6 & 0 \\
+others\_tests & 0 & 1.00 & 2 & 80 & 0 & 32 & 0 \\
+obs\_quali & 561 & 0.00 & 50 & 50 & 0 & 1 & 0 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: Date}
+
+\begin{longtable}[]{@{}lrrlllr@{}}
+\toprule
+skim\_variable & n\_missing & complete\_rate & min & max & median &
+n\_unique \\
+\midrule
+\endhead
+year & 0 & 1 & 1986-01-01 & 2017-01-01 & 2010-01-01 & 28 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: factor}
+
+\begin{longtable}[]{@{}lrrlrl@{}}
+\toprule
+skim\_variable & n\_missing & complete\_rate & ordered & n\_unique &
+top\_counts \\
+\midrule
+\endhead
+country & 0 & 1 & FALSE & 37 & Jap: 111, Ind: 82, Chi: 50, Bra: 45 \\
+measure\_unit & 0 & 1 & FALSE & 3 & sec: 489, \%: 46, cou: 27 \\
+species & 0 & 1 & FALSE & 2 & mic: 328, rat: 234 \\
+strain & 0 & 1 & FALSE & 26 & wis: 146, swi: 120, CD-: 81, spr: 55 \\
+sex & 0 & 1 & FALSE & 4 & M: 421, F: 77, M a: 36, NA: 28 \\
+comparator & 0 & 1 & FALSE & 1 & veh: 562 \\
+atd\_type & 0 & 1 & FALSE & 31 & imi: 144, flu: 127, des: 50, par: 35 \\
+atd\_class & 0 & 1 & FALSE & 10 & tri: 242, SSR: 219, SNR: 45, tec:
+18 \\
+treatment\_via & 0 & 1 & FALSE & 10 & IP: 342, ora: 117, gav: 43, sub:
+40 \\
+fst\_protocol & 0 & 1 & FALSE & 28 & pre: 196, tes: 132, tes: 83, tes:
+31 \\
+measurement\_method & 0 & 1 & FALSE & 12 & NA: 299, vid: 105, man: 55,
+vid: 34 \\
+rob1 & 0 & 1 & FALSE & 3 & Unc: 556, No: 3, Yes: 3 \\
+rob2 & 0 & 1 & FALSE & 2 & Yes: 560, Unc: 2 \\
+rob3 & 0 & 1 & FALSE & 3 & Unc: 553, No: 8, Yes: 1 \\
+rob4 & 0 & 1 & FALSE & 3 & Unc: 555, No: 5, Yes: 2 \\
+rob5 & 0 & 1 & FALSE & 3 & Unc: 529, Yes: 25, No: 8 \\
+rob6 & 0 & 1 & FALSE & 2 & Unc: 560, Yes: 2 \\
+rob7 & 0 & 1 & FALSE & 2 & Unc: 372, Yes: 190 \\
+rob8 & 0 & 1 & FALSE & 3 & Yes: 322, Unc: 222, No: 18 \\
+rob9 & 0 & 1 & FALSE & 3 & Yes: 535, No: 15, Unc: 12 \\
+rob10 & 0 & 1 & FALSE & 2 & Yes: 557, No: 5 \\
+camarades1 & 0 & 1 & FALSE & 3 & Yes: 531, No: 17, Unc: 14 \\
+camarades2 & 0 & 1 & FALSE & 3 & Unc: 354, Yes: 203, Yes: 5 \\
+camarades3 & 0 & 1 & FALSE & 2 & Yes: 440, No: 122 \\
+camarades4 & 0 & 1 & FALSE & 2 & No: 411, Yes: 151 \\
+camarades5 & 0 & 1 & FALSE & 3 & Yes: 388, Unc: 152, No: 22 \\
+camarades6 & 0 & 1 & FALSE & 3 & Yes: 555, No: 6, Unc: 1 \\
+camarades7 & 0 & 1 & FALSE & 2 & No: 391, Yes: 171 \\
+camarades8 & 0 & 1 & FALSE & 3 & Yes: 553, No: 8, Unc: 1 \\
+camarades9 & 0 & 1 & FALSE & 2 & Yes: 534, No: 28 \\
+camarades10 & 0 & 1 & FALSE & 3 & No: 307, Yes: 229, Unc: 26 \\
+camarades11 & 0 & 1 & FALSE & 2 & No: 557, Unc: 5 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}lrrrrrrrrrl@{}}
+\toprule
+skim\_variable & n\_missing & complete\_rate & mean & sd & p0 & p25 &
+p50 & p75 & p100 & hist \\
+\midrule
+\endhead
+seq & 0 & 1.00 & 3.30 & 3.20 & 1.00 & 1.00 & 2.00 & 4.00 & 18.00 &
+▇▁▁▁▁ \\
+ctr\_mean & 0 & 1.00 & 161.73 & 72.31 & 7.22 & 106.76 & 167.42 & 209.78
+& 447.92 & ▅▇▇▁▁ \\
+ctr\_sd & 0 & 1.00 & 30.07 & 23.67 & 1.65 & 13.22 & 24.11 & 39.76 &
+175.79 & ▇▃▁▁▁ \\
+ctr\_se & 5 & 0.99 & 9.84 & 7.70 & 0.84 & 4.20 & 8.02 & 13.38 & 55.59 &
+▇▃▁▁▁ \\
+ctr\_n\_round & 0 & 1.00 & 9.84 & 5.15 & 1.00 & 8.00 & 9.00 & 10.00 &
+50.00 & ▇▂▁▁▁ \\
+ctr\_n\_corr & 0 & 1.00 & 5.81 & 4.28 & 0.00 & 3.00 & 5.00 & 8.00 &
+35.00 & ▇▅▁▁▁ \\
+n\_comparisons & 0 & 1.00 & 2.53 & 1.96 & 1.00 & 1.00 & 2.00 & 3.00 &
+9.00 & ▇▃▁▁▁ \\
+atd\_mean & 0 & 1.00 & 107.45 & 66.24 & 2.02 & 53.12 & 98.26 & 149.53 &
+388.00 & ▇▇▃▁▁ \\
+atd\_sd & 0 & 1.00 & 32.30 & 33.52 & 0.73 & 12.67 & 27.59 & 42.92 &
+581.00 & ▇▁▁▁▁ \\
+atd\_n\_round & 0 & 1.00 & 9.34 & 3.47 & 1.00 & 8.00 & 8.00 & 10.00 &
+30.00 & ▂▇▁▁▁ \\
+age & 350 & 0.38 & 88.73 & 89.39 & 28.00 & 49.00 & 56.00 & 85.25 &
+585.00 & ▇▁▁▁▁ \\
+weight & 129 & 0.77 & 123.19 & 112.30 & 18.00 & 25.00 & 35.00 & 225.00 &
+560.00 & ▇▃▂▁▁ \\
+bioterium\_temp & 140 & 0.75 & 22.43 & 1.35 & 20.00 & 22.00 & 22.00 &
+23.00 & 25.50 & ▅▇▇▁▃ \\
+bioterium\_umid & 380 & 0.32 & 55.69 & 5.98 & 35.00 & 51.25 & 55.00 &
+60.00 & 70.00 & ▁▁▇▂▂ \\
+dose & 22 & 0.96 & 14.98 & 13.54 & 0.10 & 8.00 & 10.00 & 20.00 & 100.00
+& ▇▁▁▁▁ \\
+treatment\_duration & 12 & 0.98 & 6.86 & 12.56 & 1.00 & 1.00 & 1.00 &
+8.00 & 110.00 & ▇▁▁▁▁ \\
+treatment\_freq & 12 & 0.98 & 1.26 & 0.64 & 1.00 & 1.00 & 1.00 & 1.00 &
+3.00 & ▇▁▁▁▁ \\
+last\_bf\_outcome & 93 & 0.83 & 8.77 & 71.92 & 0.00 & 0.50 & 1.00 & 1.00
+& 960.00 & ▇▁▁▁▁ \\
+cylinder\_height & 50 & 0.91 & 33.86 & 12.30 & 11.00 & 25.00 & 30.00 &
+40.00 & 80.00 & ▃▇▇▁▁ \\
+cylinder\_diameter & 47 & 0.92 & 16.37 & 6.16 & 10.00 & 10.00 & 18.00 &
+20.00 & 73.00 & ▇▁▁▁▁ \\
+water\_depth & 31 & 0.94 & 18.74 & 8.44 & 6.00 & 12.25 & 15.00 & 20.00 &
+50.00 & ▅▇▂▁▁ \\
+water\_temperature & 26 & 0.95 & 24.62 & 1.41 & 20.00 & 24.00 & 25.00 &
+25.00 & 33.00 & ▁▇▁▁▁ \\
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{st\_options}\NormalTok{(}\AttributeTok{lang =} \StringTok{"pt"}\NormalTok{)}
+
+\FunctionTok{view}\NormalTok{(}\FunctionTok{dfSummary}\NormalTok{(df, }\AttributeTok{style =} \StringTok{"grid"}\NormalTok{, }\AttributeTok{plain.ascii=}\ConstantTok{FALSE}\NormalTok{, }\AttributeTok{tmp.img.dir =} \StringTok{"/tmp"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## temporary images written to 'C:\tmp'
+\end{verbatim}
+
+\begin{verbatim}
+## Switching method to 'browser'
+\end{verbatim}
+
+\begin{verbatim}
+## Output file written: C:\Users\Tamires\AppData\Local\Temp\RtmpGq3mHq\file230c3ec6e5a.html
+\end{verbatim}
+
+Tabela sumarizando variáveis: agrupadas por 1. espécie, 2. sexo, 3.
+classe do antidepressivo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(species) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{skim}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Data summary}\tabularnewline
+\toprule
+\endhead
+Name & Piped data \\
+Number of rows & 562 \\
+Number of columns & 76 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Column type frequency: & \\
+character & 21 \\
+Date & 1 \\
+factor & 31 \\
+numeric & 22 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Group variables & species \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: character}
+
+\begin{longtable}[]{@{}llrrrrrrr@{}}
+\toprule
+skim\_variable & species & n\_missing & complete\_rate & min & max &
+empty & n\_unique & whitespace \\
+\midrule
+\endhead
+line & mice & 0 & 1.00 & 1 & 3 & 0 & 328 & 0 \\
+line & rat & 0 & 1.00 & 1 & 3 & 0 & 234 & 0 \\
+idgeral & mice & 0 & 1.00 & 1 & 4 & 0 & 117 & 0 \\
+idgeral & rat & 0 & 1.00 & 1 & 4 & 0 & 81 & 0 \\
+id & mice & 0 & 1.00 & 1 & 3 & 0 & 117 & 0 \\
+id & rat & 0 & 1.00 & 1 & 3 & 0 & 81 & 0 \\
+study\_reference & mice & 0 & 1.00 & 93 & 320 & 0 & 117 & 0 \\
+study\_reference & rat & 0 & 1.00 & 97 & 291 & 0 & 81 & 0 \\
+authors & mice & 0 & 1.00 & 19 & 236 & 0 & 117 & 0 \\
+authors & rat & 0 & 1.00 & 21 & 164 & 0 & 80 & 0 \\
+first\_author & mice & 0 & 1.00 & 9 & 21 & 0 & 109 & 0 \\
+first\_author & rat & 0 & 1.00 & 9 & 23 & 0 & 80 & 0 \\
+title & mice & 0 & 1.00 & 47 & 254 & 0 & 117 & 0 \\
+title & rat & 0 & 1.00 & 37 & 179 & 0 & 81 & 0 \\
+language & mice & 0 & 1.00 & 7 & 7 & 0 & 2 & 0 \\
+language & rat & 0 & 1.00 & 7 & 7 & 0 & 2 & 0 \\
+source & mice & 0 & 1.00 & 6 & 9 & 0 & 38 & 0 \\
+source & rat & 0 & 1.00 & 6 & 9 & 0 & 29 & 0 \\
+outcome & mice & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & rat & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+treemore\_arms & mice & 239 & 0.27 & 3 & 24 & 0 & 5 & 0 \\
+treemore\_arms & rat & 190 & 0.19 & 3 & 28 & 0 & 2 & 0 \\
+ctr\_n\_ext & mice & 0 & 1.00 & 1 & 7 & 0 & 36 & 0 \\
+ctr\_n\_ext & rat & 0 & 1.00 & 1 & 7 & 0 & 32 & 0 \\
+atd\_se & mice & 2 & 0.99 & 1 & 19 & 0 & 291 & 0 \\
+atd\_se & rat & 1 & 1.00 & 1 & 19 & 0 & 218 & 0 \\
+atd\_n\_ext & mice & 0 & 1.00 & 1 & 7 & 0 & 33 & 0 \\
+atd\_n\_ext & rat & 0 & 1.00 & 1 & 7 & 0 & 30 & 0 \\
+obs\_design & mice & 328 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & rat & 233 & 0.00 & 9 & 9 & 0 & 1 & 0 \\
+model\_phenotype & mice & 0 & 1.00 & 2 & 61 & 0 & 22 & 0 \\
+model\_phenotype & rat & 0 & 1.00 & 2 & 36 & 0 & 26 & 0 \\
+cage\_measures & mice & 0 & 1.00 & 2 & 10 & 0 & 16 & 0 \\
+cage\_measures & rat & 0 & 1.00 & 2 & 10 & 0 & 16 & 0 \\
+animals\_percage & mice & 0 & 1.00 & 1 & 4 & 0 & 18 & 0 \\
+animals\_percage & rat & 0 & 1.00 & 1 & 3 & 0 & 15 & 0 \\
+bioterium\_lightcycle & mice & 0 & 1.00 & 2 & 13 & 0 & 5 & 0 \\
+bioterium\_lightcycle & rat & 0 & 1.00 & 2 & 13 & 0 & 6 & 0 \\
+others\_tests & mice & 0 & 1.00 & 2 & 55 & 0 & 21 & 0 \\
+others\_tests & rat & 0 & 1.00 & 2 & 80 & 0 & 16 & 0 \\
+obs\_quali & mice & 327 & 0.00 & 50 & 50 & 0 & 1 & 0 \\
+obs\_quali & rat & 234 & 0.00 & NA & NA & 0 & 0 & 0 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: Date}
+
+\begin{longtable}[]{@{}llrrlllr@{}}
+\toprule
+skim\_variable & species & n\_missing & complete\_rate & min & max &
+median & n\_unique \\
+\midrule
+\endhead
+year & mice & 0 & 1 & 1986-01-01 & 2017-01-01 & 2011-01-01 & 22 \\
+year & rat & 0 & 1 & 1986-01-01 & 2017-01-01 & 2007-01-01 & 25 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: factor}
+
+\begin{longtable}[]{@{}llrrlrl@{}}
+\toprule
+skim\_variable & species & n\_missing & complete\_rate & ordered &
+n\_unique & top\_counts \\
+\midrule
+\endhead
+country & mice & 0 & 1 & FALSE & 27 & Ind: 71, Jap: 62, Chi: 40, Bra:
+30 \\
+country & rat & 0 & 1 & FALSE & 30 & Jap: 49, Pol: 19, Bra: 15, Ita:
+14 \\
+measure\_unit & mice & 0 & 1 & FALSE & 3 & sec: 316, \%: 10, cou: 2 \\
+measure\_unit & rat & 0 & 1 & FALSE & 3 & sec: 173, \%: 36, cou: 25 \\
+strain & mice & 0 & 1 & FALSE & 18 & swi: 120, CD-: 80, C57: 33, lac:
+19 \\
+strain & rat & 0 & 1 & FALSE & 11 & wis: 146, spr: 55, CD-: 7, fli: 7 \\
+sex & mice & 0 & 1 & FALSE & 4 & M: 221, F: 59, M a: 29, NA: 19 \\
+sex & rat & 0 & 1 & FALSE & 4 & M: 200, F: 18, NA: 9, M a: 7 \\
+comparator & mice & 0 & 1 & FALSE & 1 & veh: 328 \\
+comparator & rat & 0 & 1 & FALSE & 1 & veh: 234 \\
+atd\_type & mice & 0 & 1 & FALSE & 26 & imi: 83, flu: 72, par: 27, des:
+21 \\
+atd\_type & rat & 0 & 1 & FALSE & 21 & imi: 61, flu: 55, des: 29, ami:
+11 \\
+atd\_class & mice & 0 & 1 & FALSE & 9 & tri: 135, SSR: 129, SNR: 24,
+NDR: 12 \\
+atd\_class & rat & 0 & 1 & FALSE & 7 & tri: 107, SSR: 90, SNR: 21, tec:
+9 \\
+treatment\_via & mice & 0 & 1 & FALSE & 5 & IP: 207, ora: 76, gav: 24,
+sub: 18 \\
+treatment\_via & rat & 0 & 1 & FALSE & 10 & IP: 135, ora: 41, sub: 22,
+gav: 19 \\
+fst\_protocol & mice & 0 & 1 & FALSE & 21 & tes: 130, tes: 83, pre: 23,
+pre: 13 \\
+fst\_protocol & rat & 0 & 1 & FALSE & 15 & pre: 184, tes: 20, pre: 5,
+pre: 4 \\
+measurement\_method & mice & 0 & 1 & FALSE & 9 & NA: 180, vid: 59, man:
+49, vid: 28 \\
+measurement\_method & rat & 0 & 1 & FALSE & 11 & NA: 119, vid: 46, vid:
+29, man: 9 \\
+rob1 & mice & 0 & 1 & FALSE & 2 & Unc: 325, No: 3, Yes: 0 \\
+rob1 & rat & 0 & 1 & FALSE & 2 & Unc: 231, Yes: 3, No: 0 \\
+rob2 & mice & 0 & 1 & FALSE & 1 & Yes: 328, Unc: 0 \\
+rob2 & rat & 0 & 1 & FALSE & 2 & Yes: 232, Unc: 2 \\
+rob3 & mice & 0 & 1 & FALSE & 3 & Unc: 321, No: 6, Yes: 1 \\
+rob3 & rat & 0 & 1 & FALSE & 2 & Unc: 232, No: 2, Yes: 0 \\
+rob4 & mice & 0 & 1 & FALSE & 3 & Unc: 325, Yes: 2, No: 1 \\
+rob4 & rat & 0 & 1 & FALSE & 2 & Unc: 230, No: 4, Yes: 0 \\
+rob5 & mice & 0 & 1 & FALSE & 3 & Unc: 298, Yes: 24, No: 6 \\
+rob5 & rat & 0 & 1 & FALSE & 3 & Unc: 231, No: 2, Yes: 1 \\
+rob6 & mice & 0 & 1 & FALSE & 1 & Unc: 328, Yes: 0 \\
+rob6 & rat & 0 & 1 & FALSE & 2 & Unc: 232, Yes: 2 \\
+rob7 & mice & 0 & 1 & FALSE & 2 & Unc: 237, Yes: 91 \\
+rob7 & rat & 0 & 1 & FALSE & 2 & Unc: 135, Yes: 99 \\
+rob8 & mice & 0 & 1 & FALSE & 3 & Yes: 176, Unc: 149, No: 3 \\
+rob8 & rat & 0 & 1 & FALSE & 3 & Yes: 146, Unc: 73, No: 15 \\
+rob9 & mice & 0 & 1 & FALSE & 3 & Yes: 321, Unc: 6, No: 1 \\
+rob9 & rat & 0 & 1 & FALSE & 3 & Yes: 214, No: 14, Unc: 6 \\
+rob10 & mice & 0 & 1 & FALSE & 2 & Yes: 323, No: 5 \\
+rob10 & rat & 0 & 1 & FALSE & 1 & Yes: 234, No: 0 \\
+camarades1 & mice & 0 & 1 & FALSE & 3 & Yes: 297, No: 17, Unc: 14 \\
+camarades1 & rat & 0 & 1 & FALSE & 1 & Yes: 234, No: 0, Unc: 0 \\
+camarades2 & mice & 0 & 1 & FALSE & 3 & Yes: 167, Unc: 156, Yes: 5 \\
+camarades2 & rat & 0 & 1 & FALSE & 2 & Unc: 198, Yes: 36, Yes: 0 \\
+camarades3 & mice & 0 & 1 & FALSE & 2 & Yes: 276, No: 52 \\
+camarades3 & rat & 0 & 1 & FALSE & 2 & Yes: 164, No: 70 \\
+camarades4 & mice & 0 & 1 & FALSE & 2 & No: 238, Yes: 90 \\
+camarades4 & rat & 0 & 1 & FALSE & 2 & No: 173, Yes: 61 \\
+camarades5 & mice & 0 & 1 & FALSE & 3 & Yes: 240, Unc: 79, No: 9 \\
+camarades5 & rat & 0 & 1 & FALSE & 3 & Yes: 148, Unc: 73, No: 13 \\
+camarades6 & mice & 0 & 1 & FALSE & 3 & Yes: 323, No: 4, Unc: 1 \\
+camarades6 & rat & 0 & 1 & FALSE & 2 & Yes: 232, No: 2, Unc: 0 \\
+camarades7 & mice & 0 & 1 & FALSE & 2 & No: 241, Yes: 87 \\
+camarades7 & rat & 0 & 1 & FALSE & 2 & No: 150, Yes: 84 \\
+camarades8 & mice & 0 & 1 & FALSE & 2 & Yes: 325, No: 3, Unc: 0 \\
+camarades8 & rat & 0 & 1 & FALSE & 3 & Yes: 228, No: 5, Unc: 1 \\
+camarades9 & mice & 0 & 1 & FALSE & 2 & Yes: 309, No: 19 \\
+camarades9 & rat & 0 & 1 & FALSE & 2 & Yes: 225, No: 9 \\
+camarades10 & mice & 0 & 1 & FALSE & 3 & No: 188, Yes: 134, Unc: 6 \\
+camarades10 & rat & 0 & 1 & FALSE & 3 & No: 119, Yes: 95, Unc: 20 \\
+camarades11 & mice & 0 & 1 & FALSE & 2 & No: 324, Unc: 4 \\
+camarades11 & rat & 0 & 1 & FALSE & 2 & No: 233, Unc: 1 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}llrrrrrrrrrl@{}}
+\toprule
+skim\_variable & species & n\_missing & complete\_rate & mean & sd & p0
+& p25 & p50 & p75 & p100 & hist \\
+\midrule
+\endhead
+seq & mice & 0 & 1.00 & 3.42 & 3.29 & 1.00 & 1.00 & 2.00 & 4.00 & 17.00
+& ▇▁▁▁▁ \\
+seq & rat & 0 & 1.00 & 3.12 & 3.05 & 1.00 & 1.00 & 2.00 & 4.00 & 18.00 &
+▇▁▁▁▁ \\
+ctr\_mean & mice & 0 & 1.00 & 172.49 & 70.26 & 37.44 & 123.19 & 168.03 &
+220.39 & 447.92 & ▅▇▅▁▁ \\
+ctr\_mean & rat & 0 & 1.00 & 146.66 & 72.60 & 7.22 & 76.55 & 166.85 &
+198.20 & 437.00 & ▆▅▇▁▁ \\
+ctr\_sd & mice & 0 & 1.00 & 30.95 & 25.76 & 2.58 & 13.68 & 23.23 & 41.17
+& 175.79 & ▇▃▁▁▁ \\
+ctr\_sd & rat & 0 & 1.00 & 28.84 & 20.37 & 1.65 & 11.88 & 24.23 & 37.65
+& 101.75 & ▇▇▂▂▁ \\
+ctr\_se & mice & 4 & 0.99 & 10.16 & 8.29 & 1.05 & 4.68 & 8.03 & 13.78 &
+55.59 & ▇▃▁▁▁ \\
+ctr\_se & rat & 1 & 1.00 & 9.40 & 6.78 & 0.84 & 4.14 & 7.80 & 13.10 &
+33.31 & ▇▆▃▁▁ \\
+ctr\_n\_round & mice & 0 & 1.00 & 9.83 & 6.14 & 1.00 & 6.00 & 8.00 &
+10.00 & 50.00 & ▇▂▁▁▁ \\
+ctr\_n\_round & rat & 0 & 1.00 & 9.85 & 3.29 & 1.00 & 8.00 & 10.00 &
+10.00 & 28.00 & ▁▇▂▁▁ \\
+ctr\_n\_corr & mice & 0 & 1.00 & 5.74 & 4.42 & 0.00 & 2.00 & 6.00 & 8.00
+& 35.00 & ▇▅▁▁▁ \\
+ctr\_n\_corr & rat & 0 & 1.00 & 5.89 & 4.08 & 1.00 & 3.00 & 4.00 & 8.00
+& 28.00 & ▇▅▁▁▁ \\
+n\_comparisons & mice & 0 & 1.00 & 2.68 & 2.10 & 1.00 & 1.00 & 2.00 &
+4.00 & 9.00 & ▇▃▁▂▁ \\
+n\_comparisons & rat & 0 & 1.00 & 2.33 & 1.73 & 1.00 & 1.00 & 2.00 &
+3.00 & 9.00 & ▇▅▁▁▁ \\
+atd\_mean & mice & 0 & 1.00 & 111.08 & 66.32 & 2.02 & 55.80 & 102.05 &
+156.92 & 321.19 & ▆▇▆▂▁ \\
+atd\_mean & rat & 0 & 1.00 & 102.37 & 65.93 & 4.96 & 47.63 & 94.96 &
+146.20 & 388.00 & ▇▆▃▁▁ \\
+atd\_sd & mice & 0 & 1.00 & 33.47 & 25.26 & 0.73 & 15.10 & 29.33 & 43.00
+& 154.51 & ▇▅▁▁▁ \\
+atd\_sd & rat & 0 & 1.00 & 30.67 & 42.48 & 1.55 & 9.65 & 24.67 & 40.09 &
+581.00 & ▇▁▁▁▁ \\
+atd\_n\_round & mice & 0 & 1.00 & 9.19 & 3.88 & 1.00 & 6.00 & 8.00 &
+10.00 & 30.00 & ▃▇▁▁▁ \\
+atd\_n\_round & rat & 0 & 1.00 & 9.56 & 2.81 & 4.00 & 8.00 & 10.00 &
+10.00 & 21.00 & ▂▇▁▁▁ \\
+age & mice & 188 & 0.43 & 85.90 & 94.63 & 28.00 & 42.00 & 56.00 & 63.00
+& 390.00 & ▇▁▁▁▁ \\
+age & rat & 162 & 0.31 & 94.22 & 78.54 & 45.00 & 59.00 & 65.25 & 91.00 &
+585.00 & ▇▁▁▁▁ \\
+weight & mice & 95 & 0.71 & 26.13 & 4.61 & 18.00 & 22.50 & 26.50 & 29.00
+& 37.50 & ▅▇▇▃▂ \\
+weight & rat & 34 & 0.85 & 236.26 & 58.95 & 21.00 & 200.00 & 230.00 &
+255.00 & 560.00 & ▁▇▅▁▁ \\
+bioterium\_temp & mice & 66 & 0.80 & 22.54 & 1.32 & 20.00 & 22.00 &
+23.00 & 23.00 & 25.00 & ▅▆▇▁▃ \\
+bioterium\_temp & rat & 74 & 0.68 & 22.25 & 1.37 & 20.00 & 21.50 & 22.00
+& 23.00 & 25.50 & ▅▇▃▁▂ \\
+bioterium\_umid & mice & 204 & 0.38 & 55.72 & 5.82 & 35.00 & 55.00 &
+55.00 & 60.00 & 70.00 & ▁▁▇▁▂ \\
+bioterium\_umid & rat & 176 & 0.25 & 55.62 & 6.35 & 45.00 & 50.00 &
+55.00 & 60.00 & 70.00 & ▇▇▆▂▂ \\
+dose & mice & 15 & 0.95 & 15.27 & 14.66 & 0.10 & 8.00 & 10.00 & 20.00 &
+100.00 & ▇▁▁▁▁ \\
+dose & rat & 7 & 0.97 & 14.59 & 11.86 & 0.10 & 9.00 & 10.00 & 20.00 &
+70.00 & ▇▃▂▁▁ \\
+treatment\_duration & mice & 10 & 0.97 & 5.98 & 14.49 & 1.00 & 1.00 &
+1.00 & 3.75 & 110.00 & ▇▁▁▁▁ \\
+treatment\_duration & rat & 2 & 0.99 & 8.06 & 9.18 & 1.00 & 1.00 & 2.00
+& 14.00 & 48.00 & ▇▂▁▁▁ \\
+treatment\_freq & mice & 7 & 0.98 & 1.14 & 0.50 & 1.00 & 1.00 & 1.00 &
+1.00 & 3.00 & ▇▁▁▁▁ \\
+treatment\_freq & rat & 5 & 0.98 & 1.42 & 0.77 & 1.00 & 1.00 & 1.00 &
+2.00 & 3.00 & ▇▁▁▁▂ \\
+last\_bf\_outcome & mice & 42 & 0.87 & 3.04 & 10.03 & 0.00 & 0.50 & 0.75
+& 1.00 & 90.00 & ▇▁▁▁▁ \\
+last\_bf\_outcome & rat & 51 & 0.78 & 17.73 & 114.06 & 0.17 & 1.00 &
+1.00 & 1.00 & 960.00 & ▇▁▁▁▁ \\
+cylinder\_height & mice & 24 & 0.93 & 26.23 & 7.36 & 11.00 & 25.00 &
+25.00 & 27.75 & 46.00 & ▁▇▂▁▂ \\
+cylinder\_height & rat & 26 & 0.89 & 45.01 & 9.16 & 20.00 & 40.00 &
+40.00 & 47.00 & 80.00 & ▁▇▆▁▁ \\
+cylinder\_diameter & mice & 29 & 0.91 & 13.05 & 4.18 & 10.00 & 10.00 &
+10.00 & 15.00 & 22.50 & ▇▂▁▂▁ \\
+cylinder\_diameter & rat & 18 & 0.92 & 20.96 & 5.48 & 14.00 & 18.00 &
+20.00 & 22.00 & 73.00 & ▇▁▁▁▁ \\
+water\_depth & mice & 7 & 0.98 & 15.04 & 6.28 & 6.00 & 10.00 & 15.00 &
+17.00 & 35.00 & ▆▇▃▁▂ \\
+water\_depth & rat & 24 & 0.90 & 24.40 & 8.19 & 12.00 & 17.00 & 20.00 &
+30.00 & 50.00 & ▇▇▆▃▁ \\
+water\_temperature & mice & 18 & 0.95 & 24.53 & 1.66 & 20.00 & 24.00 &
+25.00 & 25.00 & 33.00 & ▁▇▁▁▁ \\
+water\_temperature & rat & 8 & 0.97 & 24.76 & 0.98 & 20.00 & 24.12 &
+25.00 & 25.00 & 27.50 & ▁▁▂▇▁ \\
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(sex) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{skim}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Data summary}\tabularnewline
+\toprule
+\endhead
+Name & Piped data \\
+Number of rows & 562 \\
+Number of columns & 76 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Column type frequency: & \\
+character & 21 \\
+Date & 1 \\
+factor & 31 \\
+numeric & 22 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Group variables & sex \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: character}
+
+\begin{longtable}[]{@{}llrrrrrrr@{}}
+\toprule
+skim\_variable & sex & n\_missing & complete\_rate & min & max & empty &
+n\_unique & whitespace \\
+\midrule
+\endhead
+line & F & 0 & 1.00 & 1 & 3 & 0 & 77 & 0 \\
+line & M & 0 & 1.00 & 1 & 3 & 0 & 421 & 0 \\
+line & M and F & 0 & 1.00 & 1 & 3 & 0 & 36 & 0 \\
+line & NA & 0 & 1.00 & 1 & 3 & 0 & 28 & 0 \\
+idgeral & F & 0 & 1.00 & 2 & 4 & 0 & 23 & 0 \\
+idgeral & M & 0 & 1.00 & 1 & 4 & 0 & 148 & 0 \\
+idgeral & M and F & 0 & 1.00 & 1 & 4 & 0 & 18 & 0 \\
+idgeral & NA & 0 & 1.00 & 2 & 4 & 0 & 12 & 0 \\
+id & F & 0 & 1.00 & 1 & 3 & 0 & 23 & 0 \\
+id & M & 0 & 1.00 & 1 & 3 & 0 & 148 & 0 \\
+id & M and F & 0 & 1.00 & 1 & 3 & 0 & 18 & 0 \\
+id & NA & 0 & 1.00 & 1 & 3 & 0 & 12 & 0 \\
+study\_reference & F & 0 & 1.00 & 97 & 253 & 0 & 23 & 0 \\
+study\_reference & M & 0 & 1.00 & 93 & 320 & 0 & 148 & 0 \\
+study\_reference & M and F & 0 & 1.00 & 132 & 307 & 0 & 18 & 0 \\
+study\_reference & NA & 0 & 1.00 & 138 & 221 & 0 & 12 & 0 \\
+authors & F & 0 & 1.00 & 31 & 158 & 0 & 23 & 0 \\
+authors & M & 0 & 1.00 & 20 & 236 & 0 & 147 & 0 \\
+authors & M and F & 0 & 1.00 & 19 & 116 & 0 & 18 & 0 \\
+authors & NA & 0 & 1.00 & 30 & 124 & 0 & 12 & 0 \\
+first\_author & F & 0 & 1.00 & 9 & 23 & 0 & 23 & 0 \\
+first\_author & M & 0 & 1.00 & 9 & 23 & 0 & 138 & 0 \\
+first\_author & M and F & 0 & 1.00 & 10 & 19 & 0 & 18 & 0 \\
+first\_author & NA & 0 & 1.00 & 9 & 18 & 0 & 12 & 0 \\
+title & F & 0 & 1.00 & 37 & 176 & 0 & 23 & 0 \\
+title & M & 0 & 1.00 & 37 & 254 & 0 & 148 & 0 \\
+title & M and F & 0 & 1.00 & 54 & 175 & 0 & 18 & 0 \\
+title & NA & 0 & 1.00 & 66 & 152 & 0 & 12 & 0 \\
+language & F & 0 & 1.00 & 7 & 7 & 0 & 2 & 0 \\
+language & M & 0 & 1.00 & 7 & 7 & 0 & 3 & 0 \\
+language & M and F & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & NA & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+source & F & 0 & 1.00 & 6 & 9 & 0 & 19 & 0 \\
+source & M & 0 & 1.00 & 6 & 9 & 0 & 38 & 0 \\
+source & M and F & 0 & 1.00 & 6 & 9 & 0 & 12 & 0 \\
+source & NA & 0 & 1.00 & 6 & 9 & 0 & 13 & 0 \\
+outcome & F & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & M & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & M and F & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & NA & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+treemore\_arms & F & 45 & 0.42 & 3 & 24 & 0 & 4 & 0 \\
+treemore\_arms & M & 339 & 0.19 & 3 & 28 & 0 & 6 & 0 \\
+treemore\_arms & M and F & 22 & 0.39 & 3 & 3 & 0 & 1 & 0 \\
+treemore\_arms & NA & 23 & 0.18 & 3 & 3 & 0 & 1 & 0 \\
+ctr\_n\_ext & F & 0 & 1.00 & 1 & 7 & 0 & 16 & 0 \\
+ctr\_n\_ext & M & 0 & 1.00 & 1 & 7 & 0 & 38 & 0 \\
+ctr\_n\_ext & M and F & 0 & 1.00 & 1 & 6 & 0 & 9 & 0 \\
+ctr\_n\_ext & NA & 0 & 1.00 & 1 & 6 & 0 & 10 & 0 \\
+atd\_se & F & 0 & 1.00 & 1 & 19 & 0 & 73 & 0 \\
+atd\_se & M & 2 & 1.00 & 1 & 19 & 0 & 373 & 0 \\
+atd\_se & M and F & 1 & 0.97 & 2 & 19 & 0 & 34 & 0 \\
+atd\_se & NA & 0 & 1.00 & 1 & 19 & 0 & 24 & 0 \\
+atd\_n\_ext & F & 0 & 1.00 & 1 & 7 & 0 & 17 & 0 \\
+atd\_n\_ext & M & 0 & 1.00 & 1 & 7 & 0 & 34 & 0 \\
+atd\_n\_ext & M and F & 0 & 1.00 & 1 & 6 & 0 & 9 & 0 \\
+atd\_n\_ext & NA & 0 & 1.00 & 1 & 6 & 0 & 8 & 0 \\
+obs\_design & F & 77 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & M & 420 & 0.00 & 9 & 9 & 0 & 1 & 0 \\
+obs\_design & M and F & 36 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & NA & 28 & 0.00 & NA & NA & 0 & 0 & 0 \\
+model\_phenotype & F & 0 & 1.00 & 2 & 61 & 0 & 12 & 0 \\
+model\_phenotype & M & 0 & 1.00 & 2 & 61 & 0 & 35 & 0 \\
+model\_phenotype & M and F & 0 & 1.00 & 2 & 18 & 0 & 2 & 0 \\
+model\_phenotype & NA & 0 & 1.00 & 2 & 19 & 0 & 3 & 0 \\
+cage\_measures & F & 0 & 1.00 & 2 & 8 & 0 & 6 & 0 \\
+cage\_measures & M & 0 & 1.00 & 2 & 10 & 0 & 22 & 0 \\
+cage\_measures & M and F & 0 & 1.00 & 2 & 8 & 0 & 2 & 0 \\
+cage\_measures & NA & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+animals\_percage & F & 0 & 1.00 & 1 & 2 & 0 & 10 & 0 \\
+animals\_percage & M & 0 & 1.00 & 1 & 4 & 0 & 21 & 0 \\
+animals\_percage & M and F & 0 & 1.00 & 1 & 2 & 0 & 3 & 0 \\
+animals\_percage & NA & 0 & 1.00 & 1 & 2 & 0 & 3 & 0 \\
+bioterium\_lightcycle & F & 0 & 1.00 & 2 & 13 & 0 & 4 & 0 \\
+bioterium\_lightcycle & M & 0 & 1.00 & 2 & 13 & 0 & 6 & 0 \\
+bioterium\_lightcycle & M and F & 0 & 1.00 & 2 & 12 & 0 & 3 & 0 \\
+bioterium\_lightcycle & NA & 0 & 1.00 & 2 & 13 & 0 & 4 & 0 \\
+others\_tests & F & 0 & 1.00 & 2 & 37 & 0 & 10 & 0 \\
+others\_tests & M & 0 & 1.00 & 2 & 80 & 0 & 24 & 0 \\
+others\_tests & M and F & 0 & 1.00 & 2 & 37 & 0 & 4 & 0 \\
+others\_tests & NA & 0 & 1.00 & 2 & 40 & 0 & 6 & 0 \\
+obs\_quali & F & 77 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & M & 420 & 0.00 & 50 & 50 & 0 & 1 & 0 \\
+obs\_quali & M and F & 36 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & NA & 28 & 0.00 & NA & NA & 0 & 0 & 0 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: Date}
+
+\begin{longtable}[]{@{}llrrlllr@{}}
+\toprule
+skim\_variable & sex & n\_missing & complete\_rate & min & max & median
+& n\_unique \\
+\midrule
+\endhead
+year & F & 0 & 1 & 1995-01-01 & 2017-01-01 & 2013-01-01 & 15 \\
+year & M & 0 & 1 & 1986-01-01 & 2017-01-01 & 2009-01-01 & 26 \\
+year & M and F & 0 & 1 & 1996-01-01 & 2016-01-01 & 2013-01-01 & 10 \\
+year & NA & 0 & 1 & 2004-01-01 & 2017-01-01 & 2012-01-01 & 9 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: factor}
+
+\begin{longtable}[]{@{}llrrlrl@{}}
+\toprule
+skim\_variable & sex & n\_missing & complete\_rate & ordered & n\_unique
+& top\_counts \\
+\midrule
+\endhead
+country & F & 0 & 1 & FALSE & 14 & USA: 16, Bra: 14, Jap: 12, Isr: 6 \\
+country & M & 0 & 1 & FALSE & 32 & Jap: 95, Chi: 48, Ind: 42, Pol: 32 \\
+country & M and F & 0 & 1 & FALSE & 7 & Ind: 26, Bra: 3, Sau: 2, Spa:
+2 \\
+country & NA & 0 & 1 & FALSE & 7 & Ind: 14, Den: 4, Jap: 4, Chi: 2 \\
+measure\_unit & F & 0 & 1 & FALSE & 3 & sec: 63, \%: 8, cou: 6 \\
+measure\_unit & M & 0 & 1 & FALSE & 3 & sec: 362, \%: 38, cou: 21 \\
+measure\_unit & M and F & 0 & 1 & FALSE & 1 & sec: 36, \%: 0, cou: 0 \\
+measure\_unit & NA & 0 & 1 & FALSE & 1 & sec: 28, \%: 0, cou: 0 \\
+species & F & 0 & 1 & FALSE & 2 & mic: 59, rat: 18 \\
+species & M & 0 & 1 & FALSE & 2 & mic: 221, rat: 200 \\
+species & M and F & 0 & 1 & FALSE & 2 & mic: 29, rat: 7 \\
+species & NA & 0 & 1 & FALSE & 2 & mic: 19, rat: 9 \\
+strain & F & 0 & 1 & FALSE & 12 & swi: 17, CD-: 15, C57: 10, wis: 9 \\
+strain & M & 0 & 1 & FALSE & 18 & wis: 128, swi: 67, CD-: 66, spr: 46 \\
+strain & M and F & 0 & 1 & FALSE & 4 & swi: 25, wis: 7, NA: 3, OF1: 1 \\
+strain & NA & 0 & 1 & FALSE & 11 & swi: 11, B6S: 3, fli: 3, lac: 2 \\
+comparator & F & 0 & 1 & FALSE & 1 & veh: 77 \\
+comparator & M & 0 & 1 & FALSE & 1 & veh: 421 \\
+comparator & M and F & 0 & 1 & FALSE & 1 & veh: 36 \\
+comparator & NA & 0 & 1 & FALSE & 1 & veh: 28 \\
+atd\_type & F & 0 & 1 & FALSE & 13 & flu: 13, imi: 13, esc: 11, des:
+10 \\
+atd\_type & M & 0 & 1 & FALSE & 25 & imi: 111, flu: 96, des: 37, par:
+28 \\
+atd\_type & M and F & 0 & 1 & FALSE & 6 & imi: 15, flu: 12, tra: 3, ser:
+2 \\
+atd\_type & NA & 0 & 1 & FALSE & 7 & flu: 6, ven: 6, imi: 5, cit: 3 \\
+atd\_class & F & 0 & 1 & FALSE & 5 & SSR: 42, tri: 26, mul: 4, SNR: 3 \\
+atd\_class & M & 0 & 1 & FALSE & 8 & tri: 193, SSR: 149, SNR: 31, tec:
+18 \\
+atd\_class & M and F & 0 & 1 & FALSE & 4 & tri: 15, SSR: 14, SNR: 5,
+NRI: 2 \\
+atd\_class & NA & 0 & 1 & FALSE & 3 & SSR: 14, tri: 8, SNR: 6, IMA: 0 \\
+treatment\_via & F & 0 & 1 & FALSE & 4 & IP: 42, ora: 16, sub: 13, gav:
+6 \\
+treatment\_via & M & 0 & 1 & FALSE & 9 & IP: 268, ora: 77, gav: 34, sub:
+27 \\
+treatment\_via & M and F & 0 & 1 & FALSE & 4 & IP: 18, ora: 13, NA: 3,
+gav: 2 \\
+treatment\_via & NA & 0 & 1 & FALSE & 5 & IP: 14, ora: 11, gav: 1, NA:
+1 \\
+fst\_protocol & F & 0 & 1 & FALSE & 12 & tes: 17, pre: 14, tes: 10, tes:
+8 \\
+fst\_protocol & M & 0 & 1 & FALSE & 20 & pre: 176, tes: 101, tes: 67,
+tes: 19 \\
+fst\_protocol & M and F & 0 & 1 & FALSE & 11 & tes: 11, pre: 4, tes: 4,
+pre: 3 \\
+fst\_protocol & NA & 0 & 1 & FALSE & 8 & pre: 7, pre: 5, pre: 4, tes:
+4 \\
+measurement\_method & F & 0 & 1 & FALSE & 5 & NA: 27, vid: 18, man: 17,
+vid: 9 \\
+measurement\_method & M & 0 & 1 & FALSE & 11 & NA: 225, vid: 95, man:
+37, vid: 22 \\
+measurement\_method & M and F & 0 & 1 & FALSE & 6 & NA: 27, man: 4, vid:
+2, man: 1 \\
+measurement\_method & NA & 0 & 1 & FALSE & 3 & NA: 20, vid: 4, vid: 4,
+man: 0 \\
+rob1 & F & 0 & 1 & FALSE & 1 & Unc: 77, No: 0, Yes: 0 \\
+rob1 & M & 0 & 1 & FALSE & 3 & Unc: 417, Yes: 3, No: 1 \\
+rob1 & M and F & 0 & 1 & FALSE & 2 & Unc: 35, No: 1, Yes: 0 \\
+rob1 & NA & 0 & 1 & FALSE & 2 & Unc: 27, No: 1, Yes: 0 \\
+rob2 & F & 0 & 1 & FALSE & 1 & Yes: 77, Unc: 0 \\
+rob2 & M & 0 & 1 & FALSE & 2 & Yes: 419, Unc: 2 \\
+rob2 & M and F & 0 & 1 & FALSE & 1 & Yes: 36, Unc: 0 \\
+rob2 & NA & 0 & 1 & FALSE & 1 & Yes: 28, Unc: 0 \\
+rob3 & F & 0 & 1 & FALSE & 2 & Unc: 76, Yes: 1, No: 0 \\
+rob3 & M & 0 & 1 & FALSE & 2 & Unc: 413, No: 8, Yes: 0 \\
+rob3 & M and F & 0 & 1 & FALSE & 1 & Unc: 36, No: 0, Yes: 0 \\
+rob3 & NA & 0 & 1 & FALSE & 1 & Unc: 28, No: 0, Yes: 0 \\
+rob4 & F & 0 & 1 & FALSE & 1 & Unc: 77, No: 0, Yes: 0 \\
+rob4 & M & 0 & 1 & FALSE & 3 & Unc: 415, No: 4, Yes: 2 \\
+rob4 & M and F & 0 & 1 & FALSE & 1 & Unc: 36, No: 0, Yes: 0 \\
+rob4 & NA & 0 & 1 & FALSE & 2 & Unc: 27, No: 1, Yes: 0 \\
+rob5 & F & 0 & 1 & FALSE & 3 & Unc: 63, Yes: 8, No: 6 \\
+rob5 & M & 0 & 1 & FALSE & 3 & Unc: 402, Yes: 17, No: 2 \\
+rob5 & M and F & 0 & 1 & FALSE & 1 & Unc: 36, No: 0, Yes: 0 \\
+rob5 & NA & 0 & 1 & FALSE & 1 & Unc: 28, No: 0, Yes: 0 \\
+rob6 & F & 0 & 1 & FALSE & 1 & Unc: 77, Yes: 0 \\
+rob6 & M & 0 & 1 & FALSE & 2 & Unc: 419, Yes: 2 \\
+rob6 & M and F & 0 & 1 & FALSE & 1 & Unc: 36, Yes: 0 \\
+rob6 & NA & 0 & 1 & FALSE & 1 & Unc: 28, Yes: 0 \\
+rob7 & F & 0 & 1 & FALSE & 2 & Unc: 44, Yes: 33 \\
+rob7 & M & 0 & 1 & FALSE & 2 & Unc: 275, Yes: 146 \\
+rob7 & M and F & 0 & 1 & FALSE & 2 & Unc: 34, Yes: 2 \\
+rob7 & NA & 0 & 1 & FALSE & 2 & Unc: 19, Yes: 9 \\
+rob8 & F & 0 & 1 & FALSE & 3 & Yes: 43, Unc: 30, No: 4 \\
+rob8 & M & 0 & 1 & FALSE & 3 & Yes: 238, Unc: 169, No: 14 \\
+rob8 & M and F & 0 & 1 & FALSE & 2 & Yes: 22, Unc: 14, No: 0 \\
+rob8 & NA & 0 & 1 & FALSE & 2 & Yes: 19, Unc: 9, No: 0 \\
+rob9 & F & 0 & 1 & FALSE & 3 & Yes: 70, No: 4, Unc: 3 \\
+rob9 & M & 0 & 1 & FALSE & 3 & Yes: 402, No: 10, Unc: 9 \\
+rob9 & M and F & 0 & 1 & FALSE & 1 & Yes: 36, No: 0, Unc: 0 \\
+rob9 & NA & 0 & 1 & FALSE & 2 & Yes: 27, No: 1, Unc: 0 \\
+rob10 & F & 0 & 1 & FALSE & 1 & Yes: 77, No: 0 \\
+rob10 & M & 0 & 1 & FALSE & 2 & Yes: 419, No: 2 \\
+rob10 & M and F & 0 & 1 & FALSE & 2 & Yes: 33, No: 3 \\
+rob10 & NA & 0 & 1 & FALSE & 1 & Yes: 28, No: 0 \\
+camarades1 & F & 0 & 1 & FALSE & 1 & Yes: 77, No: 0, Unc: 0 \\
+camarades1 & M & 0 & 1 & FALSE & 3 & Yes: 401, No: 17, Unc: 3 \\
+camarades1 & M and F & 0 & 1 & FALSE & 2 & Yes: 26, Unc: 10, No: 0 \\
+camarades1 & NA & 0 & 1 & FALSE & 2 & Yes: 27, Unc: 1, No: 0 \\
+camarades2 & F & 0 & 1 & FALSE & 2 & Yes: 41, Unc: 36, Yes: 0 \\
+camarades2 & M & 0 & 1 & FALSE & 3 & Unc: 264, Yes: 152, Yes: 5 \\
+camarades2 & M and F & 0 & 1 & FALSE & 2 & Unc: 30, Yes: 6, Yes: 0 \\
+camarades2 & NA & 0 & 1 & FALSE & 2 & Unc: 24, Yes: 4, Yes: 0 \\
+camarades3 & F & 0 & 1 & FALSE & 2 & Yes: 73, No: 4 \\
+camarades3 & M & 0 & 1 & FALSE & 2 & Yes: 306, No: 115 \\
+camarades3 & M and F & 0 & 1 & FALSE & 2 & Yes: 33, No: 3 \\
+camarades3 & NA & 0 & 1 & FALSE & 1 & Yes: 28, No: 0 \\
+camarades4 & F & 0 & 1 & FALSE & 2 & No: 50, Yes: 27 \\
+camarades4 & M & 0 & 1 & FALSE & 2 & No: 319, Yes: 102 \\
+camarades4 & M and F & 0 & 1 & FALSE & 2 & No: 29, Yes: 7 \\
+camarades4 & NA & 0 & 1 & FALSE & 2 & Yes: 15, No: 13 \\
+camarades5 & F & 0 & 1 & FALSE & 3 & Yes: 57, Unc: 17, No: 3 \\
+camarades5 & M & 0 & 1 & FALSE & 3 & Yes: 294, Unc: 114, No: 13 \\
+camarades5 & M and F & 0 & 1 & FALSE & 3 & Unc: 19, Yes: 16, No: 1 \\
+camarades5 & NA & 0 & 1 & FALSE & 3 & Yes: 21, No: 5, Unc: 2 \\
+camarades6 & F & 0 & 1 & FALSE & 2 & Yes: 76, No: 1, Unc: 0 \\
+camarades6 & M & 0 & 1 & FALSE & 1 & Yes: 421, No: 0, Unc: 0 \\
+camarades6 & M and F & 0 & 1 & FALSE & 3 & Yes: 32, No: 3, Unc: 1 \\
+camarades6 & NA & 0 & 1 & FALSE & 2 & Yes: 26, No: 2, Unc: 0 \\
+camarades7 & F & 0 & 1 & FALSE & 2 & No: 54, Yes: 23 \\
+camarades7 & M & 0 & 1 & FALSE & 2 & No: 287, Yes: 134 \\
+camarades7 & M and F & 0 & 1 & FALSE & 2 & No: 30, Yes: 6 \\
+camarades7 & NA & 0 & 1 & FALSE & 2 & No: 20, Yes: 8 \\
+camarades8 & F & 0 & 1 & FALSE & 2 & Yes: 76, No: 1, Unc: 0 \\
+camarades8 & M & 0 & 1 & FALSE & 2 & Yes: 419, No: 2, Unc: 0 \\
+camarades8 & M and F & 0 & 1 & FALSE & 2 & Yes: 33, No: 3, Unc: 0 \\
+camarades8 & NA & 0 & 1 & FALSE & 3 & Yes: 25, No: 2, Unc: 1 \\
+camarades9 & F & 0 & 1 & FALSE & 1 & Yes: 77, No: 0 \\
+camarades9 & M & 0 & 1 & FALSE & 1 & Yes: 421, No: 0 \\
+camarades9 & M and F & 0 & 1 & FALSE & 1 & Yes: 36, No: 0 \\
+camarades9 & NA & 0 & 1 & FALSE & 1 & No: 28, Yes: 0 \\
+camarades10 & F & 0 & 1 & FALSE & 2 & Yes: 51, No: 26, Unc: 0 \\
+camarades10 & M & 0 & 1 & FALSE & 3 & No: 234, Yes: 164, Unc: 23 \\
+camarades10 & M and F & 0 & 1 & FALSE & 3 & No: 27, Yes: 6, Unc: 3 \\
+camarades10 & NA & 0 & 1 & FALSE & 2 & No: 20, Yes: 8, Unc: 0 \\
+camarades11 & F & 0 & 1 & FALSE & 1 & No: 77, Unc: 0 \\
+camarades11 & M & 0 & 1 & FALSE & 2 & No: 416, Unc: 5 \\
+camarades11 & M and F & 0 & 1 & FALSE & 1 & No: 36, Unc: 0 \\
+camarades11 & NA & 0 & 1 & FALSE & 1 & No: 28, Unc: 0 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}llrrrrrrrrrl@{}}
+\toprule
+skim\_variable & sex & n\_missing & complete\_rate & mean & sd & p0 &
+p25 & p50 & p75 & p100 & hist \\
+\midrule
+\endhead
+seq & F & 0 & 1.00 & 3.18 & 2.77 & 1.00 & 1.00 & 2.00 & 4.00 & 12.00 &
+▇▂▁▁▁ \\
+seq & M & 0 & 1.00 & 3.51 & 3.42 & 1.00 & 1.00 & 2.00 & 4.00 & 18.00 &
+▇▁▁▁▁ \\
+seq & M and F & 0 & 1.00 & 1.86 & 1.07 & 1.00 & 1.00 & 1.50 & 2.25 &
+5.00 & ▇▃▂▁▁ \\
+seq & NA & 0 & 1.00 & 2.32 & 1.66 & 1.00 & 1.00 & 2.00 & 3.00 & 7.00 &
+▇▁▁▁▁ \\
+ctr\_mean & F & 0 & 1.00 & 170.89 & 100.89 & 29.75 & 90.81 & 185.90 &
+222.10 & 437.00 & ▇▇▇▂▂ \\
+ctr\_mean & M & 0 & 1.00 & 158.21 & 67.91 & 7.22 & 105.00 & 166.85 &
+206.40 & 447.92 & ▅▇▇▁▁ \\
+ctr\_mean & M and F & 0 & 1.00 & 179.30 & 57.90 & 62.43 & 157.73 &
+179.12 & 204.49 & 336.20 & ▂▃▇▁▁ \\
+ctr\_mean & NA & 0 & 1.00 & 166.93 & 55.17 & 45.67 & 140.26 & 167.83 &
+190.15 & 255.78 & ▂▁▇▂▃ \\
+ctr\_sd & F & 0 & 1.00 & 32.25 & 34.81 & 2.38 & 10.55 & 21.20 & 38.21 &
+173.64 & ▇▂▁▁▁ \\
+ctr\_sd & M & 0 & 1.00 & 31.16 & 21.55 & 2.02 & 15.97 & 26.39 & 40.90 &
+175.79 & ▇▃▁▁▁ \\
+ctr\_sd & M and F & 0 & 1.00 & 16.25 & 12.41 & 2.58 & 5.78 & 12.66 &
+21.27 & 47.41 & ▇▆▂▁▂ \\
+ctr\_sd & NA & 0 & 1.00 & 25.42 & 22.31 & 1.65 & 7.64 & 14.71 & 39.03 &
+87.99 & ▇▂▂▁▁ \\
+ctr\_se & F & 0 & 1.00 & 10.82 & 12.01 & 0.84 & 3.87 & 6.44 & 12.40 &
+50.13 & ▇▂▁▁▁ \\
+ctr\_se & M & 4 & 0.99 & 10.12 & 6.89 & 0.86 & 5.34 & 8.45 & 14.10 &
+55.59 & ▇▃▁▁▁ \\
+ctr\_se & M and F & 1 & 0.97 & 5.88 & 3.84 & 1.05 & 2.55 & 5.17 & 8.03 &
+13.80 & ▇▇▃▁▃ \\
+ctr\_se & NA & 0 & 1.00 & 7.97 & 6.01 & 1.15 & 3.17 & 5.63 & 11.17 &
+21.82 & ▇▂▃▂▂ \\
+ctr\_n\_round & F & 0 & 1.00 & 10.45 & 6.26 & 6.00 & 8.00 & 8.00 & 10.00
+& 30.00 & ▇▁▁▁▁ \\
+ctr\_n\_round & M & 0 & 1.00 & 9.97 & 4.95 & 1.00 & 8.00 & 10.00 & 10.00
+& 50.00 & ▇▂▁▁▁ \\
+ctr\_n\_round & M and F & 0 & 1.00 & 7.69 & 5.03 & 3.00 & 6.00 & 6.00 &
+8.25 & 35.00 & ▇▂▁▁▁ \\
+ctr\_n\_round & NA & 0 & 1.00 & 8.93 & 4.11 & 1.00 & 6.00 & 8.00 & 11.00
+& 20.00 & ▂▇▅▁▁ \\
+ctr\_n\_corr & F & 0 & 1.00 & 5.74 & 4.48 & 1.00 & 1.00 & 6.00 & 8.00 &
+19.00 & ▇▆▁▂▁ \\
+ctr\_n\_corr & M & 0 & 1.00 & 5.82 & 4.05 & 0.00 & 3.00 & 5.00 & 9.00 &
+28.00 & ▇▆▁▁▁ \\
+ctr\_n\_corr & M and F & 0 & 1.00 & 5.47 & 5.67 & 1.00 & 3.00 & 5.00 &
+6.00 & 35.00 & ▇▁▁▁▁ \\
+ctr\_n\_corr & NA & 0 & 1.00 & 6.14 & 5.15 & 1.00 & 3.00 & 4.00 & 7.00 &
+20.00 & ▇▂▂▁▁ \\
+n\_comparisons & F & 0 & 1.00 & 2.92 & 1.99 & 1.00 & 1.00 & 2.00 & 5.00
+& 6.00 & ▇▁▂▂▂ \\
+n\_comparisons & M & 0 & 1.00 & 2.56 & 2.04 & 1.00 & 1.00 & 2.00 & 3.00
+& 9.00 & ▇▅▁▁▁ \\
+n\_comparisons & M and F & 0 & 1.00 & 2.00 & 1.37 & 1.00 & 1.00 & 1.50 &
+2.00 & 5.00 & ▇▅▁▁▂ \\
+n\_comparisons & NA & 0 & 1.00 & 1.79 & 0.79 & 1.00 & 1.00 & 2.00 & 2.00
+& 3.00 & ▇▁▇▁▃ \\
+atd\_mean & F & 0 & 1.00 & 124.38 & 82.91 & 11.94 & 38.56 & 125.39 &
+185.59 & 388.00 & ▇▅▆▁▁ \\
+atd\_mean & M & 0 & 1.00 & 104.47 & 63.74 & 2.02 & 53.09 & 93.66 &
+147.96 & 321.19 & ▇▇▆▂▁ \\
+atd\_mean & M and F & 0 & 1.00 & 110.65 & 54.81 & 21.92 & 78.71 & 111.10
+& 138.03 & 308.60 & ▅▇▃▁▁ \\
+atd\_mean & NA & 0 & 1.00 & 101.71 & 60.96 & 13.80 & 66.86 & 93.59 &
+117.77 & 255.72 & ▅▇▂▂▁ \\
+atd\_sd & F & 0 & 1.00 & 34.62 & 35.38 & 1.67 & 11.60 & 23.52 & 41.01 &
+183.85 & ▇▂▁▁▁ \\
+atd\_sd & M & 0 & 1.00 & 33.59 & 34.26 & 0.73 & 15.69 & 30.22 & 42.94 &
+581.00 & ▇▁▁▁▁ \\
+atd\_sd & M and F & 0 & 1.00 & 17.80 & 16.49 & 1.49 & 4.23 & 11.29 &
+32.28 & 58.79 & ▇▂▂▂▁ \\
+atd\_sd & NA & 0 & 1.00 & 25.19 & 28.82 & 1.91 & 4.60 & 10.44 & 32.76 &
+120.94 & ▇▃▂▁▁ \\
+atd\_n\_round & F & 0 & 1.00 & 10.44 & 6.26 & 6.00 & 8.00 & 8.00 & 10.00
+& 30.00 & ▇▁▁▁▁ \\
+atd\_n\_round & M & 0 & 1.00 & 9.39 & 2.74 & 1.00 & 8.00 & 10.00 & 10.00
+& 21.00 & ▁▇▇▁▁ \\
+atd\_n\_round & M and F & 0 & 1.00 & 7.06 & 2.03 & 3.00 & 6.00 & 6.00 &
+8.25 & 12.00 & ▁▇▁▂▁ \\
+atd\_n\_round & NA & 0 & 1.00 & 8.46 & 2.62 & 4.00 & 6.00 & 8.00 & 10.00
+& 15.00 & ▇▇▅▃▂ \\
+age & F & 37 & 0.52 & 165.85 & 124.98 & 35.00 & 56.00 & 105.00 & 307.50
+& 350.00 & ▇▁▁▁▆ \\
+age & M & 264 & 0.37 & 62.42 & 47.97 & 28.00 & 42.00 & 56.00 & 64.50 &
+585.00 & ▇▁▁▁▁ \\
+age & M and F & 34 & 0.06 & 40.25 & 12.37 & 31.50 & 35.88 & 40.25 &
+44.62 & 49.00 & ▇▁▁▁▇ \\
+age & NA & 15 & 0.46 & 176.58 & 148.90 & 31.50 & 89.00 & 89.00 & 390.00
+& 390.00 & ▇▁▁▁▃ \\
+weight & F & 36 & 0.53 & 94.94 & 104.05 & 19.00 & 30.00 & 35.00 & 237.00
+& 275.00 & ▇▁▁▁▃ \\
+weight & M & 81 & 0.81 & 133.31 & 111.60 & 18.00 & 27.00 & 165.00 &
+230.00 & 560.00 & ▇▅▃▁▁ \\
+weight & M and F & 3 & 0.92 & 67.56 & 80.83 & 21.50 & 22.50 & 27.50 &
+36.00 & 225.00 & ▇▁▁▁▂ \\
+weight & NA & 9 & 0.68 & 99.58 & 149.68 & 20.00 & 25.00 & 25.00 & 27.50
+& 401.00 & ▇▁▁▁▂ \\
+bioterium\_temp & F & 31 & 0.60 & 22.22 & 0.89 & 21.00 & 21.00 & 23.00 &
+23.00 & 23.00 & ▅▁▂▁▇ \\
+bioterium\_temp & M & 85 & 0.80 & 22.38 & 1.40 & 20.00 & 22.00 & 22.00 &
+23.00 & 25.50 & ▅▇▆▁▃ \\
+bioterium\_temp & M and F & 13 & 0.64 & 23.35 & 1.27 & 22.00 & 22.00 &
+23.00 & 24.50 & 25.00 & ▇▂▁▅▅ \\
+bioterium\_temp & NA & 11 & 0.61 & 22.65 & 0.86 & 21.00 & 23.00 & 23.00
+& 23.00 & 24.00 & ▂▁▁▇▁ \\
+bioterium\_umid & F & 70 & 0.09 & 50.71 & 6.73 & 45.00 & 45.00 & 50.00 &
+55.00 & 60.00 & ▇▅▁▁▅ \\
+bioterium\_umid & M & 268 & 0.36 & 56.11 & 5.79 & 45.00 & 55.00 & 55.00
+& 60.00 & 70.00 & ▃▇▂▂▁ \\
+bioterium\_umid & M and F & 26 & 0.28 & 56.00 & 6.99 & 50.00 & 50.00 &
+52.50 & 63.75 & 65.00 & ▇▂▁▂▅ \\
+bioterium\_umid & NA & 16 & 0.43 & 52.92 & 5.82 & 35.00 & 55.00 & 55.00
+& 55.00 & 55.00 & ▁▁▁▁▇ \\
+dose & F & 10 & 0.87 & 10.69 & 9.58 & 0.10 & 5.00 & 10.00 & 15.00 &
+40.00 & ▇▆▁▁▁ \\
+dose & M & 9 & 0.98 & 14.73 & 11.78 & 0.10 & 10.00 & 10.00 & 20.00 &
+100.00 & ▇▁▁▁▁ \\
+dose & M and F & 3 & 0.92 & 19.61 & 16.58 & 5.00 & 10.00 & 15.00 & 20.00
+& 100.00 & ▇▂▁▁▁ \\
+dose & NA & 0 & 1.00 & 23.59 & 29.17 & 2.00 & 9.50 & 15.00 & 20.00 &
+100.00 & ▇▁▁▁▁ \\
+treatment\_duration & F & 4 & 0.95 & 15.45 & 27.03 & 1.00 & 1.00 & 1.00
+& 18.00 & 110.00 & ▇▁▁▁▁ \\
+treatment\_duration & M & 3 & 0.99 & 5.52 & 7.79 & 1.00 & 1.00 & 1.00 &
+8.00 & 48.00 & ▇▁▁▁▁ \\
+treatment\_duration & M and F & 4 & 0.89 & 4.75 & 5.43 & 1.00 & 1.00 &
+1.00 & 7.00 & 21.00 & ▇▃▁▂▁ \\
+treatment\_duration & NA & 1 & 0.96 & 6.89 & 7.44 & 1.00 & 1.00 & 1.00 &
+14.00 & 21.00 & ▇▁▁▅▁ \\
+treatment\_freq & F & 4 & 0.95 & 1.25 & 0.66 & 1.00 & 1.00 & 1.00 & 1.00
+& 3.00 & ▇▁▁▁▁ \\
+treatment\_freq & M & 6 & 0.99 & 1.27 & 0.66 & 1.00 & 1.00 & 1.00 & 1.00
+& 3.00 & ▇▁▁▁▁ \\
+treatment\_freq & M and F & 1 & 0.97 & 1.17 & 0.57 & 1.00 & 1.00 & 1.00
+& 1.00 & 3.00 & ▇▁▁▁▁ \\
+treatment\_freq & NA & 1 & 0.96 & 1.11 & 0.32 & 1.00 & 1.00 & 1.00 &
+1.00 & 2.00 & ▇▁▁▁▁ \\
+last\_bf\_outcome & F & 30 & 0.61 & 2.85 & 11.16 & 0.50 & 0.50 & 0.50 &
+1.00 & 72.00 & ▇▁▁▁▁ \\
+last\_bf\_outcome & M & 57 & 0.86 & 9.86 & 81.28 & 0.17 & 0.50 & 1.00 &
+1.00 & 960.00 & ▇▁▁▁▁ \\
+last\_bf\_outcome & M and F & 1 & 0.97 & 6.63 & 18.77 & 0.00 & 0.50 &
+1.00 & 1.00 & 90.00 & ▇▁▁▁▁ \\
+last\_bf\_outcome & NA & 5 & 0.82 & 6.84 & 10.43 & 0.50 & 0.75 & 1.00 &
+12.50 & 24.00 & ▇▁▁▁▃ \\
+cylinder\_height & F & 19 & 0.75 & 32.62 & 12.67 & 11.00 & 25.00 & 25.00
+& 46.00 & 60.00 & ▁▇▂▃▁ \\
+cylinder\_height & M & 27 & 0.94 & 34.67 & 12.54 & 13.00 & 25.00 & 40.00
+& 40.00 & 80.00 & ▇▂▇▁▁ \\
+cylinder\_height & M and F & 4 & 0.89 & 29.50 & 8.67 & 15.00 & 25.00 &
+25.00 & 30.00 & 50.00 & ▁▇▂▂▁ \\
+cylinder\_height & NA & 0 & 1.00 & 30.04 & 9.98 & 18.00 & 23.00 & 30.00
+& 40.00 & 50.00 & ▅▇▁▂▂ \\
+cylinder\_diameter & F & 8 & 0.90 & 15.23 & 5.47 & 10.00 & 10.00 & 12.50
+& 20.00 & 25.00 & ▇▁▁▅▂ \\
+cylinder\_diameter & M & 22 & 0.95 & 16.62 & 6.37 & 10.00 & 10.00 &
+18.00 & 20.00 & 73.00 & ▇▁▁▁▁ \\
+cylinder\_diameter & M and F & 13 & 0.64 & 14.24 & 4.96 & 10.00 & 10.00
+& 12.00 & 19.00 & 22.50 & ▇▁▁▃▂ \\
+cylinder\_diameter & NA & 4 & 0.86 & 17.52 & 4.69 & 10.00 & 12.00 &
+18.50 & 22.50 & 22.50 & ▆▁▁▆▇ \\
+water\_depth & F & 5 & 0.94 & 21.97 & 9.85 & 10.00 & 12.00 & 19.00 &
+30.00 & 40.00 & ▇▃▁▆▃ \\
+water\_depth & M & 22 & 0.95 & 18.59 & 8.38 & 6.00 & 12.25 & 15.00 &
+20.00 & 50.00 & ▃▇▂▁▁ \\
+water\_depth & M and F & 0 & 1.00 & 15.72 & 5.01 & 7.00 & 15.00 & 15.00
+& 15.00 & 30.00 & ▂▇▁▁▁ \\
+water\_depth & NA & 4 & 0.86 & 16.12 & 5.82 & 10.00 & 14.25 & 15.00 &
+15.00 & 30.00 & ▃▇▁▁▁ \\
+water\_temperature & F & 4 & 0.95 & 24.48 & 0.63 & 23.00 & 24.00 & 25.00
+& 25.00 & 25.00 & ▁▁▆▁▇ \\
+water\_temperature & M & 10 & 0.98 & 24.64 & 1.53 & 20.00 & 24.00 &
+25.00 & 25.00 & 33.00 & ▁▇▁▁▁ \\
+water\_temperature & M and F & 12 & 0.67 & 25.08 & 1.49 & 22.00 & 25.00
+& 25.00 & 25.25 & 30.00 & ▂▇▂▁▁ \\
+water\_temperature & NA & 0 & 1.00 & 24.32 & 0.86 & 23.00 & 24.00 &
+24.00 & 25.00 & 26.00 & ▃▇▁▇▂ \\
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(atd\_class) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{skim}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Data summary}\tabularnewline
+\toprule
+\endhead
+Name & Piped data \\
+Number of rows & 562 \\
+Number of columns & 76 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Column type frequency: & \\
+character & 21 \\
+Date & 1 \\
+factor & 31 \\
+numeric & 22 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Group variables & atd\_class \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: character}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.21}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.21}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.10}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.14}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.04}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.04}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.06}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.09}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.11}}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+atd\_class
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+min
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+max
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+empty
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_unique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+whitespace
+\end{minipage} \\
+\midrule
+\endhead
+line & IMAO & 0 & 1.00 & 2 & 3 & 0 & 13 & 0 \\
+line & melatonergic agonist & 0 & 1.00 & 2 & 2 & 0 & 2 & 0 \\
+line & multimodal & 0 & 1.00 & 3 & 3 & 0 & 4 & 0 \\
+line & NDRA & 0 & 1.00 & 3 & 3 & 0 & 1 & 0 \\
+line & NDRI & 0 & 1.00 & 3 & 3 & 0 & 14 & 0 \\
+line & NRI & 0 & 1.00 & 2 & 3 & 0 & 4 & 0 \\
+line & SNRI & 0 & 1.00 & 2 & 3 & 0 & 45 & 0 \\
+line & SSRI & 0 & 1.00 & 1 & 3 & 0 & 219 & 0 \\
+line & teca & 0 & 1.00 & 3 & 3 & 0 & 18 & 0 \\
+line & tricyclic & 0 & 1.00 & 1 & 3 & 0 & 242 & 0 \\
+idgeral & IMAO & 0 & 1.00 & 3 & 4 & 0 & 6 & 0 \\
+idgeral & melatonergic agonist & 0 & 1.00 & 3 & 3 & 0 & 1 & 0 \\
+idgeral & multimodal & 0 & 1.00 & 4 & 4 & 0 & 1 & 0 \\
+idgeral & NDRA & 0 & 1.00 & 4 & 4 & 0 & 1 & 0 \\
+idgeral & NDRI & 0 & 1.00 & 4 & 4 & 0 & 5 & 0 \\
+idgeral & NRI & 0 & 1.00 & 3 & 4 & 0 & 3 & 0 \\
+idgeral & SNRI & 0 & 1.00 & 3 & 4 & 0 & 18 & 0 \\
+idgeral & SSRI & 0 & 1.00 & 1 & 4 & 0 & 97 & 0 \\
+idgeral & teca & 0 & 1.00 & 4 & 4 & 0 & 5 & 0 \\
+idgeral & tricyclic & 0 & 1.00 & 1 & 4 & 0 & 104 & 0 \\
+id & IMAO & 0 & 1.00 & 2 & 3 & 0 & 6 & 0 \\
+id & melatonergic agonist & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+id & multimodal & 0 & 1.00 & 3 & 3 & 0 & 1 & 0 \\
+id & NDRA & 0 & 1.00 & 3 & 3 & 0 & 1 & 0 \\
+id & NDRI & 0 & 1.00 & 3 & 3 & 0 & 5 & 0 \\
+id & NRI & 0 & 1.00 & 2 & 3 & 0 & 3 & 0 \\
+id & SNRI & 0 & 1.00 & 2 & 3 & 0 & 18 & 0 \\
+id & SSRI & 0 & 1.00 & 1 & 3 & 0 & 97 & 0 \\
+id & teca & 0 & 1.00 & 3 & 3 & 0 & 5 & 0 \\
+id & tricyclic & 0 & 1.00 & 1 & 3 & 0 & 104 & 0 \\
+study\_reference & IMAO & 0 & 1.00 & 119 & 220 & 0 & 6 & 0 \\
+study\_reference & melatonergic agonist & 0 & 1.00 & 207 & 207 & 0 & 1 &
+0 \\
+study\_reference & multimodal & 0 & 1.00 & 224 & 224 & 0 & 1 & 0 \\
+study\_reference & NDRA & 0 & 1.00 & 131 & 131 & 0 & 1 & 0 \\
+study\_reference & NDRI & 0 & 1.00 & 136 & 228 & 0 & 5 & 0 \\
+study\_reference & NRI & 0 & 1.00 & 154 & 226 & 0 & 3 & 0 \\
+study\_reference & SNRI & 0 & 1.00 & 126 & 307 & 0 & 18 & 0 \\
+study\_reference & SSRI & 0 & 1.00 & 97 & 320 & 0 & 97 & 0 \\
+study\_reference & teca & 0 & 1.00 & 150 & 214 & 0 & 5 & 0 \\
+study\_reference & tricyclic & 0 & 1.00 & 93 & 256 & 0 & 104 & 0 \\
+authors & IMAO & 0 & 1.00 & 41 & 161 & 0 & 6 & 0 \\
+authors & melatonergic agonist & 0 & 1.00 & 158 & 158 & 0 & 1 & 0 \\
+authors & multimodal & 0 & 1.00 & 31 & 31 & 0 & 1 & 0 \\
+authors & NDRA & 0 & 1.00 & 41 & 41 & 0 & 1 & 0 \\
+authors & NDRI & 0 & 1.00 & 41 & 133 & 0 & 5 & 0 \\
+authors & NRI & 0 & 1.00 & 39 & 133 & 0 & 3 & 0 \\
+authors & SNRI & 0 & 1.00 & 21 & 133 & 0 & 18 & 0 \\
+authors & SSRI & 0 & 1.00 & 19 & 236 & 0 & 96 & 0 \\
+authors & teca & 0 & 1.00 & 35 & 104 & 0 & 5 & 0 \\
+authors & tricyclic & 0 & 1.00 & 20 & 230 & 0 & 104 & 0 \\
+first\_author & IMAO & 0 & 1.00 & 10 & 15 & 0 & 6 & 0 \\
+first\_author & melatonergic agonist & 0 & 1.00 & 15 & 15 & 0 & 1 & 0 \\
+first\_author & multimodal & 0 & 1.00 & 12 & 12 & 0 & 1 & 0 \\
+first\_author & NDRA & 0 & 1.00 & 17 & 17 & 0 & 1 & 0 \\
+first\_author & NDRI & 0 & 1.00 & 12 & 15 & 0 & 5 & 0 \\
+first\_author & NRI & 0 & 1.00 & 11 & 18 & 0 & 3 & 0 \\
+first\_author & SNRI & 0 & 1.00 & 10 & 18 & 0 & 18 & 0 \\
+first\_author & SSRI & 0 & 1.00 & 9 & 23 & 0 & 89 & 0 \\
+first\_author & teca & 0 & 1.00 & 13 & 19 & 0 & 5 & 0 \\
+first\_author & tricyclic & 0 & 1.00 & 9 & 23 & 0 & 104 & 0 \\
+title & IMAO & 0 & 1.00 & 57 & 144 & 0 & 6 & 0 \\
+title & melatonergic agonist & 0 & 1.00 & 132 & 132 & 0 & 1 & 0 \\
+title & multimodal & 0 & 1.00 & 132 & 132 & 0 & 1 & 0 \\
+title & NDRA & 0 & 1.00 & 47 & 47 & 0 & 1 & 0 \\
+title & NDRI & 0 & 1.00 & 73 & 167 & 0 & 5 & 0 \\
+title & NRI & 0 & 1.00 & 85 & 167 & 0 & 3 & 0 \\
+title & SNRI & 0 & 1.00 & 62 & 175 & 0 & 18 & 0 \\
+title & SSRI & 0 & 1.00 & 37 & 254 & 0 & 97 & 0 \\
+title & teca & 0 & 1.00 & 90 & 128 & 0 & 5 & 0 \\
+title & tricyclic & 0 & 1.00 & 49 & 178 & 0 & 104 & 0 \\
+language & IMAO & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & melatonergic agonist & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & multimodal & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & NDRA & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & NDRI & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & NRI & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & SNRI & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & SSRI & 0 & 1.00 & 7 & 7 & 0 & 3 & 0 \\
+language & teca & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+language & tricyclic & 0 & 1.00 & 7 & 7 & 0 & 2 & 0 \\
+source & IMAO & 0 & 1.00 & 7 & 9 & 0 & 7 & 0 \\
+source & melatonergic agonist & 0 & 1.00 & 7 & 7 & 0 & 1 & 0 \\
+source & multimodal & 0 & 1.00 & 9 & 9 & 0 & 2 & 0 \\
+source & NDRA & 0 & 1.00 & 6 & 6 & 0 & 1 & 0 \\
+source & NDRI & 0 & 1.00 & 7 & 9 & 0 & 6 & 0 \\
+source & NRI & 0 & 1.00 & 6 & 9 & 0 & 3 & 0 \\
+source & SNRI & 0 & 1.00 & 6 & 9 & 0 & 16 & 0 \\
+source & SSRI & 0 & 1.00 & 6 & 9 & 0 & 35 & 0 \\
+source & teca & 0 & 1.00 & 6 & 9 & 0 & 7 & 0 \\
+source & tricyclic & 0 & 1.00 & 6 & 9 & 0 & 30 & 0 \\
+outcome & IMAO & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & melatonergic agonist & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & multimodal & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & NDRA & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & NDRI & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & NRI & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & SNRI & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & SSRI & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & teca & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+outcome & tricyclic & 0 & 1.00 & 19 & 19 & 0 & 1 & 0 \\
+treemore\_arms & IMAO & 10 & 0.23 & 3 & 3 & 0 & 1 & 0 \\
+treemore\_arms & melatonergic agonist & 0 & 1.00 & 3 & 3 & 0 & 1 & 0 \\
+treemore\_arms & multimodal & 0 & 1.00 & 3 & 3 & 0 & 1 & 0 \\
+treemore\_arms & NDRA & 1 & 0.00 & NA & NA & 0 & 0 & 0 \\
+treemore\_arms & NDRI & 9 & 0.36 & 4 & 4 & 0 & 2 & 0 \\
+treemore\_arms & NRI & 3 & 0.25 & 3 & 3 & 0 & 1 & 0 \\
+treemore\_arms & SNRI & 31 & 0.31 & 3 & 3 & 0 & 1 & 0 \\
+treemore\_arms & SSRI & 171 & 0.22 & 3 & 28 & 0 & 6 & 0 \\
+treemore\_arms & teca & 18 & 0.00 & NA & NA & 0 & 0 & 0 \\
+treemore\_arms & tricyclic & 186 & 0.23 & 3 & 24 & 0 & 5 & 0 \\
+ctr\_n\_ext & IMAO & 0 & 1.00 & 1 & 6 & 0 & 5 & 0 \\
+ctr\_n\_ext & melatonergic agonist & 0 & 1.00 & 1 & 1 & 0 & 1 & 0 \\
+ctr\_n\_ext & multimodal & 0 & 1.00 & 7 & 7 & 0 & 2 & 0 \\
+ctr\_n\_ext & NDRA & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+ctr\_n\_ext & NDRI & 0 & 1.00 & 1 & 6 & 0 & 5 & 0 \\
+ctr\_n\_ext & NRI & 0 & 1.00 & 1 & 2 & 0 & 3 & 0 \\
+ctr\_n\_ext & SNRI & 0 & 1.00 & 1 & 7 & 0 & 12 & 0 \\
+ctr\_n\_ext & SSRI & 0 & 1.00 & 1 & 7 & 0 & 27 & 0 \\
+ctr\_n\_ext & teca & 0 & 1.00 & 1 & 6 & 0 & 3 & 0 \\
+ctr\_n\_ext & tricyclic & 0 & 1.00 & 1 & 7 & 0 & 39 & 0 \\
+atd\_se & IMAO & 0 & 1.00 & 17 & 18 & 0 & 12 & 0 \\
+atd\_se & melatonergic agonist & 0 & 1.00 & 18 & 18 & 0 & 2 & 0 \\
+atd\_se & multimodal & 0 & 1.00 & 17 & 18 & 0 & 4 & 0 \\
+atd\_se & NDRA & 0 & 1.00 & 18 & 18 & 0 & 1 & 0 \\
+atd\_se & NDRI & 0 & 1.00 & 17 & 18 & 0 & 14 & 0 \\
+atd\_se & NRI & 0 & 1.00 & 4 & 18 & 0 & 4 & 0 \\
+atd\_se & SNRI & 0 & 1.00 & 4 & 19 & 0 & 43 & 0 \\
+atd\_se & SSRI & 1 & 1.00 & 1 & 19 & 0 & 201 & 0 \\
+atd\_se & teca & 0 & 1.00 & 2 & 18 & 0 & 16 & 0 \\
+atd\_se & tricyclic & 2 & 0.99 & 1 & 19 & 0 & 221 & 0 \\
+atd\_n\_ext & IMAO & 0 & 1.00 & 1 & 6 & 0 & 5 & 0 \\
+atd\_n\_ext & melatonergic agonist & 0 & 1.00 & 1 & 1 & 0 & 1 & 0 \\
+atd\_n\_ext & multimodal & 0 & 1.00 & 7 & 7 & 0 & 2 & 0 \\
+atd\_n\_ext & NDRA & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+atd\_n\_ext & NDRI & 0 & 1.00 & 1 & 6 & 0 & 5 & 0 \\
+atd\_n\_ext & NRI & 0 & 1.00 & 1 & 2 & 0 & 3 & 0 \\
+atd\_n\_ext & SNRI & 0 & 1.00 & 1 & 7 & 0 & 13 & 0 \\
+atd\_n\_ext & SSRI & 0 & 1.00 & 1 & 7 & 0 & 24 & 0 \\
+atd\_n\_ext & teca & 0 & 1.00 & 1 & 6 & 0 & 3 & 0 \\
+atd\_n\_ext & tricyclic & 0 & 1.00 & 1 & 7 & 0 & 39 & 0 \\
+obs\_design & IMAO & 13 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & melatonergic agonist & 2 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & multimodal & 4 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & NDRA & 1 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & NDRI & 14 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & NRI & 4 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & SNRI & 45 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & SSRI & 219 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & teca & 18 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_design & tricyclic & 241 & 0.00 & 9 & 9 & 0 & 1 & 0 \\
+model\_phenotype & IMAO & 0 & 1.00 & 2 & 11 & 0 & 2 & 0 \\
+model\_phenotype & melatonergic agonist & 0 & 1.00 & 2 & 25 & 0 & 2 &
+0 \\
+model\_phenotype & multimodal & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+model\_phenotype & NDRA & 0 & 1.00 & 22 & 22 & 0 & 1 & 0 \\
+model\_phenotype & NDRI & 0 & 1.00 & 2 & 34 & 0 & 3 & 0 \\
+model\_phenotype & NRI & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+model\_phenotype & SNRI & 0 & 1.00 & 2 & 32 & 0 & 7 & 0 \\
+model\_phenotype & SSRI & 0 & 1.00 & 2 & 61 & 0 & 28 & 0 \\
+model\_phenotype & teca & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+model\_phenotype & tricyclic & 0 & 1.00 & 2 & 45 & 0 & 18 & 0 \\
+cage\_measures & IMAO & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+cage\_measures & melatonergic agonist & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+cage\_measures & multimodal & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+cage\_measures & NDRA & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+cage\_measures & NDRI & 0 & 1.00 & 2 & 8 & 0 & 3 & 0 \\
+cage\_measures & NRI & 0 & 1.00 & 2 & 8 & 0 & 2 & 0 \\
+cage\_measures & SNRI & 0 & 1.00 & 2 & 9 & 0 & 4 & 0 \\
+cage\_measures & SSRI & 0 & 1.00 & 2 & 10 & 0 & 17 & 0 \\
+cage\_measures & teca & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+cage\_measures & tricyclic & 0 & 1.00 & 2 & 10 & 0 & 9 & 0 \\
+animals\_percage & IMAO & 0 & 1.00 & 1 & 2 & 0 & 4 & 0 \\
+animals\_percage & melatonergic agonist & 0 & 1.00 & 2 & 2 & 0 & 1 &
+0 \\
+animals\_percage & multimodal & 0 & 1.00 & 1 & 1 & 0 & 1 & 0 \\
+animals\_percage & NDRA & 0 & 1.00 & 1 & 1 & 0 & 1 & 0 \\
+animals\_percage & NDRI & 0 & 1.00 & 2 & 3 & 0 & 3 & 0 \\
+animals\_percage & NRI & 0 & 1.00 & 1 & 2 & 0 & 3 & 0 \\
+animals\_percage & SNRI & 0 & 1.00 & 1 & 2 & 0 & 6 & 0 \\
+animals\_percage & SSRI & 0 & 1.00 & 1 & 4 & 0 & 18 & 0 \\
+animals\_percage & teca & 0 & 1.00 & 1 & 3 & 0 & 3 & 0 \\
+animals\_percage & tricyclic & 0 & 1.00 & 1 & 3 & 0 & 20 & 0 \\
+bioterium\_lightcycle & IMAO & 0 & 1.00 & 2 & 12 & 0 & 3 & 0 \\
+bioterium\_lightcycle & melatonergic agonist & 0 & 1.00 & 5 & 5 & 0 & 1
+& 0 \\
+bioterium\_lightcycle & multimodal & 0 & 1.00 & 12 & 12 & 0 & 1 & 0 \\
+bioterium\_lightcycle & NDRA & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+bioterium\_lightcycle & NDRI & 0 & 1.00 & 5 & 12 & 0 & 2 & 0 \\
+bioterium\_lightcycle & NRI & 0 & 1.00 & 12 & 12 & 0 & 1 & 0 \\
+bioterium\_lightcycle & SNRI & 0 & 1.00 & 2 & 12 & 0 & 3 & 0 \\
+bioterium\_lightcycle & SSRI & 0 & 1.00 & 2 & 13 & 0 & 6 & 0 \\
+bioterium\_lightcycle & teca & 0 & 1.00 & 5 & 12 & 0 & 2 & 0 \\
+bioterium\_lightcycle & tricyclic & 0 & 1.00 & 2 & 13 & 0 & 5 & 0 \\
+others\_tests & IMAO & 0 & 1.00 & 2 & 35 & 0 & 4 & 0 \\
+others\_tests & melatonergic agonist & 0 & 1.00 & 34 & 34 & 0 & 1 & 0 \\
+others\_tests & multimodal & 0 & 1.00 & 21 & 29 & 0 & 2 & 0 \\
+others\_tests & NDRA & 0 & 1.00 & 2 & 2 & 0 & 1 & 0 \\
+others\_tests & NDRI & 0 & 1.00 & 2 & 30 & 0 & 3 & 0 \\
+others\_tests & NRI & 0 & 1.00 & 2 & 2 & 0 & 2 & 0 \\
+others\_tests & SNRI & 0 & 1.00 & 2 & 61 & 0 & 6 & 0 \\
+others\_tests & SSRI & 0 & 1.00 & 2 & 80 & 0 & 26 & 0 \\
+others\_tests & teca & 0 & 1.00 & 2 & 2 & 0 & 2 & 0 \\
+others\_tests & tricyclic & 0 & 1.00 & 2 & 80 & 0 & 14 & 0 \\
+obs\_quali & IMAO & 13 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & melatonergic agonist & 2 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & multimodal & 4 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & NDRA & 1 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & NDRI & 14 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & NRI & 4 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & SNRI & 45 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & SSRI & 219 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & teca & 18 & 0.00 & NA & NA & 0 & 0 & 0 \\
+obs\_quali & tricyclic & 241 & 0.00 & 50 & 50 & 0 & 1 & 0 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: Date}
+
+\begin{longtable}[]{@{}llrrlllr@{}}
+\toprule
+skim\_variable & atd\_class & n\_missing & complete\_rate & min & max &
+median & n\_unique \\
+\midrule
+\endhead
+year & IMAO & 0 & 1 & 2005-01-01 & 2016-01-01 & 2008-01-01 & 5 \\
+year & melatonergic agonist & 0 & 1 & 2014-01-01 & 2014-01-01 &
+2014-01-01 & 1 \\
+year & multimodal & 0 & 1 & 2017-01-01 & 2017-01-01 & 2017-01-01 & 1 \\
+year & NDRA & 0 & 1 & 1986-01-01 & 1986-01-01 & 1986-01-01 & 1 \\
+year & NDRI & 0 & 1 & 2008-01-01 & 2015-01-01 & 2010-01-01 & 4 \\
+year & NRI & 0 & 1 & 1996-01-01 & 2015-01-01 & 2004-01-01 & 3 \\
+year & SNRI & 0 & 1 & 2000-01-01 & 2017-01-01 & 2012-01-01 & 9 \\
+year & SSRI & 0 & 1 & 2001-01-01 & 2017-01-01 & 2011-01-01 & 16 \\
+year & teca & 0 & 1 & 1989-01-01 & 2010-01-01 & 1999-07-03 & 4 \\
+year & tricyclic & 0 & 1 & 1986-01-01 & 2017-01-01 & 2007-01-01 & 27 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: factor}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.16}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.18}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.09}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.12}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.07}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.08}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.31}}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+atd\_class
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ordered
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_unique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+top\_counts
+\end{minipage} \\
+\midrule
+\endhead
+country & IMAO & 0 & 1 & FALSE & 6 & Jap: 6, Bra: 2, Pol: 2, Chi: 1 \\
+country & melatonergic agonist & 0 & 1 & FALSE & 1 & Fra: 2, Aus: 0,
+Ban: 0, Bra: 0 \\
+country & multimodal & 0 & 1 & FALSE & 1 & USA: 4, Aus: 0, Ban: 0, Bra:
+0 \\
+country & NDRA & 0 & 1 & FALSE & 1 & Can: 1, Aus: 0, Ban: 0, Bra: 0 \\
+country & NDRI & 0 & 1 & FALSE & 4 & Jap: 7, Fra: 3, Ind: 3, Pol: 1 \\
+country & NRI & 0 & 1 & FALSE & 3 & Spa: 2, Mal: 1, Pol: 1, Aus: 0 \\
+country & SNRI & 0 & 1 & FALSE & 9 & Ind: 16, Chi: 6, Spa: 6, USA: 5 \\
+country & SSRI & 0 & 1 & FALSE & 32 & Chi: 31, Jap: 30, Ind: 27, Bra:
+21 \\
+country & teca & 0 & 1 & FALSE & 2 & Jap: 13, Fra: 5, Aus: 0, Ban: 0 \\
+country & tricyclic & 0 & 1 & FALSE & 27 & Jap: 54, Ind: 35, Bra: 22,
+Ita: 16 \\
+measure\_unit & IMAO & 0 & 1 & FALSE & 1 & sec: 13, \%: 0, cou: 0 \\
+measure\_unit & melatonergic agonist & 0 & 1 & FALSE & 1 & sec: 2, \%:
+0, cou: 0 \\
+measure\_unit & multimodal & 0 & 1 & FALSE & 1 & \%: 4, cou: 0, sec:
+0 \\
+measure\_unit & NDRA & 0 & 1 & FALSE & 1 & sec: 1, \%: 0, cou: 0 \\
+measure\_unit & NDRI & 0 & 1 & FALSE & 1 & sec: 14, \%: 0, cou: 0 \\
+measure\_unit & NRI & 0 & 1 & FALSE & 1 & sec: 4, \%: 0, cou: 0 \\
+measure\_unit & SNRI & 0 & 1 & FALSE & 2 & sec: 40, \%: 5, cou: 0 \\
+measure\_unit & SSRI & 0 & 1 & FALSE & 3 & sec: 177, cou: 22, \%: 20 \\
+measure\_unit & teca & 0 & 1 & FALSE & 1 & sec: 18, \%: 0, cou: 0 \\
+measure\_unit & tricyclic & 0 & 1 & FALSE & 3 & sec: 220, \%: 17, cou:
+5 \\
+species & IMAO & 0 & 1 & FALSE & 2 & mic: 10, rat: 3 \\
+species & melatonergic agonist & 0 & 1 & FALSE & 1 & rat: 2, mic: 0 \\
+species & multimodal & 0 & 1 & FALSE & 1 & mic: 4, rat: 0 \\
+species & NDRA & 0 & 1 & FALSE & 1 & mic: 1, rat: 0 \\
+species & NDRI & 0 & 1 & FALSE & 2 & mic: 12, rat: 2 \\
+species & NRI & 0 & 1 & FALSE & 1 & mic: 4, rat: 0 \\
+species & SNRI & 0 & 1 & FALSE & 2 & mic: 24, rat: 21 \\
+species & SSRI & 0 & 1 & FALSE & 2 & mic: 129, rat: 90 \\
+species & teca & 0 & 1 & FALSE & 2 & mic: 9, rat: 9 \\
+species & tricyclic & 0 & 1 & FALSE & 2 & mic: 135, rat: 107 \\
+strain & IMAO & 0 & 1 & FALSE & 5 & ddY: 6, wis: 3, swi: 2, kun: 1 \\
+strain & melatonergic agonist & 0 & 1 & FALSE & 1 & spr: 2, 129: 0, B6S:
+0, B6S: 0 \\
+strain & multimodal & 0 & 1 & FALSE & 1 & C57: 4, 129: 0, B6S: 0, B6S:
+0 \\
+strain & NDRA & 0 & 1 & FALSE & 1 & CD-: 1, 129: 0, B6S: 0, B6S: 0 \\
+strain & NDRI & 0 & 1 & FALSE & 4 & CD-: 6, lac: 3, OF1: 3, wis: 2 \\
+strain & NRI & 0 & 1 & FALSE & 2 & swi: 3, CD-: 1, 129: 0, B6S: 0 \\
+strain & SNRI & 0 & 1 & FALSE & 10 & wis: 12, CD-: 9, swi: 9, lac: 3 \\
+strain & SSRI & 0 & 1 & FALSE & 17 & wis: 58, swi: 53, CD-: 34, spr:
+24 \\
+strain & teca & 0 & 1 & FALSE & 4 & wis: 9, OF1: 5, CD-: 3, ddY: 1 \\
+strain & tricyclic & 0 & 1 & FALSE & 20 & wis: 62, swi: 53, CD-: 27,
+spr: 26 \\
+sex & IMAO & 0 & 1 & FALSE & 1 & M: 13, F: 0, M a: 0, NA: 0 \\
+sex & melatonergic agonist & 0 & 1 & FALSE & 1 & F: 2, M: 0, M a: 0, NA:
+0 \\
+sex & multimodal & 0 & 1 & FALSE & 1 & F: 4, M: 0, M a: 0, NA: 0 \\
+sex & NDRA & 0 & 1 & FALSE & 1 & M: 1, F: 0, M a: 0, NA: 0 \\
+sex & NDRI & 0 & 1 & FALSE & 1 & M: 14, F: 0, M a: 0, NA: 0 \\
+sex & NRI & 0 & 1 & FALSE & 2 & M: 2, M a: 2, F: 0, NA: 0 \\
+sex & SNRI & 0 & 1 & FALSE & 4 & M: 31, NA: 6, M a: 5, F: 3 \\
+sex & SSRI & 0 & 1 & FALSE & 4 & M: 149, F: 42, M a: 14, NA: 14 \\
+sex & teca & 0 & 1 & FALSE & 1 & M: 18, F: 0, M a: 0, NA: 0 \\
+sex & tricyclic & 0 & 1 & FALSE & 4 & M: 193, F: 26, M a: 15, NA: 8 \\
+comparator & IMAO & 0 & 1 & FALSE & 1 & veh: 13 \\
+comparator & melatonergic agonist & 0 & 1 & FALSE & 1 & veh: 2 \\
+comparator & multimodal & 0 & 1 & FALSE & 1 & veh: 4 \\
+comparator & NDRA & 0 & 1 & FALSE & 1 & veh: 1 \\
+comparator & NDRI & 0 & 1 & FALSE & 1 & veh: 14 \\
+comparator & NRI & 0 & 1 & FALSE & 1 & veh: 4 \\
+comparator & SNRI & 0 & 1 & FALSE & 1 & veh: 45 \\
+comparator & SSRI & 0 & 1 & FALSE & 1 & veh: 219 \\
+comparator & teca & 0 & 1 & FALSE & 1 & veh: 18 \\
+comparator & tricyclic & 0 & 1 & FALSE & 1 & veh: 242 \\
+atd\_type & IMAO & 0 & 1 & FALSE & 3 & sel: 9, moc: 3, tra: 1, ago: 0 \\
+atd\_type & melatonergic agonist & 0 & 1 & FALSE & 1 & ago: 2, ami: 0,
+ami: 0, amo: 0 \\
+atd\_type & multimodal & 0 & 1 & FALSE & 2 & vil: 2, vor: 2, ago: 0,
+ami: 0 \\
+atd\_type & NDRA & 0 & 1 & FALSE & 1 & amp: 1, ago: 0, ami: 0, ami: 0 \\
+atd\_type & NDRI & 0 & 1 & FALSE & 1 & bup: 14, ago: 0, ami: 0, ami:
+0 \\
+atd\_type & NRI & 0 & 1 & FALSE & 2 & reb: 2, vil: 2, ago: 0, ami: 0 \\
+atd\_type & SNRI & 0 & 1 & FALSE & 7 & ven: 29, des: 3, dul: 3, reb:
+3 \\
+atd\_type & SSRI & 0 & 1 & FALSE & 7 & flu: 127, par: 35, esc: 19, ser:
+13 \\
+atd\_type & teca & 0 & 1 & FALSE & 3 & mia: 10, map: 5, amo: 3, ago:
+0 \\
+atd\_type & tricyclic & 0 & 1 & FALSE & 6 & imi: 143, des: 50, ami: 25,
+clo: 14 \\
+treatment\_via & IMAO & 0 & 1 & FALSE & 4 & sub: 6, IP: 5, gav: 1, int:
+1 \\
+treatment\_via & melatonergic agonist & 0 & 1 & FALSE & 1 & IP: 2, gav:
+0, int: 0, mic: 0 \\
+treatment\_via & multimodal & 0 & 1 & FALSE & 1 & ora: 4, gav: 0, int:
+0, IP: 0 \\
+treatment\_via & NDRA & 0 & 1 & FALSE & 1 & IP: 1, gav: 0, int: 0, mic:
+0 \\
+treatment\_via & NDRI & 0 & 1 & FALSE & 1 & IP: 14, gav: 0, int: 0, mic:
+0 \\
+treatment\_via & NRI & 0 & 1 & FALSE & 2 & ora: 3, IP: 1, gav: 0, int:
+0 \\
+treatment\_via & SNRI & 0 & 1 & FALSE & 6 & IP: 23, ora: 13, gav: 5,
+int: 2 \\
+treatment\_via & SSRI & 0 & 1 & FALSE & 8 & IP: 110, ora: 50, gav: 28,
+sub: 20 \\
+treatment\_via & teca & 0 & 1 & FALSE & 3 & IP: 11, ora: 6, sub: 1, gav:
+0 \\
+treatment\_via & tricyclic & 0 & 1 & FALSE & 6 & IP: 175, ora: 41, sub:
+12, gav: 9 \\
+fst\_protocol & IMAO & 0 & 1 & FALSE & 5 & tes: 8, pre: 2, pre: 1, pre:
+1 \\
+fst\_protocol & melatonergic agonist & 0 & 1 & FALSE & 1 & pre: 2, NA:
+0, pre: 0, pre: 0 \\
+fst\_protocol & multimodal & 0 & 1 & FALSE & 1 & tes: 4, NA: 0, pre: 0,
+pre: 0 \\
+fst\_protocol & NDRA & 0 & 1 & FALSE & 1 & pre: 1, NA: 0, pre: 0, pre:
+0 \\
+fst\_protocol & NDRI & 0 & 1 & FALSE & 4 & tes: 8, pre: 3, pre: 2, tes:
+1 \\
+fst\_protocol & NRI & 0 & 1 & FALSE & 2 & tes: 3, pre: 1, NA: 0, pre:
+0 \\
+fst\_protocol & SNRI & 0 & 1 & FALSE & 8 & pre: 17, tes: 12, pre: 6,
+tes: 3 \\
+fst\_protocol & SSRI & 0 & 1 & FALSE & 20 & pre: 74, tes: 52, tes: 40,
+pre: 12 \\
+fst\_protocol & teca & 0 & 1 & FALSE & 3 & pre: 9, tes: 5, tes: 4, NA:
+0 \\
+fst\_protocol & tricyclic & 0 & 1 & FALSE & 20 & pre: 92, tes: 51, tes:
+27, tes: 19 \\
+measurement\_method & IMAO & 0 & 1 & FALSE & 4 & vid: 6, NA: 5, man: 1,
+man: 1 \\
+measurement\_method & melatonergic agonist & 0 & 1 & FALSE & 1 & vid: 2,
+man: 0, man: 0, man: 0 \\
+measurement\_method & multimodal & 0 & 1 & FALSE & 1 & man: 4, man: 0,
+man: 0, vid: 0 \\
+measurement\_method & NDRA & 0 & 1 & FALSE & 1 & NA: 1, man: 0, man: 0,
+man: 0 \\
+measurement\_method & NDRI & 0 & 1 & FALSE & 4 & vid: 7, man: 3, vid: 3,
+NA: 1 \\
+measurement\_method & NRI & 0 & 1 & FALSE & 1 & NA: 4, man: 0, man: 0,
+man: 0 \\
+measurement\_method & SNRI & 0 & 1 & FALSE & 3 & NA: 25, vid: 15, man:
+5, man: 0 \\
+measurement\_method & SSRI & 0 & 1 & FALSE & 9 & NA: 116, vid: 35, vid:
+27, man: 14 \\
+measurement\_method & teca & 0 & 1 & FALSE & 1 & NA: 18, man: 0, man: 0,
+man: 0 \\
+measurement\_method & tricyclic & 0 & 1 & FALSE & 12 & NA: 129, vid: 42,
+man: 28, vid: 15 \\
+rob1 & IMAO & 0 & 1 & FALSE & 1 & Unc: 13, No: 0, Yes: 0 \\
+rob1 & melatonergic agonist & 0 & 1 & FALSE & 1 & Unc: 2, No: 0, Yes:
+0 \\
+rob1 & multimodal & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob1 & NDRA & 0 & 1 & FALSE & 1 & Unc: 1, No: 0, Yes: 0 \\
+rob1 & NDRI & 0 & 1 & FALSE & 1 & Unc: 14, No: 0, Yes: 0 \\
+rob1 & NRI & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob1 & SNRI & 0 & 1 & FALSE & 2 & Unc: 44, No: 1, Yes: 0 \\
+rob1 & SSRI & 0 & 1 & FALSE & 2 & Unc: 217, No: 2, Yes: 0 \\
+rob1 & teca & 0 & 1 & FALSE & 1 & Unc: 18, No: 0, Yes: 0 \\
+rob1 & tricyclic & 0 & 1 & FALSE & 2 & Unc: 239, Yes: 3, No: 0 \\
+rob2 & IMAO & 0 & 1 & FALSE & 1 & Yes: 13, Unc: 0 \\
+rob2 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, Unc: 0 \\
+rob2 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, Unc: 0 \\
+rob2 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, Unc: 0 \\
+rob2 & NDRI & 0 & 1 & FALSE & 1 & Yes: 14, Unc: 0 \\
+rob2 & NRI & 0 & 1 & FALSE & 1 & Yes: 4, Unc: 0 \\
+rob2 & SNRI & 0 & 1 & FALSE & 1 & Yes: 45, Unc: 0 \\
+rob2 & SSRI & 0 & 1 & FALSE & 2 & Yes: 217, Unc: 2 \\
+rob2 & teca & 0 & 1 & FALSE & 1 & Yes: 18, Unc: 0 \\
+rob2 & tricyclic & 0 & 1 & FALSE & 1 & Yes: 242, Unc: 0 \\
+rob3 & IMAO & 0 & 1 & FALSE & 1 & Unc: 13, No: 0, Yes: 0 \\
+rob3 & melatonergic agonist & 0 & 1 & FALSE & 1 & Unc: 2, No: 0, Yes:
+0 \\
+rob3 & multimodal & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob3 & NDRA & 0 & 1 & FALSE & 1 & Unc: 1, No: 0, Yes: 0 \\
+rob3 & NDRI & 0 & 1 & FALSE & 1 & Unc: 14, No: 0, Yes: 0 \\
+rob3 & NRI & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob3 & SNRI & 0 & 1 & FALSE & 1 & Unc: 45, No: 0, Yes: 0 \\
+rob3 & SSRI & 0 & 1 & FALSE & 2 & Unc: 217, No: 2, Yes: 0 \\
+rob3 & teca & 0 & 1 & FALSE & 1 & Unc: 18, No: 0, Yes: 0 \\
+rob3 & tricyclic & 0 & 1 & FALSE & 3 & Unc: 235, No: 6, Yes: 1 \\
+rob4 & IMAO & 0 & 1 & FALSE & 1 & Unc: 13, No: 0, Yes: 0 \\
+rob4 & melatonergic agonist & 0 & 1 & FALSE & 1 & Unc: 2, No: 0, Yes:
+0 \\
+rob4 & multimodal & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob4 & NDRA & 0 & 1 & FALSE & 1 & Unc: 1, No: 0, Yes: 0 \\
+rob4 & NDRI & 0 & 1 & FALSE & 1 & Unc: 14, No: 0, Yes: 0 \\
+rob4 & NRI & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob4 & SNRI & 0 & 1 & FALSE & 1 & Unc: 45, No: 0, Yes: 0 \\
+rob4 & SSRI & 0 & 1 & FALSE & 3 & Unc: 214, No: 4, Yes: 1 \\
+rob4 & teca & 0 & 1 & FALSE & 1 & Unc: 18, No: 0, Yes: 0 \\
+rob4 & tricyclic & 0 & 1 & FALSE & 3 & Unc: 240, No: 1, Yes: 1 \\
+rob5 & IMAO & 0 & 1 & FALSE & 1 & Unc: 13, No: 0, Yes: 0 \\
+rob5 & melatonergic agonist & 0 & 1 & FALSE & 1 & Unc: 2, No: 0, Yes:
+0 \\
+rob5 & multimodal & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob5 & NDRA & 0 & 1 & FALSE & 1 & Unc: 1, No: 0, Yes: 0 \\
+rob5 & NDRI & 0 & 1 & FALSE & 1 & Unc: 14, No: 0, Yes: 0 \\
+rob5 & NRI & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob5 & SNRI & 0 & 1 & FALSE & 2 & Unc: 41, Yes: 4, No: 0 \\
+rob5 & SSRI & 0 & 1 & FALSE & 3 & Unc: 210, Yes: 6, No: 3 \\
+rob5 & teca & 0 & 1 & FALSE & 2 & Unc: 13, Yes: 5, No: 0 \\
+rob5 & tricyclic & 0 & 1 & FALSE & 3 & Unc: 227, Yes: 10, No: 5 \\
+rob6 & IMAO & 0 & 1 & FALSE & 1 & Unc: 13, Yes: 0 \\
+rob6 & melatonergic agonist & 0 & 1 & FALSE & 1 & Unc: 2, Yes: 0 \\
+rob6 & multimodal & 0 & 1 & FALSE & 1 & Unc: 4, Yes: 0 \\
+rob6 & NDRA & 0 & 1 & FALSE & 1 & Unc: 1, Yes: 0 \\
+rob6 & NDRI & 0 & 1 & FALSE & 1 & Unc: 14, Yes: 0 \\
+rob6 & NRI & 0 & 1 & FALSE & 1 & Unc: 4, Yes: 0 \\
+rob6 & SNRI & 0 & 1 & FALSE & 1 & Unc: 45, Yes: 0 \\
+rob6 & SSRI & 0 & 1 & FALSE & 2 & Unc: 217, Yes: 2 \\
+rob6 & teca & 0 & 1 & FALSE & 1 & Unc: 18, Yes: 0 \\
+rob6 & tricyclic & 0 & 1 & FALSE & 1 & Unc: 242, Yes: 0 \\
+rob7 & IMAO & 0 & 1 & FALSE & 2 & Unc: 10, Yes: 3 \\
+rob7 & melatonergic agonist & 0 & 1 & FALSE & 1 & Unc: 2, Yes: 0 \\
+rob7 & multimodal & 0 & 1 & FALSE & 1 & Unc: 4, Yes: 0 \\
+rob7 & NDRA & 0 & 1 & FALSE & 1 & Unc: 1, Yes: 0 \\
+rob7 & NDRI & 0 & 1 & FALSE & 2 & Unc: 8, Yes: 6 \\
+rob7 & NRI & 0 & 1 & FALSE & 2 & Unc: 2, Yes: 2 \\
+rob7 & SNRI & 0 & 1 & FALSE & 2 & Unc: 31, Yes: 14 \\
+rob7 & SSRI & 0 & 1 & FALSE & 2 & Unc: 128, Yes: 91 \\
+rob7 & teca & 0 & 1 & FALSE & 1 & Unc: 18, Yes: 0 \\
+rob7 & tricyclic & 0 & 1 & FALSE & 2 & Unc: 168, Yes: 74 \\
+rob8 & IMAO & 0 & 1 & FALSE & 2 & Yes: 9, Unc: 4, No: 0 \\
+rob8 & melatonergic agonist & 0 & 1 & FALSE & 1 & No: 2, Unc: 0, Yes:
+0 \\
+rob8 & multimodal & 0 & 1 & FALSE & 1 & Unc: 4, No: 0, Yes: 0 \\
+rob8 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, No: 0, Unc: 0 \\
+rob8 & NDRI & 0 & 1 & FALSE & 2 & Unc: 11, Yes: 3, No: 0 \\
+rob8 & NRI & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+rob8 & SNRI & 0 & 1 & FALSE & 3 & Unc: 23, Yes: 19, No: 3 \\
+rob8 & SSRI & 0 & 1 & FALSE & 3 & Yes: 141, Unc: 70, No: 8 \\
+rob8 & teca & 0 & 1 & FALSE & 2 & Yes: 15, Unc: 3, No: 0 \\
+rob8 & tricyclic & 0 & 1 & FALSE & 3 & Yes: 130, Unc: 107, No: 5 \\
+rob9 & IMAO & 0 & 1 & FALSE & 1 & Yes: 13, No: 0, Unc: 0 \\
+rob9 & melatonergic agonist & 0 & 1 & FALSE & 1 & No: 2, Unc: 0, Yes:
+0 \\
+rob9 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+rob9 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, No: 0, Unc: 0 \\
+rob9 & NDRI & 0 & 1 & FALSE & 1 & Yes: 14, No: 0, Unc: 0 \\
+rob9 & NRI & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+rob9 & SNRI & 0 & 1 & FALSE & 2 & Yes: 42, No: 3, Unc: 0 \\
+rob9 & SSRI & 0 & 1 & FALSE & 3 & Yes: 208, Unc: 8, No: 3 \\
+rob9 & teca & 0 & 1 & FALSE & 1 & Yes: 18, No: 0, Unc: 0 \\
+rob9 & tricyclic & 0 & 1 & FALSE & 3 & Yes: 231, No: 7, Unc: 4 \\
+rob10 & IMAO & 0 & 1 & FALSE & 1 & Yes: 13, No: 0 \\
+rob10 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0 \\
+rob10 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0 \\
+rob10 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, No: 0 \\
+rob10 & NDRI & 0 & 1 & FALSE & 1 & Yes: 14, No: 0 \\
+rob10 & NRI & 0 & 1 & FALSE & 1 & Yes: 4, No: 0 \\
+rob10 & SNRI & 0 & 1 & FALSE & 1 & Yes: 45, No: 0 \\
+rob10 & SSRI & 0 & 1 & FALSE & 2 & Yes: 218, No: 1 \\
+rob10 & teca & 0 & 1 & FALSE & 1 & Yes: 18, No: 0 \\
+rob10 & tricyclic & 0 & 1 & FALSE & 2 & Yes: 238, No: 4 \\
+camarades1 & IMAO & 0 & 1 & FALSE & 2 & Yes: 12, No: 1, Unc: 0 \\
+camarades1 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0,
+Unc: 0 \\
+camarades1 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+camarades1 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, No: 0, Unc: 0 \\
+camarades1 & NDRI & 0 & 1 & FALSE & 2 & Yes: 11, No: 3, Unc: 0 \\
+camarades1 & NRI & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+camarades1 & SNRI & 0 & 1 & FALSE & 3 & Yes: 39, No: 3, Unc: 3 \\
+camarades1 & SSRI & 0 & 1 & FALSE & 3 & Yes: 210, Unc: 5, No: 4 \\
+camarades1 & teca & 0 & 1 & FALSE & 1 & Yes: 18, No: 0, Unc: 0 \\
+camarades1 & tricyclic & 0 & 1 & FALSE & 3 & Yes: 230, No: 6, Unc: 6 \\
+camarades2 & IMAO & 0 & 1 & FALSE & 2 & Yes: 12, Unc: 1, Yes: 0 \\
+camarades2 & melatonergic agonist & 0 & 1 & FALSE & 1 & Unc: 2, Yes: 0,
+Yes: 0 \\
+camarades2 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, Unc: 0, Yes: 0 \\
+camarades2 & NDRA & 0 & 1 & FALSE & 1 & Unc: 1, Yes: 0, Yes: 0 \\
+camarades2 & NDRI & 0 & 1 & FALSE & 2 & Yes: 11, Unc: 3, Yes: 0 \\
+camarades2 & NRI & 0 & 1 & FALSE & 2 & Unc: 3, Yes: 1, Yes: 0 \\
+camarades2 & SNRI & 0 & 1 & FALSE & 2 & Unc: 30, Yes: 15, Yes: 0 \\
+camarades2 & SSRI & 0 & 1 & FALSE & 2 & Unc: 148, Yes: 71, Yes: 0 \\
+camarades2 & teca & 0 & 1 & FALSE & 2 & Unc: 15, Yes: 3, Yes: 0 \\
+camarades2 & tricyclic & 0 & 1 & FALSE & 3 & Unc: 151, Yes: 86, Yes:
+5 \\
+camarades3 & IMAO & 0 & 1 & FALSE & 1 & Yes: 13, No: 0 \\
+camarades3 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0 \\
+camarades3 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0 \\
+camarades3 & NDRA & 0 & 1 & FALSE & 1 & No: 1, Yes: 0 \\
+camarades3 & NDRI & 0 & 1 & FALSE & 1 & Yes: 14, No: 0 \\
+camarades3 & NRI & 0 & 1 & FALSE & 2 & No: 2, Yes: 2 \\
+camarades3 & SNRI & 0 & 1 & FALSE & 2 & Yes: 38, No: 7 \\
+camarades3 & SSRI & 0 & 1 & FALSE & 2 & Yes: 191, No: 28 \\
+camarades3 & teca & 0 & 1 & FALSE & 2 & No: 15, Yes: 3 \\
+camarades3 & tricyclic & 0 & 1 & FALSE & 2 & Yes: 173, No: 69 \\
+camarades4 & IMAO & 0 & 1 & FALSE & 2 & No: 7, Yes: 6 \\
+camarades4 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0 \\
+camarades4 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0 \\
+camarades4 & NDRA & 0 & 1 & FALSE & 1 & No: 1, Yes: 0 \\
+camarades4 & NDRI & 0 & 1 & FALSE & 1 & No: 14, Yes: 0 \\
+camarades4 & NRI & 0 & 1 & FALSE & 1 & No: 4, Yes: 0 \\
+camarades4 & SNRI & 0 & 1 & FALSE & 2 & No: 27, Yes: 18 \\
+camarades4 & SSRI & 0 & 1 & FALSE & 2 & No: 137, Yes: 82 \\
+camarades4 & teca & 0 & 1 & FALSE & 1 & No: 18, Yes: 0 \\
+camarades4 & tricyclic & 0 & 1 & FALSE & 2 & No: 203, Yes: 39 \\
+camarades5 & IMAO & 0 & 1 & FALSE & 2 & Yes: 12, Unc: 1, No: 0 \\
+camarades5 & melatonergic agonist & 0 & 1 & FALSE & 1 & Unc: 2, No: 0,
+Yes: 0 \\
+camarades5 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+camarades5 & NDRA & 0 & 1 & FALSE & 1 & No: 1, Unc: 0, Yes: 0 \\
+camarades5 & NDRI & 0 & 1 & FALSE & 1 & Yes: 14, No: 0, Unc: 0 \\
+camarades5 & NRI & 0 & 1 & FALSE & 2 & Yes: 3, Unc: 1, No: 0 \\
+camarades5 & SNRI & 0 & 1 & FALSE & 3 & Yes: 32, Unc: 7, No: 6 \\
+camarades5 & SSRI & 0 & 1 & FALSE & 3 & Yes: 160, Unc: 49, No: 10 \\
+camarades5 & teca & 0 & 1 & FALSE & 2 & Yes: 10, Unc: 8, No: 0 \\
+camarades5 & tricyclic & 0 & 1 & FALSE & 3 & Yes: 153, Unc: 84, No: 5 \\
+camarades6 & IMAO & 0 & 1 & FALSE & 1 & Yes: 13, No: 0, Unc: 0 \\
+camarades6 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0,
+Unc: 0 \\
+camarades6 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+camarades6 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, No: 0, Unc: 0 \\
+camarades6 & NDRI & 0 & 1 & FALSE & 1 & Yes: 14, No: 0, Unc: 0 \\
+camarades6 & NRI & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+camarades6 & SNRI & 0 & 1 & FALSE & 2 & Yes: 43, No: 2, Unc: 0 \\
+camarades6 & SSRI & 0 & 1 & FALSE & 2 & Yes: 218, Unc: 1, No: 0 \\
+camarades6 & teca & 0 & 1 & FALSE & 1 & Yes: 18, No: 0, Unc: 0 \\
+camarades6 & tricyclic & 0 & 1 & FALSE & 2 & Yes: 238, No: 4, Unc: 0 \\
+camarades7 & IMAO & 0 & 1 & FALSE & 2 & No: 12, Yes: 1 \\
+camarades7 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0 \\
+camarades7 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0 \\
+camarades7 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, No: 0 \\
+camarades7 & NDRI & 0 & 1 & FALSE & 2 & No: 7, Yes: 7 \\
+camarades7 & NRI & 0 & 1 & FALSE & 2 & No: 3, Yes: 1 \\
+camarades7 & SNRI & 0 & 1 & FALSE & 2 & No: 25, Yes: 20 \\
+camarades7 & SSRI & 0 & 1 & FALSE & 2 & No: 148, Yes: 71 \\
+camarades7 & teca & 0 & 1 & FALSE & 1 & No: 18, Yes: 0 \\
+camarades7 & tricyclic & 0 & 1 & FALSE & 2 & No: 178, Yes: 64 \\
+camarades8 & IMAO & 0 & 1 & FALSE & 1 & Yes: 13, No: 0, Unc: 0 \\
+camarades8 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0,
+Unc: 0 \\
+camarades8 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+camarades8 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, No: 0, Unc: 0 \\
+camarades8 & NDRI & 0 & 1 & FALSE & 1 & Yes: 14, No: 0, Unc: 0 \\
+camarades8 & NRI & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+camarades8 & SNRI & 0 & 1 & FALSE & 2 & Yes: 42, No: 3, Unc: 0 \\
+camarades8 & SSRI & 0 & 1 & FALSE & 2 & Yes: 218, Unc: 1, No: 0 \\
+camarades8 & teca & 0 & 1 & FALSE & 1 & Yes: 18, No: 0, Unc: 0 \\
+camarades8 & tricyclic & 0 & 1 & FALSE & 2 & Yes: 237, No: 5, Unc: 0 \\
+camarades9 & IMAO & 0 & 1 & FALSE & 1 & Yes: 13, No: 0 \\
+camarades9 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0 \\
+camarades9 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0 \\
+camarades9 & NDRA & 0 & 1 & FALSE & 1 & Yes: 1, No: 0 \\
+camarades9 & NDRI & 0 & 1 & FALSE & 1 & Yes: 14, No: 0 \\
+camarades9 & NRI & 0 & 1 & FALSE & 1 & Yes: 4, No: 0 \\
+camarades9 & SNRI & 0 & 1 & FALSE & 2 & Yes: 39, No: 6 \\
+camarades9 & SSRI & 0 & 1 & FALSE & 2 & Yes: 205, No: 14 \\
+camarades9 & teca & 0 & 1 & FALSE & 1 & Yes: 18, No: 0 \\
+camarades9 & tricyclic & 0 & 1 & FALSE & 2 & Yes: 234, No: 8 \\
+camarades10 & IMAO & 0 & 1 & FALSE & 3 & No: 11, Unc: 1, Yes: 1 \\
+camarades10 & melatonergic agonist & 0 & 1 & FALSE & 1 & Yes: 2, No: 0,
+Unc: 0 \\
+camarades10 & multimodal & 0 & 1 & FALSE & 1 & Yes: 4, No: 0, Unc: 0 \\
+camarades10 & NDRA & 0 & 1 & FALSE & 1 & No: 1, Unc: 0, Yes: 0 \\
+camarades10 & NDRI & 0 & 1 & FALSE & 3 & Yes: 11, Unc: 2, No: 1 \\
+camarades10 & NRI & 0 & 1 & FALSE & 1 & No: 4, Unc: 0, Yes: 0 \\
+camarades10 & SNRI & 0 & 1 & FALSE & 3 & No: 25, Yes: 17, Unc: 3 \\
+camarades10 & SSRI & 0 & 1 & FALSE & 3 & No: 117, Yes: 94, Unc: 8 \\
+camarades10 & teca & 0 & 1 & FALSE & 1 & No: 18, Unc: 0, Yes: 0 \\
+camarades10 & tricyclic & 0 & 1 & FALSE & 3 & No: 130, Yes: 100, Unc:
+12 \\
+camarades11 & IMAO & 0 & 1 & FALSE & 1 & No: 13, Unc: 0 \\
+camarades11 & melatonergic agonist & 0 & 1 & FALSE & 1 & No: 2, Unc:
+0 \\
+camarades11 & multimodal & 0 & 1 & FALSE & 1 & No: 4, Unc: 0 \\
+camarades11 & NDRA & 0 & 1 & FALSE & 1 & No: 1, Unc: 0 \\
+camarades11 & NDRI & 0 & 1 & FALSE & 1 & No: 14, Unc: 0 \\
+camarades11 & NRI & 0 & 1 & FALSE & 1 & No: 4, Unc: 0 \\
+camarades11 & SNRI & 0 & 1 & FALSE & 1 & No: 45, Unc: 0 \\
+camarades11 & SSRI & 0 & 1 & FALSE & 2 & No: 218, Unc: 1 \\
+camarades11 & teca & 0 & 1 & FALSE & 1 & No: 18, Unc: 0 \\
+camarades11 & tricyclic & 0 & 1 & FALSE & 2 & No: 238, Unc: 4 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.12}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.14}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.06}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.09}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.05}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.05}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.05}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.05}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.05}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.05}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.05}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.27}}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+atd\_class
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+sd
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p0
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p25
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p75
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+hist
+\end{minipage} \\
+\midrule
+\endhead
+seq & IMAO & 0 & 1.00 & 4.23 & 4.53 & 1.00 & 1.00 & 2.00 & 6.00 & 17.00
+& ▇▂▁▁▁ \\
+seq & melatonergic agonist & 0 & 1.00 & 2.00 & 1.41 & 1.00 & 1.50 & 2.00
+& 2.50 & 3.00 & ▇▁▁▁▇ \\
+seq & multimodal & 0 & 1.00 & 1.50 & 0.58 & 1.00 & 1.00 & 1.50 & 2.00 &
+2.00 & ▇▁▁▁▇ \\
+seq & NDRA & 0 & 1.00 & 1.00 & NA & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 &
+▁▁▇▁▁ \\
+seq & NDRI & 0 & 1.00 & 6.57 & 3.92 & 1.00 & 3.25 & 5.50 & 9.75 & 13.00
+& ▇▆▃▃▆ \\
+seq & NRI & 0 & 1.00 & 2.25 & 1.26 & 1.00 & 1.75 & 2.00 & 2.50 & 4.00 &
+▃▇▁▁▃ \\
+seq & SNRI & 0 & 1.00 & 2.33 & 1.51 & 1.00 & 1.00 & 2.00 & 3.00 & 7.00 &
+▇▂▁▁▁ \\
+seq & SSRI & 0 & 1.00 & 3.28 & 3.20 & 1.00 & 1.00 & 2.00 & 4.00 & 15.00
+& ▇▂▁▁▁ \\
+seq & teca & 0 & 1.00 & 8.39 & 4.38 & 2.00 & 6.00 & 7.50 & 9.00 & 18.00
+& ▃▇▃▁▃ \\
+seq & tricyclic & 0 & 1.00 & 2.94 & 2.80 & 1.00 & 1.00 & 2.00 & 4.00 &
+16.00 & ▇▁▁▁▁ \\
+ctr\_mean & IMAO & 0 & 1.00 & 153.27 & 36.94 & 111.47 & 115.12 & 140.32
+& 188.52 & 221.57 & ▇▇▁▇▂ \\
+ctr\_mean & melatonergic agonist & 0 & 1.00 & 176.64 & 42.70 & 146.45 &
+161.54 & 176.64 & 191.74 & 206.83 & ▇▁▁▁▇ \\
+ctr\_mean & multimodal & 0 & 1.00 & 40.70 & 2.02 & 38.95 & 38.95 & 40.70
+& 42.45 & 42.45 & ▇▁▁▁▇ \\
+ctr\_mean & NDRA & 0 & 1.00 & 88.70 & NA & 88.70 & 88.70 & 88.70 & 88.70
+& 88.70 & ▁▁▇▁▁ \\
+ctr\_mean & NDRI & 0 & 1.00 & 219.81 & 38.87 & 164.80 & 179.63 & 228.45
+& 242.50 & 278.35 & ▇▁▆▇▆ \\
+ctr\_mean & NRI & 0 & 1.00 & 184.65 & 9.92 & 173.60 & 180.45 & 183.66 &
+187.86 & 197.66 & ▇▇▇▁▇ \\
+ctr\_mean & SNRI & 0 & 1.00 & 156.98 & 57.67 & 38.95 & 141.23 & 167.83 &
+184.83 & 248.33 & ▃▁▃▇▃ \\
+ctr\_mean & SSRI & 0 & 1.00 & 154.49 & 82.36 & 7.93 & 90.73 & 156.96 &
+209.30 & 447.92 & ▆▇▆▂▁ \\
+ctr\_mean & teca & 0 & 1.00 & 187.37 & 30.14 & 132.00 & 160.75 & 190.61
+& 209.79 & 229.90 & ▂▅▃▇▃ \\
+ctr\_mean & tricyclic & 0 & 1.00 & 166.16 & 67.91 & 7.22 & 112.84 &
+173.68 & 210.06 & 402.19 & ▂▅▇▁▁ \\
+ctr\_sd & IMAO & 0 & 1.00 & 44.81 & 21.51 & 14.39 & 26.67 & 62.03 &
+63.27 & 67.63 & ▃▃▁▁▇ \\
+ctr\_sd & melatonergic agonist & 0 & 1.00 & 50.20 & 20.00 & 36.06 &
+43.13 & 50.20 & 57.28 & 64.35 & ▇▁▁▁▇ \\
+ctr\_sd & multimodal & 0 & 1.00 & 22.21 & 1.17 & 21.20 & 21.20 & 22.21 &
+23.23 & 23.23 & ▇▁▁▁▇ \\
+ctr\_sd & NDRA & 0 & 1.00 & 75.89 & NA & 75.89 & 75.89 & 75.89 & 75.89 &
+75.89 & ▁▁▇▁▁ \\
+ctr\_sd & NDRI & 0 & 1.00 & 50.23 & 28.59 & 19.66 & 23.24 & 38.65 &
+66.91 & 92.32 & ▇▅▁▅▅ \\
+ctr\_sd & NRI & 0 & 1.00 & 17.34 & 8.07 & 10.63 & 10.76 & 15.81 & 22.39
+& 27.12 & ▇▁▁▃▃ \\
+ctr\_sd & SNRI & 0 & 1.00 & 30.07 & 18.03 & 6.64 & 14.80 & 24.11 & 48.07
+& 72.19 & ▇▆▂▆▁ \\
+ctr\_sd & SSRI & 0 & 1.00 & 28.64 & 27.09 & 1.65 & 11.07 & 21.71 & 37.14
+& 175.79 & ▇▂▁▁▁ \\
+ctr\_sd & teca & 0 & 1.00 & 30.07 & 12.65 & 18.41 & 19.37 & 26.64 &
+39.53 & 61.21 & ▇▃▂▂▁ \\
+ctr\_sd & tricyclic & 0 & 1.00 & 29.39 & 21.13 & 2.71 & 13.22 & 26.73 &
+38.83 & 140.79 & ▇▅▁▁▁ \\
+ctr\_se & IMAO & 0 & 1.00 & 13.13 & 4.78 & 5.46 & 10.89 & 15.51 & 15.82
+& 21.39 & ▃▁▂▇▁ \\
+ctr\_se & melatonergic agonist & 0 & 1.00 & 16.73 & 6.67 & 12.02 & 14.38
+& 16.73 & 19.09 & 21.45 & ▇▁▁▁▇ \\
+ctr\_se & multimodal & 0 & 1.00 & 4.31 & 0.50 & 3.87 & 3.87 & 4.31 &
+4.74 & 4.74 & ▇▁▁▁▇ \\
+ctr\_se & NDRA & 0 & 1.00 & 24.00 & NA & 24.00 & 24.00 & 24.00 & 24.00 &
+24.00 & ▁▁▇▁▁ \\
+ctr\_se & NDRI & 0 & 1.00 & 16.17 & 8.44 & 6.58 & 8.71 & 12.68 & 20.17 &
+29.19 & ▇▅▁▅▅ \\
+ctr\_se & NRI & 0 & 1.00 & 6.31 & 3.44 & 3.76 & 3.80 & 5.20 & 7.71 &
+11.07 & ▇▃▁▁▃ \\
+ctr\_se & SNRI & 0 & 1.00 & 10.25 & 6.84 & 2.71 & 4.94 & 8.03 & 15.33 &
+29.47 & ▇▂▂▂▁ \\
+ctr\_se & SSRI & 1 & 1.00 & 9.59 & 8.72 & 0.84 & 3.90 & 7.63 & 12.80 &
+55.59 & ▇▂▁▁▁ \\
+ctr\_se & teca & 0 & 1.00 & 9.82 & 4.50 & 5.82 & 6.13 & 8.42 & 12.50 &
+19.36 & ▇▃▁▂▂ \\
+ctr\_se & tricyclic & 4 & 0.98 & 9.47 & 6.97 & 0.86 & 4.20 & 8.19 &
+13.10 & 49.78 & ▇▃▁▁▁ \\
+ctr\_n\_round & IMAO & 0 & 1.00 & 11.38 & 4.77 & 5.00 & 6.00 & 10.00 &
+16.00 & 16.00 & ▅▁▃▁▇ \\
+ctr\_n\_round & melatonergic agonist & 0 & 1.00 & 9.00 & 0.00 & 9.00 &
+9.00 & 9.00 & 9.00 & 9.00 & ▁▁▇▁▁ \\
+ctr\_n\_round & multimodal & 0 & 1.00 & 27.00 & 3.46 & 24.00 & 24.00 &
+27.00 & 30.00 & 30.00 & ▇▁▁▁▇ \\
+ctr\_n\_round & NDRA & 0 & 1.00 & 10.00 & NA & 10.00 & 10.00 & 10.00 &
+10.00 & 10.00 & ▁▁▇▁▁ \\
+ctr\_n\_round & NDRI & 0 & 1.00 & 9.21 & 2.01 & 6.00 & 8.00 & 10.00 &
+11.00 & 11.00 & ▅▃▁▆▇ \\
+ctr\_n\_round & NRI & 0 & 1.00 & 8.00 & 1.63 & 6.00 & 7.50 & 8.00 & 8.50
+& 10.00 & ▃▁▇▁▃ \\
+ctr\_n\_round & SNRI & 0 & 1.00 & 9.62 & 4.93 & 4.00 & 6.00 & 10.00 &
+10.00 & 30.00 & ▇▆▂▁▁ \\
+ctr\_n\_round & SSRI & 0 & 1.00 & 9.05 & 3.44 & 1.00 & 8.00 & 8.00 &
+10.00 & 30.00 & ▂▇▁▁▁ \\
+ctr\_n\_round & teca & 0 & 1.00 & 9.72 & 1.18 & 5.00 & 10.00 & 10.00 &
+10.00 & 10.00 & ▁▁▁▁▇ \\
+ctr\_n\_round & tricyclic & 0 & 1.00 & 10.31 & 6.24 & 1.00 & 8.00 &
+10.00 & 10.75 & 50.00 & ▇▂▁▁▁ \\
+ctr\_n\_corr & IMAO & 0 & 1.00 & 5.08 & 1.66 & 4.00 & 4.00 & 5.00 & 5.00
+& 10.00 & ▇▂▁▁▁ \\
+ctr\_n\_corr & melatonergic agonist & 0 & 1.00 & 4.00 & 0.00 & 4.00 &
+4.00 & 4.00 & 4.00 & 4.00 & ▁▁▇▁▁ \\
+ctr\_n\_corr & multimodal & 0 & 1.00 & 6.50 & 0.58 & 6.00 & 6.00 & 6.50
+& 7.00 & 7.00 & ▇▁▁▁▇ \\
+ctr\_n\_corr & NDRA & 0 & 1.00 & 10.00 & NA & 10.00 & 10.00 & 10.00 &
+10.00 & 10.00 & ▁▁▇▁▁ \\
+ctr\_n\_corr & NDRI & 0 & 1.00 & 2.86 & 3.35 & 0.00 & 1.00 & 1.00 & 3.00
+& 10.00 & ▇▃▁▂▁ \\
+ctr\_n\_corr & NRI & 0 & 1.00 & 8.00 & 1.63 & 6.00 & 7.50 & 8.00 & 8.50
+& 10.00 & ▃▁▇▁▃ \\
+ctr\_n\_corr & SNRI & 0 & 1.00 & 3.96 & 3.36 & 0.00 & 2.00 & 3.00 & 5.00
+& 15.00 & ▇▂▁▁▁ \\
+ctr\_n\_corr & SSRI & 0 & 1.00 & 6.31 & 4.39 & 0.00 & 3.00 & 6.00 & 8.00
+& 28.00 & ▇▇▁▁▁ \\
+ctr\_n\_corr & teca & 0 & 1.00 & 5.06 & 3.19 & 3.00 & 3.00 & 3.00 & 8.75
+& 10.00 & ▇▁▁▁▃ \\
+ctr\_n\_corr & tricyclic & 0 & 1.00 & 5.91 & 4.48 & 1.00 & 3.00 & 5.00 &
+9.00 & 35.00 & ▇▃▁▁▁ \\
+n\_comparisons & IMAO & 0 & 1.00 & 2.54 & 1.45 & 1.00 & 1.00 & 2.00 &
+4.00 & 4.00 & ▇▂▁▁▇ \\
+n\_comparisons & melatonergic agonist & 0 & 1.00 & 2.00 & 0.00 & 2.00 &
+2.00 & 2.00 & 2.00 & 2.00 & ▁▁▇▁▁ \\
+n\_comparisons & multimodal & 0 & 1.00 & 4.00 & 0.00 & 4.00 & 4.00 &
+4.00 & 4.00 & 4.00 & ▁▁▇▁▁ \\
+n\_comparisons & NDRA & 0 & 1.00 & 1.00 & NA & 1.00 & 1.00 & 1.00 & 1.00
+& 1.00 & ▁▁▇▁▁ \\
+n\_comparisons & NDRI & 0 & 1.00 & 5.14 & 3.06 & 1.00 & 3.00 & 6.00 &
+7.00 & 9.00 & ▅▅▁▇▅ \\
+n\_comparisons & NRI & 0 & 1.00 & 1.00 & 0.00 & 1.00 & 1.00 & 1.00 &
+1.00 & 1.00 & ▁▁▇▁▁ \\
+n\_comparisons & SNRI & 0 & 1.00 & 3.49 & 2.46 & 1.00 & 2.00 & 3.00 &
+4.00 & 9.00 & ▇▇▁▁▂ \\
+n\_comparisons & SSRI & 0 & 1.00 & 2.21 & 1.86 & 1.00 & 1.00 & 1.00 &
+3.00 & 9.00 & ▇▂▁▁▁ \\
+n\_comparisons & teca & 0 & 1.00 & 2.33 & 0.97 & 1.00 & 1.00 & 3.00 &
+3.00 & 3.00 & ▃▁▁▁▇ \\
+n\_comparisons & tricyclic & 0 & 1.00 & 2.53 & 1.82 & 1.00 & 1.00 & 2.00
+& 4.00 & 9.00 & ▇▃▁▁▁ \\
+atd\_mean & IMAO & 0 & 1.00 & 111.06 & 41.10 & 43.16 & 79.09 & 131.26 &
+137.01 & 163.09 & ▆▃▂▇▆ \\
+atd\_mean & melatonergic agonist & 0 & 1.00 & 163.73 & 30.91 & 141.87 &
+152.80 & 163.73 & 174.66 & 185.59 & ▇▁▁▁▇ \\
+atd\_mean & multimodal & 0 & 1.00 & 26.50 & 7.64 & 16.84 & 23.03 & 27.04
+& 30.51 & 35.09 & ▇▁▇▇▇ \\
+atd\_mean & NDRA & 0 & 1.00 & 165.70 & NA & 165.70 & 165.70 & 165.70 &
+165.70 & 165.70 & ▁▁▇▁▁ \\
+atd\_mean & NDRI & 0 & 1.00 & 141.39 & 76.37 & 6.00 & 88.63 & 173.85 &
+201.46 & 233.87 & ▅▂▃▅▇ \\
+atd\_mean & NRI & 0 & 1.00 & 147.46 & 7.26 & 139.66 & 144.07 & 146.52 &
+149.91 & 157.14 & ▇▇▇▁▇ \\
+atd\_mean & SNRI & 0 & 1.00 & 101.64 & 47.61 & 2.02 & 68.83 & 102.11 &
+139.70 & 188.26 & ▃▅▇▃▆ \\
+atd\_mean & SSRI & 0 & 1.00 & 108.15 & 73.54 & 4.96 & 46.71 & 92.79 &
+157.13 & 388.00 & ▇▆▃▁▁ \\
+atd\_mean & teca & 0 & 1.00 & 151.84 & 52.05 & 36.00 & 122.00 & 152.48 &
+196.77 & 215.49 & ▁▂▆▃▇ \\
+atd\_mean & tricyclic & 0 & 1.00 & 102.41 & 62.36 & 6.31 & 51.51 & 93.29
+& 144.26 & 308.60 & ▇▆▆▂▁ \\
+atd\_sd & IMAO & 0 & 1.00 & 41.44 & 17.92 & 9.66 & 24.12 & 49.68 & 52.64
+& 65.27 & ▂▆▃▇▆ \\
+atd\_sd & melatonergic agonist & 0 & 1.00 & 59.60 & 8.77 & 53.40 & 56.50
+& 59.60 & 62.70 & 65.80 & ▇▁▁▁▇ \\
+atd\_sd & multimodal & 0 & 1.00 & 23.56 & 1.74 & 21.52 & 22.95 & 23.48 &
+24.08 & 25.76 & ▃▁▇▁▃ \\
+atd\_sd & NDRA & 0 & 1.00 & 53.44 & NA & 53.44 & 53.44 & 53.44 & 53.44 &
+53.44 & ▁▁▇▁▁ \\
+atd\_sd & NDRI & 0 & 1.00 & 57.09 & 27.42 & 9.76 & 38.09 & 56.02 & 73.59
+& 104.91 & ▃▆▆▇▃ \\
+atd\_sd & NRI & 0 & 1.00 & 31.86 & 3.36 & 27.12 & 30.77 & 32.74 & 33.82
+& 34.84 & ▃▁▁▃▇ \\
+atd\_sd & SNRI & 0 & 1.00 & 28.51 & 18.72 & 1.70 & 13.17 & 25.79 & 39.58
+& 76.94 & ▇▇▇▂▂ \\
+atd\_sd & SSRI & 0 & 1.00 & 27.82 & 24.96 & 1.55 & 9.62 & 22.13 & 40.66
+& 183.85 & ▇▂▁▁▁ \\
+atd\_sd & teca & 0 & 1.00 & 43.99 & 15.01 & 23.05 & 31.61 & 43.27 &
+54.94 & 79.89 & ▇▇▃▂▁ \\
+atd\_sd & tricyclic & 0 & 1.00 & 34.11 & 42.79 & 0.73 & 12.81 & 29.00 &
+42.50 & 581.00 & ▇▁▁▁▁ \\
+atd\_n\_round & IMAO & 0 & 1.00 & 11.38 & 4.77 & 5.00 & 6.00 & 10.00 &
+16.00 & 16.00 & ▅▁▃▁▇ \\
+atd\_n\_round & melatonergic agonist & 0 & 1.00 & 9.00 & 0.00 & 9.00 &
+9.00 & 9.00 & 9.00 & 9.00 & ▁▁▇▁▁ \\
+atd\_n\_round & multimodal & 0 & 1.00 & 27.00 & 3.46 & 24.00 & 24.00 &
+27.00 & 30.00 & 30.00 & ▇▁▁▁▇ \\
+atd\_n\_round & NDRA & 0 & 1.00 & 10.00 & NA & 10.00 & 10.00 & 10.00 &
+10.00 & 10.00 & ▁▁▇▁▁ \\
+atd\_n\_round & NDRI & 0 & 1.00 & 9.21 & 2.01 & 6.00 & 8.00 & 10.00 &
+11.00 & 11.00 & ▅▃▁▆▇ \\
+atd\_n\_round & NRI & 0 & 1.00 & 8.00 & 1.63 & 6.00 & 7.50 & 8.00 & 8.50
+& 10.00 & ▃▁▇▁▃ \\
+atd\_n\_round & SNRI & 0 & 1.00 & 9.58 & 4.95 & 4.00 & 6.00 & 10.00 &
+10.00 & 30.00 & ▇▆▂▁▁ \\
+atd\_n\_round & SSRI & 0 & 1.00 & 8.86 & 2.93 & 3.00 & 8.00 & 8.00 &
+10.00 & 30.00 & ▇▅▁▁▁ \\
+atd\_n\_round & teca & 0 & 1.00 & 9.72 & 1.18 & 5.00 & 10.00 & 10.00 &
+10.00 & 10.00 & ▁▁▁▁▇ \\
+atd\_n\_round & tricyclic & 0 & 1.00 & 9.33 & 2.93 & 1.00 & 7.25 & 10.00
+& 10.00 & 20.00 & ▁▇▇▁▁ \\
+age & IMAO & 3 & 0.77 & 58.90 & 18.66 & 28.00 & 56.00 & 56.00 & 59.00 &
+105.00 & ▁▇▂▁▁ \\
+age & melatonergic agonist & 2 & 0.00 & NaN & NA & NA & NA & NA & NA &
+NA & \\
+age & multimodal & 0 & 1.00 & 330.00 & 0.00 & 330.00 & 330.00 & 330.00 &
+330.00 & 330.00 & ▁▁▇▁▁ \\
+age & NDRA & 0 & 1.00 & 80.00 & NA & 80.00 & 80.00 & 80.00 & 80.00 &
+80.00 & ▁▁▇▁▁ \\
+age & NDRI & 6 & 0.57 & 37.12 & 9.83 & 30.00 & 30.00 & 30.00 & 49.00 &
+49.00 & ▇▁▁▁▅ \\
+age & NRI & 4 & 0.00 & NaN & NA & NA & NA & NA & NA & NA & \\
+age & SNRI & 36 & 0.20 & 123.61 & 118.25 & 49.00 & 49.50 & 75.00 & 90.00
+& 330.00 & ▇▁▁▁▂ \\
+age & SSRI & 126 & 0.42 & 89.92 & 93.09 & 30.00 & 42.00 & 59.50 & 89.00
+& 585.00 & ▇▁▁▁▁ \\
+age & teca & 15 & 0.17 & 35.00 & 0.00 & 35.00 & 35.00 & 35.00 & 35.00 &
+35.00 & ▁▁▇▁▁ \\
+age & tricyclic & 158 & 0.35 & 82.67 & 76.60 & 30.00 & 51.88 & 58.00 &
+80.00 & 390.00 & ▇▁▁▁▁ \\
+weight & IMAO & 6 & 0.54 & 107.29 & 107.08 & 19.50 & 19.75 & 27.00 &
+220.00 & 225.00 & ▇▁▁▁▆ \\
+weight & melatonergic agonist & 0 & 1.00 & 250.00 & 0.00 & 250.00 &
+250.00 & 250.00 & 250.00 & 250.00 & ▁▁▇▁▁ \\
+weight & multimodal & 4 & 0.00 & NaN & NA & NA & NA & NA & NA & NA & \\
+weight & NDRA & 1 & 0.00 & NaN & NA & NA & NA & NA & NA & NA & \\
+weight & NDRI & 0 & 1.00 & 52.46 & 71.04 & 19.50 & 22.00 & 27.00 & 28.00
+& 220.00 & ▇▁▁▁▁ \\
+weight & NRI & 0 & 1.00 & 23.75 & 3.07 & 19.50 & 22.50 & 24.75 & 26.00 &
+26.00 & ▃▁▁▃▇ \\
+weight & SNRI & 8 & 0.82 & 109.12 & 102.81 & 19.50 & 27.00 & 30.00 &
+215.00 & 262.50 & ▇▁▁▂▃ \\
+weight & SSRI & 57 & 0.74 & 125.47 & 119.57 & 19.50 & 24.50 & 35.00 &
+230.00 & 560.00 & ▇▃▂▁▁ \\
+weight & teca & 3 & 0.83 & 147.97 & 106.28 & 27.00 & 27.50 & 175.00 &
+255.00 & 255.00 & ▇▁▁▃▇ \\
+weight & tricyclic & 50 & 0.79 & 128.52 & 109.90 & 18.00 & 27.00 & 93.25
+& 225.00 & 400.00 & ▇▁▃▂▁ \\
+bioterium\_temp & IMAO & 1 & 0.92 & 22.83 & 0.83 & 22.00 & 22.00 & 23.00
+& 23.00 & 25.00 & ▅▇▁▁▁ \\
+bioterium\_temp & melatonergic agonist & 2 & 0.00 & NaN & NA & NA & NA &
+NA & NA & NA & \\
+bioterium\_temp & multimodal & 4 & 0.00 & NaN & NA & NA & NA & NA & NA &
+NA & \\
+bioterium\_temp & NDRA & 1 & 0.00 & NaN & NA & NA & NA & NA & NA & NA
+& \\
+bioterium\_temp & NDRI & 0 & 1.00 & 22.79 & 1.25 & 22.00 & 22.00 & 22.00
+& 23.00 & 25.00 & ▇▂▁▁▂ \\
+bioterium\_temp & NRI & 1 & 0.75 & 22.00 & 0.00 & 22.00 & 22.00 & 22.00
+& 22.00 & 22.00 & ▁▁▇▁▁ \\
+bioterium\_temp & SNRI & 17 & 0.62 & 23.36 & 1.70 & 21.00 & 21.75 &
+23.00 & 25.00 & 25.00 & ▅▁▃▁▇ \\
+bioterium\_temp & SSRI & 59 & 0.73 & 22.43 & 1.33 & 20.00 & 22.00 &
+23.00 & 23.00 & 25.50 & ▅▆▇▁▂ \\
+bioterium\_temp & teca & 0 & 1.00 & 22.89 & 0.68 & 22.00 & 22.25 & 23.00
+& 23.00 & 24.00 & ▃▁▇▁▂ \\
+bioterium\_temp & tricyclic & 55 & 0.77 & 22.20 & 1.32 & 20.00 & 21.50 &
+22.00 & 23.00 & 25.00 & ▅▇▅▁▂ \\
+bioterium\_umid & IMAO & 5 & 0.62 & 57.19 & 4.11 & 55.00 & 55.00 & 55.00
+& 56.88 & 65.00 & ▇▁▁▁▁ \\
+bioterium\_umid & melatonergic agonist & 2 & 0.00 & NaN & NA & NA & NA &
+NA & NA & NA & \\
+bioterium\_umid & multimodal & 4 & 0.00 & NaN & NA & NA & NA & NA & NA &
+NA & \\
+bioterium\_umid & NDRA & 1 & 0.00 & NaN & NA & NA & NA & NA & NA & NA
+& \\
+bioterium\_umid & NDRI & 6 & 0.57 & 58.12 & 7.04 & 50.00 & 50.00 & 60.00
+& 65.00 & 65.00 & ▇▁▁▅▇ \\
+bioterium\_umid & NRI & 4 & 0.00 & NaN & NA & NA & NA & NA & NA & NA
+& \\
+bioterium\_umid & SNRI & 26 & 0.42 & 55.00 & 5.00 & 50.00 & 50.00 &
+55.00 & 55.00 & 65.00 & ▅▇▁▁▂ \\
+bioterium\_umid & SSRI & 147 & 0.33 & 54.85 & 6.59 & 35.00 & 50.00 &
+55.00 & 55.00 & 70.00 & ▁▁▇▁▂ \\
+bioterium\_umid & teca & 14 & 0.22 & 55.00 & 0.00 & 55.00 & 55.00 &
+55.00 & 55.00 & 55.00 & ▁▁▇▁▁ \\
+bioterium\_umid & tricyclic & 171 & 0.29 & 56.32 & 5.75 & 45.00 & 55.00
+& 55.00 & 60.00 & 67.00 & ▂▂▇▅▃ \\
+dose & IMAO & 0 & 1.00 & 14.85 & 26.11 & 1.00 & 3.00 & 10.00 & 10.00 &
+100.00 & ▇▁▁▁▁ \\
+dose & melatonergic agonist & 0 & 1.00 & 40.00 & 0.00 & 40.00 & 40.00 &
+40.00 & 40.00 & 40.00 & ▁▁▇▁▁ \\
+dose & multimodal & 4 & 0.00 & NaN & NA & NA & NA & NA & NA & NA & \\
+dose & NDRA & 0 & 1.00 & 5.00 & NA & 5.00 & 5.00 & 5.00 & 5.00 & 5.00 &
+▁▁▇▁▁ \\
+dose & NDRI & 0 & 1.00 & 12.46 & 9.94 & 2.00 & 6.25 & 10.00 & 17.50 &
+40.00 & ▅▇▃▁▁ \\
+dose & NRI & 0 & 1.00 & 37.50 & 42.52 & 5.00 & 16.25 & 22.50 & 43.75 &
+100.00 & ▇▃▁▁▃ \\
+dose & SNRI & 2 & 0.96 & 14.48 & 15.30 & 0.10 & 5.00 & 10.00 & 16.00 &
+70.00 & ▇▂▁▁▁ \\
+dose & SSRI & 7 & 0.97 & 13.79 & 12.96 & 0.10 & 5.00 & 10.00 & 20.00 &
+100.00 & ▇▁▁▁▁ \\
+dose & teca & 0 & 1.00 & 17.18 & 13.54 & 2.50 & 6.25 & 12.50 & 23.75 &
+50.00 & ▇▃▂▁▁ \\
+dose & tricyclic & 9 & 0.96 & 15.59 & 11.68 & 0.31 & 10.00 & 10.00 &
+20.00 & 100.00 & ▇▂▁▁▁ \\
+treatment\_duration & IMAO & 0 & 1.00 & 1.46 & 1.66 & 1.00 & 1.00 & 1.00
+& 1.00 & 7.00 & ▇▁▁▁▁ \\
+treatment\_duration & melatonergic agonist & 0 & 1.00 & 18.00 & 0.00 &
+18.00 & 18.00 & 18.00 & 18.00 & 18.00 & ▁▁▇▁▁ \\
+treatment\_duration & multimodal & 0 & 1.00 & 60.00 & 34.64 & 30.00 &
+30.00 & 60.00 & 90.00 & 90.00 & ▇▁▁▁▇ \\
+treatment\_duration & NDRA & 0 & 1.00 & 10.00 & NA & 10.00 & 10.00 &
+10.00 & 10.00 & 10.00 & ▁▁▇▁▁ \\
+treatment\_duration & NDRI & 0 & 1.00 & 2.86 & 4.72 & 1.00 & 1.00 & 1.00
+& 1.00 & 14.00 & ▇▁▁▁▁ \\
+treatment\_duration & NRI & 0 & 1.00 & 1.00 & 0.00 & 1.00 & 1.00 & 1.00
+& 1.00 & 1.00 & ▁▁▇▁▁ \\
+treatment\_duration & SNRI & 0 & 1.00 & 11.00 & 16.31 & 1.00 & 1.00 &
+1.00 & 16.00 & 90.00 & ▇▂▁▁▁ \\
+treatment\_duration & SSRI & 3 & 0.99 & 7.31 & 10.43 & 1.00 & 1.00 &
+1.00 & 14.00 & 90.00 & ▇▁▁▁▁ \\
+treatment\_duration & teca & 0 & 1.00 & 3.33 & 3.40 & 1.00 & 1.00 & 1.00
+& 8.00 & 8.00 & ▇▁▁▁▃ \\
+treatment\_duration & tricyclic & 9 & 0.96 & 5.54 & 12.03 & 1.00 & 1.00
+& 1.00 & 7.00 & 110.00 & ▇▁▁▁▁ \\
+treatment\_freq & IMAO & 0 & 1.00 & 1.62 & 0.87 & 1.00 & 1.00 & 1.00 &
+2.00 & 3.00 & ▇▁▂▁▃ \\
+treatment\_freq & melatonergic agonist & 0 & 1.00 & 1.00 & 0.00 & 1.00 &
+1.00 & 1.00 & 1.00 & 1.00 & ▁▁▇▁▁ \\
+treatment\_freq & multimodal & 0 & 1.00 & 1.00 & 0.00 & 1.00 & 1.00 &
+1.00 & 1.00 & 1.00 & ▁▁▇▁▁ \\
+treatment\_freq & NDRA & 0 & 1.00 & 2.00 & NA & 2.00 & 2.00 & 2.00 &
+2.00 & 2.00 & ▁▁▇▁▁ \\
+treatment\_freq & NDRI & 0 & 1.00 & 1.00 & 0.00 & 1.00 & 1.00 & 1.00 &
+1.00 & 1.00 & ▁▁▇▁▁ \\
+treatment\_freq & NRI & 0 & 1.00 & 1.00 & 0.00 & 1.00 & 1.00 & 1.00 &
+1.00 & 1.00 & ▁▁▇▁▁ \\
+treatment\_freq & SNRI & 0 & 1.00 & 1.13 & 0.50 & 1.00 & 1.00 & 1.00 &
+1.00 & 3.00 & ▇▁▁▁▁ \\
+treatment\_freq & SSRI & 5 & 0.98 & 1.19 & 0.57 & 1.00 & 1.00 & 1.00 &
+1.00 & 3.00 & ▇▁▁▁▁ \\
+treatment\_freq & teca & 0 & 1.00 & 1.17 & 0.38 & 1.00 & 1.00 & 1.00 &
+1.00 & 2.00 & ▇▁▁▁▂ \\
+treatment\_freq & tricyclic & 7 & 0.97 & 1.35 & 0.73 & 1.00 & 1.00 &
+1.00 & 1.00 & 3.00 & ▇▁▁▁▂ \\
+last\_bf\_outcome & IMAO & 1 & 0.92 & 0.83 & 0.25 & 0.50 & 0.50 & 1.00 &
+1.00 & 1.00 & ▃▁▁▁▇ \\
+last\_bf\_outcome & melatonergic agonist & 2 & 0.00 & NaN & NA & NA & NA
+& NA & NA & NA & \\
+last\_bf\_outcome & multimodal & 4 & 0.00 & NaN & NA & NA & NA & NA & NA
+& NA & \\
+last\_bf\_outcome & NDRA & 0 & 1.00 & 24.00 & NA & 24.00 & 24.00 & 24.00
+& 24.00 & 24.00 & ▁▁▇▁▁ \\
+last\_bf\_outcome & NDRI & 0 & 1.00 & 0.50 & 0.00 & 0.50 & 0.50 & 0.50 &
+0.50 & 0.50 & ▁▁▇▁▁ \\
+last\_bf\_outcome & NRI & 0 & 1.00 & 1.12 & 0.63 & 0.50 & 0.88 & 1.00 &
+1.25 & 2.00 & ▃▇▁▁▃ \\
+last\_bf\_outcome & SNRI & 9 & 0.80 & 2.04 & 5.41 & 0.50 & 0.50 & 0.75 &
+1.00 & 24.00 & ▇▁▁▁▁ \\
+last\_bf\_outcome & SSRI & 55 & 0.75 & 13.93 & 95.16 & 0.00 & 0.50 &
+1.00 & 1.00 & 864.00 & ▇▁▁▁▁ \\
+last\_bf\_outcome & teca & 0 & 1.00 & 0.89 & 0.21 & 0.50 & 1.00 & 1.00 &
+1.00 & 1.00 & ▂▁▁▁▇ \\
+last\_bf\_outcome & tricyclic & 22 & 0.91 & 7.70 & 65.30 & 0.17 & 0.50 &
+1.00 & 1.00 & 960.00 & ▇▁▁▁▁ \\
+cylinder\_height & IMAO & 3 & 0.77 & 40.60 & 13.63 & 20.00 & 30.00 &
+45.00 & 45.00 & 66.00 & ▃▁▇▁▁ \\
+cylinder\_height & melatonergic agonist & 0 & 1.00 & 59.00 & 0.00 &
+59.00 & 59.00 & 59.00 & 59.00 & 59.00 & ▁▁▇▁▁ \\
+cylinder\_height & multimodal & 4 & 0.00 & NaN & NA & NA & NA & NA & NA
+& NA & \\
+cylinder\_height & NDRA & 0 & 1.00 & 25.00 & NA & 25.00 & 25.00 & 25.00
+& 25.00 & 25.00 & ▁▁▇▁▁ \\
+cylinder\_height & NDRI & 0 & 1.00 & 27.21 & 5.70 & 20.00 & 24.00 &
+27.50 & 30.00 & 37.00 & ▅▆▇▁▃ \\
+cylinder\_height & NRI & 0 & 1.00 & 26.25 & 2.50 & 25.00 & 25.00 & 25.00
+& 26.25 & 30.00 & ▇▁▁▁▂ \\
+cylinder\_height & SNRI & 7 & 0.84 & 36.63 & 10.61 & 20.00 & 25.00 &
+40.00 & 45.00 & 50.00 & ▆▂▂▂▇ \\
+cylinder\_height & SSRI & 16 & 0.93 & 33.20 & 11.71 & 15.00 & 25.00 &
+30.00 & 40.00 & 80.00 & ▇▅▃▁▁ \\
+cylinder\_height & teca & 0 & 1.00 & 32.50 & 7.72 & 25.00 & 25.00 &
+32.50 & 40.00 & 40.00 & ▇▁▁▁▇ \\
+cylinder\_height & tricyclic & 20 & 0.92 & 34.16 & 13.33 & 11.00 & 25.00
+& 37.00 & 40.00 & 80.00 & ▃▆▇▁▁ \\
+cylinder\_diameter & IMAO & 1 & 0.92 & 17.75 & 10.61 & 10.00 & 12.25 &
+15.00 & 15.00 & 40.00 & ▇▁▁▁▂ \\
+cylinder\_diameter & melatonergic agonist & 0 & 1.00 & 25.00 & 0.00 &
+25.00 & 25.00 & 25.00 & 25.00 & 25.00 & ▁▁▇▁▁ \\
+cylinder\_diameter & multimodal & 0 & 1.00 & 20.00 & 0.00 & 20.00 &
+20.00 & 20.00 & 20.00 & 20.00 & ▁▁▇▁▁ \\
+cylinder\_diameter & NDRA & 0 & 1.00 & 18.50 & NA & 18.50 & 18.50 &
+18.50 & 18.50 & 18.50 & ▁▁▇▁▁ \\
+cylinder\_diameter & NDRI & 0 & 1.00 & 11.21 & 2.00 & 10.00 & 10.00 &
+10.00 & 12.00 & 15.50 & ▇▂▁▁▂ \\
+cylinder\_diameter & NRI & 0 & 1.00 & 13.12 & 6.25 & 10.00 & 10.00 &
+10.00 & 13.12 & 22.50 & ▇▁▁▁▂ \\
+cylinder\_diameter & SNRI & 5 & 0.89 & 17.00 & 5.31 & 10.00 & 10.00 &
+18.50 & 21.00 & 25.00 & ▇▂▃▇▃ \\
+cylinder\_diameter & SSRI & 12 & 0.95 & 16.76 & 6.89 & 10.00 & 10.00 &
+18.00 & 20.00 & 73.00 & ▇▁▁▁▁ \\
+cylinder\_diameter & teca & 0 & 1.00 & 14.28 & 4.20 & 10.00 & 10.00 &
+15.00 & 18.50 & 18.50 & ▇▁▁▁▇ \\
+cylinder\_diameter & tricyclic & 29 & 0.88 & 16.21 & 5.38 & 10.00 &
+10.00 & 18.00 & 19.00 & 30.00 & ▇▅▅▁▁ \\
+water\_depth & IMAO & 1 & 0.92 & 25.75 & 10.86 & 10.00 & 16.50 & 32.50 &
+35.00 & 35.00 & ▃▂▁▁▇ \\
+water\_depth & melatonergic agonist & 0 & 1.00 & 36.00 & 0.00 & 36.00 &
+36.00 & 36.00 & 36.00 & 36.00 & ▁▁▇▁▁ \\
+water\_depth & multimodal & 0 & 1.00 & 30.00 & 0.00 & 30.00 & 30.00 &
+30.00 & 30.00 & 30.00 & ▁▁▇▁▁ \\
+water\_depth & NDRA & 0 & 1.00 & 7.00 & NA & 7.00 & 7.00 & 7.00 & 7.00 &
+7.00 & ▁▁▇▁▁ \\
+water\_depth & NDRI & 0 & 1.00 & 16.50 & 3.88 & 10.00 & 12.75 & 17.50 &
+20.00 & 20.00 & ▅▁▃▁▇ \\
+water\_depth & NRI & 0 & 1.00 & 11.25 & 2.50 & 10.00 & 10.00 & 10.00 &
+11.25 & 15.00 & ▇▁▁▁▂ \\
+water\_depth & SNRI & 5 & 0.89 & 22.88 & 7.92 & 10.00 & 15.00 & 20.00 &
+30.00 & 35.00 & ▇▃▁▇▂ \\
+water\_depth & SSRI & 9 & 0.96 & 19.17 & 8.95 & 8.00 & 12.00 & 15.00 &
+25.00 & 50.00 & ▇▂▃▁▁ \\
+water\_depth & teca & 0 & 1.00 & 13.67 & 5.99 & 6.00 & 7.00 & 16.00 &
+20.00 & 20.00 & ▇▃▁▅▇ \\
+water\_depth & tricyclic & 16 & 0.93 & 17.63 & 7.56 & 6.00 & 15.00 &
+15.00 & 20.00 & 40.00 & ▃▇▂▁▁ \\
+water\_temperature & IMAO & 0 & 1.00 & 25.00 & 1.00 & 24.00 & 24.00 &
+25.00 & 25.00 & 27.00 & ▅▇▁▁▂ \\
+water\_temperature & melatonergic agonist & 0 & 1.00 & 25.00 & 0.00 &
+25.00 & 25.00 & 25.00 & 25.00 & 25.00 & ▁▁▇▁▁ \\
+water\_temperature & multimodal & 0 & 1.00 & 25.00 & 0.00 & 25.00 &
+25.00 & 25.00 & 25.00 & 25.00 & ▁▁▇▁▁ \\
+water\_temperature & NDRA & 0 & 1.00 & 30.00 & NA & 30.00 & 30.00 &
+30.00 & 30.00 & 30.00 & ▁▁▇▁▁ \\
+water\_temperature & NDRI & 0 & 1.00 & 24.29 & 0.83 & 23.00 & 24.00 &
+24.50 & 25.00 & 25.00 & ▃▁▅▁▇ \\
+water\_temperature & NRI & 1 & 0.75 & 23.00 & 0.87 & 22.50 & 22.50 &
+22.50 & 23.25 & 24.00 & ▇▁▁▁▃ \\
+water\_temperature & SNRI & 9 & 0.80 & 24.39 & 1.43 & 22.00 & 23.88 &
+24.00 & 25.00 & 27.50 & ▅▇▇▁▂ \\
+water\_temperature & SSRI & 12 & 0.95 & 24.94 & 1.60 & 21.00 & 24.00 &
+25.00 & 25.00 & 33.00 & ▁▇▁▁▁ \\
+water\_temperature & teca & 0 & 1.00 & 23.89 & 1.69 & 20.00 & 22.00 &
+25.00 & 25.00 & 25.50 & ▁▃▁▁▇ \\
+water\_temperature & tricyclic & 4 & 0.98 & 24.43 & 1.15 & 20.00 & 24.00
+& 25.00 & 25.00 & 30.00 & ▁▅▇▁▁ \\
+\bottomrule
+\end{longtable}
+
+Tabelas apenas com variáveis numéricas
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Geral}
+
+\NormalTok{tab\_numeric }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  skim }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{yank}\NormalTok{(}\StringTok{"numeric"}\NormalTok{)}
+
+
+\NormalTok{tab\_numeric }\OtherTok{\textless{}{-}}\NormalTok{ tab\_numeric }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{n =} \DecValTok{562} \SpecialCharTok{{-}}\NormalTok{ (n\_missing))}
+
+\NormalTok{tab\_numeric}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}lrrrrrrrrrlr@{}}
+\toprule
+skim\_variable & n\_missing & complete\_rate & mean & sd & p0 & p25 &
+p50 & p75 & p100 & hist & n \\
+\midrule
+\endhead
+seq & 0 & 1.00 & 3.30 & 3.20 & 1.00 & 1.00 & 2.00 & 4.00 & 18.00 & ▇▁▁▁▁
+& 562 \\
+ctr\_mean & 0 & 1.00 & 161.73 & 72.31 & 7.22 & 106.76 & 167.42 & 209.78
+& 447.92 & ▅▇▇▁▁ & 562 \\
+ctr\_sd & 0 & 1.00 & 30.07 & 23.67 & 1.65 & 13.22 & 24.11 & 39.76 &
+175.79 & ▇▃▁▁▁ & 562 \\
+ctr\_se & 5 & 0.99 & 9.84 & 7.70 & 0.84 & 4.20 & 8.02 & 13.38 & 55.59 &
+▇▃▁▁▁ & 557 \\
+ctr\_n\_round & 0 & 1.00 & 9.84 & 5.15 & 1.00 & 8.00 & 9.00 & 10.00 &
+50.00 & ▇▂▁▁▁ & 562 \\
+ctr\_n\_corr & 0 & 1.00 & 5.81 & 4.28 & 0.00 & 3.00 & 5.00 & 8.00 &
+35.00 & ▇▅▁▁▁ & 562 \\
+n\_comparisons & 0 & 1.00 & 2.53 & 1.96 & 1.00 & 1.00 & 2.00 & 3.00 &
+9.00 & ▇▃▁▁▁ & 562 \\
+atd\_mean & 0 & 1.00 & 107.45 & 66.24 & 2.02 & 53.12 & 98.26 & 149.53 &
+388.00 & ▇▇▃▁▁ & 562 \\
+atd\_sd & 0 & 1.00 & 32.30 & 33.52 & 0.73 & 12.67 & 27.59 & 42.92 &
+581.00 & ▇▁▁▁▁ & 562 \\
+atd\_n\_round & 0 & 1.00 & 9.34 & 3.47 & 1.00 & 8.00 & 8.00 & 10.00 &
+30.00 & ▂▇▁▁▁ & 562 \\
+age & 350 & 0.38 & 88.73 & 89.39 & 28.00 & 49.00 & 56.00 & 85.25 &
+585.00 & ▇▁▁▁▁ & 212 \\
+weight & 129 & 0.77 & 123.19 & 112.30 & 18.00 & 25.00 & 35.00 & 225.00 &
+560.00 & ▇▃▂▁▁ & 433 \\
+bioterium\_temp & 140 & 0.75 & 22.43 & 1.35 & 20.00 & 22.00 & 22.00 &
+23.00 & 25.50 & ▅▇▇▁▃ & 422 \\
+bioterium\_umid & 380 & 0.32 & 55.69 & 5.98 & 35.00 & 51.25 & 55.00 &
+60.00 & 70.00 & ▁▁▇▂▂ & 182 \\
+dose & 22 & 0.96 & 14.98 & 13.54 & 0.10 & 8.00 & 10.00 & 20.00 & 100.00
+& ▇▁▁▁▁ & 540 \\
+treatment\_duration & 12 & 0.98 & 6.86 & 12.56 & 1.00 & 1.00 & 1.00 &
+8.00 & 110.00 & ▇▁▁▁▁ & 550 \\
+treatment\_freq & 12 & 0.98 & 1.26 & 0.64 & 1.00 & 1.00 & 1.00 & 1.00 &
+3.00 & ▇▁▁▁▁ & 550 \\
+last\_bf\_outcome & 93 & 0.83 & 8.77 & 71.92 & 0.00 & 0.50 & 1.00 & 1.00
+& 960.00 & ▇▁▁▁▁ & 469 \\
+cylinder\_height & 50 & 0.91 & 33.86 & 12.30 & 11.00 & 25.00 & 30.00 &
+40.00 & 80.00 & ▃▇▇▁▁ & 512 \\
+cylinder\_diameter & 47 & 0.92 & 16.37 & 6.16 & 10.00 & 10.00 & 18.00 &
+20.00 & 73.00 & ▇▁▁▁▁ & 515 \\
+water\_depth & 31 & 0.94 & 18.74 & 8.44 & 6.00 & 12.25 & 15.00 & 20.00 &
+50.00 & ▅▇▂▁▁ & 531 \\
+water\_temperature & 26 & 0.95 & 24.62 & 1.41 & 20.00 & 24.00 & 25.00 &
+25.00 & 33.00 & ▁▇▁▁▁ & 536 \\
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ratos}
+
+
+\NormalTok{tab\_numeric\_rat }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(species }\SpecialCharTok{==} \StringTok{"rat"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  skim }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{yank}\NormalTok{(}\StringTok{"numeric"}\NormalTok{)}
+
+\NormalTok{tab\_numeric\_rat }\OtherTok{\textless{}{-}}\NormalTok{ tab\_numeric }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{n =} \DecValTok{234} \SpecialCharTok{{-}}\NormalTok{ (n\_missing))}
+
+\NormalTok{tab\_numeric\_rat}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}lrrrrrrrrrlr@{}}
+\toprule
+skim\_variable & n\_missing & complete\_rate & mean & sd & p0 & p25 &
+p50 & p75 & p100 & hist & n \\
+\midrule
+\endhead
+seq & 0 & 1.00 & 3.30 & 3.20 & 1.00 & 1.00 & 2.00 & 4.00 & 18.00 & ▇▁▁▁▁
+& 234 \\
+ctr\_mean & 0 & 1.00 & 161.73 & 72.31 & 7.22 & 106.76 & 167.42 & 209.78
+& 447.92 & ▅▇▇▁▁ & 234 \\
+ctr\_sd & 0 & 1.00 & 30.07 & 23.67 & 1.65 & 13.22 & 24.11 & 39.76 &
+175.79 & ▇▃▁▁▁ & 234 \\
+ctr\_se & 5 & 0.99 & 9.84 & 7.70 & 0.84 & 4.20 & 8.02 & 13.38 & 55.59 &
+▇▃▁▁▁ & 229 \\
+ctr\_n\_round & 0 & 1.00 & 9.84 & 5.15 & 1.00 & 8.00 & 9.00 & 10.00 &
+50.00 & ▇▂▁▁▁ & 234 \\
+ctr\_n\_corr & 0 & 1.00 & 5.81 & 4.28 & 0.00 & 3.00 & 5.00 & 8.00 &
+35.00 & ▇▅▁▁▁ & 234 \\
+n\_comparisons & 0 & 1.00 & 2.53 & 1.96 & 1.00 & 1.00 & 2.00 & 3.00 &
+9.00 & ▇▃▁▁▁ & 234 \\
+atd\_mean & 0 & 1.00 & 107.45 & 66.24 & 2.02 & 53.12 & 98.26 & 149.53 &
+388.00 & ▇▇▃▁▁ & 234 \\
+atd\_sd & 0 & 1.00 & 32.30 & 33.52 & 0.73 & 12.67 & 27.59 & 42.92 &
+581.00 & ▇▁▁▁▁ & 234 \\
+atd\_n\_round & 0 & 1.00 & 9.34 & 3.47 & 1.00 & 8.00 & 8.00 & 10.00 &
+30.00 & ▂▇▁▁▁ & 234 \\
+age & 350 & 0.38 & 88.73 & 89.39 & 28.00 & 49.00 & 56.00 & 85.25 &
+585.00 & ▇▁▁▁▁ & -116 \\
+weight & 129 & 0.77 & 123.19 & 112.30 & 18.00 & 25.00 & 35.00 & 225.00 &
+560.00 & ▇▃▂▁▁ & 105 \\
+bioterium\_temp & 140 & 0.75 & 22.43 & 1.35 & 20.00 & 22.00 & 22.00 &
+23.00 & 25.50 & ▅▇▇▁▃ & 94 \\
+bioterium\_umid & 380 & 0.32 & 55.69 & 5.98 & 35.00 & 51.25 & 55.00 &
+60.00 & 70.00 & ▁▁▇▂▂ & -146 \\
+dose & 22 & 0.96 & 14.98 & 13.54 & 0.10 & 8.00 & 10.00 & 20.00 & 100.00
+& ▇▁▁▁▁ & 212 \\
+treatment\_duration & 12 & 0.98 & 6.86 & 12.56 & 1.00 & 1.00 & 1.00 &
+8.00 & 110.00 & ▇▁▁▁▁ & 222 \\
+treatment\_freq & 12 & 0.98 & 1.26 & 0.64 & 1.00 & 1.00 & 1.00 & 1.00 &
+3.00 & ▇▁▁▁▁ & 222 \\
+last\_bf\_outcome & 93 & 0.83 & 8.77 & 71.92 & 0.00 & 0.50 & 1.00 & 1.00
+& 960.00 & ▇▁▁▁▁ & 141 \\
+cylinder\_height & 50 & 0.91 & 33.86 & 12.30 & 11.00 & 25.00 & 30.00 &
+40.00 & 80.00 & ▃▇▇▁▁ & 184 \\
+cylinder\_diameter & 47 & 0.92 & 16.37 & 6.16 & 10.00 & 10.00 & 18.00 &
+20.00 & 73.00 & ▇▁▁▁▁ & 187 \\
+water\_depth & 31 & 0.94 & 18.74 & 8.44 & 6.00 & 12.25 & 15.00 & 20.00 &
+50.00 & ▅▇▂▁▁ & 203 \\
+water\_temperature & 26 & 0.95 & 24.62 & 1.41 & 20.00 & 24.00 & 25.00 &
+25.00 & 33.00 & ▁▇▁▁▁ & 208 \\
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Camundongos}
+
+
+\NormalTok{tab\_numeric\_mice }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(species }\SpecialCharTok{==} \StringTok{"mice"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  skim }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{yank}\NormalTok{(}\StringTok{"numeric"}\NormalTok{)}
+
+\NormalTok{tab\_numeric\_mice }\OtherTok{\textless{}{-}}\NormalTok{ tab\_numeric }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{n =} \DecValTok{328} \SpecialCharTok{{-}}\NormalTok{ (n\_missing))}
+
+\NormalTok{tab\_numeric\_mice}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}lrrrrrrrrrlr@{}}
+\toprule
+skim\_variable & n\_missing & complete\_rate & mean & sd & p0 & p25 &
+p50 & p75 & p100 & hist & n \\
+\midrule
+\endhead
+seq & 0 & 1.00 & 3.30 & 3.20 & 1.00 & 1.00 & 2.00 & 4.00 & 18.00 & ▇▁▁▁▁
+& 328 \\
+ctr\_mean & 0 & 1.00 & 161.73 & 72.31 & 7.22 & 106.76 & 167.42 & 209.78
+& 447.92 & ▅▇▇▁▁ & 328 \\
+ctr\_sd & 0 & 1.00 & 30.07 & 23.67 & 1.65 & 13.22 & 24.11 & 39.76 &
+175.79 & ▇▃▁▁▁ & 328 \\
+ctr\_se & 5 & 0.99 & 9.84 & 7.70 & 0.84 & 4.20 & 8.02 & 13.38 & 55.59 &
+▇▃▁▁▁ & 323 \\
+ctr\_n\_round & 0 & 1.00 & 9.84 & 5.15 & 1.00 & 8.00 & 9.00 & 10.00 &
+50.00 & ▇▂▁▁▁ & 328 \\
+ctr\_n\_corr & 0 & 1.00 & 5.81 & 4.28 & 0.00 & 3.00 & 5.00 & 8.00 &
+35.00 & ▇▅▁▁▁ & 328 \\
+n\_comparisons & 0 & 1.00 & 2.53 & 1.96 & 1.00 & 1.00 & 2.00 & 3.00 &
+9.00 & ▇▃▁▁▁ & 328 \\
+atd\_mean & 0 & 1.00 & 107.45 & 66.24 & 2.02 & 53.12 & 98.26 & 149.53 &
+388.00 & ▇▇▃▁▁ & 328 \\
+atd\_sd & 0 & 1.00 & 32.30 & 33.52 & 0.73 & 12.67 & 27.59 & 42.92 &
+581.00 & ▇▁▁▁▁ & 328 \\
+atd\_n\_round & 0 & 1.00 & 9.34 & 3.47 & 1.00 & 8.00 & 8.00 & 10.00 &
+30.00 & ▂▇▁▁▁ & 328 \\
+age & 350 & 0.38 & 88.73 & 89.39 & 28.00 & 49.00 & 56.00 & 85.25 &
+585.00 & ▇▁▁▁▁ & -22 \\
+weight & 129 & 0.77 & 123.19 & 112.30 & 18.00 & 25.00 & 35.00 & 225.00 &
+560.00 & ▇▃▂▁▁ & 199 \\
+bioterium\_temp & 140 & 0.75 & 22.43 & 1.35 & 20.00 & 22.00 & 22.00 &
+23.00 & 25.50 & ▅▇▇▁▃ & 188 \\
+bioterium\_umid & 380 & 0.32 & 55.69 & 5.98 & 35.00 & 51.25 & 55.00 &
+60.00 & 70.00 & ▁▁▇▂▂ & -52 \\
+dose & 22 & 0.96 & 14.98 & 13.54 & 0.10 & 8.00 & 10.00 & 20.00 & 100.00
+& ▇▁▁▁▁ & 306 \\
+treatment\_duration & 12 & 0.98 & 6.86 & 12.56 & 1.00 & 1.00 & 1.00 &
+8.00 & 110.00 & ▇▁▁▁▁ & 316 \\
+treatment\_freq & 12 & 0.98 & 1.26 & 0.64 & 1.00 & 1.00 & 1.00 & 1.00 &
+3.00 & ▇▁▁▁▁ & 316 \\
+last\_bf\_outcome & 93 & 0.83 & 8.77 & 71.92 & 0.00 & 0.50 & 1.00 & 1.00
+& 960.00 & ▇▁▁▁▁ & 235 \\
+cylinder\_height & 50 & 0.91 & 33.86 & 12.30 & 11.00 & 25.00 & 30.00 &
+40.00 & 80.00 & ▃▇▇▁▁ & 278 \\
+cylinder\_diameter & 47 & 0.92 & 16.37 & 6.16 & 10.00 & 10.00 & 18.00 &
+20.00 & 73.00 & ▇▁▁▁▁ & 281 \\
+water\_depth & 31 & 0.94 & 18.74 & 8.44 & 6.00 & 12.25 & 15.00 & 20.00 &
+50.00 & ▅▇▂▁▁ & 297 \\
+water\_temperature & 26 & 0.95 & 24.62 & 1.41 & 20.00 & 24.00 & 25.00 &
+25.00 & 33.00 & ▁▇▁▁▁ & 302 \\
+\bottomrule
+\end{longtable}
+
+```
+
+\end{document}

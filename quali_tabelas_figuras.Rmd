@@ -1,0 +1,101 @@
+---
+title: "quali_tabelas_e_figuras"
+author: "Tamires"
+date: "12/01/2022"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r include=FALSE}
+
+library(tidyverse)
+library(skimr)
+library(extrafont)
+library(summarytools)
+library(writexl)
+
+library(tibble)
+library(ggthemes)
+library(MetBrewer)
+library(hrbrthemes)
+```
+
+
+```{r setup, include=FALSE}
+
+df <- data_geral_clean <- readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissAnalysis/data_geral_clean.rds")
+
+```
+
+Tabela sumarizando varáveis
+
+```{r Tabela stat descrit geral, include=FALSE}
+
+skim(df)
+
+```
+
+Tabela sumarizando variáveis: agrupadas por 1. espécie, 2. sexo.
+
+```{r echo=TRUE}
+
+df %>% 
+  group_by(species) %>% 
+  skim()
+
+df %>% 
+  group_by(sex) %>% 
+  skim()
+
+
+```
+
+Tabelas apenas com variáveis numéricas
+
+```{r echo=TRUE}
+
+# Geral
+
+tab_numeric <- df %>% 
+  skim %>%
+  yank("numeric")
+
+
+tab_numeric <- tab_numeric %>% 
+  mutate(n = 562 - (n_missing))
+
+tab_numeric
+
+# Ratos
+
+
+tab_numeric_rat <- df %>% 
+  filter(species == "rat") %>% 
+  skim %>%
+  yank("numeric")
+
+tab_numeric_rat <- tab_numeric %>% 
+  mutate(n = 234 - (n_missing))
+
+tab_numeric_rat
+
+# Camundongos
+
+
+tab_numeric_mice <- df %>% 
+  filter(species == "mice") %>% 
+  skim %>%
+  yank("numeric")
+
+tab_numeric_mice <- tab_numeric %>% 
+  mutate(n = 328 - (n_missing))
+
+tab_numeric_mice
+
+
+```
+
+
+```
+

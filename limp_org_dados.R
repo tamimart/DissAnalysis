@@ -1,4 +1,5 @@
-# Limpar e organizar dados
+# Referência: ~ref da dissertação~
+# ETAPA 1: LIMPAR E ORGANIZAR OS DADOS
 
 # Carregar pacotes
 
@@ -7,8 +8,8 @@ library(tidyverse)
 library(lubridate)
 library(skimr)
 
-# Importando aba especifica do excel 
-# As colunas em comum (de identificação) deverao ter os mesmos nomes em cada aba que sera fundida
+# Importar cada aba da planilha no excel --------
+# OBS:As colunas em comum (de identificação) deverao ter os mesmos nomes em cada aba que sera fundida.
 
 
 meus_dados_library <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Library")
@@ -26,13 +27,14 @@ meus_dados_library <- meus_dados_library %>%
   filter(Included == TRUE)
 
 
-# Retirar linhas vazias
+# NAO RODAR - Retirar linhas vazias
 
-meus_dados_quality <- meus_dados_quality %>%
-  filter(`First author` != 0,
-         `4 - Os animais foram acondicionados aleatoriamente?` != "NA")
+# meus_dados_quality <- meus_dados_quality %>%
+#   filter(`First author` != 0,
+#          `4 - Os animais foram acondicionados aleatoriamente?` != "NA")
 
-# Juntar infos em uma so planilha. Juncao determinada por variaveis em comum.
+# Unificar abas em uma unica tabela ----- 
+#Juncao determinada por variaveis em comum.
 
 
 data1 <- dplyr::left_join(meus_dados_library, meus_dados_info, by = c("First author", "year"))
@@ -41,6 +43,7 @@ data2 <- dplyr::left_join(data1, meus_dados_outcome, by = "line")
 
 data_geral <- dplyr::left_join(data2, meus_dados_quality, by = "ID")
 
+
 # Olhar planilha e caracteristicas das variaveis
 
 glimpse(data_geral)
@@ -48,13 +51,13 @@ glimpse(data_geral)
 view(data_geral)
 
 
-# Selecionando colunas que ficarao na planilha final
+# Selecionar colunas que ficarao na planilha final -------
 
 data_geral <- data_geral %>% # Excluir colunas/variaveis repetidas e desnecessarias
   select(everything(), - ...25, - mgkg, - Included, - `First author.y`, - comp.y, `First author`, - FSTApparatus_conditions, - `Housing conditions`, - year.y, - source.y, -`First author.y`, - comp.y, -`Escale (mm)`, -`Escale (s or %)`, -`mean CTRL or ATD (mm)`, -`SEM CTRL or ATD (mm)`, -`mean ADT (mm)` , -`SEM ADT (mm)`) 
   
   
-data_geral <- data_geral %>% # Renomear colunas/variaveis
+data_geral <- data_geral %>% # Renomear colunas/variaveis de acordo com as boas praticas 
   rename(obs_quali = `10`,
          ROB1 = `1- A alocação de tratamento foi adequadamente gerada e aplicada? (*)`,
          ROB2 = `2 - Os grupos (controle e tratado) eram similares no início do experimento?`,
@@ -120,29 +123,99 @@ data_geral <- data_geral %>% # Renomear colunas/variaveis
 
 
 
+# NAO RODAR DE NOVO - Filtro para localizar artigos sem informação desejada: ----
+# Aqui esta o exemplo para artigos sem N
 
-# NAO RODAR DE NOVO - Percebi que alguns estudos estao sme o n, aqui esta o filtro para localizar esses artigos:
+# artigos_sem_n_ctr <- data_geral %>% 
+#   filter(ctr_n_round == "NA") %>% 
+#   select(first_author, line)
+# 
+# artigos_sem_n_atd <- data_geral %>% 
+#   filter(atd_n_round == "NA") %>% 
+#   select(first_author)  # sao os mesmo artigos 
 
-artigos_sem_n_ctr <- data_geral %>% 
-  filter(ctr_n_round == "NA") %>% 
-  select(first_author, line)
-
-artigos_sem_n_atd <- data_geral %>% 
-  filter(atd_n_round == "NA") %>% 
-  select(first_author)  # sao os mesmo artigos 
-
-# Entrei em contato com os ultimos tres autores via email ou researchgate, aguardando resposta
+# Entrei em contato com os ultimos três autores via email ou researchgate, aguardando resposta
 
 
-# Transformando variaveis de acordo com suas caracteristicas: character, factor, numeric... 
-# No caso das numericas, se havia texto, esses serao transformados em "NA"
+# Transformar variaveis com margens (ex: 35-50) em média -----
+
+# variavel age
+
+marg_age <- data_geral %>%
+  select(age) %>% 
+  separate(col = age, sep = "-", into = c("v1", "v2")) %>% 
+  mutate(v1 = as.numeric(v1),
+         v2 = as.numeric(v2)) # Separa a coluna em duas e transforma em numerico
+marg_age <- marg_age %>% 
+  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))   # Criar nova coluna com media dos valores que possuem margem
+marg_age <- marg_age %>%
+  mutate(b = coalesce(marg_age$g, marg_age$v1)) %>% # Cria nova coluna com a fusao dos valores (media e valor unico)
+  select(b)
+
+# variavel weight
+
+marg_weight <- data_geral %>%
+  select(weight) %>% 
+  separate(col = weight, sep = "-", into = c("v1", "v2")) %>% 
+  mutate(v1 = as.numeric(v1),
+         v2 = as.numeric(v2)) 
+marg_weight <- marg_weight %>% 
+  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))
+marg_weight <- marg_weight %>% 
+  mutate(b = coalesce(marg_weight$g, marg_weight$v1)) %>% 
+  select(b)
+
+# variavel bioterium_temp
+
+marg_bioterium_temp <- data_geral %>%
+  select(bioterium_temp) %>% 
+  separate(col = bioterium_temp, sep = "-", into = c("v1", "v2")) %>% 
+  mutate(v1 = as.numeric(v1),
+         v2 = as.numeric(v2)) 
+marg_bioterium_temp <- marg_bioterium_temp %>% 
+  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))
+marg_bioterium_temp <- marg_bioterium_temp %>% 
+  mutate(b = coalesce(marg_bioterium_temp$g, marg_bioterium_temp$v1)) %>% 
+  select(b)
+
+# variavel bioterium_umi
+
+
+marg_bioterium_umid <- data_geral %>%
+  select(bioterium_umid) %>% 
+  separate(col = bioterium_umid, sep = "-", into = c("v1", "v2")) %>% 
+  mutate(v1 = as.numeric(v1),
+         v2 = as.numeric(v2)) 
+marg_bioterium_umid <- marg_bioterium_umid %>% 
+  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))
+marg_bioterium_umid <- marg_bioterium_umid %>% 
+  mutate(b = coalesce(marg_bioterium_umid$g, marg_bioterium_umid$v1)) %>% 
+  select(b)
+
+
+# variavel water_temperature
+
+
+marg_water_temperature <- data_geral %>%
+  select(water_temperature) %>% 
+  separate(col = water_temperature, sep = "-", into = c("v1", "v2")) %>% 
+  mutate(v1 = as.numeric(v1),
+         v2 = as.numeric(v2)) 
+marg_water_temperature <- marg_water_temperature %>% 
+  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))
+marg_water_temperature <- marg_water_temperature %>% 
+  mutate(b = coalesce(marg_water_temperature$g, marg_water_temperature$v1)) %>% 
+  select(b)
+
+# Transformar variaveis de acordo com suas caracteristicas: character, factor, numeric... -------
+# No caso das numericas, se havia texto, esses serao transformados em "NA".
 
 data_geral <- data_geral %>%
   mutate(ctr_n_round = as.numeric(ctr_n_round),
          atd_n_round = as.numeric(atd_n_round),
          id = as.character(id),
          idgeral = as.character(idgeral),
-         year = as.numeric(year),
+         year = lubridate::ymd(year, truncated = 2L),
          line = as.character(line),
          sex = as.factor(sex),
          dose = as.numeric(dose),
@@ -183,16 +256,22 @@ data_geral <- data_geral %>%
          camarades8 = as.factor(camarades8),
          camarades9 = as.factor(camarades9),
          camarades10 = as.factor(camarades10),
-         camarades11 = as.factor(camarades11)
+         camarades11 = as.factor(camarades11),
+         age = marg_age$b,
+         weight = marg_weight$b,
+         bioterium_temp = marg_bioterium_temp$b,
+         bioterium_umid = marg_bioterium_umid$b,
+         water_temperature = marg_water_temperature$b
          )
 
 
-# Nova coluna com n do comparador corrigido de acordo com o numero de comparacoes e arredondado
+# Criar nova coluna com n do comparador corrigido de acordo com o numero de comparacoes e arredondado
 
 data_geral <- data_geral %>%
   mutate(ctr_n_corr = as.integer(ctr_n_round / n_comparisons)) 
 
-# Reorganizar ordem das variaveis
+
+# Reorganizar ordem das variaveis -------
 
 
 colnames(data_geral) # Obter nome das colunas
@@ -277,30 +356,31 @@ col_order <- c("line", # Colocar na ordem desejada
  
 data_geral_reord <- data_geral[, col_order] # Adicionar nova sequencia de colunas
 
-# NAO RODAR DE NOVO - Verificar qual coluna sumiu depois de ordenar as variaveis: Era uma repetida de primeiro autor, e dose_mgkg (se a dose está nessa unidade)...
+# NAO RODAR DE NOVO - Verificar qual coluna sumiu depois de ordenar as variaveis
+# Era uma repetida de primeiro autor e dose_mgkg (condicional se a dose está nessa unidade)...
 
-diffdf::diffdf(data_geral, data_geral_reord) # MODO 1
-
-janitor::compare_df_cols(data_geral, data_geral_reord) # MODO 2 
+# diffdf::diffdf(data_geral, data_geral_reord) # MODO 1
+# 
+# janitor::compare_df_cols(data_geral, data_geral_reord) # MODO 2 
 
 
 # Verificar os padrao dos valores
 
-skim(data_geral_reord) # Percebi que nas colunas de qualidade alguns niveis de fatores estavam escritos de duas formas
+skim(data_geral_reord) # Percebi que nas colunas de qualidade alguns niveis de fatores estavam escritos de duas formas diferentes
 
 
-# Verificando os niveis de todas variaveis
+# Verificar os niveis de todas variaveis
 
 sapply(data_geral_reord, levels)
 
 
-# Corrigindo os valores escritos de forma errada e emergindo os que foram escritos de maneiras diferentes
+# Corrigir os valores escritos de forma errada e emergir os que foram escritos de maneiras diferentes
 
 #atd_type
 
 levels(data_geral_reord$atd_type)[match("bupropiona",levels(data_geral_reord$atd_type))] <- "bupropion" #substituir valor
 
-summary(data_geral_reord$atd_type)
+summary(data_geral_reord$atd_type) # Ver como ficou 
 
 
 #camarades3
@@ -345,18 +425,15 @@ levels(data_geral_reord$strain)[match("Slc:ddY", levels(data_geral_reord$strain)
 summary(data_geral_reord$strain)
 
 
-# Identificando e verificando os estudos com valores que parecem erros (modificavel)
+# NÃO RODAR - Identificando e verificando os estudos com valores que parecem erros (modificavel)
 
-fst_errado <- data_geral_reord %>% 
-  filter(fst_protocol == "test6test6") %>% 
-  select(line, first_author, fst_protocol)
+# fst_errado <- data_geral_reord %>% 
+#   filter(fst_protocol == "test6test6") %>% 
+#   select(line, first_author, fst_protocol)
 
 
-
-# Salvar df limpo e corrigido para posterior analise
+# Salvar df limpo e transformado para posterior analise ------
 
 saveRDS(data_geral_reord, "data_geral_clean.rds")
 
-
-
-colnames(data_geral_clean)
+glimpse(data_geral_reord)
