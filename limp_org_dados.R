@@ -220,6 +220,7 @@ data_geral <- data_geral %>%
          sex = as.factor(sex),
          dose = as.numeric(dose),
          strain = as.factor(strain),
+         model_phenotype = as.factor(model_phenotype),
          treatment_via = as.factor(treatment_via),
          country = as.factor(country),
          species = as.factor(species),
@@ -424,6 +425,24 @@ levels(data_geral_reord$strain)[match("Slc:ddY", levels(data_geral_reord$strain)
 
 summary(data_geral_reord$strain)
 
+
+# model/phenotype
+
+levels(data_geral_reord$model_phenotype)[match(c("CUMS", "UCMS"), levels(data_geral_reord$model_phenotype))] <- "CUMs"
+
+levels(data_geral_reord$model_phenotype)[match(c("postOVX8m", "postOVX4m", "postOVX2w"), levels(data_geral_reord$model_phenotype))] <- "ovarieactomized"
+
+levels(data_geral_reord$model_phenotype)[match(c("reserpine (6mg/Kg)", "reserpine (2mg/Kg)"), levels(data_geral_reord$model_phenotype))] <- "reserpine"
+
+levels(data_geral_reord$model_phenotype)[match(c("streptozotocin (65mg/Kg)", "streptozotocin (40mg/Kg)"), levels(data_geral_reord$model_phenotype))] <- "streptozotocin"
+
+levels(data_geral_reord$model_phenotype)[match("strokeMCAOpos14", levels(data_geral_reord$model_phenotype))] <- "stroke (Middle Cerebral Artery occlusion)"
+
+levels(data_geral_reord$model_phenotype)[match("antidepressant-withdrawl", levels(data_geral_reord$model_phenotype))] <- "antidepressant withdrawal"
+
+levels(data_geral_reord$model_phenotype)[match("normal emotional", levels(data_geral_reord$model_phenotype))] <- "NA"
+
+summary(data_geral_reord$model_phenotype)
 
 # NÃO RODAR - Identificando e verificando os estudos com valores que parecem erros (modificavel)
 
