@@ -269,7 +269,8 @@ data_geral <- data_geral %>%
 # Criar nova coluna com n do comparador corrigido de acordo com o numero de comparacoes e arredondado
 
 data_geral <- data_geral %>%
-  mutate(ctr_n_corr = as.integer(ctr_n_round / n_comparisons)) 
+  mutate(ctr_n_corr = as.integer(ctr_n_round / n_comparisons),
+         N = as.integer(ctr_n_corr+atd_n_round)) 
 
 
 # Reorganizar ordem das variaveis -------
@@ -305,6 +306,7 @@ col_order <- c("line", # Colocar na ordem desejada
                "atd_se",
                "atd_n_ext",
                "atd_n_round",
+               "N",
                "obs_design",
                "species",
                "strain",
@@ -434,13 +436,15 @@ levels(data_geral_reord$model_phenotype)[match(c("postOVX8m", "postOVX4m", "post
 
 levels(data_geral_reord$model_phenotype)[match(c("reserpine (6mg/Kg)", "reserpine (2mg/Kg)"), levels(data_geral_reord$model_phenotype))] <- "reserpine"
 
-levels(data_geral_reord$model_phenotype)[match(c("streptozotocin (65mg/Kg)", "streptozotocin (40mg/Kg)"), levels(data_geral_reord$model_phenotype))] <- "streptozotocin"
+levels(data_geral_reord$model_phenotype)[match(c("streptozotocin (65mg/kg)", "streptozotocin (40mg/Kg)"), levels(data_geral_reord$model_phenotype))] <- "streptozotocin"
 
 levels(data_geral_reord$model_phenotype)[match("strokeMCAOpos14", levels(data_geral_reord$model_phenotype))] <- "stroke (Middle Cerebral Artery occlusion)"
 
 levels(data_geral_reord$model_phenotype)[match("antidepressant-withdrawl", levels(data_geral_reord$model_phenotype))] <- "antidepressant withdrawal"
 
 levels(data_geral_reord$model_phenotype)[match("normal emotional", levels(data_geral_reord$model_phenotype))] <- "NA"
+
+levels(data_geral_reord$model_phenotype)[match(c("mother exposed to o,p'-dichlorodiphenyltrichloro-ethane (DDT)", "mother exposed to p,p'-dichlorodiphenyltrichloro-ethane (DDT)"), levels(data_geral_reord$model_phenotype))] <- "mother exposed to DDT"
 
 summary(data_geral_reord$model_phenotype)
 
