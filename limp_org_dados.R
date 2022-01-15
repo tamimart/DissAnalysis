@@ -432,7 +432,7 @@ summary(data_geral_reord$strain)
 
 levels(data_geral_reord$model_phenotype)[match(c("CUMS", "UCMS"), levels(data_geral_reord$model_phenotype))] <- "CUMs"
 
-levels(data_geral_reord$model_phenotype)[match(c("postOVX8m", "postOVX4m", "postOVX2w"), levels(data_geral_reord$model_phenotype))] <- "ovarieactomized"
+levels(data_geral_reord$model_phenotype)[match(c("postOVX8m", "postOVX4m", "postOVX2w", "ovarieactomized"), levels(data_geral_reord$model_phenotype))] <- "ovariectomized"
 
 levels(data_geral_reord$model_phenotype)[match(c("reserpine (6mg/Kg)", "reserpine (2mg/Kg)"), levels(data_geral_reord$model_phenotype))] <- "reserpine"
 

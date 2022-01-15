@@ -12,10 +12,11 @@ library(tibble)
 library(MetBrewer)
 library(ggtext)
 library(cowplot)
+library(ggrepel)
 
 library(ggmap)
 library(ggcorrplot)
-library(ggrepel)
+
 
 library(ggradar)
 
@@ -244,39 +245,84 @@ save_plot(filename = "Figura1.png", plot = Figura1, dpi = 300)
 
 # Modelo
 
+df$model_phenotype <- factor(df$model_phenotype, 
+                             levels = c("1 saline injection for 4 days",                
+                                            "ACTH (100microg)",                             
+                                            "amphetamine withdrawal",                       
+                                            "antidepressant withdrawal",                    
+                                            "Bacillus Calmette–Guérin (BCG)",               
+                                            "CMS",                                          
+                                            "CUMs",                                         
+                                            "CUS" ,                                         
+                                            "depressed",                                   
+                                            "forced swim",                                  
+                                            "FS and CMS",                                   
+                                            "high emotional",                               
+                                            "Isolation-Rearing",                            
+                                            "low emotional",                                
+                                            "LPS",                                          
+                                            "maternal-separation",                          
+                                            "melanin-concentrating hormone 50ng",           
+                                            "mother exposed to Chlorpyrifos (CPF)",         
+                                            "mother exposed to DDT",                        
+                                            "NA",                                           
+                                            "olfactory bulbectomy",                         
+                                            "ovariectomized",                               
+                                            "ovariectomized +1 saline injection for 4 days",
+                                            "pentylenetetrazol-kindled seizures",           
+                                            "ovarieactomized",                              
+                                            "prenatal stress procedure",                    
+                                            "PTSD-like",                                    
+                                            "reserpine",                                    
+                                            "restraint-stress",                             
+                                            "streptozotocin",                               
+                                            "stroke (Middle Cerebral Artery occlusion)",    
+                                            "subchronic stress:restraint–water immersion",  
+                                            "temporal lobe epilepsy (pilocarpine)",         
+                                            "wheel running + restraint-stress"), 
+                             labels = c("Injeção salina por 4 dias",                
+                                "ACTH (100µg)",                             
+                                "Retirada de anfetamina",                       
+                                "Retirada de antidepressivo",                    
+                                "Bacillus Calmette–Guérin (BCG)",               
+                                "Estresse leve crônico - CMS",                                          
+                                "Estresse leve imprevisível crônico - CUMs",                                         
+                                "Estresse imprevisível crônico - CUS" ,                                         
+                                "Deprimido",                                   
+                                "Natação forçada",                                  
+                                "Natação forçada + Estresse leve crônico",                                   
+                                "Emocional alto",                               
+                                "Isolation-Rearing",                            
+                                "Emocional baixo",                                
+                                "Lipopolissacarídeo",                                          
+                                "Separação maternal",                          
+                                "Hormônio concentrador de melanina (50ng)",           
+                                "Mãe exposta à Chlorpyrifos (CPF)",         
+                                "Mãe exposta à DDT",                        
+                                "NA",                                           
+                                "Bulbectomia olfatória",                         
+                                "Ovacteriomizada",                               
+                                "Ovacteriomizada + injeção salina por 4 dias",
+                                "Convulsões por pentilenotetrazol",           
+                                "ovarieactomized",                              
+                                "prenatal stress procedure",                    
+                                "PTSD-like",                                    
+                                "reserpine",                                    
+                                "restraint-stress",                             
+                                "streptozotocin",                               
+                                "stroke (Middle Cerebral Artery occlusion)",    
+                                "subchronic stress:restraint–water immersion",  
+                                "temporal lobe epilepsy (pilocarpine)",         
+                                "wheel running + restraint-stress"))
+
+
 
 f2a <- df %>%
   group_by(model_phenotype,
            species) %>% 
-  filter(model_phenotype != "NA") %>%  
-  summarise(counts = sum(N)) %>% 
-  ggplot(aes(x = model_phenotype, y = counts, fill = model_phenotype)) +
-  geom_bar(color = "black", stat="identity") + # Mudar essa cor rs
-  labs(y = "Nº de animais", x = "Modelo animal") + 
-  scale_fill_manual(values=met.brewer("Signac", 9))+
-  coord_flip() +
-  facet_wrap(~species, strip.position = "top")+
-  gghighlight(counts > 40, calculate_per_facet = TRUE, label_key = model_phenotype) +
-  theme_bw(base_family = "serif")+
-  theme(axis.text=element_text(size=10, angle = 0, color = "grey30"),
-        axis.title=element_text(size=12),
-        axis.title.y=element_blank(), 
-        axis.title.x=element_text(margin = margin(t=5)),
-        panel.grid.major = element_line(color = "grey90", size =.5),
-        plot.title.position = "plot",
-        legend.position = "none",
-        strip.background = element_rect(fill="white", color = "black"),
-        strip.text = element_text(colour = 'black', size = 12),
-        plot.margin = margin(10,10,10,0))
-
-
-f2a
-f2b <- df %>%
-  group_by(model_phenotype,
-           species) %>% 
   filter(model_phenotype != "NA",) %>% 
   summarise(counts = n()) %>% 
-  ggplot(aes(x = forcats::fct_infreq(model_phenotype), y = counts, fill = model_phenotype)) +
+  ggplot(aes(x = factor(model_phenotype), y = counts, fill = model_phenotype)) +
   geom_bar(color = "black", stat="identity") + # Mudar essa cor rs
   labs(y = "Nº de estudos", x = "Modelo") +
   scale_fill_manual(values=met.brewer("Signac", 10))+
@@ -284,22 +330,49 @@ f2b <- df %>%
   facet_wrap(~species, strip.position = "top")+
   gghighlight(counts > 3, calculate_per_facet = TRUE, label_key = model_phenotype) +
   theme_bw(base_family = "serif")+
-  theme(axis.text=element_text(size=10, angle = 0, color = "grey30"),
-        axis.title=element_text(size=12),
+  theme(axis.text=element_text(size=9, angle = 0, color = "grey30"),
+        axis.title=element_text(size=10),
         axis.title.x=element_text(margin = margin(t=5)),
         axis.title.y=element_blank(),
         panel.grid.major = element_line(color = "grey90", size =.5),
         plot.title.position = "plot",
         legend.position = "none",
         strip.background = element_rect(fill="white", color = "black"),
-        strip.text = element_text(colour = 'black', size = 12),
-        plot.margin = margin(10,10,10,10))
+        strip.text = element_text(colour = 'black', size = 11),
+        plot.margin = margin(10,10,10,0))
+
+f2b <- df %>%
+  group_by(model_phenotype,
+           species) %>% 
+  filter(model_phenotype != "NA") %>%  
+  summarise(counts = sum(N)) %>% 
+  ggplot(aes(x = factor(model_phenotype), y = counts, fill = model_phenotype)) +
+  geom_bar(color = "black", stat="identity") + # Mudar essa cor rs
+  labs(y = "Nº de animais", x = "Modelo animal") + 
+  scale_fill_manual(values=met.brewer("Signac", 9))+
+  coord_flip() +
+  facet_wrap(~species, strip.position = "top")+
+  gghighlight(counts > 75, calculate_per_facet = TRUE, max_highlight = 3L, label_key = model_phenotype) +
+  theme_bw(base_family = "serif")+
+  theme(axis.text=element_text(size=9, angle = 0, color = "grey30"),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title=element_text(size=10),
+        axis.title.y=element_blank(), 
+        axis.title.x=element_text(margin = margin(t=5)),
+        panel.grid.major = element_line(color = "grey90", size =.5),
+        plot.title.position = "plot",
+        legend.position = "none",
+        strip.background = element_rect(fill="white", color = "black"),
+        strip.text = element_text(colour = 'black', size = 11),
+        plot.margin = margin(10,10,10,0))
+
+Figura2 <- f2a + f2b
+
+Figura2
 
 
-
-f2 <- f2b + f2a
-f2
-ggsave(f2, filename = "Figura2.png", dpi = 300, path = "Fig")
+save_plot(filename = "Figura2.png", plot = Figura2, dpi = 300)
 
 # Age
 
