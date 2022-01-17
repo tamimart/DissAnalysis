@@ -13,6 +13,7 @@ library(MetBrewer)
 library(ggtext)
 library(cowplot)
 library(ggrepel)
+library(RColorBrewer)
 
 library(ggmap)
 library(ggcorrplot)
@@ -245,6 +246,7 @@ save_plot(filename = "Figura1.png", plot = Figura1, dpi = 300)
 
 # Modelo
 
+
 df$model_phenotype <- factor(df$model_phenotype, 
                              levels = c("1 saline injection for 4 days",                
                                             "ACTH (100microg)",                             
@@ -270,7 +272,6 @@ df$model_phenotype <- factor(df$model_phenotype,
                                             "ovariectomized",                               
                                             "ovariectomized +1 saline injection for 4 days",
                                             "pentylenetetrazol-kindled seizures",           
-                                            "ovarieactomized",                              
                                             "prenatal stress procedure",                    
                                             "PTSD-like",                                    
                                             "reserpine",                                    
@@ -285,89 +286,119 @@ df$model_phenotype <- factor(df$model_phenotype,
                                 "Retirada de anfetamina",                       
                                 "Retirada de antidepressivo",                    
                                 "Bacillus Calmette–Guérin (BCG)",               
-                                "Estresse leve crônico - CMS",                                          
-                                "Estresse leve imprevisível crônico - CUMs",                                         
-                                "Estresse imprevisível crônico - CUS" ,                                         
+                                "CMS - Estresse leve crônico",                                          
+                                "CUMs - Estresse leve imprevisível crônico",                                         
+                                "CUS - Estresse imprevisível crônico" ,                                         
                                 "Deprimido",                                   
                                 "Natação forçada",                                  
                                 "Natação forçada + Estresse leve crônico",                                   
                                 "Emocional alto",                               
-                                "Isolation-Rearing",                            
+                                "Isolamento",                            
                                 "Emocional baixo",                                
                                 "Lipopolissacarídeo",                                          
                                 "Separação maternal",                          
                                 "Hormônio concentrador de melanina (50ng)",           
-                                "Mãe exposta à Chlorpyrifos (CPF)",         
-                                "Mãe exposta à DDT",                        
+                                "Progenitora exposta à Chlorpyrifos (CPF)",         
+                                "Progenitora exposta à DDT",                        
                                 "NA",                                           
                                 "Bulbectomia olfatória",                         
                                 "Ovacteriomizada",                               
                                 "Ovacteriomizada + injeção salina por 4 dias",
                                 "Convulsões por pentilenotetrazol",           
-                                "ovarieactomized",                              
-                                "prenatal stress procedure",                    
-                                "PTSD-like",                                    
-                                "reserpine",                                    
-                                "restraint-stress",                             
-                                "streptozotocin",                               
-                                "stroke (Middle Cerebral Artery occlusion)",    
-                                "subchronic stress:restraint–water immersion",  
-                                "temporal lobe epilepsy (pilocarpine)",         
-                                "wheel running + restraint-stress"))
+                                "Estresse pré-natal",                    
+                                "Tipo TEPT",                                    
+                                "Reserpina",                                    
+                                "Estresse por contenção",                             
+                                "Estreptozotocina",                               
+                                "AVC (por oclusão da artéria cerebral média)",    
+                                "Estresse subcrônico: contenção em água",  
+                                "Epilepsia do lobo temporal (c/ pilocarpina)",         
+                                "Roda de corrida + estresse por contenção"))
 
-
+  
 
 f2a <- df %>%
-  group_by(model_phenotype,
-           species) %>% 
-  filter(model_phenotype != "NA",) %>% 
-  summarise(counts = n()) %>% 
-  ggplot(aes(x = factor(model_phenotype), y = counts, fill = model_phenotype)) +
-  geom_bar(color = "black", stat="identity") + # Mudar essa cor rs
-  labs(y = "Nº de estudos", x = "Modelo") +
-  scale_fill_manual(values=met.brewer("Signac", 10))+
+  group_by(study_reference, model_phenotype) %>%
+  slice(1) %>% 
+  group_by(model_phenotype, species) %>%
+  filter(model_phenotype != "NA",) %>%
+  summarise(counts = n()) %>%
+  ggplot(aes(x = factor(model_phenotype), y = counts, fill = model_phenotype, label = counts)) +
+  geom_bar(color = "black", size = 0.2, stat="identity") + # Mudar essa cor rs
+  labs(y = "Nº de publicações", x = "Modelo") +
+  scale_fill_manual(values = c("#fec200", "#a6243a", "#f24a7a", "#fb7285", "#b376a2", "#a94f93", "#006f9f", "#009c7e", "#82c236", "#ffe170"))+
   coord_flip() +
+  ylim(0,8)+
   facet_wrap(~species, strip.position = "top")+
-  gghighlight(counts > 3, calculate_per_facet = TRUE, label_key = model_phenotype) +
+  gghighlight(counts >= 2, calculate_per_facet = TRUE, label_key = model_phenotype) +
+  geom_text(color = "white", size = 2, family ="serif", position = position_dodge(width=0.9), hjust = 1.1) +
   theme_bw(base_family = "serif")+
-  theme(axis.text=element_text(size=9, angle = 0, color = "grey30"),
-        axis.title=element_text(size=10),
+  theme(axis.text=element_text(size=6, angle = 0, color = "grey30"),
+        axis.title=element_text(size=6),
         axis.title.x=element_text(margin = margin(t=5)),
         axis.title.y=element_blank(),
-        panel.grid.major = element_line(color = "grey90", size =.5),
+        panel.grid.major = element_line(color = "grey90", size =.2),
         plot.title.position = "plot",
         legend.position = "none",
         strip.background = element_rect(fill="white", color = "black"),
-        strip.text = element_text(colour = 'black', size = 11),
+        strip.text = element_text(colour = 'black', size = 7),
         plot.margin = margin(10,10,10,0))
 
 f2b <- df %>%
-  group_by(model_phenotype,
-           species) %>% 
-  filter(model_phenotype != "NA") %>%  
-  summarise(counts = sum(N)) %>% 
-  ggplot(aes(x = factor(model_phenotype), y = counts, fill = model_phenotype)) +
-  geom_bar(color = "black", stat="identity") + # Mudar essa cor rs
-  labs(y = "Nº de animais", x = "Modelo animal") + 
-  scale_fill_manual(values=met.brewer("Signac", 9))+
+  group_by(model_phenotype, species) %>% 
+  filter(model_phenotype != "NA",) %>% 
+  summarise(counts = n()) %>% 
+  ggplot(aes(x = factor(model_phenotype), y = counts, fill = model_phenotype, label = counts)) +
+  geom_bar(color = "black", size = 0.2, stat="identity") + # Mudar essa cor rs
+  labs(y = "Nº de estudos", x = "Modelo") +
+  scale_fill_manual(values = c("#fec200", "#a6243a", "#692b75", "#006f9f", "#009c7e", "#82c236"))+
   coord_flip() +
+  ylim(0,8)+
   facet_wrap(~species, strip.position = "top")+
-  gghighlight(counts > 75, calculate_per_facet = TRUE, max_highlight = 3L, label_key = model_phenotype) +
+  gghighlight(counts > 3, calculate_per_facet = TRUE, label_key = model_phenotype) +
+  geom_text(color = "white", size = 2, family ="serif", position = position_dodge(width=0.9), hjust = 1.1) +
   theme_bw(base_family = "serif")+
-  theme(axis.text=element_text(size=9, angle = 0, color = "grey30"),
+  theme(axis.text=element_text(size=6, angle = 0, color = "grey30"),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
-        axis.title=element_text(size=10),
-        axis.title.y=element_blank(), 
+        axis.title=element_text(size=6),
         axis.title.x=element_text(margin = margin(t=5)),
-        panel.grid.major = element_line(color = "grey90", size =.5),
+        axis.title.y=element_blank(),
+        panel.grid.major = element_line(color = "grey90", size =.2),
         plot.title.position = "plot",
         legend.position = "none",
         strip.background = element_rect(fill="white", color = "black"),
-        strip.text = element_text(colour = 'black', size = 11),
+        strip.text = element_text(colour = 'black', size = 7),
         plot.margin = margin(10,10,10,0))
 
-Figura2 <- f2a + f2b
+f2c <- df %>%
+  group_by(model_phenotype, species) %>% 
+  filter(model_phenotype != "NA") %>%  
+  summarise(counts = sum(N)) %>% 
+  ggplot(aes(x = factor(model_phenotype), y = counts, fill = model_phenotype, label = counts)) +
+  geom_bar(color = "black", size = 0.2, stat="identity") + # Mudar essa cor rs
+  labs(y = "Nº de animais", x = "Modelo animal") + 
+  scale_fill_manual(values = c("#fec200", "#a6243a", "#a94f93", "#006f9f", "#009c7e"))+
+  coord_flip() +
+  ylim(0,150) +
+  facet_wrap(~species, strip.position = "top")+
+  gghighlight(counts > 75, calculate_per_facet = TRUE, label_key = model_phenotype) +
+  geom_text(color = "white", size = 2, family ="serif", position = position_dodge(width=0.9), hjust = 1.1) +
+  theme_bw(base_family = "serif")+
+  theme(axis.text=element_text(size=6, angle = 0, color = "grey30"),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title=element_text(size=6),
+        axis.title.y=element_blank(), 
+        axis.title.x=element_text(margin = margin(t=5)),
+        panel.grid.major = element_line(color = "grey90", size =.2),
+        plot.title.position = "plot",
+        legend.position = "none",
+        strip.background = element_rect(fill="white", color = "black"),
+        strip.text = element_text(colour = 'black', size = 7),
+        plot.margin = margin(10,10,10,0))
+
+Figura2 <- f2a + f2b + f2c
 
 Figura2
 
@@ -377,13 +408,35 @@ save_plot(filename = "Figura2.png", plot = Figura2, dpi = 300)
 # Age
 
 
+# f3a <- df %>% 
+#   group_by(species, sex, age) %>% 
+#   summarise(counts = sum(N)) %>% 
+#   ggplot(aes(x = age, y = counts, fill = sex)) +
+#   geom_bar(color = "black")+
+#   facet_grid(sex~species, scales = "free_x") +
+#   labs(y = "Nº de estudos", x = "Idade (dias)") +
+#   scale_x_continuous(n.breaks = 10)+
+#   scale_fill_manual(values=met.brewer("Signac", 4))+
+#   theme_bw(base_family = "serif")+
+#   theme(axis.text=element_text(size=12, angle = 0, color = "grey30"),
+#         axis.title=element_text(size=12, hjust = 0),
+#         axis.title.y=element_text(margin = margin(r=5)),
+#         axis.title.x=element_text(margin = margin(t=5)),
+#         legend.position = "none",
+#         strip.background = element_rect(fill="white", color = "black"),
+#         strip.text = element_text(colour = 'black', size = 12),
+#         panel.grid.major = element_line(color = "grey90", size =.5),
+#         plot.margin = margin(20,20,20,20))
+
+
+
 f3a <- df %>%
-  ggplot(aes(x = age, fill = species)) +
-  geom_histogram(color = "black")+
+  ggplot(aes(x = age, fill = sex)) +
+  geom_histogram(color = "black", size = 0.2)+
   facet_grid(sex~species, scales = "free_x") +
   labs(y = "Nº de estudos", x = "Idade (dias)") +
   scale_x_continuous(n.breaks = 10)+
-  scale_fill_manual(values=met.brewer("Signac", 2))+
+  scale_fill_manual(values=met.brewer("Signac", 4))+
   theme_bw(base_family = "serif")+
   theme(axis.text=element_text(size=12, angle = 0, color = "grey30"),
         axis.title=element_text(size=12, hjust = 0),
@@ -394,8 +447,8 @@ f3a <- df %>%
         strip.text = element_text(colour = 'black', size = 12),
         panel.grid.major = element_line(color = "grey90", size =.5),
         plot.margin = margin(20,20,20,20))
-f3a
 
+save_plot(filename = "Figura3.png", plot = f3a, dpi = 300)
 
 ggsave(f3a, filename = "Figura3.png", dpi = 300, path = "Fig")
 
@@ -403,24 +456,24 @@ ggsave(f3a, filename = "Figura3.png", dpi = 300, path = "Fig")
 # weight
 
 f4a <- df %>%
-  ggplot(aes(x = weight, fill = species)) +
-  geom_histogram(color = "black")+
+  ggplot(aes(x = weight, fill = sex)) +
+  geom_histogram(color = "black", size = 0.2)+
   facet_grid(sex~species, scales = "free_x") +
   labs(y = "Nº de estudos", x = "Peso (g)") +
   scale_x_continuous(n.breaks = 7)+
-  scale_fill_manual(values=met.brewer("Signac", 2))+
+  scale_fill_manual(values=met.brewer("Signac", 4))+
   theme_bw(base_family = "serif")+
   theme(axis.text=element_text(size=12, angle = 0, color = "grey30"),
-        axis.title=element_text(size=12, face = "bold", hjust = 0),
+        axis.title=element_text(size=12, hjust = 0),
         axis.title.y=element_text(margin = margin(r=5)),
         axis.title.x=element_text(margin = margin(t=5)),
         legend.position = "none",
         strip.background = element_rect(fill="white", color = "black"),
-        strip.text = element_text(colour = 'black', size = 12, face = "bold"),
+        strip.text = element_text(colour = 'black', size = 12),
         panel.grid.major = element_line(color = "grey90", size =.5),
         plot.margin = margin(20,20,20,20))
 f4a
-
+save_plot(filename = "Figura4.png", plot = f4a, dpi = 300)
 
 # Strain
 
