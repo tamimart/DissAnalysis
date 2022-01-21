@@ -1,5 +1,5 @@
 # Referência: ~ref da dissertação~
-# ETAPA 1: LIMPAR E ORGANIZAR OS DADOS
+# ETAPA 1: Limpar e organizar os dados
 
 # Carregar pacotes
 

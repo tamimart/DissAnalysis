@@ -1,4 +1,5 @@
-# Analise exploratoria qualitativa
+# Referência: ~ref da dissertação~
+# ETAPA 2: Análise exploratoria 
 
 # Carregar pacotes
 
@@ -13,7 +14,7 @@ library(MetBrewer)
 library(ggtext)
 library(cowplot)
 library(ggrepel)
-library(RColorBrewer)
+
 
 library(ggmap)
 library(ggcorrplot)
@@ -231,10 +232,6 @@ df$model_phenotype <- factor(df$model_phenotype,
 # Populacao -----
 
 # Figura1: sex x especies x yerar ----- 
-
-
-
-
 
 
 f1a <- df %>% #Freq especie
@@ -506,10 +503,10 @@ f5a <- df %>%
   coord_flip() +
   gghighlight(counts > 25, calculate_per_facet = TRUE, label_key = strain) +
   scale_fill_manual(values=c("#ec2b2b", "#a6243a"))+
-  geom_text(color = "mintcream", size = 2.5, family ="serif", position = position_dodge(width=0.9), hjust = 1.1)
+  geom_text(color = "mintcream", size = 3, family ="serif", position = position_dodge(width=0.9), hjust = 1.1) +
   theme_bw(base_family = "serif")+
-  theme(axis.text=element_text(size=8, angle = 0, color = "grey30"),
-        axis.title=element_text(size=9, face = "bold"),
+  theme(axis.text=element_text(size=9, angle = 0, color = "grey20"),
+        axis.title=element_text(size=10),
         axis.title.y=element_blank(),
         axis.title.x=element_text(margin = margin(t=5)),
         plot.title=element_text(size=11, face = "italic", hjust = 0),
@@ -527,15 +524,15 @@ f5b <- df %>%
   coord_flip() +
   gghighlight(counts > 500, calculate_per_facet = TRUE, label_key = strain) +
   scale_fill_manual(values=c("#ec2b2b", "#a6243a"))+ 
-  geom_text(color = "mintcream", size = 2.5, family ="serif", position = position_dodge(width=0.9), hjust = 1.1),
+  geom_text(color = "mintcream", size = 3, family ="serif", position = position_dodge(width=0.9), hjust = 1.1) +
   theme_bw(base_family = "serif")+
-  theme(axis.text=element_text(size=8, angle = 0, color = "grey30"),
+  theme(axis.text=element_text(size=9, angle = 0, color = "grey20"),
         axis.text.y=element_blank(),
         axis.ticks.y = element_blank(),
-        axis.title=element_text(size=9, face = "bold"),
+        axis.title=element_text(size=10),
         axis.title.y=element_blank(),
         axis.title.x=element_text(margin = margin(t=5)),
-        plot.title=element_text(size=11, face = "italic", hjust = 0),
+        plot.title=element_text(size=12, face = "italic", hjust = 0),
         plot.title.position = "plot",
         legend.position = "none",
         plot.margin = margin(10,10,0,0))
@@ -547,19 +544,20 @@ f5c <- df %>%
   filter(species == "Camundongo") %>% 
   summarise(counts = n()) %>% 
   mutate(counts = as.numeric(counts)) %>%
-  ggplot(aes(x = factor(strain), y = counts, fill = strain)) +
+  ggplot(aes(x = factor(strain), y = counts, fill = strain,label = counts)) +
   geom_bar(color = "black", stat="identity") + 
   labs(y = "Nº de estudos", x = "Linhagem", title = "c") +
   scale_y_continuous(n.breaks = 5)+  
   coord_flip() +
   gghighlight(counts > 25, calculate_per_facet = TRUE, label_key = strain) +
   scale_fill_manual(values=c("#ffe170", "#fec200", "#ff9400"))+
+  geom_text(color = "mintcream", size = 3, family ="serif", position = position_dodge(width=0.9), hjust = 1.1) +
   theme_bw(base_family = "serif")+
-  theme(axis.text=element_text(size=8, angle = 0, color = "grey30"),
-        axis.title=element_text(size=9, face = "bold"),
+  theme(axis.text=element_text(size=9, angle = 0, color = "grey20"),
+        axis.title=element_text(size=10),
         axis.title.y=element_blank(),
         axis.title.x=element_text(margin = margin(t=5)),
-        plot.title=element_text(size=11, face = "italic", hjust = 0),
+        plot.title=element_text(size=12, face = "italic", hjust = 0),
         legend.position = "none",
         plot.margin = margin(10,10,10,10))
 
@@ -568,20 +566,21 @@ f5d <- df %>%
   filter(species == "Camundongo") %>% 
   summarise(counts = sum(N)) %>% 
   mutate(counts = as.numeric(counts)) %>%
-  ggplot(aes(x = factor(strain), y = counts, fill = strain)) +
+  ggplot(aes(x = factor(strain), y = counts, fill = strain, label = counts)) +
   geom_bar(color = "black", stat="identity") + 
   labs(y = "Nº de animais", x = "Linhagem", title = "d") + 
   coord_flip() +
   gghighlight(counts > 500, calculate_per_facet = TRUE, label_key = strain) +
   scale_fill_manual(values=c("#ffe170", "#fec200", "#ff9400"))+
+  geom_text(color = "mintcream", size = 3, family ="serif", position = position_dodge(width=0.9), hjust = 1.1) +
   theme_bw(base_family = "serif")+
-  theme(axis.text=element_text(size=8, angle = 0, color = "grey30"),
+  theme(axis.text=element_text(size=9, angle = 0, color = "grey20"),
         axis.text.y=element_blank(),
         axis.ticks.y = element_blank(),
-        axis.title=element_text(size=9, face = "bold"),
+        axis.title=element_text(size=10),
         axis.title.y=element_blank(),
         axis.title.x=element_text(margin = margin(t=5)),
-        plot.title=element_text(size=11, face = "italic", hjust = 0),
+        plot.title=element_text(size=12, face = "italic", hjust = 0),
         plot.title.position = "plot",
         legend.position = "none",
         plot.margin = margin(10,10,10,0))
