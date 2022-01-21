@@ -448,6 +448,14 @@ levels(data_geral_reord$model_phenotype)[match(c("mother exposed to o,p'-dichlor
 
 summary(data_geral_reord$model_phenotype)
 
+
+# country 
+
+levels(data_geral_reord$country)[match("México", levels(data_geral_reord$country))] <- "Mexico"
+levels(data_geral_reord$country)[match("United Kingdom", levels(data_geral_reord$country))] <- "UK"
+levels(data_geral_reord$country)[match("Korea", levels(data_geral_reord$country))] <- "South Korea"
+
+
 # NÃO RODAR - Identificando e verificando os estudos com valores que parecem erros (modificavel)
 
 # fst_errado <- data_geral_reord %>% 
