@@ -467,4 +467,7 @@ levels(data_geral_reord$country)[match("Korea", levels(data_geral_reord$country)
 
 saveRDS(data_geral_reord, "data_geral_clean.rds")
 
+write_xlsx(data_geral_reord,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\Data_200FST.xlsx")
+
+
 glimpse(data_geral_reord)

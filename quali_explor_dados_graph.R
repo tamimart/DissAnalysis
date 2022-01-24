@@ -136,11 +136,11 @@ world <- subset(world, region != "Antarctica")
 # criando novo df com as colunas importantes da referencia
 
 countries <- df %>% 
-  select(country, year, study_reference, language) %>% 
+  select(country, study_reference, language, year) %>% 
   group_by(study_reference) %>% 
   slice(1) %>% 
   group_by(country) %>% 
-  summarise(N = n()) %>% 
+  summarise(N = n()) %>% # coluna com N de publi por país
   mutate(region = country)
 
 
@@ -148,7 +148,7 @@ countries <- df %>%
 
 dados_public <- dplyr::left_join(world, countries, by = "region")
 
-# crio uma colunas com media da lat e long para rótulo
+# crio um df com média da lat e long para rótulo
 
 rotulo <- dados_public %>%
   group_by(region) %>%
@@ -158,56 +158,196 @@ rotulo <- dplyr::left_join(countries, rotulo, by = "region") # Mantenho so os pa
 rotulo <- rotulo %>% 
   select(region, longr, latr, N) # seleciono essas colunas
 
-rotulo$region <- factor(rotulo$region, levels = c("China", "Japan", "USA", "India", "Brazil", "Italy"), 
-                        labels = c("China", "Japão","EUA", "Índia", "Brasil", "Italia")) # Renomeio niveis que vao virar rotulo
+
+# Traduzo termos para pt
+
+summary(as.factor(rotulo$region)) # Visualizar os fatores
+
+rotulo$region <- factor(rotulo$region, 
+                        levels = c("Australia", "Bangladesh", "Brazil", "Cameroon", "Canada", "China",  
+                                   "Denmark", "Egypt", "France", "Germany", "Greece", "Hungary",
+                                   "India", "Iran", "Ireland", "Israel", "Italy", "Japan",
+                                   "Malaysia", "Mexico", "Netherlands", "Nigeria", "Pakistan", "Poland", 
+                                   "Saudi Arabia", "South Africa", "South Korea", "Spain", "Sweden", "Switzerland",
+                                   "Taiwan", "Thailand", "UK", "Uruguay", "USA"),
+                        labels = c("Austrália", "Bangladesh", "Brasil", "Camarões", "Canadá", "China",  
+                                   "Dinamarca", "Egito", "França", "Alemanha", "Grécia", "Hungria",
+                                   "Índia", "Irã", "Irlanda", "Israel", "Itália", "Japão",
+                                   "Malásia", "México", "Países Baixos", "Nigéria", "Paquistão", "Polônia", 
+                                   "Arábia Saudita", "África do sul", "Coreia do Sul", "Espanha", "Suécia", "Suíça",
+                                   "Taiwan", "Tailândia", "Reino Unido", "Uruguai", "EUA")) # Renomeio fatores para pt
+
+# Mudar os valores do EUA, pq Alaska deixou a média longe do maior território
+
+rotulo <- rotulo %>%  
+  mutate(latr=replace(latr, region == "EUA", 38),
+         longr=replace(longr, region == "EUA", -110)) 
+
+
+# Figura 0
+
+F0 <- ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
+  geom_map(map = dados_public, # mapa mundo
+           aes(map_id = region),
+           color = "white",
+           size = 0.1) +
+  geom_map(map = dados_public, #Coloração dos países por frequência
+    aes(map_id = region, fill = N),
+    color = "white",
+    size = 0.1) +
+  labs(caption = "Rótulo nos países com mais de 10 publicações.") +
+  scale_fill_gradientn(
+    colours = met.brewer("Signac", 5),
+    na.value = "grey80",
+    name = "Número de publicações",
+    limits = c(0, 30),
+    guide = guide_colourbar(
+      title.position = "top",
+      barwidth = 7,
+      barheight = 0.3)) +
+  theme(panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 7),
+    legend.position = "top",
+    plot.caption = element_text(hjust = 0.5, size = 6, colour = "grey30")) +
+  expand_limits(x = world$long, y = world$lat) + #Estabeleço o tamanho
+  geom_text_repel(data = subset(rotulo, N > 10), #Adiciono o rótulo dos países mais frequentes
+    aes(x = longr,
+        y = latr,
+        label = region),
+    color = "black",
+    size = 2,
+    segment.size = 0.3,
+    box.padding = 0.8,
+    segment.curvature = -0.1,
+    segment.ncp = 3,
+    segment.angle = 10
+  )
+
+# separado por anos ----- 
+
+# Por ano
+
+countries_year <- df %>% 
+  select(country, study_reference, language, year) %>% 
+  group_by(study_reference) %>% 
+  slice(1) %>% 
+  group_by(country, year) %>% 
+  summarise(N = n()) %>% # coluna com N de publi por país
+  mutate(region = country)
+
+
+# junto base de dados dos paises e meus dados
+
+dados_public_year <- dplyr::left_join(world, countries_year, by = "region")
+
+
+# Até 1996
+
+dados_public_year_1996 <- dados_public_year %>% 
+  filter(year <= '1996-01-01')
+
+
+F01996 <- ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
+  geom_map(map = dados_public, # mapa mundo
+           aes(map_id = region),
+           color = "white",
+           fill = "grey80",
+           size = 0.1) +
+  geom_map(map = dados_public_year_1996, #Coloração dos países por frequência
+           aes(map_id = region, fill = N),
+           color = "white",
+           size = 0.1) +
+  labs(caption = "Até 1996") +
+  scale_fill_gradientn(
+    colours = met.brewer("Signac", 5),
+    na.value = "gray80",
+    name = "Número de publicações",
+    limits = c(0, 30),
+    guide = guide_colourbar(
+      title.position = "top",
+      barwidth = 7,
+      barheight = 0.3)) +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "none",
+        plot.caption = element_text(hjust=0.5, size=rel(0.5))) 
+
+# Até 2006
+
+dados_public_year_2006 <- dados_public_year %>% 
+  filter(year <= '2006-01-01')
+
+
+F02006 <- ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
+  geom_map(map = dados_public, # mapa mundo
+           aes(map_id = region),
+           color = "white",
+           fill = "grey80",
+           size = 0.1) +
+  geom_map(map = dados_public_year_2006, #Coloração dos países por frequência
+           aes(map_id = region, fill = N),
+           color = "white",
+           size = 0.1) +
+  labs(caption = "Até 2006") +
+  scale_fill_gradientn(
+    colours = met.brewer("Signac", 5),
+    na.value = "gray80",
+    name = "Número de publicações",
+    limits = c(0, 30),
+    guide = guide_colourbar(
+      title.position = "top",
+      barwidth = 7,
+      barheight = 0.3)) +
+  theme(panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "none",
+        plot.caption = element_text(hjust=0.5, size=rel(0.5))) 
 
 
 
-# 1 - dados
-g1 <- ggplot(dados_public, aes(x = long, y = lat, map_id = region))
+Figura0 <- F0 / (plot_spacer() | F01996 | F02006 | plot_spacer()) + plot_layout(heights = c(8,2), widths = c(11, 10))
 
-# 2 - mapa mundo
-g2 <- g1 + geom_map(map = dados_public,
-                   aes(map_id = region),
-                   color="white", size=0.1)
+save_plot(filename = "Figura0.png", plot = Figura0, dpi = 300) # Salvar gráfico
 
-# 3 - Coloração dos países por frequência
-g3 <- g2 + geom_map(map = dados_public,
-                   aes(map_id = region, fill = N),
-                   color="white", size=0.1) + 
-  scale_fill_gradientn(colours = met.brewer("Signac", 5),
-                      na.value = "grey80",
-                      name="Número de publicações",
-                      limits=c(0, 30),
-                      guide = guide_colourbar(title.position = "top",
-                                              barwidth = 7,
-                                              barheight = 0.3)) +
-  theme(panel.grid=element_blank(), 
-        panel.border=element_blank(),
-        axis.ticks=element_blank(),
-        axis.text=element_blank(),
-        axis.title=element_blank(),
-        legend.title = element_text(size = 8), 
-        legend.text = element_text(size = 7),
-        legend.position = "top")
 
-# 4 - Estabeleço o tamanho
-g4 <- g3 + expand_limits(x = world$long, y = world$lat)
+# Idioma
 
-# 5 - Adiciono o rótulo dos países mais frequentes
-g5 <- g4 + geom_text_repel(data = subset(rotulo, N >11),
-                           aes(x= longr,
-                               y = latr,
-                               label = region),
-                           color = "black", 
-                               size = 2,
-                               segment.size = 0.3,
-                     box.padding = 1,
-                     segment.curvature = -0.1,
-                     segment.ncp = 3,
-                     segment.angle = 20)
-g5
-save_plot(filename = "Figura0.png", plot = g5, dpi = 300)
+# Publicação no ano
+
+df %>% 
+  group_by(study_reference) %>% 
+  slice(1) %>% 
+  group_by(year) %>% 
+  summarise(count = n()) %>% 
+  ggplot(aes(x = year, y = count)) +
+  geom_line(color = "#006f9f", size = 3) +
+  labs(y = "Nº de publicações", x = "Ano") + 
+  scale_x_date(date_breaks = "5 years", date_labels = "%Y")+
+  scale_y_continuous(breaks = c(5,10,15,20,25))+
+theme(axis.text=element_text(size=8, angle = 0, color = "grey20"),
+      axis.title=element_text(size=9, hjust = 1))
+  
+  
+  
+  
+  group_by(language) %>%
+  ggplot(aes(x = language, label = language)) +
+  geom_bar()
+
+
+
+
 
 # Populacao -----
 
