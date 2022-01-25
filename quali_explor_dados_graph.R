@@ -121,13 +121,12 @@ df$model_phenotype <- factor(df$model_phenotype,
                                         "Roda de corrida + estresse por contenção"))
 
 
-
+df$language <- factor(df$language, levels = c("English", "Persian", "Chinese"), labels = c("Inglês", "Persa", "Mandarim"))
 
 #MetBrewer preferidos: Signac, Renoir, Thomas, VanGogh1
 
 # Publicação ----
-
-# Figura0: Paises 
+# Figura0: Paises e idioma ---------
 
 
 world <- map_data("world")
@@ -182,7 +181,7 @@ rotulo$region <- factor(rotulo$region,
 rotulo <- rotulo %>%  
   mutate(latr=replace(latr, region == "EUA", 38),
          longr=replace(longr, region == "EUA", -110)) 
-
+  
 
 # Figura 0
 
@@ -195,7 +194,7 @@ F0 <- ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
     aes(map_id = region, fill = N),
     color = "white",
     size = 0.1) +
-  labs(caption = "Rótulo nos países com mais de 10 publicações.") +
+  labs(caption = "Até 2017") +
   scale_fill_gradientn(
     colours = met.brewer("Signac", 5),
     na.value = "grey80",
@@ -203,17 +202,18 @@ F0 <- ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
     limits = c(0, 30),
     guide = guide_colourbar(
       title.position = "top",
-      barwidth = 7,
-      barheight = 0.3)) +
+      barwidth = 5,
+      barheight = 0.2)) +
   theme(panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.ticks = element_blank(),
     axis.text = element_blank(),
     axis.title = element_blank(),
-    legend.title = element_text(size = 8),
-    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 6, hjust = .5),
+    legend.text = element_text(size = 5),
     legend.position = "top",
-    plot.caption = element_text(hjust = 0.5, size = 6, colour = "grey30")) +
+    plot.caption = element_text(hjust = 0.5, size = 5.5),
+    plot.margin = margin(0,0,5,0)) +
   expand_limits(x = world$long, y = world$lat) + #Estabeleço o tamanho
   geom_text_repel(data = subset(rotulo, N > 10), #Adiciono o rótulo dos países mais frequentes
     aes(x = longr,
@@ -228,7 +228,7 @@ F0 <- ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
     segment.angle = 10
   )
 
-# separado por anos ----- 
+# separado por anos 
 
 # Por ano
 
@@ -315,38 +315,57 @@ F02006 <- ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dado
         plot.caption = element_text(hjust=0.5, size=rel(0.5))) 
 
 
+# Idioma
 
-Figura0 <- F0 / (plot_spacer() | F01996 | F02006 | plot_spacer()) + plot_layout(heights = c(8,2), widths = c(11, 10))
+F00 <- df %>% 
+  group_by(study_reference) %>% 
+  slice(1) %>% 
+  group_by(language) %>% 
+  ggplot(aes(x = language, fill = language)) +
+  geom_bar(stat = "count", color = "white") +
+  labs(title = "Idioma") +
+  geom_text(stat='count', aes(label=..count..), hjust=-.3, size = 1.5) +
+  scale_fill_manual(values= c("#ffe170", "#ffe170", "#ffe170")) + 
+  ylim(0,220)+
+  coord_flip() +
+  theme(axis.text = element_text(size=5, hjust = 0, color = "grey20"),
+        axis.text.x = element_blank(),
+        legend.position = "none",
+        plot.title=element_text(size=6, hjust = 0, face = "italic", margin=margin(0,0,0,0)),
+        plot.title.position = "panel",
+        axis.title = element_blank(),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        plot.margin = margin(0,5,0,0),
+  )
 
+
+#Salvar
+
+Figura0 <- (F0 + inset_element(F00, left = 0.05, bottom = 0.05, right = 0.28, top = 0.25)) / (plot_spacer() | F01996 | F02006 | plot_spacer()) + plot_layout(heights = c(10,2), widths = c(8, 8))
+Figura0
 save_plot(filename = "Figura0.png", plot = Figura0, dpi = 300) # Salvar gráfico
 
 
-# Idioma
+# Figura F0a - Publicação no ano ---- 
 
-# Publicação no ano
-
-df %>% 
+Figura0a <- df %>% 
   group_by(study_reference) %>% 
   slice(1) %>% 
   group_by(year) %>% 
   summarise(count = n()) %>% 
   ggplot(aes(x = year, y = count)) +
-  geom_line(color = "#006f9f", size = 3) +
+  geom_line(color = "#006f9f", size = 1.5) +
   labs(y = "Nº de publicações", x = "Ano") + 
   scale_x_date(date_breaks = "5 years", date_labels = "%Y")+
   scale_y_continuous(breaks = c(5,10,15,20,25))+
 theme(axis.text=element_text(size=8, angle = 0, color = "grey20"),
-      axis.title=element_text(size=9, hjust = 1))
-  
-  
-  
-  
-  group_by(language) %>%
-  ggplot(aes(x = language, label = language)) +
-  geom_bar()
+      axis.title=element_text(size=9, hjust = 1),
+      axis.title.y=element_text(margin = margin(r=5)),
+      axis.title.x=element_text(margin = margin(t=5)))
 
-
-
+save_plot(filename = "Figura0a.png", plot = Figura0a, dpi = 300) # Salvar gráfico  
+  
 
 
 # Populacao -----
@@ -541,28 +560,6 @@ save_plot(filename = "Figura2.png", plot = Figura2, dpi = 300)
 
 
 # Figura3 e 4: Idade e peso ---- 
-# Age and weight
-
-
-# f3a <- df %>% 
-#   group_by(species, sex, age) %>% 
-#   summarise(counts = sum(N)) %>% 
-#   ggplot(aes(x = age, y = counts, fill = sex)) +
-#   geom_bar(color = "black")+
-#   facet_grid(sex~species, scales = "free_x") +
-#   labs(y = "Nº de estudos", x = "Idade (dias)") +
-#   scale_x_continuous(n.breaks = 10)+
-#   scale_fill_manual(values=met.brewer("Signac", 4))+
-#   theme_bw(base_family = "serif")+
-#   theme(axis.text=element_text(size=12, angle = 0, color = "grey30"),
-#         axis.title=element_text(size=12, hjust = 0),
-#         axis.title.y=element_text(margin = margin(r=5)),
-#         axis.title.x=element_text(margin = margin(t=5)),
-#         legend.position = "none",
-#         strip.background = element_rect(fill="white", color = "black"),
-#         strip.text = element_text(colour = 'black', size = 12),
-#         panel.grid.major = element_line(color = "grey90", size =.5),
-#         plot.margin = margin(20,20,20,20))
 
 
 f3 <- df %>%
@@ -717,4 +714,10 @@ Figura5
 
 
 save_plot(filename = "Figura5.png", plot = Figura5, dpi = 300)
+
+
+# Acondicionamento -----
+
+
+
 
