@@ -4,6 +4,7 @@
 # Carregar pacotes
 
 library(readxl)
+library(writexl)
 library(tidyverse)
 library(lubridate)
 library(skimr)
@@ -262,7 +263,8 @@ data_geral <- data_geral %>%
          weight = marg_weight$b,
          bioterium_temp = marg_bioterium_temp$b,
          bioterium_umid = marg_bioterium_umid$b,
-         water_temperature = marg_water_temperature$b
+         water_temperature = marg_water_temperature$b,
+         bioterium_lightcycle = as.factor(bioterium_lightcycle)
          )
 
 
