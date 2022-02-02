@@ -1822,6 +1822,28 @@ save_plot(filename = "Figura7v2.png",
 
 # INTERVENÇÃO
 ## Figura8: classe e antidepressivo x dose ----
+#via
+
+df %>% 
+  ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_via)) +
+  geom_bar()
+
+#classe
+df %>% 
+  ggplot(aes(x = fct_infreq(atd_class), fill = fct_infreq(atd_type))) +
+  geom_bar()
+
+#dose
+
+df %>% 
+  group_by(atd_class) %>% 
+  ggplot(aes(y = fct_rev(atd_type), x = dose, color = atd_type, fill = atd_type)) + 
+  coord_cartesian(clip = "off") +
+  scale_y_discrete(expand = c(.07, .07)) +
+  ggridges::geom_density_ridges(
+    alpha = .7, size = 1.5
+  ) 
+
 
 
 ## Figura9: Via de administração x frequencia adm x tempo de adm ----

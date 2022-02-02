@@ -55,7 +55,7 @@ view(data_geral)
 # Selecionar colunas que ficarao na planilha final -------
 
 data_geral <- data_geral %>% # Excluir colunas/variaveis repetidas e desnecessarias
-  select(everything(), - ...25, - mgkg, - Included, - `First author.y`, - comp.y, `First author`, - FSTApparatus_conditions, - `Housing conditions`, - year.y, - source.y, -`First author.y`, - comp.y, -`Escale (mm)`, -`Escale (s or %)`, -`mean CTRL or ATD (mm)`, -`SEM CTRL or ATD (mm)`, -`mean ADT (mm)` , -`SEM ADT (mm)`) 
+  select(everything(), - ...25, - Included, - `First author.y`, - comp.y, `First author`, - FSTApparatus_conditions, - `Housing conditions`, - year.y, - source.y, -`First author.y`, - comp.y, -`Escale (mm)`, -`Escale (s or %)`, -`mean CTRL or ATD (mm)`, -`SEM CTRL or ATD (mm)`, -`mean ADT (mm)` , -`SEM ADT (mm)`) 
   
   
 data_geral <- data_geral %>% # Renomear colunas/variaveis de acordo com as boas praticas 
@@ -220,6 +220,7 @@ data_geral <- data_geral %>%
          line = as.character(line),
          sex = as.factor(sex),
          dose = as.numeric(dose),
+         dose_unit = as.character(dose_unit),
          strain = as.factor(strain),
          model_phenotype = as.factor(model_phenotype),
          treatment_via = as.factor(treatment_via),
@@ -325,6 +326,7 @@ col_order <- c("line", # Colocar na ordem desejada
                "atd_type",
                "atd_class",
                "dose",
+               "dose_unit",
               "treatment_duration", 
               "treatment_freq",
               "treatment_via",
