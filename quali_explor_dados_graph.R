@@ -17,7 +17,9 @@ library(ggmap)
 library(skimr)
 library(extrafont)
 library(remotes)
-
+library(colorspace)
+library(ggdist)
+library(gghalves)
 
 library(ggcorrplot)
 library(ggradar)
@@ -525,8 +527,9 @@ Figura0a <- df %>%
   geom_bar(fill = "#82c236") +
   labs(y = "Nº de publicações", x = "Ano") +
   scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
-  scale_y_continuous(breaks = c(4, 8, 12, 16, 20, 24, 28)) +
+  scale_y_continuous(breaks = c(4, 8, 12, 16, 20, 24, 28), expand = c(0, 0)) +
   theme(
+    axis.line = element_line(size = .3),
     axis.text = element_text(
       size = 9,
       angle = 0,
@@ -591,6 +594,7 @@ f1b <- df  %>% # especie no tempo
        title = "b",
        fill = "Espécie") +
   scale_fill_manual(values = met.brewer("Signac", 2)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,60), n.breaks = 4) +
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
@@ -606,7 +610,6 @@ f1b <- df  %>% # especie no tempo
     legend.position = "none",
     plot.margin = margin(10, 0, 0, 10)
   )
-
 
 f1c <- df %>%
   group_by(sex) %>%
@@ -648,6 +651,7 @@ f1d <- df  %>% # sexo no tempo
   scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
   labs(y = "Nº de estudos", x = "Ano", title = "d") +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0,60), n.breaks = 4) +
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
@@ -1015,14 +1019,28 @@ save_plot(filename = "Figura4.png",
 
 f34a <- df %>%
   filter(species == "Camundongo") %>%
-  ggplot(aes(x = sex, y = age, fill = sex)) +
-  geom_boxplot(size = 0.2, outlier.size = .3) +
+  ggplot(aes(x = sex, y = age, fill = sex, color = sex)) +
+  scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
+  scale_color_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
+  geom_boxplot(
+    width = .2, fill = "white",
+    size = .3, outlier.shape = NA
+  ) +
+  ggdist::stat_halfeye(
+    adjust = .5, ## bandwidth
+    width = .67, 
+    color = NA, ## remove slab interval
+    position = position_nudge(x = .15)
+  ) +
+  gghalves::geom_half_point(
+    side = "l", 
+    range_scale = .3, 
+    alpha = .3, size = .1
+  ) +
   labs(y = "Idade (dias)",
        x = "Camundongo",
        fill = "Sexo",
        title = "a") +
-  scale_y_continuous(n.breaks = 8) +
-  scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.line = element_line(size = .3),
@@ -1039,20 +1057,36 @@ f34a <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_blank(),
-    plot.margin = margin(20, 0, 5, 0)
+    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.x = element_blank(),
+    plot.margin = margin(0, 0, 5, 0)
   )
 
 f34b <- df %>%
   filter(species == "Rato") %>%
-  ggplot(aes(x = sex, y = age, fill = sex)) +
-  geom_boxplot(size = 0.2, outlier.size = .3) +
+  ggplot(aes(x = sex, y = age, fill = sex, color = sex)) +
+  scale_fill_manual(values = c("#692b75", "#006f9f", "grey80")) +
+  scale_color_manual(values = c("#692b75", "#006f9f", "grey80")) +
+  geom_boxplot(
+    width = .2, fill = "white",
+    size = .3, outlier.shape = NA
+  ) +
+  ggdist::stat_halfeye(
+    adjust = .5, ## bandwidth
+    width = .67, 
+    color = NA, ## remove slab interval
+    position = position_nudge(x = .15)
+  ) +
+  gghalves::geom_half_point(
+    side = "l", 
+    range_scale = .3, 
+    alpha = .3, size = .1
+  ) +
   labs(y = "Idade (dias)",
        x = "Rato",
        fill = "Sexo",
        title = "b") +
-  scale_y_continuous(n.breaks = 8) +
-  scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
+  scale_y_continuous(n.breaks = 6) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.line = element_line(size = .3),
@@ -1069,22 +1103,37 @@ f34b <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_blank(),
-    plot.margin = margin(20, 0, 5, 20)
+    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.x = element_blank(),
+    plot.margin = margin(0, 0, 5, 0)
   )
 
 
 
 f34c <- df %>%
   filter(species == "Camundongo") %>%
-  ggplot(aes(x = sex, y = weight, fill = sex)) +
-  geom_boxplot(size = 0.2, outlier.size = .3) +
+  ggplot(aes(x = sex, y = weight, color = sex, fill = sex)) +
+  scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
+  scale_color_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
+  geom_boxplot(
+    width = .2, fill = "white",
+    size = .3, outlier.shape = NA
+  ) +
+  ggdist::stat_halfeye(
+    adjust = .5, ## bandwidth
+    width = .67, 
+    color = NA, ## remove slab interval
+    position = position_nudge(x = .15)
+  ) +
+  gghalves::geom_half_point(
+    side = "l", 
+    range_scale = .3, 
+    alpha = .3, size = .1
+  ) +
   labs(y = "Peso (g)",
        x = "Camundongo",
        fill = "Sexo",
        title = "c") +
-  scale_y_continuous(n.breaks = 8) +
-  scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.line = element_line(size = .3),
@@ -1101,20 +1150,35 @@ f34c <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_blank(),
-    plot.margin = margin(0, 0, 20, 0)
+    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.x = element_blank(),
+    plot.margin = margin(0, 0, 0, 0)
   )
 
 f34d <- df %>%
   filter(species == "Rato") %>%
-  ggplot(aes(x = sex, y = weight, fill = sex)) +
-  geom_boxplot(size = 0.2, outlier.size = .3) +
+  ggplot(aes(x = sex, y = weight, fill = sex, color = sex)) +
+  scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
+  scale_color_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
+  geom_boxplot(
+    width = .2, fill = "white",
+    size = .3, outlier.shape = NA
+  ) +
+  ggdist::stat_halfeye(
+    adjust = .5, ## bandwidth
+    width = .67, 
+    color = NA, ## remove slab interval
+    position = position_nudge(x = .15)
+  ) +
+  gghalves::geom_half_point(
+    side = "l", 
+    range_scale = .3, 
+    alpha = .3, size = .1
+  ) +
   labs(y = "Peso (g)",
        x = "Rato",
        fill = "Sexo",
        title = "d") +
-  scale_y_continuous(n.breaks = 8) +
-  scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.line = element_line(size = .3),
@@ -1131,8 +1195,9 @@ f34d <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_blank(),
-    plot.margin = margin(0, 0, 20, 20)
+    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.x = element_blank(),
+    plot.margin = margin(0, 0, 0, 0)
   )
 
 # Combinar e salvar
@@ -1378,7 +1443,7 @@ F6b <- df %>%
   slice(1) %>%
   ggplot(aes(x = bioterium_temp)) +
   geom_histogram(fill = "#a6243a") +
-  scale_fill_gradient(low = "black", high = " pink") +
+  scale_y_continuous(expand = c(0,0), limits = c(0,60), n.breaks = 4) +
   geom_text(
     data = m_t,
     aes(label = label),
@@ -1446,6 +1511,7 @@ F6c <- df %>%
   slice(1) %>%
   ggplot(aes(x = bioterium_umid)) +
   geom_histogram(fill = "#006f9f") +
+  scale_y_continuous(expand = c(0,0), limits = c(0,30), n.breaks = 4) +
   geom_text(
     data = m_u,
     aes(label = label),
@@ -1662,13 +1728,26 @@ save_plot(filename = "Figura7.png",
 # Plotar grafico de volume de caixa por animal
 
 f7ab <- cage_3d %>%
-  ggplot(aes(x = species, y = vol_panimal, fill = species)) +
-  geom_boxplot(color = "black",
-               size = 0.2,
-               outlier.size = .5) +
+  ggplot(aes(x = species, y = vol_panimal, color = species, fill = species)) +
+  scale_fill_manual(values = c("#ff9400", "#ec2b2b"), guide = "none") +
+  scale_color_manual(values = c("#ff9400", "#ec2b2b"), guide = "none") +
+  geom_boxplot(
+    width = .2, fill = "white",
+    size = .5, outlier.shape = NA
+  ) +
+  ggdist::stat_halfeye(
+    adjust = .33, ## bandwidth
+    width = .5, 
+    color = NA, ## remove slab interval
+    position = position_nudge(x = .15)
+  ) +
+  gghalves::geom_half_point(
+    side = "l", 
+    range_scale = .3, 
+    alpha = .5, size = .5
+  ) +
   labs(y = "Volume de caixa por animal (cm³)",  title = "a") +
-  scale_y_continuous(n.breaks = 8) +
-  scale_fill_manual(values = c("#ff9400", "#ec2b2b")) +
+  scale_y_continuous(n.breaks = 8, expand = c(0,0), limits = c(0, 35000)) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
@@ -1684,20 +1763,35 @@ f7ab <- cage_3d %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_blank(),
+    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.x = element_blank(),
     plot.margin = margin(20, 0, 5, 20)
   )
+f7ab
 
 # Plotar grafico de volume de caixa por peso de animal
 
 f7ba <- cage_3d %>%
-  ggplot(aes(x = species, y = vol_ppeso, fill = species)) +
-  geom_boxplot(color = "black",
-               size = 0.2,
-               outlier.size = .5) +
+  ggplot(aes(x = species, y = vol_ppeso, fill = species, color = species)) +
+  scale_fill_manual(values = c("#ff9400", "#ec2b2b"), guide = "none") +
+  scale_color_manual(values = c("#ff9400", "#ec2b2b"), guide = "none") +
+  geom_boxplot(
+    width = .2, fill = "white",
+    size = .5, outlier.shape = NA
+  ) +
+  ggdist::stat_halfeye(
+    adjust = .33, ## bandwidth
+    width = .5, 
+    color = NA, ## remove slab interval
+    position = position_nudge(x = .15)
+  ) +
+  gghalves::geom_half_point(
+    side = "l", 
+    range_scale = .3, 
+    alpha = .5, size = .5
+  ) +
   labs(y = "Volume de caixa por peso do animal (cm³/g)",  title = "b") +
-  scale_y_continuous(n.breaks = 8) +
-  scale_fill_manual(values = c("#ff9400", "#ec2b2b")) +
+  scale_y_continuous(n.breaks = 8, expand = c(0,0), limits = c(0, 250)) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
@@ -1713,7 +1807,8 @@ f7ba <- cage_3d %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_blank(),
+    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.x = element_blank(),
     plot.margin = margin(20, 0, 5, 20)
   )
 
