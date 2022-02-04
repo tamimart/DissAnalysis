@@ -182,16 +182,16 @@ df$atd_class <-
       "tricyclic" 
     ),
     labels = c(
-      "IMAO - Inibidores da monoamina oxidase", 
+      "IMAO", 
       "Agonista melatoninérgico", 
       "Multimodal", 
-      "ALDN - Agentes de liberação de dopamina e noradrenalina", 
-      "IRND - Inibidores de recaptação de noradrenalina-dopamina",       
-      "IRN - Inibidores de recaptação de noradrenalina",         
-      "IRSN - Inibidores de recaptação de serotonina-noradrenalina",
-      "ISRS - Inibidores seletivos de recaptação de serotonina",
-      "TeCA - Antidepressivos tetracíclicos",
-      "TCA - Antidepressivos tricíclicos" 
+      "ALDN", 
+      "IRND",       
+      "IRN",         
+      "IRSN",
+      "ISRS",
+      "TeCA",
+      "TCA" 
     )
   ) 
 
@@ -676,7 +676,7 @@ f1a <- df %>%
     position = position_dodge(width = 0.9),
     vjust = -0.25
   ) +
-  ylim(0, 5397) +
+  scale_y_continuous(limits = c(0, 5397), expand = c(0, 0)) +
   labs(y = "Nº de animais", x = "Espécie", title = "a") +
   scale_fill_manual(values = met.brewer("Signac", 2)) +
   theme(
@@ -737,7 +737,7 @@ f1c <- df %>%
     vjust = -0.25
   ) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
-  ylim(0, 6906) + # 300 a mais para caber a anotacao da maior barra
+  scale_y_continuous(limits = c(0, 6906), expand = c(0, 0)) + # 300 a mais para caber a anotacao da maior barra
   labs(y = "Nº de animais", x = "Sexo", title = "c") +
   theme(
     axis.text = element_text(
@@ -1413,9 +1413,9 @@ df %>% group_by(study_reference, model_phenotype) %>%
 # Modelos por publicação
 
 f5a <- df %>%
-  group_by(study_reference, model_phenotype) %>%
-  slice(1) %>%
-  group_by(model_phenotype, species) %>%
+  group_by(study_reference) %>% 
+  distinct(model_phenotype, species) %>% # deixar so um estudo por referencia para modelo e especie distintas
+  group_by(model_phenotype, species) %>% 
   filter(model_phenotype != "NA", ) %>%
   summarise(counts = n()) %>% 
   ggplot(aes(
@@ -1594,7 +1594,8 @@ F6a <- df %>%
   )) +
   geom_bar(stat = "identity") +
   labs(y = "Nº de publicações", x = "Ciclo de luz do biotério (h/h)", title = "a") +
-  scale_fill_manual(values = c("#f24a7a", "#fb7285", "grey80", "#b376a2", "#f39da4", "#a94f93")) +
+  scale_fill_manual(values = c("yellow1", "gold1", "grey80", "gold4", "gold2", "gold3")) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 110)) +
   geom_text(
     size = 2.5,
     family = "Gadugi",
@@ -1645,26 +1646,26 @@ F6b <- df %>%
     data = m_t,
     aes(label = label),
     x = Inf ,
-    y = 53,
+    y = 57,
     hjust = 1.1,
     color = "grey20",
     size = 2
   ) +
   geom_vline(data = filtro_bioterium_temp,
              aes(xintercept = mean(bioterium_temp)),
-             col = "black",
+             col = "gold2",
              size = .5) +
   geom_vline(
     data = filtro_bioterium_temp,
     aes(xintercept = (sd(bioterium_temp)) + 22.44694),
-    col = "black",
+    col = "gold",
     size = .5,
     linetype = "dashed"
   ) +
   geom_vline(
     data = filtro_bioterium_temp,
     aes(xintercept = (22.44694 - sd(bioterium_temp))),
-    col = "black",
+    col = "gold",
     size = .5,
     linetype = "dashed"
   ) +
@@ -1713,26 +1714,26 @@ F6c <- df %>%
     data = m_u,
     aes(label = label),
     x = Inf ,
-    y = 29,
+    y = 28.5,
     hjust = 1.1,
     color = "grey20",
     size = 2
   ) +
   geom_vline(data = filtro_bioterium_umid,
              aes(xintercept = mean(bioterium_umid)),
-             col = "black",
+             col = "gold2",
              size = .5) +
   geom_vline(
     data = filtro_bioterium_umid,
     aes(xintercept = (sd(bioterium_umid)) + 55.3),
-    col = "black",
+    col = "gold",
     size = .5,
     linetype = "dashed"
   ) +
   geom_vline(
     data = filtro_bioterium_umid,
     aes(xintercept = (55.3 - sd(bioterium_umid))),
-    col = "black",
+    col = "gold",
     size = .5,
     linetype = "dashed"
   ) +
@@ -2018,46 +2019,61 @@ save_plot(filename = "Figura7_ppt.png",
           dpi = 300)
 
 # INTERVENÇÃO
-## Figura8: classe e antidepressivo x dose ----
+## Figura8: classes no tempo ----
 
-# classe e antidepressivos GERAL
-
-Figura8 <- df %>%
+f8a <- df %>%
+  group_by(atd_class) %>%
+  summarise(counts = n()) %>% 
+  mutate(atd_class = fct_reorder(atd_class, desc(counts))) %>%
   ggplot(aes(
-    x = fct_lump(fct_infreq(atd_class), n = 6, other_level = "Outros"),
-    fill = fct_lump(fct_infreq(atd_type), n = 13, other_level = "Outros")
+    x = fct_infreq(atd_class),
+    y = counts,
+    fill = fct_infreq(atd_class),
+    label = counts
   )) +
-  geom_bar() +
-  labs(y = "Nº de estudos", x = "Classe") +
-  facet_wrap(df$species, scales = "fixed", strip.position = "top") +
-  scale_fill_manual(
-    values = c(
-      "#ffe170",
-      "#fec200",
-      "#ff9400",
-      "#ec2b2b",
-      "#a6243a",
-      "#f24a7a",
-      "#f39da4",
-      "#b376a2",
-      "#a94f93",
-      "#692b75",
-      "#006f9f",
-      "#009c7e",
-      "#82c236",
-      "grey80"
-    ),
-    name = "Antidepressivos"
+  geom_bar(stat = "identity") +
+  geom_text(
+    size = 2.5,
+    family = "Gadugi",
+    position = position_dodge(width = 0.9),
+    vjust = -0.25
   ) +
-  scale_y_continuous(expand = c(0, 0), n.breaks = 6) +
+  labs(y = "Nº de estudos", x = "Classe", title = "a") +
+  scale_fill_manual(values = met.brewer("Signac", 10)) +
   scale_x_discrete(
     labels = function(x)
       str_wrap(x, width = 15)
   ) +
+  scale_y_continuous(limits = c(0, 265), expand = c(0, 0)) +
+  theme(
+    axis.text = element_text(
+      size = 7,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 8, hjust = 1),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin = margin(15, 0, 0, 0)
+  )
+
+f8b <- df  %>% 
+  ggplot(aes(x = year, fill = fct_infreq(atd_class))) +
+  geom_bar() +
+  scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
+  labs(y = "Nº de estudos",
+       x = "Ano",
+       title = "b",
+       fill = "Classe de antidepressivo") +
+  scale_fill_manual(values = met.brewer("Signac", 10)) +
+  scale_y_continuous(expand = c(0,0), n.breaks = 4) +
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey20"
     ),
@@ -2066,15 +2082,11 @@ Figura8 <- df %>%
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
-    legend.position = "bottom",
-    legend.text = element_text(size = 6, color = "grey20"),
-    legend.title = element_text(size = 8),
-    plot.margin = margin(10, 0, 10, 10),
-    legend.key.size = unit(.3, "line"),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
-    panel.grid.major.x = element_blank(),
-    strip.text = element_text(colour = 'black', size = 8)
-  ) 
+    legend.position = "none",
+    plot.margin = margin(10, 0, 0, 10)
+  )
+
+Figura8 <- f8a / f8b
 Figura8
 # Salvar
 
@@ -2083,49 +2095,16 @@ save_plot(filename = "Figura8.png",
           dpi = 300)
 
 
-# Classe, antidepressivos e doses CAMUNDONGO
-
-# Modificar nome das classes para caber no plot
-
-df$atd_class <-
-  factor(
-    df$atd_class,
-    levels = c(
-      "IMAO - Inibidores da monoamina oxidase", 
-      "Agonista melatoninérgico", 
-      "Multimodal", 
-      "ALDN - Agentes de liberação de dopamina e noradrenalina", 
-      "IRND - Inibidores de recaptação de noradrenalina-dopamina",       
-      "IRN - Inibidores de recaptação de noradrenalina",         
-      "IRSN - Inibidores de recaptação de serotonina-noradrenalina",
-      "ISRS - Inibidores seletivos de recaptação de serotonina",
-      "TeCA - Antidepressivos tetracíclicos",
-      "TCA - Antidepressivos tricíclicos" 
-    ),
-    labels = c(
-      "IMAO", 
-      "Agonista melatoninérgico", 
-      "Multimodal", 
-      "ALDN", 
-      "IRND",       
-      "IRN",         
-      "IRSN",
-      "ISRS",
-      "TeCA",
-      "TCA" 
-    )
-  ) 
-
-x <- fct_infreq(df$atd_type)
-
+## Figura9: Classe, antidepressivos e doses CAMUNDONGO -----
 
 # classe e antidepressivo CAMUNDONGO
 
 f9a <- df %>%
-  filter(species == "Camundongo") %>%
+  filter(dose_unit == "mg/kg",
+    species == "Camundongo") %>%
   ggplot(aes(
     x = fct_lump(fct_infreq(atd_class), n = 6, other_level = "Outros"),
-    fill = fct_lump_n(atd_type, n = 14, other_level = "Outros"))) +
+    fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"))) +
   geom_bar() +
   labs(y = "Nº de estudos", x = "Classe", title = "a") +
   scale_fill_manual(
@@ -2141,6 +2120,7 @@ f9a <- df %>%
       "#a94f93",
       "#692b75",
       "#006f9f",
+      "turquoise2",
       "#009c7e",
       "#82c236",
       "olivedrab2",
@@ -2152,7 +2132,7 @@ f9a <- df %>%
   scale_x_discrete(
     labels = function(x)
       str_wrap(x, width = 15)
-  ) +
+  ) + # legenda em mais de uma linha
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
@@ -2180,7 +2160,7 @@ f9a
 f9b <- df %>% 
   filter(dose_unit == "mg/kg",
          species == "Camundongo") %>% 
-  ggplot(aes(x = dose, y = fct_lump_n(atd_type, n = 13, other_level = "Outros"), color = fct_lump_n(atd_type, n = 13, other_level = "Outros"), fill = fct_lump_n(atd_type, n = 13, other_level = "Outros"))) + 
+  ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 15, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"))) + 
   ggridges::stat_density_ridges(
     alpha = .7, size = .2, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
   ) + 
@@ -2198,6 +2178,7 @@ f9b <- df %>%
       "#a94f93",
       "#692b75",
       "#006f9f",
+      "turquoise2",
       "#009c7e",
       "#82c236",
       "olivedrab2",
@@ -2216,12 +2197,13 @@ f9b <- df %>%
       "#a94f93",
       "#692b75",
       "#006f9f",
+      "turquoise2",
       "#009c7e",
       "#82c236",
       "olivedrab2",
       "grey80"
     )) +
-  scale_x_continuous(expand = c(0, 0), n.breaks = 6) +
+  scale_x_continuous(expand = c(0, 0), n.breaks = 6, limits = c(-15, 120)) +
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
@@ -2246,31 +2228,32 @@ f9b
 
 # Juntar
 Figura9 <- f9a | f9b 
-
+Figura9
 #Salvar
 save_plot(filename = "Figura9.png",
           plot = Figura9,
           dpi = 300)
 
 
-# classe e antidepressivo RATO
+## Figura10: Classe, antidepressivos e doses Rato  -----
 
 f10a <- df %>%
-  filter(species == "Rato") %>%
+  filter(dose_unit == "mg/kg",
+    species == "Rato") %>%
   ggplot(aes(
     x = fct_lump(fct_infreq(atd_class), n = 4, other_level = "Outros"),
-    fill = fct_lump_n(atd_type, n = 12, other_level = "Outros"))) +
+    fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"))) +
   geom_bar() +
   labs(y = "Nº de estudos", x = "Classe", title = "a") +
   scale_fill_manual(
     values = c(
+      "#ffe170",
       "#fec200",
       "#ff9400",
       "#ec2b2b",
       "#a6243a",
       "#f24a7a",
       "#f39da4",
-      "#b376a2",
       "#a94f93",
       "#692b75",
       "#006f9f",
@@ -2297,7 +2280,7 @@ f10a <- df %>%
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
-    legend.position = "right",
+    legend.position = "none",
     legend.text = element_text(size = 4, color = "grey20"),
     legend.title = element_text(size = 5),
     plot.margin = margin(10, 0, 10, 10),
@@ -2311,20 +2294,20 @@ f10a
 f10b <- df %>% 
   filter(dose_unit == "mg/kg",
          species == "Rato") %>% 
-  ggplot(aes(x = dose, y = fct_lump_n(atd_type, n = 10, other_level = "Outros"), color = fct_lump_n(atd_type, n = 10, other_level = "Outros"), fill = fct_lump_n(atd_type, n = 10, other_level = "Outros"))) + 
+  ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 12, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"))) + 
   ggridges::stat_density_ridges(
-    alpha = .7, size = .2, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
+    alpha = .7, size = .1, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
   ) + 
   labs(x = "Dose", title = "b", y = "Fármacos") +
   scale_fill_manual(
     values = c(
+      "#ffe170",
       "#fec200",
       "#ff9400",
       "#ec2b2b",
       "#a6243a",
       "#f24a7a",
       "#f39da4",
-      "#b376a2",
       "#a94f93",
       "#692b75",
       "#006f9f",
@@ -2334,13 +2317,13 @@ f10b <- df %>%
     )) +
   scale_color_manual(
     values = c(
+      "#ffe170",
       "#fec200",
       "#ff9400",
       "#ec2b2b",
       "#a6243a",
       "#f24a7a",
       "#f39da4",
-      "#b376a2",
       "#a94f93",
       "#692b75",
       "#006f9f",
@@ -2348,7 +2331,7 @@ f10b <- df %>%
       "#82c236",
       "grey80"
     )) +
-  scale_x_continuous(expand = c(0, 0), n.breaks = 6) +
+  scale_x_continuous(expand = c(0, 0), n.breaks = 6, limits = c(-15, 120)) +
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
@@ -2369,28 +2352,29 @@ f10b <- df %>%
     panel.grid.major.y = element_blank()
   ) 
 
-
+f10b
 
 Figura10 <- f10a + f10b
+Figura10
 
 save_plot(filename = "Figura10.png",
           plot = Figura10,
           dpi = 300)
 
-
+# isolar estudos com outras unidades de dose que nao mg/kg
 atd <- df %>% 
-  filter(species == "Rato") %>% 
-  group_by(atd_type) %>% 
-  count(atd_type, sort =T)
+  filter(dose_unit != "mg/kg") %>% 
+  group_by(study_reference) %>% 
+  distinct(dose_unit) %>% 
+  count(dose_unit, sort = T)
 
-  
-  
-atd
+# criar a salvar tabela 
+unidades_dose <- tibble(atd)
+write.table(atd , file = "data\\dose_otherunits.xlsx")
 
+## Figura11: Via de administração x frequencia adm x tempo de adm ----
 
-## Figura9: Via de administração x frequencia adm x tempo de adm ----
-
-f9a <- df %>% 
+f11 <- df %>% 
   ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_via)) +
   geom_bar()
 
