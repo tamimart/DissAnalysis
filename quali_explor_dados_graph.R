@@ -14,7 +14,7 @@ library(ggtext)       # adicionar texto
 library(cowplot)      # salvar plot
 library(ggrepel)      # dicionar rotulo
 library(ggmap)        # plotar mapa
-library(skimr)        # resumi estatistica
+library(skimr)        # resumir estatistica
 library(extrafont)    # adicionar fontes
 library(remotes)      # baixar pacotes remotamente
 library(colorspace)   # manipular cor
@@ -789,25 +789,24 @@ save_plot(filename = "Figura1.png",
 
 ## Figura2: Linhagens ----
 # Strain
-
-
+  
 f2a <- df %>%
-  group_by(strain) %>%
   filter(species == "Camundongo") %>%
-  summarise(counts = n()) %>%
-  mutate(counts = as.numeric(counts)) %>%
-  ggplot(aes(
+  group_by(study_reference) %>% 
+  distinct(strain) %>% 
+  group_by(strain) %>% 
+  summarise(counts = n()) %>% 
+ggplot(aes(
     x = factor(strain),
     y = counts,
     fill = strain,
     label = counts
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
-  labs(y = "Nº de estudos", x = "Linhagem", title = "a") +
-  scale_y_continuous(n.breaks = 5) +
+  labs(y = "Nº de publicações", x = "Linhagem", title = "a") +
+  scale_y_continuous(n.breaks = 5, expand = c(0,0), limits = c(0,60)) +
   coord_flip() +
-  ylim(0, 150) +
-  gghighlight(counts > 25,
+  gghighlight(counts > 15,
               calculate_per_facet = TRUE,
               label_key = strain) +
   scale_fill_manual(values = c("#ffe170", "#fec200", "#ff9400")) +
@@ -836,6 +835,49 @@ f2a <- df %>%
 f2b <- df %>%
   group_by(strain) %>%
   filter(species == "Camundongo") %>%
+  summarise(counts = n()) %>%
+  mutate(counts = as.numeric(counts)) %>%
+  ggplot(aes(
+    x = factor(strain),
+    y = counts,
+    fill = strain,
+    label = counts
+  )) +
+  geom_bar(color = "black", size = 0.2, stat = "identity") +
+  labs(y = "Nº de estudos", x = "Linhagem", title = "b") +
+  scale_y_continuous(n.breaks = 5, expand = c(0,0), limits = c(0,150)) +
+  coord_flip() +
+  gghighlight(counts > 25,
+              calculate_per_facet = TRUE,
+              label_key = strain) +
+  scale_fill_manual(values = c("#ffe170", "#fec200", "#ff9400")) +
+  geom_text(
+    color = "mintcream",
+    size = 2,
+    family = "Gadugi",
+    position = position_dodge(width = 0.9),
+    hjust = 1.1
+  ) +
+  theme_bw(base_family = "Gadugi") +
+  theme(
+    axis.text = element_text(
+      size = 5.5,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title = element_text(size = 7),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10, hjust = 0),
+    legend.position = "none",
+    plot.margin = margin(10, 10, 0, 0)
+  )
+
+f2c <- df %>%
+  group_by(strain) %>%
+  filter(species == "Camundongo") %>%
   summarise(counts = sum(N)) %>%
   mutate(counts = as.numeric(counts)) %>%
   ggplot(aes(
@@ -845,9 +887,9 @@ f2b <- df %>%
     label = counts
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
-  labs(y = "Nº de animais", x = "Linhagem", title = "b") +
+  labs(y = "Nº de animais", x = "Linhagem", title = "c") +
+  scale_y_continuous(expand = c(0,0), limits = c(0,2100)) +
   coord_flip() +
-  ylim(0, 2100) +
   gghighlight(counts > 500,
               calculate_per_facet = TRUE,
               label_key = strain) +
@@ -877,11 +919,13 @@ f2b <- df %>%
     plot.margin = margin(10, 10, 0, 0)
   )
 
-f2c <- df %>%
-  group_by(strain) %>%
+
+f2d <- df %>%
   filter(species == "Rato") %>%
-  summarise(counts = n()) %>%
-  mutate(counts = as.numeric(counts)) %>%
+  group_by(study_reference) %>% 
+  distinct(strain) %>% 
+  group_by(strain) %>% 
+  summarise(counts = n()) %>% 
   ggplot(aes(
     x = factor(strain),
     y = counts,
@@ -889,11 +933,10 @@ f2c <- df %>%
     label = counts
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
-  labs(y = "Nº de estudos", x = "Linhagem", title = "c") +
-  scale_y_continuous(n.breaks = 5) +
+  labs(y = "Nº de publicações", x = "Linhagem", title = "d") +
+  scale_y_continuous(n.breaks = 5, expand = c(0,0), limits = c(0,60)) +
   coord_flip() +
-  ylim(0, 150) +
-  gghighlight(counts > 25,
+  gghighlight(counts > 15,
               calculate_per_facet = TRUE,
               label_key = strain) +
   scale_fill_manual(values = c("#ec2b2b", "#a6243a")) +
@@ -916,10 +959,54 @@ f2c <- df %>%
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
     legend.position = "none",
-    plot.margin = margin(0, 10, 10, 10)
+    plot.margin = margin(10, 10, 0, 10)
   )
 
-f2d <- df %>%
+
+f2e <- df %>%
+  group_by(strain) %>%
+  filter(species == "Rato") %>%
+  summarise(counts = n()) %>%
+  mutate(counts = as.numeric(counts)) %>%
+  ggplot(aes(
+    x = factor(strain),
+    y = counts,
+    fill = strain,
+    label = counts
+  )) +
+  geom_bar(color = "black", size = 0.2, stat = "identity") +
+  labs(y = "Nº de estudos", x = "Linhagem", title = "e") +
+  scale_y_continuous(n.breaks = 5, expand = c(0,0), limits = c(0, 150)) +
+  coord_flip() +
+  gghighlight(counts > 25,
+              calculate_per_facet = TRUE,
+              label_key = strain) +
+  scale_fill_manual(values = c("#ec2b2b", "#a6243a")) +
+  geom_text(
+    color = "mintcream",
+    size = 2,
+    family = "Gadugi",
+    position = position_dodge(width = 0.9),
+    hjust = 1.1
+  ) +
+  theme_bw(base_family = "Gadugi") +
+  theme(
+    axis.text = element_text(
+      size = 5.5,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title = element_text(size = 7),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10, hjust = 0),
+    legend.position = "none",
+    plot.margin = margin(0, 10, 10, 0)
+  )
+
+f2f <- df %>%
   group_by(strain) %>%
   filter(species == "Rato") %>%
   summarise(counts = sum(N)) %>%
@@ -931,9 +1018,9 @@ f2d <- df %>%
     label = counts
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
-  labs(y = "Nº de animais", x = "Linhagem", title = "d") +
+  labs(y = "Nº de animais", x = "Linhagem", title = "f") +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 2100)) +
   coord_flip() +
-  ylim(0, 2100) +
   gghighlight(counts > 500,
               calculate_per_facet = TRUE,
               label_key = strain) +
@@ -963,9 +1050,7 @@ f2d <- df %>%
     plot.margin = margin(0, 10, 10, 0)
   )
 
-Figura2 <- (f2a + f2b) / (f2c + f2d) +
-  plot_layout(heights = c(11, 6), guides = 'collect')
-
+Fig2t <- (f2a + f2b + f2c) / (f2d + f2e + f2f) + plot_layout(heights = c(11, 6), guides = 'collect')
 
 Figura2
 save_plot(filename = "Figura2.png",
@@ -1313,7 +1398,7 @@ f34d <- df %>%
 
 f34 <-
   (f34a + f34b) /  (f34c + f34d) + plot_layout(heights = c(8, 8))
-save_plot(filename = "Figura34.png",
+save_plot(filename = "Figura3e4_ppt.png",
           plot = f34,
           dpi = 300)
 
@@ -1332,7 +1417,7 @@ f5a <- df %>%
   slice(1) %>%
   group_by(model_phenotype, species) %>%
   filter(model_phenotype != "NA", ) %>%
-  summarise(counts = n()) %>%
+  summarise(counts = n()) %>% 
   ggplot(aes(
     x = factor(model_phenotype),
     y = counts,
@@ -1343,7 +1428,7 @@ f5a <- df %>%
   labs(y = "Nº de publicações", x = "Modelo") +
   scale_fill_manual(values = c("#82c236", "#692b75")) +
   coord_flip() +
-  ylim(0, 8) +
+  scale_y_continuous(limits = c(0, 8), expand = c(0, 0), n.breaks = 3) +
   facet_wrap( ~ species, strip.position = "top") +
   gghighlight(counts >= 3,
               calculate_per_facet = TRUE,
@@ -1362,6 +1447,7 @@ f5a <- df %>%
       angle = 0,
       color = "grey20"
     ),
+    axis.text.x = element_text(size = 5),
     axis.title = element_text(size = 7),
     axis.title.x = element_text(margin = margin(t = 5)),
     axis.title.y = element_blank(),
@@ -1370,7 +1456,7 @@ f5a <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 6),
-    plot.margin = margin(10, 10, 10, 0)
+    plot.margin = margin(10, 10, 0, 0)
   )
 
 
@@ -1383,7 +1469,7 @@ df %>% group_by(model_phenotype, species) %>%
 f5b <- df %>%
   group_by(model_phenotype, species) %>%
   filter(model_phenotype != "NA", ) %>%
-  summarise(counts = n()) %>%
+  summarise(counts = n()) %>% 
   ggplot(aes(
     x = factor(model_phenotype),
     y = counts,
@@ -1394,7 +1480,7 @@ f5b <- df %>%
   labs(y = "Nº de estudos", x = "Modelo") +
   scale_fill_manual(values = c("#f24a7a","#82c236", "#006f9f","#692b75")) +
   coord_flip() +
-  ylim(0, 8) +
+  scale_y_continuous(limits = c(0, 12), expand = c(0, 0), n.breaks = 4) +
   facet_wrap( ~ species, strip.position = "top") +
   gghighlight(counts > 5,
               calculate_per_facet = TRUE,
@@ -1414,6 +1500,7 @@ f5b <- df %>%
       color = "grey30"
     ),
     axis.text.y = element_blank(),
+    axis.text.x = element_text(size = 5),
     axis.ticks.y = element_blank(),
     axis.title = element_text(size = 7),
     axis.title.x = element_text(margin = margin(t = 5)),
@@ -1423,7 +1510,7 @@ f5b <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 6),
-    plot.margin = margin(10, 10, 10, 0)
+    plot.margin = margin(10, 10, 0, 0)
   )
 
 # Modelos em qtd de animais
@@ -1447,7 +1534,7 @@ f5c <- df %>%
   labs(y = "Nº de animais", x = "Modelo animal") +
   scale_fill_manual(values = c("#f24a7a", "#82c236","#006f9f", "#692b75", "#ff9400")) +
   coord_flip() +
-  ylim(0, 150) +
+  scale_y_continuous(limits = c(0, 200), expand = c(0, 0)) +
   facet_wrap( ~ species, strip.position = "top") +
   gghighlight(counts > 75,
               calculate_per_facet = TRUE,
@@ -1467,6 +1554,7 @@ f5c <- df %>%
       color = "grey30"
     ),
     axis.text.y = element_blank(),
+    axis.text.x = element_text(size = 5),
     axis.ticks.y = element_blank(),
     axis.title = element_text(size = 7),
     axis.title.y = element_blank(),
@@ -1476,13 +1564,13 @@ f5c <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 6),
-    plot.margin = margin(10, 10, 10, 0)
+    plot.margin = margin(10, 10, 0, 0)
   )
 
 # Combinar e salvar
 
 Figura5 <- f5a + f5b + f5c
-
+Figura5
 save_plot(filename = "Figura5.png",
           plot = Figura5,
           dpi = 300)
@@ -1925,7 +2013,7 @@ f7ba <- cage_3d %>%
 
 Figura7ab <- f7ab | f7ba
 
-save_plot(filename = "Figura7v2.png",
+save_plot(filename = "Figura7_ppt.png",
           plot = Figura7ab,
           dpi = 300)
 
