@@ -454,7 +454,9 @@ F0 <-
     segment.curvature = -0.1,
     segment.ncp = 3,
     segment.angle = 10,
-  )
+  ) +
+  coord_quickmap() # ajusta proporcao certa
+
 
 # Separar publicações por ano
 
@@ -516,7 +518,8 @@ F01996 <-
     axis.title = element_blank(),
     legend.position = "none",
     plot.caption = element_text(hjust = 0.5, size = rel(0.6))
-  )
+  ) +
+  coord_quickmap() 
 
 # Até 2006
 
@@ -561,7 +564,8 @@ F02006 <-
     axis.title = element_blank(),
     legend.position = "none",
     plot.caption = element_text(hjust = 0.5, size = rel(0.6))
-  )
+  ) +
+  coord_quickmap()
 
 
 # Idiomas
@@ -647,6 +651,7 @@ Figura0a <- df %>%
     axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 10, 20, 10)
   )
 
@@ -669,14 +674,14 @@ f1a <- df %>%
     fill = species,
     label = counts
   )) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity") + # mesmo que geom_col() sem stat
   geom_text(
     size = 2.5,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
     vjust = -0.25
   ) +
-  scale_y_continuous(limits = c(0, 5397), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 7000), expand = c(0, 0)) +
   labs(y = "Nº de animais", x = "Espécie", title = "a") +
   scale_fill_manual(values = met.brewer("Signac", 2)) +
   theme(
@@ -717,6 +722,7 @@ f1b <- df  %>% # especie no tempo
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 0, 0, 10)
   )
 
@@ -737,7 +743,7 @@ f1c <- df %>%
     vjust = -0.25
   ) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
-  scale_y_continuous(limits = c(0, 6906), expand = c(0, 0)) + # 300 a mais para caber a anotacao da maior barra
+  scale_y_continuous(limits = c(0, 7000), expand = c(0, 0)) + # 300 a mais para caber a anotacao da maior barra
   labs(y = "Nº de animais", x = "Sexo", title = "c") +
   theme(
     axis.text = element_text(
@@ -774,6 +780,7 @@ f1d <- df  %>% # sexo no tempo
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 0, 0, 10)
   )
 
@@ -829,6 +836,7 @@ ggplot(aes(
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
     legend.position = "none",
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 10, 0, 10)
   )
 
@@ -872,6 +880,7 @@ f2b <- df %>%
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
     legend.position = "none",
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 10, 0, 0)
   )
 
@@ -916,6 +925,7 @@ f2c <- df %>%
     plot.title = element_text(size = 10, hjust = 0),
     plot.title.position = "plot",
     legend.position = "none",
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 10, 0, 0)
   )
 
@@ -959,6 +969,7 @@ f2d <- df %>%
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
     legend.position = "none",
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 10, 0, 10)
   )
 
@@ -1003,6 +1014,7 @@ f2e <- df %>%
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
     legend.position = "none",
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(0, 10, 10, 0)
   )
 
@@ -1047,14 +1059,15 @@ f2f <- df %>%
     plot.title = element_text(size = 10, hjust = 0),
     plot.title.position = "plot",
     legend.position = "none",
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(0, 10, 10, 0)
   )
 
 Fig2t <- (f2a + f2b + f2c) / (f2d + f2e + f2f) + plot_layout(heights = c(11, 6), guides = 'collect')
 
-Figura2
+
 save_plot(filename = "Figura2.png",
-          plot = Figura2,
+          plot = Fig2t,
           dpi = 300)
 
 
@@ -1126,7 +1139,7 @@ f3 <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_line(color = "grey90", size = .3),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 20, 0)
   )
 
@@ -1196,7 +1209,7 @@ f4 <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_line(color = "grey90", size = .3),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 20, 0)
   )
 
@@ -1251,7 +1264,7 @@ f34a <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank(),
     plot.margin = margin(0, 0, 5, 0)
   )
@@ -1297,7 +1310,7 @@ f34b <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank(),
     plot.margin = margin(0, 0, 5, 0)
   )
@@ -1344,7 +1357,7 @@ f34c <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank(),
     plot.margin = margin(0, 0, 0, 0)
   )
@@ -1389,7 +1402,7 @@ f34d <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank(),
     plot.margin = margin(0, 0, 0, 0)
   )
@@ -1451,7 +1464,7 @@ f5a <- df %>%
     axis.title = element_text(size = 7),
     axis.title.x = element_text(margin = margin(t = 5)),
     axis.title.y = element_blank(),
-    panel.grid.major = element_line(color = "grey90", size = .2),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.title.position = "plot",
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
@@ -1505,7 +1518,7 @@ f5b <- df %>%
     axis.title = element_text(size = 7),
     axis.title.x = element_text(margin = margin(t = 5)),
     axis.title.y = element_blank(),
-    panel.grid.major = element_line(color = "grey90", size = .2),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.title.position = "plot",
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
@@ -1559,7 +1572,7 @@ f5c <- df %>%
     axis.title = element_text(size = 7),
     axis.title.y = element_blank(),
     axis.title.x = element_text(margin = margin(t = 5)),
-    panel.grid.major = element_line(color = "grey90", size = .2),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.title.position = "plot",
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
@@ -1570,6 +1583,7 @@ f5c <- df %>%
 # Combinar e salvar
 
 Figura5 <- f5a + f5b + f5c
+
 Figura5
 save_plot(filename = "Figura5.png",
           plot = Figura5,
@@ -1686,7 +1700,7 @@ F6b <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_line(color = "grey90", size = .3),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 0, 10, 10)
   )
 
@@ -1754,7 +1768,7 @@ F6c <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_line(color = "grey90", size = .3),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 0, 10, 10)
   )
 
@@ -1869,7 +1883,7 @@ F7a <- cage_3d %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_line(color = "grey90", size = .3),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 0, 0)
   )
 
@@ -1908,7 +1922,7 @@ F7b <- cage_3d %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major = element_line(color = "grey90", size = .3),
+    panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 0, 20, 0)
   )
 
@@ -1961,7 +1975,7 @@ f7ab <- cage_3d %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank(),
     plot.margin = margin(20, 0, 5, 20)
   )
@@ -2005,7 +2019,7 @@ f7ba <- cage_3d %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank(),
     plot.margin = margin(20, 0, 5, 20)
   )
@@ -2024,7 +2038,7 @@ save_plot(filename = "Figura7_ppt.png",
 f8a <- df %>%
   group_by(atd_class) %>%
   summarise(counts = n()) %>% 
-  mutate(atd_class = fct_reorder(atd_class, desc(counts))) %>%
+  mutate(atd_class = fct_reorder(atd_class, desc(counts))) %>% # reordernar categoria de acordo com frequencia
   ggplot(aes(
     x = fct_infreq(atd_class),
     y = counts,
@@ -2083,7 +2097,8 @@ f8b <- df  %>%
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
-    plot.margin = margin(10, 0, 0, 10)
+    plot.margin = margin(10, 0, 0, 10),
+    panel.grid.major = element_line(color = "grey90", size = .1)
   )
 
 Figura8 <- f8a / f8b
@@ -2106,6 +2121,12 @@ f9a <- df %>%
     x = fct_lump(fct_infreq(atd_class), n = 6, other_level = "Outros"),
     fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"))) +
   geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count",
+            color = "mintcream",
+            size = 2,
+            family = "Gadugi",
+            position = "stack",
+            vjust = 1.2) +
   labs(y = "Nº de estudos", x = "Classe", title = "a") +
   scale_fill_manual(
     values = c(
@@ -2150,7 +2171,7 @@ f9a <- df %>%
     legend.title = element_text(size = 5),
     plot.margin = margin(10, 0, 10, 10),
     legend.key.size = unit(.8, "line"),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank()
   )
 
@@ -2244,6 +2265,12 @@ f10a <- df %>%
     x = fct_lump(fct_infreq(atd_class), n = 4, other_level = "Outros"),
     fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"))) +
   geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count",
+            color = "mintcream",
+            size = 2,
+            family = "Gadugi",
+            position = "stack",
+            vjust = 1.2) +
   labs(y = "Nº de estudos", x = "Classe", title = "a") +
   scale_fill_manual(
     values = c(
@@ -2285,7 +2312,7 @@ f10a <- df %>%
     legend.title = element_text(size = 5),
     plot.margin = margin(10, 0, 10, 10),
     legend.key.size = unit(.8, "line"),
-    panel.grid.major.y = element_line(color = "grey90", size = .3),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank()
   )
 f10a
@@ -2374,9 +2401,84 @@ write.table(atd , file = "data\\dose_otherunits.xlsx")
 
 ## Figura11: Via de administração x frequencia adm x tempo de adm ----
 
-f11 <- df %>% 
+df %>% 
+  filter(species == "Camundongo") %>% 
   ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_via)) +
   geom_bar()
+
+df %>% 
+  filter(species == "Camundongo") %>% 
+  ggplot(aes(x = fct_infreq(treatment_via), y = treatment_freq, fill = treatment_freq)) +
+  geom_col()
+
+f11
+
+df <- df %>% 
+  mutate(treatment_freq = as.factor(treatment_freq))
+
+f11b <- df %>%
+  filter(species == "Camundongo",
+         treatment_freq != "NA") %>%
+  ggplot(aes(y = treatment_duration, x = fct_lump_n(fct_infreq(treatment_via), n = 4))) +
+  geom_point(
+    aes(color = treatment_freq),
+    position = position_jitterdodge(),
+    na.rm = T,
+    alpha = .5
+  ) +
+  labs(y = "Duração do tratamento (dias)", x = "Via de administração", title = "b") +
+  scale_color_manual(name = "Frequência de administração",
+                     values = c("#fec200", "#f24a7a", "#006f9f")) +
+  scale_y_continuous(expand = c(.01, 0), limits = c(0, 120)) +
+  theme_classic(base_family = "Gadugi") +
+  theme(
+    axis.text = element_text(
+      size = 7,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.title = element_text(size = 8, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(colour = 'black', size = 8),
+    plot.margin = margin(20, 0, 5, 20),
+    legend.position = "bottom",
+    legend.title = element_text(size = 8),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
+  )
+
+f11b  
+
+save_plot(filename = "Figura11.png",
+          plot = f11b,
+          dpi = 300)
+
+df %>% 
+  filter(species == "Rato") %>% 
+  ggplot(aes(y = treatment_duration, x = treatment_freq, color = treatment_via)) +
+  geom_jitter() +
+  labs(y = "Duração do tratamento (dias)", x = "Frequência de tratamento", title = "a") +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(
+      margin = margin(t = 5)),
+      plot.title = element_text(size = 10),
+      plot.title.position = "plot",
+      strip.background = element_rect(fill = "white", color = "black"),
+      strip.text = element_text(colour = 'black', size = 8),
+      panel.grid.major.y = element_line(color = "grey90", size = .3),
+      panel.grid.major.x = element_blank(),
+      plot.margin = margin(20, 0, 5, 20)
+    )
 
 # DESFECHO
 ##Figura10: protocolo x metodos de analise / tamanho x diametro cuba / altura agua x temperatura agua -----
