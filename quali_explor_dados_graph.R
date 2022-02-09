@@ -20,6 +20,8 @@ library(remotes)      # baixar pacotes remotamente
 library(colorspace)   # manipular cor
 library(ggdist)       # plotar densidade
 library(gghalves)     # plotar pontos
+library(writexl)      # salvar tabela
+
 
 library(ggcorrplot)
 library(ggradar)
@@ -270,6 +272,62 @@ df$atd_type <-
       "vortioxetina" 
     )
   ) 
+
+# ordernar freq adm
+
+df <- df %>% 
+  mutate(treatment_freq = as.factor(treatment_freq)) # alterar variavel para categorica
+
+df$treatment_freq <-
+  factor(
+    df$treatment_freq,
+    levels = c(
+      "1",
+      "2",
+      "3",
+      "NA"
+    ),
+    labels = c(
+      "1",
+      "2",
+      "3",
+      "Sem info"
+    )
+  ) 
+
+# ordernar via adm
+
+levels(df$treatment_via)
+
+df$treatment_via <-
+  factor(
+    df$treatment_via,
+    levels = c(
+      "gavage",
+      "intranasal",       
+      "IP",                       
+      "microinfusionIL",
+      "microinjection (dorsal hippocampus)",
+      "NA",
+      "oral", 
+      "oral (dietary treatment)",           
+      "subcutaneous",
+      "tablet" 
+    ),
+    labels = c(
+      "Gavagem",
+      "Intranasal",       
+      "Intraperitoneal",                       
+      "Microinfusão (IL)",
+      "Microinjeção (hipocampo)",
+      "Sem info",
+      "Oral", 
+      "Oral (dieta)",           
+      "Subcutânea",
+      "Tablete"
+    )
+  ) 
+
 
 
 # PUBLICAÇÃO
@@ -1608,7 +1666,7 @@ F6a <- df %>%
   )) +
   geom_bar(stat = "identity") +
   labs(y = "Nº de publicações", x = "Ciclo de luz do biotério (h/h)", title = "a") +
-  scale_fill_manual(values = c("yellow1", "gold1", "grey80", "gold4", "gold2", "gold3")) +
+  scale_fill_manual(values = c("#fec200", "#fec200", "grey80", "#fec200", "#fec200", "#fec200")) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 110)) +
   geom_text(
     size = 2.5,
@@ -1623,7 +1681,7 @@ F6a <- df %>%
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 8, hjust = 1),
+    axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10),
@@ -1724,6 +1782,7 @@ F6c <- df %>%
   ggplot(aes(x = bioterium_umid)) +
   geom_histogram(fill = "#006f9f") +
   scale_y_continuous(expand = c(0,0), limits = c(0,30), n.breaks = 4) +
+  scale_x_continuous(n.breaks = 6) +
   geom_text(
     data = m_u,
     aes(label = label),
@@ -2399,68 +2458,65 @@ atd <- df %>%
 unidades_dose <- tibble(atd)
 write.table(atd , file = "data\\dose_otherunits.xlsx")
 
-## Figura11: Via de administração x frequencia adm x tempo de adm ----
+## Figura11 e 12: Via de administração x frequencia adm x tempo de adm ----
 
-df %>% 
+# Vias de adm e frequencia de adm
+
+f11a <- df %>% 
   filter(species == "Camundongo") %>% 
-  ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_via)) +
-  geom_bar()
-
-df %>% 
-  filter(species == "Camundongo") %>% 
-  ggplot(aes(x = fct_infreq(treatment_via), y = treatment_freq, fill = treatment_freq)) +
-  geom_col()
-
-f11
-
-df <- df %>% 
-  mutate(treatment_freq = as.factor(treatment_freq))
-
-f11b <- df %>%
-  filter(species == "Camundongo",
-         treatment_freq != "NA") %>%
-  ggplot(aes(y = treatment_duration, x = fct_lump_n(fct_infreq(treatment_via), n = 4))) +
-  geom_point(
-    aes(color = treatment_freq),
-    position = position_jitterdodge(),
-    na.rm = T,
-    alpha = .5
+  ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_freq)) +
+  geom_bar(position = position_dodge2(preserve = "single")) + 
+  geom_text(aes(label = ..count..), stat = "count",
+            color = "black",
+            size = 2,
+            family = "Gadugi",
+            position = position_dodge2(preserve = "single", width = 1),
+            vjust = -.25,
   ) +
-  labs(y = "Duração do tratamento (dias)", x = "Via de administração", title = "b") +
-  scale_color_manual(name = "Frequência de administração",
-                     values = c("#fec200", "#f24a7a", "#006f9f")) +
-  scale_y_continuous(expand = c(.01, 0), limits = c(0, 120)) +
-  theme_classic(base_family = "Gadugi") +
+  scale_y_continuous(limits = c(0, 230), expand = c(0, 0)) +
+  labs(y = "Nº de estudos", x = "Via de administração", title = "a") +
+  scale_fill_manual(values = c("1" = "#fec200", "2" = "#009c7e", "3" = "#a94f93")) +
   theme(
     axis.text = element_text(
-      size = 7,
+      size = 6,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 1),
-    axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 7, hjust = 1),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
-    strip.background = element_rect(fill = "white", color = "black"),
-    strip.text = element_text(colour = 'black', size = 8),
-    plot.margin = margin(20, 0, 5, 20),
-    legend.position = "bottom",
-    legend.title = element_text(size = 8),
-    panel.grid.major.y = element_line(color = "grey90", size = .1),
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin = margin(0, 0, 0, 0)
   )
 
-f11b  
+f11a
 
-save_plot(filename = "Figura11.png",
-          plot = f11b,
-          dpi = 300)
+# vias de adm, frequencia de adm e duracao do tratamento
 
-df %>% 
-  filter(species == "Rato") %>% 
-  ggplot(aes(y = treatment_duration, x = treatment_freq, color = treatment_via)) +
-  geom_jitter() +
-  labs(y = "Duração do tratamento (dias)", x = "Frequência de tratamento", title = "a") +
+f11b <- df %>%
+  filter(species == "Camundongo") %>%
+  ggplot(aes(y = treatment_duration, x = fct_infreq(treatment_via))) +
+  geom_point(
+    aes(color = treatment_freq),
+    position = position_jitterdodge(),
+    size = .8,
+    shape = 19,
+    alpha = .5
+  ) +
+  labs(y = "Duração do tratamento (dias)", x = "Via de administração", title = "b") +
+  scale_color_manual(
+    name = "Administrações/dia",
+    values = c(
+      "1" = "#fec200",
+      "2" = "#009c7e",
+      "3" = "#a94f93",
+      "Sem info" = "grey30"
+    )
+  ) +
+  scale_y_continuous(expand = c(.01, 0), limits = c(0, 120)) +
+  theme_classic(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
       size = 6,
@@ -2469,19 +2525,234 @@ df %>%
     ),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(
-      margin = margin(t = 5)),
-      plot.title = element_text(size = 10),
-      plot.title.position = "plot",
-      strip.background = element_rect(fill = "white", color = "black"),
-      strip.text = element_text(colour = 'black', size = 8),
-      panel.grid.major.y = element_line(color = "grey90", size = .3),
-      panel.grid.major.x = element_blank(),
-      plot.margin = margin(20, 0, 5, 20)
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(colour = 'black', size = 8),
+    plot.margin = margin(0, 0, 0, 0),
+    legend.title = element_text(size = 5),
+    legend.text = element_text(size = 4),
+    legend.position = "top",
+    legend.justification = "right",
+    legend.margin = margin(0,0,0,0),
+    legend.box.margin = margin(-10, 0,-10,-10),
+    legend.spacing.x = unit(0.001,'cm'),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
+    panel.grid.minor.y = element_line(color = "grey90", size = .1)
+  )
+f11b
+
+F11 <- (f11a + plot_spacer() + plot_layout(widths = c(6,3))) / (f11b + plot_spacer() + plot_layout(widths = c(6,3))) +  plot_layout(heights = c(3,8))
+
+F11
+save_plot(filename = "Figura11.png",
+          plot = F11,
+          dpi = 300)
+
+# stat da duracao da adm por via de adm
+
+my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), iqr = ~ IQR(., na.rm = TRUE)),
+                     base = sfl(complete = n_complete))
+
+stat_t_d_cam <- df %>%
+  filter(species == "Camundongo") %>% 
+  group_by(treatment_via) %>%
+  my_skim(treatment_duration) %>%
+  tibble::as_tibble()
+
+
+write_xlsx(stat_t_d_cam,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_cam.xlsx")
+
+
+# RATOS
+
+# Vias de adm e frequencia de adm
+
+f12a <- df %>% 
+  filter(species == "Rato") %>% 
+  ggplot(aes(x = fct_lump_n(fct_infreq(treatment_via), n = 8, other_level = "Outros"), fill = treatment_freq)) +
+  geom_bar(position = position_dodge2(preserve = "single")) + 
+  geom_text(aes(label = ..count..), stat = "count",
+            color = "black",
+            size = 2,
+            family = "Gadugi",
+            position = position_dodge2(preserve = "single", width = 1),
+            vjust = -.25,
+  ) +
+  scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) +
+  scale_x_discrete(
+    labels = function(x)
+      str_wrap(x, width = 15)
+  ) +
+  labs(y = "Nº de estudos", x = "Via de administração", title = "a") +
+  scale_fill_manual(values = c("1" = "#fec200", "2" = "#009c7e", "3" = "#a94f93", "Sem info" = "grey80")) +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 7, hjust = 1),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+f12a
+
+# vias de adm, frequencia de adm e duracao do tratamento
+
+f12b <- df %>%
+  filter(species == "Rato") %>%
+  ggplot(aes(y = treatment_duration, x = fct_lump_n(fct_infreq(treatment_via), n = 8, other_level = "Outros"))) +
+  geom_point(
+    aes(color = treatment_freq),
+    position = position_jitterdodge(),
+    size = .8,
+    shape = 19,
+    alpha = .5
+  ) +
+  labs(y = "Duração do tratamento (dias)", x = "Via de administração", title = "b") +
+  scale_color_manual(
+    name = "Administrações/dia",
+    values = c(
+      "1" = "#fec200",
+      "2" = "#009c7e",
+      "3" = "#a94f93",
+      "Sem info" = "grey30"
     )
+  ) +
+  scale_y_continuous(expand = c(.001, 0), limits = c(0, 50)) +
+  scale_x_discrete(
+    labels = function(x)
+      str_wrap(x, width = 15)
+  ) +
+  theme_classic(base_family = "Gadugi") +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(colour = 'black', size = 8),
+    plot.margin = margin(0, 0, 0, 0),
+    legend.title = element_text(size = 5),
+    legend.text = element_text(size = 4),
+    legend.position = "top",
+    legend.justification = "right",
+    legend.margin = margin(0,0,0,0),
+    legend.box.margin = margin(-10, 0,-10,-10),
+    legend.spacing.x = unit(0.001,'cm'),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
+    panel.grid.minor.y = element_line(color = "grey90", size = .1)
+  )
+
+f12b
+
+F12 <- f12a  / f12b  +  plot_layout(heights = c(3,8))
+
+F12
+save_plot(filename = "Figura12.png",
+          plot = F12,
+          dpi = 300)
+
+# stat da duracao da adm por via de adm
+
+my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), iqr = ~ IQR(., na.rm = TRUE)),
+                     base = sfl(complete = n_complete))
+
+stat_t_d_rat <- df %>%
+  filter(species == "Rato") %>% 
+  group_by(treatment_via) %>%
+  my_skim(treatment_duration) %>%
+  tibble::as_tibble()
+
+
+write_xlsx(stat_t_d_rat,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_rat.xlsx")
+
 
 # DESFECHO
-##Figura10: protocolo x metodos de analise / tamanho x diametro cuba / altura agua x temperatura agua -----
+
+##Figura13: protocolo x metodos de analise / tamanho x diametro cuba / altura agua x temperatura agua -----
 
 
+
+
+
+
+#CAMUNDONGO
+
+
+f2a <- df %>%
+  filter(species == "Camundongo") %>%
+  group_by(study_reference) %>% 
+  distinct(strain) %>% 
+  group_by(strain) %>% 
+  summarise(counts = n()) 
+  
+
+
+f13a <- df %>%
+  filter(species == "Camundongo") %>%
+  group_by(study_reference) %>% 
+  distinct(fst_protocol) %>% 
+  group_by(fst_protocol) %>% 
+  summarise(counts = n()) %>% 
+  mutate(fst_protocol = fct_reorder(fst_protocol, desc(counts))) %>%
+  ggplot(aes(x = fct_lump_n(fst_protocol, n = 3, other_level = "Outros"), y = counts)) +
+  geom_col(fill = "turquoise2") +
+  labs(y = "Nº de publicações", x = "Protocolo de nado forçado", title = "a") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 60)) +
+  geom_text(aes(label = counts),
+    size = 2.5,
+    family = "Gadugi",
+    position = position_dodge(width = 0.9),
+    vjust = -0.25
+  ) +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin = margin(10, 0, 10, 10)
+  )
+
+
+f13a
+
+
+#RATO
+
+
+
+#STAT NADO
+
+my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), iqr = ~ IQR(., na.rm = TRUE)),
+                     base = sfl(complete = n_complete))
+
+stat_nado <- df %>%
+  group_by(species) %>%
+  my_skim(fst_protocol, measurement_method, cylinder_height, cylinder_diameter, water_depth, water_temperature) %>%
+  tibble::as_tibble()
+
+write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\stat_nado.xlsx")
 
