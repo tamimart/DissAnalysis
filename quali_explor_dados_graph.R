@@ -328,6 +328,112 @@ df$treatment_via <-
     )
   ) 
 
+#protocolo tnf
+
+df$fst_protocol <-
+  factor(
+    df$fst_protocol,
+    levels = c("NA",
+               "pre?test6score4",
+               "pre13test6",
+               "pre15score5",
+               "pre15test?",
+               "pre15test10",
+               "pre15test15",
+               "pre15test5",
+               "pre15test5(d1)test5(d7)",
+               "pre15test6",
+               "pre15test6score4",
+               "pre15test6score5",
+               "pre20test5",
+               "pre5test5",
+               "pre6test6score5",
+               "pre7x15test15",
+               "test10",
+               "test15",
+               "test15score13",
+               "test15score5",           
+               "test15score5to10",
+               "test15score6",
+               "test5",
+               "test5score4",
+               "test5scorefirst2",
+               "test6",
+               "test6score4",
+               "test6score5",
+               "test7score6",
+               "test9"           
+    ),
+    labels = c(
+      "Sem info",
+      "Pré-teste ?' + teste 6' + score 4'final",
+      "Pré-teste 13' + teste 6'",
+      "Pré-teste 15' + score 5'final",
+      "Pré-teste 15' + teste ?'",
+      "Pré-teste 15' + teste 10'",
+      "Pré-teste 15' + teste 15'",
+      "Pré-teste 15' + teste 5'",
+      "Pré-teste 15' + teste 5' (dia 1) + teste 5' (dia 7)",
+      "Pré-teste 15' + teste 6'",
+      "Pré-teste 15' + teste 6' + score 4'final",
+      "Pré-teste 15' + teste 6' + score 5'final",
+      "Pré-teste 20' + teste 5'",
+      "Pré-teste 5' + teste 5'",
+      "Pré-teste 6' + teste 6' + score 5'final",
+      "Pré-teste 7x15' + teste 15'",
+      "Teste 10'",
+      "Teste 15'",
+      "Teste 15' + score 13'final",
+      "Teste 15' + score 5'final",           
+      "Teste 15' + score 5'meio",
+      "Teste 15' + score 6'final",
+      "Teste 5'",
+      "Teste 5' + score 4'final",
+      "Teste 5' + score 2'inicial",
+      "Teste 6'",
+      "Teste 6' + score 4'final",
+      "Teste 6 + score 5'final",
+      "Teste 7' + score 6'final",
+      "Teste 9'"
+    )
+  ) 
+
+
+#fst analise
+
+df$measurement_method <-
+  factor(
+    df$measurement_method,
+    levels = c(
+      "manually",
+      "manually, chronometers",
+      "manually, score60sinterval",
+      "video analysis, automated",
+      "NA",
+      "Unclear, score5sinterval",            
+      "Unclear",
+      "video analysis",
+      "video analysis, chronometers",
+      "video analysis, manual",
+      "video analysis, manual and automated", 
+      "video analysis, score5sinterval"
+    ),
+    labels = c(
+      "Manual",
+      "Manual com cronômetro",
+      "Manual, intervalos de 60s",
+      "Videoanálise automatizada",
+      "Sem info",
+      "Inexplícito, intervalos de 60s",            
+      "Inexplícito",
+      "Videoanálise",
+      "Videoanálise com cronômetro",
+      "Videoanálise manual",
+      "Videoanálise manual e automatizada", 
+      "Videoanálise, intervalos de 5s"
+    )
+  ) 
+
 
 
 # PUBLICAÇÃO
@@ -1666,7 +1772,7 @@ F6a <- df %>%
   )) +
   geom_bar(stat = "identity") +
   labs(y = "Nº de publicações", x = "Ciclo de luz do biotério (h/h)", title = "a") +
-  scale_fill_manual(values = c("#fec200", "#fec200", "grey80", "#fec200", "#fec200", "#fec200")) +
+  scale_fill_manual(values = c("#fec200", "#ffe170", "grey80", "#ffe170", "#ffe170", "#ffe170")) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 110)) +
   geom_text(
     size = 2.5,
@@ -2686,34 +2792,44 @@ write_xlsx(stat_t_d_rat,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalys
 ##Figura13: protocolo x metodos de analise / tamanho x diametro cuba / altura agua x temperatura agua -----
 
 
-
-
-
-
 #CAMUNDONGO
-
-
-f2a <- df %>%
-  filter(species == "Camundongo") %>%
-  group_by(study_reference) %>% 
-  distinct(strain) %>% 
-  group_by(strain) %>% 
-  summarise(counts = n()) 
-  
-
 
 f13a <- df %>%
   filter(species == "Camundongo") %>%
-  group_by(study_reference) %>% 
-  distinct(fst_protocol) %>% 
-  group_by(fst_protocol) %>% 
-  summarise(counts = n()) %>% 
-  mutate(fst_protocol = fct_reorder(fst_protocol, desc(counts))) %>%
-  ggplot(aes(x = fct_lump_n(fst_protocol, n = 3, other_level = "Outros"), y = counts)) +
-  geom_col(fill = "turquoise2") +
-  labs(y = "Nº de publicações", x = "Protocolo de nado forçado", title = "a") +
+  group_by(study_reference) %>%
+  distinct(fst_protocol) %>%
+  group_by(fst_protocol) %>%
+  ggplot(aes(
+    x = fct_lump_n(
+      fct_infreq(fst_protocol),
+      n = 9,
+      other_level = "Outros"
+    ),
+    fill = fct_lump_n(fct_infreq(fst_protocol),
+                      n = 9)
+  )) +
+  geom_bar() +
+  scale_fill_manual(values = c(
+    "#82C236",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A"
+  )) +
+  labs(y = "Nº de publicações", x = "Protocolo do nado forçado em camundongos", title = "a") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 60)) +
-  geom_text(aes(label = counts),
+  scale_x_discrete(
+    labels = function(x)
+      str_wrap(x, width = 13)
+  ) +
+  geom_text(
+    aes(label = ..count..),
+    stat = "count",
     size = 2.5,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
@@ -2728,7 +2844,106 @@ f13a <- df %>%
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5)),
+    axis.title.x = element_text(margin = margin(t = 5, r = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+f13a
+#metodo de analise
+
+f13b <- df %>%
+  filter(species == "Camundongo") %>%
+  group_by(study_reference) %>% 
+  distinct(measurement_method) %>% 
+  group_by(measurement_method) %>% 
+  ggplot(aes(x = fct_lump_n(fct_infreq(measurement_method), n = 6, other_level = "Outros"), fill = fct_lump_n(fct_infreq(measurement_method), n = 6))) +
+  geom_bar() +
+  scale_fill_manual(values = c("grey80", "#692b75", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2" )) +
+  labs(y = "Nº de publicações", x = "Método de análise do nado forçado em camundongos", title = "b") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 80)) +
+  scale_x_discrete(labels = function(x)
+    str_wrap(x, width = 15)) +
+  geom_text(aes(label = ..count..), stat = "count",
+            size = 2.5,
+            family = "Gadugi",
+            position = position_dodge(width = 0.9),
+            vjust = -0.25
+  ) +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5, r = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+f13b
+
+Figura13 <- f13a / f13b
+
+save_plot(filename = "Figura13.png",
+          plot = Figura13,
+          dpi = 300)
+
+
+#RATO
+
+f14a <- df %>%
+  filter(species == "Rato") %>%
+  group_by(study_reference) %>%
+  distinct(fst_protocol) %>%
+  group_by(fst_protocol) %>%
+  ggplot(aes(x = fct_lump_n(
+    fct_infreq(fst_protocol),
+    n = 3,
+    other_level = "Outros"
+  ), fill = fct_lump_n(fct_infreq(fst_protocol),
+                     n = 3))) +
+  geom_bar() +
+  scale_fill_manual(values = c(
+    "#82C236",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A",
+    "#CBF47A"
+  )) +
+  labs(y = "Nº de publicações", x = "Protocolo do nado forçado em ratos", title = "a") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 67)) +
+  scale_x_discrete(labels = function(x)
+    str_wrap(x, width = 13)) +
+  geom_text(
+    aes(label = ..count..),
+    stat = "count",
+    size = 2.5,
+    family = "Gadugi",
+    position = position_dodge(width = 0.9),
+    vjust = -0.25
+  ) +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5, r = 5)),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -2736,12 +2951,51 @@ f13a <- df %>%
     plot.margin = margin(10, 0, 10, 10)
   )
 
+f14a
+#metodo de analise
 
-f13a
+f14b <- df %>%
+  filter(species == "Rato") %>%
+  group_by(study_reference) %>% 
+  distinct(measurement_method) %>% 
+  group_by(measurement_method) %>% 
+  ggplot(aes(x = fct_lump_n(fct_infreq(measurement_method), n = 9, other_level = "Outros"), fill = fct_lump_n(fct_infreq(measurement_method), n = 9))) +
+  geom_bar() +
+  scale_fill_manual(values = c("grey80", "#692b75", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2" )) +
+  labs(y = "Nº de publicações", x = "Método de análise do TNF em ratos", title = "b") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 40)) +
+  scale_x_discrete(labels = function(x)
+    str_wrap(x, width = 15)) +
+  geom_text(aes(label = ..count..), stat = "count",
+            size = 2.5,
+            family = "Gadugi",
+            position = position_dodge(width = 0.9),
+            vjust = -0.25
+  ) +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5, r = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin = margin(10, 0, 10, 10)
+  )
 
+f14b
 
-#RATO
-
+Figura14 <- f14a / f14b
+Figura14
+save_plot(filename = "Figura14.png",
+          plot = Figura14,
+          dpi = 300)
 
 
 #STAT NADO
