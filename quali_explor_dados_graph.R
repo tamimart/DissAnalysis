@@ -34,6 +34,9 @@ library(ggradar)
 # loadfonts(device = "win")
 # fonts() # Ver opcoes de fonte
 
+
+# Transformação dos dados e padronizações ----- 
+
 # Carregar dataframe dos dados limpos e organizados
 
 df <-
@@ -43,6 +46,12 @@ df <-
 # Estabelecer tema base para todos os próximos gráficos
 
 theme_set(theme_minimal(base_family = "Gadugi"))
+
+# Estabeler dados de resumo estatistico
+
+my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), 
+                                   iqr = ~ IQR(., na.rm = TRUE)),
+                     base = sfl(complete = n_complete))
 
 # Renomear os níveis de variaveis categóricas para PT
 
@@ -437,7 +446,7 @@ df$measurement_method <-
 
 
 # PUBLICAÇÃO
-## Figura0: Paises e idioma ---------
+## Figura1: Paises e idioma ---------
 
 # Importar dados de localização
 
@@ -566,7 +575,7 @@ rotulo <- rotulo %>%
 
 # Todos anos até 2017
 
-F0 <-
+F1 <-
   ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
   geom_map(map = dados_public,
            # mapa mundo
@@ -645,7 +654,7 @@ dados_public_year_1996 <- dados_public_year %>%
   filter(year <= '1996-01-01')
 
 
-F01996 <-
+F11996 <-
   ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
   geom_map(
     map = dados_public,
@@ -691,7 +700,7 @@ dados_public_year_2006 <- dados_public_year %>%
   filter(year <= '2006-01-01')
 
 
-F02006 <-
+F12006 <-
   ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
   geom_map(
     map = dados_public,
@@ -734,7 +743,7 @@ F02006 <-
 
 # Idiomas
 
-F0idi <- df %>%
+F1idi <- df %>%
   group_by(study_reference) %>%
   slice(1) %>%
   group_by(language) %>%
@@ -778,25 +787,25 @@ F0idi <- df %>%
 
 # Combinar e salvar
 
-Figura0 <-
-  (F0 + inset_element(
-    F0idi,
+Figura1 <-
+  (F1 + inset_element(
+    F1idi,
     left = 0.05,
     bottom = 0.05,
     right = 0.28,
     top = 0.25
   )) / (plot_spacer() |
-          F01996 |
-          F02006 |
+          F11996 |
+          F12006 |
           plot_spacer()) + plot_layout(heights = c(10, 2), widths = c(8, 8))
-save_plot(filename = "Figura0.png",
-          plot = Figura0,
+save_plot(filename = "Figura1.png",
+          plot = Figura1,
           dpi = 300) # Salvar gráfico
 
 
-## Figura0a - Quantidade de publicações no ano ----
+## Figura2 - Quantidade de publicações no ano ----
 
-Figura0a <- df %>%
+Figura2 <- df %>%
   group_by(study_reference) %>%
   slice(1) %>%
   group_by(year) %>%
@@ -819,17 +828,17 @@ Figura0a <- df %>%
     plot.margin = margin(20, 10, 20, 10)
   )
 
-save_plot(filename = "Figura0a.png",
-          plot = Figura0a,
+save_plot(filename = "Figura2.png",
+          plot = Figura2,
           dpi = 300) # Salvar gráfico
 
 
 
 # POPULAÇÃO 
-## Figura1: Sexo, especie, tempo ----
+## Figura3: Sexo, especie, tempo ----
 
 
-f1a <- df %>%
+f3a <- df %>%
   group_by(species) %>%
   summarise(counts = sum(N)) %>% # N por espécie
   ggplot(aes(
@@ -863,7 +872,7 @@ f1a <- df %>%
     plot.margin = margin(0, 0, 0, 0)
   )
 
-f1b <- df  %>% # especie no tempo
+f3b <- df  %>% # especie no tempo
   ggplot(aes(x = year, fill = species)) +
   geom_bar() +
   scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
@@ -890,7 +899,7 @@ f1b <- df  %>% # especie no tempo
     plot.margin = margin(10, 0, 0, 10)
   )
 
-f1c <- df %>%
+f3c <- df %>%
   group_by(sex) %>%
   summarise(counts = sum(N)) %>% # N por sexo
   ggplot(aes(
@@ -924,7 +933,7 @@ f1c <- df %>%
     plot.margin = margin(0, 0, 0, 0)
   )
 
-f1d <- df  %>% # sexo no tempo
+f3d <- df  %>% # sexo no tempo
   ggplot(aes(x = year, fill = sex, order = sex)) +
   geom_bar() +
   scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
@@ -952,16 +961,16 @@ f1d <- df  %>% # sexo no tempo
 
 # Combinar e salvar
 
-Figura1 <-
-  f1a + f1b + f1c + f1d + plot_layout(heights = c(6, 6), widths = c(3, 6))
-save_plot(filename = "Figura1.png",
-          plot = Figura1,
+Figura3 <-
+  f3a + f3b + f3c + f3d + plot_layout(heights = c(6, 6), widths = c(3, 6))
+save_plot(filename = "Figura3.png",
+          plot = Figura3,
           dpi = 300)
 
-## Figura2: Linhagens ----
+## Figura4: Linhagens ----
 # Strain
   
-f2a <- df %>%
+f4a <- df %>%
   filter(species == "Camundongo") %>%
   group_by(study_reference) %>% 
   distinct(strain) %>% 
@@ -1004,7 +1013,7 @@ ggplot(aes(
     plot.margin = margin(10, 10, 0, 10)
   )
 
-f2b <- df %>%
+f4b <- df %>%
   group_by(strain) %>%
   filter(species == "Camundongo") %>%
   summarise(counts = n()) %>%
@@ -1048,7 +1057,7 @@ f2b <- df %>%
     plot.margin = margin(10, 10, 0, 0)
   )
 
-f2c <- df %>%
+f4c <- df %>%
   group_by(strain) %>%
   filter(species == "Camundongo") %>%
   summarise(counts = sum(N)) %>%
@@ -1094,7 +1103,7 @@ f2c <- df %>%
   )
 
 
-f2d <- df %>%
+f4d <- df %>%
   filter(species == "Rato") %>%
   group_by(study_reference) %>% 
   distinct(strain) %>% 
@@ -1138,7 +1147,7 @@ f2d <- df %>%
   )
 
 
-f2e <- df %>%
+f4e <- df %>%
   group_by(strain) %>%
   filter(species == "Rato") %>%
   summarise(counts = n()) %>%
@@ -1182,7 +1191,7 @@ f2e <- df %>%
     plot.margin = margin(0, 10, 10, 0)
   )
 
-f2f <- df %>%
+f4f <- df %>%
   group_by(strain) %>%
   filter(species == "Rato") %>%
   summarise(counts = sum(N)) %>%
@@ -1227,15 +1236,15 @@ f2f <- df %>%
     plot.margin = margin(0, 10, 10, 0)
   )
 
-Fig2t <- (f2a + f2b + f2c) / (f2d + f2e + f2f) + plot_layout(heights = c(11, 6), guides = 'collect')
+Fig4t <- (f4a + f4b + f4c) / (f4d + f4e + f4f) + plot_layout(heights = c(11, 6), guides = 'collect')
 
 
-save_plot(filename = "Figura2.png",
-          plot = Fig2t,
+save_plot(filename = "Figura4.png",
+          plot = Fig4t,
           dpi = 300)
 
 
-## Figura3 e 4: Idade e peso ----
+## Figura5 e Figura6: Idade e peso ----
 
 # Idade
 
@@ -1243,9 +1252,10 @@ save_plot(filename = "Figura2.png",
 
 age_ss <- df %>%
   group_by(species, sex) %>%
-  skim(age) %>%
-  mutate(numeric.mean = round(numeric.mean, 1),
-         numeric.sd = round(numeric.sd, 1))
+  my_skim(age) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
 # Vincular valores da media e sd com os fatores sexo e especie
 labels_age <-
@@ -1270,10 +1280,10 @@ labels_age <-
       "Ambos",
       "Sem info"
     ),
-    label = paste(age_ss$numeric.mean,  age_ss$numeric.sd, sep = "±")
+    label = paste(age_ss$numeric.median, " ", "(", age_ss$numeric.p25,"-",age_ss$numeric.p75,")", sep = "")
   )
 
-f3 <- df %>%
+f5 <- df %>%
   ggplot(aes(x = age, fill = sex)) +
   geom_histogram(color = "black", size = 0.2) +
   facet_grid(fct_infreq(sex) ~ species, scales = "free_x") +
@@ -1312,9 +1322,10 @@ f3 <- df %>%
 # Criar um df com os valores da media e dp arredondados
 weight_ss <- df %>%
   group_by(species, sex) %>%
-  skim(weight) %>%
-  mutate(numeric.mean = round(numeric.mean, 1),
-         numeric.sd = round(numeric.sd, 1))
+  my_skim(weight) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
 # Vincular valores da media e sd com os fatores sexo e especie
 labels_weight <-
@@ -1339,11 +1350,11 @@ labels_weight <-
       "Ambos",
       "Sem info"
     ),
-    label = paste(weight_ss$numeric.mean,  weight_ss$numeric.sd, sep = "±")
+    label = paste(weight_ss$numeric.median, " ", "(",  weight_ss$numeric.p25, "-", weight_ss$numeric.p75, ")", sep = "")
   )
 
 
-f4 <- df %>%
+f6 <- df %>%
   ggplot(aes(x = weight, fill = sex)) +
   geom_histogram(color = "black", size = 0.2) +
   facet_grid(fct_infreq(sex) ~ species, scales = "free_x") +
@@ -1379,16 +1390,16 @@ f4 <- df %>%
 
 # Salvar
 
-save_plot(filename = "Figura3.png",
-          plot = f3,
+save_plot(filename = "Figura5.png",
+          plot = f5,
           dpi = 300)
-save_plot(filename = "Figura4.png",
-          plot = f4,
+save_plot(filename = "Figura6.png",
+          plot = f6,
           dpi = 300)
 
-## Figura3-4: Idade e peso ----
+## Figura5e6ppt: Idade e peso ----
 
-f34a <- df %>%
+f56a <- df %>%
   filter(species == "Camundongo") %>%
   ggplot(aes(x = sex, y = age, fill = sex, color = sex)) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
@@ -1433,7 +1444,7 @@ f34a <- df %>%
     plot.margin = margin(0, 0, 5, 0)
   )
 
-f34b <- df %>%
+f56b <- df %>%
   filter(species == "Rato") %>%
   ggplot(aes(x = sex, y = age, fill = sex, color = sex)) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "grey80")) +
@@ -1481,7 +1492,7 @@ f34b <- df %>%
 
 
 
-f34c <- df %>%
+f56c <- df %>%
   filter(species == "Camundongo") %>%
   ggplot(aes(x = sex, y = weight, color = sex, fill = sex)) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
@@ -1526,7 +1537,7 @@ f34c <- df %>%
     plot.margin = margin(0, 0, 0, 0)
   )
 
-f34d <- df %>%
+f56d <- df %>%
   filter(species == "Rato") %>%
   ggplot(aes(x = sex, y = weight, fill = sex, color = sex)) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
@@ -1573,13 +1584,13 @@ f34d <- df %>%
 
 # Combinar e salvar
 
-f34 <-
-  (f34a + f34b) /  (f34c + f34d) + plot_layout(heights = c(8, 8))
-save_plot(filename = "Figura3e4_ppt.png",
-          plot = f34,
+f56 <-
+  (f56a + f56b) /  (f56c + f56d) + plot_layout(heights = c(8, 8))
+save_plot(filename = "Figura5e6_ppt.png",
+          plot = f56,
           dpi = 300)
 
-## Figura5: Modelo animal -----
+## Figura7: Modelo animal -----
 
 df %>% group_by(study_reference, model_phenotype) %>%
   slice(1) %>%
@@ -1589,7 +1600,7 @@ df %>% group_by(study_reference, model_phenotype) %>%
 
 # Modelos por publicação
 
-f5a <- df %>%
+f7a <- df %>%
   group_by(study_reference) %>% 
   distinct(model_phenotype, species) %>% # deixar so um estudo por referencia para modelo e especie distintas
   group_by(model_phenotype, species) %>% 
@@ -1643,7 +1654,7 @@ df %>% group_by(model_phenotype, species) %>%
   filter(model_phenotype == "NA", ) %>%
   summarise(counts = n())  # calcular quanto estudos sao NA
 
-f5b <- df %>%
+f7b <- df %>%
   group_by(model_phenotype, species) %>%
   filter(model_phenotype != "NA", ) %>%
   summarise(counts = n()) %>% 
@@ -1697,7 +1708,7 @@ df %>%
   filter(model_phenotype == "NA") %>%
   summarise(counts = sum(N)) # calcular quanto animais sao NA
 
-f5c <- df %>%
+f7c <- df %>%
   group_by(model_phenotype, species) %>%
   filter(model_phenotype != "NA") %>%
   summarise(counts = sum(N)) %>%
@@ -1746,20 +1757,20 @@ f5c <- df %>%
 
 # Combinar e salvar
 
-Figura5 <- f5a + f5b + f5c
+Figura7 <- f7a + f7b + f7c
 
-Figura5
-save_plot(filename = "Figura5.png",
-          plot = Figura5,
+Figura7
+save_plot(filename = "Figura7.png",
+          plot = Figura7,
           dpi = 300)
 
 
 # ACONDICIONAMENTO
-## Figura 6: Ciclo, temperatura, umidade -----
+## Figura 8: Ciclo, temperatura, umidade -----
 
 # Ciclo
 
-F6a <- df %>%
+F8a <- df %>%
   group_by(study_reference, bioterium_lightcycle) %>%
   slice(1) %>%
   group_by(bioterium_lightcycle) %>%
@@ -1804,17 +1815,19 @@ filtro_bioterium_temp <- df %>%
   group_by(study_reference) %>%
   slice(1) %>%
   filter(bioterium_temp != "NA") %>%
-  select(bioterium_temp)
+  select(bioterium_temp) 
+
+filtro_bioterium_temp <- filtro_bioterium_temp %>% 
+  ungroup() %>% 
+  my_skim(bioterium_temp) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
 m_t <-
-  data.frame(label = paste(round(
-    mean(filtro_bioterium_temp$bioterium_temp), 1
-  ), round(
-    sd(filtro_bioterium_temp$bioterium_temp), 1
-  ), sep = "±")) # criei um data com o valor da media e dp arredondados
+  data.frame(label = paste(filtro_bioterium_temp$numeric.median, " ", "(",  filtro_bioterium_temp$numeric.p25, "-", filtro_bioterium_temp$numeric.p75, ")", sep = ""))
 
-
-F6b <- df %>%
+F8b <- df %>%
   group_by(study_reference) %>%
   slice(1) %>%
   ggplot(aes(x = bioterium_temp)) +
@@ -1830,19 +1843,19 @@ F6b <- df %>%
     size = 2
   ) +
   geom_vline(data = filtro_bioterium_temp,
-             aes(xintercept = mean(bioterium_temp)),
+             aes(xintercept = numeric.p50),
              col = "gold2",
              size = .5) +
   geom_vline(
     data = filtro_bioterium_temp,
-    aes(xintercept = (sd(bioterium_temp)) + 22.44694),
+    aes(xintercept = numeric.p25),
     col = "gold",
     size = .5,
     linetype = "dashed"
   ) +
   geom_vline(
     data = filtro_bioterium_temp,
-    aes(xintercept = (22.44694 - sd(bioterium_temp))),
+    aes(xintercept = numeric.p75),
     col = "gold",
     size = .5,
     linetype = "dashed"
@@ -1868,21 +1881,30 @@ F6b <- df %>%
     plot.margin = margin(10, 0, 10, 10)
   )
 
-F6b
+F8b
 #  Umidade
 
 # filtrar as publicacoes e remover sem informação
+
 
 filtro_bioterium_umid <- df %>%
   group_by(study_reference) %>%
   slice(1) %>%
   filter(bioterium_umid != "NA") %>%
-  select(bioterium_umid)
+  select(bioterium_umid) 
 
-m_u <- data.frame(label = paste(round(mean(filtro_bioterium_umid$bioterium_umid),1), round(sd(filtro_bioterium_umid$bioterium_umid),1), sep = "±")) # criei um data com o valor da media e dp arredondados
+filtro_bioterium_umid <- filtro_bioterium_umid %>% 
+  ungroup() %>% 
+  my_skim(bioterium_umid) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
+
+m_u <-
+  data.frame(label = paste(filtro_bioterium_umid$numeric.median, " ", "(",  filtro_bioterium_umid$numeric.p25, "-", filtro_bioterium_umid$numeric.p75, ")", sep = ""))
 
 
-F6c <- df %>%
+F8c <- df %>%
   group_by(study_reference) %>%
   slice(1) %>%
   ggplot(aes(x = bioterium_umid)) +
@@ -1899,19 +1921,19 @@ F6c <- df %>%
     size = 2
   ) +
   geom_vline(data = filtro_bioterium_umid,
-             aes(xintercept = mean(bioterium_umid)),
+             aes(xintercept = numeric.p50),
              col = "gold2",
              size = .5) +
   geom_vline(
     data = filtro_bioterium_umid,
-    aes(xintercept = (sd(bioterium_umid)) + 55.3),
+    aes(xintercept = numeric.p25),
     col = "gold",
     size = .5,
     linetype = "dashed"
   ) +
   geom_vline(
     data = filtro_bioterium_umid,
-    aes(xintercept = (55.3 - sd(bioterium_umid))),
+    aes(xintercept = numeric.p75),
     col = "gold",
     size = .5,
     linetype = "dashed"
@@ -1939,14 +1961,14 @@ F6c <- df %>%
 
 
 
-Figura6 <-  F6a + (F6b / F6c) + plot_layout(widths = c(6, 4))
-Figura6
+Figura8 <-  F8a + (F8b / F8c) + plot_layout(widths = c(6, 4))
+Figura8
 
-save_plot(filename = "Figura6.png",
-          plot = Figura6,
+save_plot(filename = "Figura8.png",
+          plot = Figura8,
           dpi = 300)
 
-## Figura 7: Volume caixa por animal, volume de caixa por peso do animal ----
+## Figura 9: Volume caixa por animal, volume de caixa por peso do animal ----
 
 cage_m <- df %>%
   select(cage_measures,
@@ -1980,43 +2002,37 @@ cage_3d <- cage_3d %>%
 
 # Criar um df com os valores da media e dp arredondados
 
-vol_panimal_meansd <- cage_3d  %>%
+vol_panimal_miqr <- cage_3d  %>%
   group_by(species) %>%
-  skim(vol_panimal) %>%
-  mutate(numeric.mean = round(numeric.mean, 1),
-         numeric.sd = round(numeric.sd, 1))
+  my_skim(vol_panimal) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
-vol_ppeso_meansd <- cage_3d  %>%
+vol_ppeso_miqr <- cage_3d  %>%
   group_by(species) %>%
-  skim(vol_ppeso) %>%
-  mutate(numeric.mean = round(numeric.mean, 1),
-         numeric.sd = round(numeric.sd, 1))
+  my_skim(vol_ppeso) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
 
 # Vincular valores da media e sd com especie
 
 vol_panimal_label <- data.frame(
   species = c("Camundongo", "Rato"),
-  label = paste(
-    vol_panimal_meansd$numeric.mean,
-    vol_panimal_meansd$numeric.sd,
-    sep = "±"
-  )
+    label = paste(vol_panimal_miqr$numeric.median, " ", "(",  vol_panimal_miqr$numeric.p25, "-", vol_panimal_miqr$numeric.p75, ")", sep = "")
 )
 
 
 vol_ppeso_label <- data.frame(
   species = c("Camundongo", "Rato"),
-  label = paste(
-    vol_ppeso_meansd$numeric.mean,
-    vol_ppeso_meansd$numeric.sd,
-    sep = "±"
-  )
+  label = paste(vol_ppeso_miqr$numeric.median, " ", "(",  vol_ppeso_miqr$numeric.p25, "-", vol_ppeso_miqr$numeric.p75, ")", sep = "")
 )
 
 # Plotar grafico de volume de caixa por animal
 
-F7a <- cage_3d %>%
+F9a <- cage_3d %>%
   ggplot(aes(x = vol_panimal, fill = species)) +
   geom_histogram(color = "black", size = 0.2) +
   facet_grid( ~ species, scales = "free_x") +
@@ -2055,7 +2071,7 @@ F7a <- cage_3d %>%
 
 # Plotar grafico de volume de caixa por peso de animal
 
-F7b <- cage_3d %>%
+F9b <- cage_3d %>%
   ggplot(aes(x = vol_ppeso, fill = species)) +
   geom_histogram(color = "black", size = 0.2) +
   facet_grid( ~ species, scales = "free_x") +
@@ -2093,18 +2109,18 @@ F7b <- cage_3d %>%
 
 # Combinar e salvar
 
-Figura7 <- F7a / F7b + plot_layout(heights = c(5, 5))
+Figura9 <- F9a / F9b + plot_layout(heights = c(5, 5))
 
-save_plot(filename = "Figura7.png",
-          plot = Figura7,
+save_plot(filename = "Figura9.png",
+          plot = Figura9,
           dpi = 300)
 
 
-## Figura7ab: Volume caixa por animal, volume de caixa por peso do animal ----
+## Figura9ppt: Volume caixa por animal, volume de caixa por peso do animal ----
 
 # Plotar grafico de volume de caixa por animal
 
-f7ab <- cage_3d %>%
+f9ab <- cage_3d %>%
   ggplot(aes(x = species, y = vol_panimal, color = species, fill = species)) +
   scale_fill_manual(values = c("#ff9400", "#ec2b2b"), guide = "none") +
   scale_color_manual(values = c("#ff9400", "#ec2b2b"), guide = "none") +
@@ -2144,11 +2160,11 @@ f7ab <- cage_3d %>%
     panel.grid.major.x = element_blank(),
     plot.margin = margin(20, 0, 5, 20)
   )
-f7ab
+f9ab
 
 # Plotar grafico de volume de caixa por peso de animal
 
-f7ba <- cage_3d %>%
+f9ba <- cage_3d %>%
   ggplot(aes(x = species, y = vol_ppeso, fill = species, color = species)) +
   scale_fill_manual(values = c("#ff9400", "#ec2b2b"), guide = "none") +
   scale_color_manual(values = c("#ff9400", "#ec2b2b"), guide = "none") +
@@ -2191,16 +2207,16 @@ f7ba <- cage_3d %>%
 
 # Combinar e salvar
 
-Figura7ab <- f7ab | f7ba
+Figura9ab <- f9ab | f9ba
 
-save_plot(filename = "Figura7_ppt.png",
-          plot = Figura7ab,
+save_plot(filename = "Figura9_ppt.png",
+          plot = Figura9ab,
           dpi = 300)
 
 # INTERVENÇÃO
-## Figura8: classes no tempo ----
+## Figura10: classes no tempo ----
 
-f8a <- df %>%
+f10a <- df %>%
   group_by(atd_class) %>%
   summarise(counts = n()) %>% 
   mutate(atd_class = fct_reorder(atd_class, desc(counts))) %>% # reordernar categoria de acordo com frequencia
@@ -2239,7 +2255,7 @@ f8a <- df %>%
     plot.margin = margin(15, 0, 0, 0)
   )
 
-f8b <- df  %>% 
+f10b <- df  %>% 
   ggplot(aes(x = year, fill = fct_infreq(atd_class))) +
   geom_bar() +
   scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
@@ -2266,20 +2282,20 @@ f8b <- df  %>%
     panel.grid.major = element_line(color = "grey90", size = .1)
   )
 
-Figura8 <- f8a / f8b
-Figura8
+Figura10 <- f10a / f10b
+Figura10
 # Salvar
 
-save_plot(filename = "Figura8.png",
-          plot = Figura8,
+save_plot(filename = "Figura10.png",
+          plot = Figura10,
           dpi = 300)
 
 
-## Figura9: Classe, antidepressivos e doses CAMUNDONGO -----
+## Figura11: Classe, antidepressivos e doses CAMUNDONGO -----
 
 # classe e antidepressivo CAMUNDONGO
 
-f9a <- df %>%
+f11a <- df %>%
   filter(dose_unit == "mg/kg",
     species == "Camundongo") %>%
   ggplot(aes(
@@ -2340,10 +2356,10 @@ f9a <- df %>%
     panel.grid.major.x = element_blank()
   )
 
-f9a
+f11a
 # dose CAMUNDONGO
 
-f9b <- df %>% 
+f11b <- df %>% 
   filter(dose_unit == "mg/kg",
          species == "Camundongo") %>% 
   ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 15, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"))) + 
@@ -2410,20 +2426,20 @@ f9b <- df %>%
     panel.grid.major.y = element_blank()
   ) 
    
-f9b
+f11b
 
 # Juntar
-Figura9 <- f9a | f9b 
-Figura9
+Figura11 <- f11a | f11b 
+Figura11
 #Salvar
-save_plot(filename = "Figura9.png",
-          plot = Figura9,
+save_plot(filename = "Figura11.png",
+          plot = Figura11,
           dpi = 300)
 
 
-## Figura10: Classe, antidepressivos e doses Rato  -----
+## Figura12: Classe, antidepressivos e doses RATO  -----
 
-f10a <- df %>%
+f12a <- df %>%
   filter(dose_unit == "mg/kg",
     species == "Rato") %>%
   ggplot(aes(
@@ -2480,10 +2496,10 @@ f10a <- df %>%
     panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank()
   )
-f10a
+f12a
 # dose Rato
 
-f10b <- df %>% 
+f12b <- df %>% 
   filter(dose_unit == "mg/kg",
          species == "Rato") %>% 
   ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 12, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"))) + 
@@ -2544,13 +2560,13 @@ f10b <- df %>%
     panel.grid.major.y = element_blank()
   ) 
 
-f10b
+f12b
 
-Figura10 <- f10a + f10b
-Figura10
+Figura12 <- f12a + f12b
+Figura12
 
-save_plot(filename = "Figura10.png",
-          plot = Figura10,
+save_plot(filename = "Figura12.png",
+          plot = Figura12,
           dpi = 300)
 
 # isolar estudos com outras unidades de dose que nao mg/kg
@@ -2564,11 +2580,11 @@ atd <- df %>%
 unidades_dose <- tibble(atd)
 write.table(atd , file = "data\\dose_otherunits.xlsx")
 
-## Figura11 e 12: Via de administração x frequencia adm x tempo de adm ----
+## Figura13 e Figura14: Via de administração x frequencia adm x tempo de adm ----
 
 # Vias de adm e frequencia de adm
 
-f11a <- df %>% 
+f13a <- df %>% 
   filter(species == "Camundongo") %>% 
   ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_freq)) +
   geom_bar(position = position_dodge2(preserve = "single")) + 
@@ -2597,11 +2613,11 @@ f11a <- df %>%
     plot.margin = margin(0, 0, 0, 0)
   )
 
-f11a
+f13a
 
 # vias de adm, frequencia de adm e duracao do tratamento
 
-f11b <- df %>%
+f13b <- df %>%
   filter(species == "Camundongo") %>%
   ggplot(aes(y = treatment_duration, x = fct_infreq(treatment_via))) +
   geom_point(
@@ -2637,23 +2653,23 @@ f11b <- df %>%
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     plot.margin = margin(0, 0, 0, 0),
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size = 4),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 5),
     legend.position = "top",
     legend.justification = "right",
     legend.margin = margin(0,0,0,0),
     legend.box.margin = margin(-10, 0,-10,-10),
-    legend.spacing.x = unit(0.001,'cm'),
+    legend.spacing.x = unit(0.1,'mm'),
     panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.minor.y = element_line(color = "grey90", size = .1)
   )
-f11b
+f13b
 
-F11 <- (f11a + plot_spacer() + plot_layout(widths = c(6,3))) / (f11b + plot_spacer() + plot_layout(widths = c(6,3))) +  plot_layout(heights = c(3,8))
+F13 <- (f13a + plot_spacer() + plot_layout(widths = c(6,3))) / (f13b + plot_spacer() + plot_layout(widths = c(6,3))) +  plot_layout(heights = c(3,8))
 
-F11
-save_plot(filename = "Figura11.png",
-          plot = F11,
+F13
+save_plot(filename = "Figura13.png",
+          plot = F13,
           dpi = 300)
 
 # stat da duracao da adm por via de adm
@@ -2675,7 +2691,7 @@ write_xlsx(stat_t_d_cam,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalys
 
 # Vias de adm e frequencia de adm
 
-f12a <- df %>% 
+f14a <- df %>% 
   filter(species == "Rato") %>% 
   ggplot(aes(x = fct_lump_n(fct_infreq(treatment_via), n = 8, other_level = "Outros"), fill = treatment_freq)) +
   geom_bar(position = position_dodge2(preserve = "single")) + 
@@ -2708,11 +2724,11 @@ f12a <- df %>%
     plot.margin = margin(0, 0, 0, 0)
   )
 
-f12a
+f14a
 
 # vias de adm, frequencia de adm e duracao do tratamento
 
-f12b <- df %>%
+f14b <- df %>%
   filter(species == "Rato") %>%
   ggplot(aes(y = treatment_duration, x = fct_lump_n(fct_infreq(treatment_via), n = 8, other_level = "Outros"))) +
   geom_point(
@@ -2752,49 +2768,36 @@ f12b <- df %>%
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     plot.margin = margin(0, 0, 0, 0),
-    legend.title = element_text(size = 5),
-    legend.text = element_text(size = 4),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 5),
     legend.position = "top",
     legend.justification = "right",
     legend.margin = margin(0,0,0,0),
     legend.box.margin = margin(-10, 0,-10,-10),
-    legend.spacing.x = unit(0.001,'cm'),
+    legend.spacing.x = unit(0.1,'00'),
     panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.minor.y = element_line(color = "grey90", size = .1)
   )
 
-f12b
+f14b
 
-F12 <- f12a  / f12b  +  plot_layout(heights = c(3,8))
+F14 <- f14a  / f14b  +  plot_layout(heights = c(3,8))
 
-F12
-save_plot(filename = "Figura12.png",
-          plot = F12,
+F14
+save_plot(filename = "Figura14.png",
+          plot = F14,
           dpi = 300)
 
-# stat da duracao da adm por via de adm
-
-my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), iqr = ~ IQR(., na.rm = TRUE)),
-                     base = sfl(complete = n_complete))
-
-stat_t_d_rat <- df %>%
-  filter(species == "Rato") %>% 
-  group_by(treatment_via) %>%
-  my_skim(treatment_duration) %>%
-  tibble::as_tibble()
-
-
-write_xlsx(stat_t_d_rat,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_rat.xlsx")
 
 
 # DESFECHO
 
-##Figura13: protocolo x metodos de analise / tamanho x diametro cuba / altura agua x temperatura agua -----
+##Figura15 e Figura 16 : protocolo x metodos de analise ----
 
 
 #CAMUNDONGO
 
-f13a <- df %>%
+f15a <- df %>%
   filter(species == "Camundongo") %>%
   group_by(study_reference) %>%
   distinct(fst_protocol) %>%
@@ -2852,10 +2855,10 @@ f13a <- df %>%
     plot.margin = margin(0, 0, 0, 0)
   )
 
-f13a
+f15a
 #metodo de analise
 
-f13b <- df %>%
+f15b <- df %>%
   filter(species == "Camundongo") %>%
   group_by(study_reference) %>% 
   distinct(measurement_method) %>% 
@@ -2890,18 +2893,18 @@ f13b <- df %>%
     plot.margin = margin(0, 0, 0, 0)
   )
 
-f13b
+f15b
 
-Figura13 <- f13a / f13b
+Figura15 <- f15a / f15b
 
-save_plot(filename = "Figura13.png",
-          plot = Figura13,
+save_plot(filename = "Figura15.png",
+          plot = Figura15,
           dpi = 300)
 
 
 #RATO
 
-f14a <- df %>%
+f16a <- df %>%
   filter(species == "Rato") %>%
   group_by(study_reference) %>%
   distinct(fst_protocol) %>%
@@ -2951,10 +2954,10 @@ f14a <- df %>%
     plot.margin = margin(10, 0, 10, 10)
   )
 
-f14a
+f16a
 #metodo de analise
 
-f14b <- df %>%
+f16b <- df %>%
   filter(species == "Rato") %>%
   group_by(study_reference) %>% 
   distinct(measurement_method) %>% 
@@ -2989,24 +2992,14 @@ f14b <- df %>%
     plot.margin = margin(10, 0, 10, 10)
   )
 
-f14b
+f16b
 
-Figura14 <- f14a / f14b
-Figura14
-save_plot(filename = "Figura14.png",
-          plot = Figura14,
+Figura16 <- f16a / f16b
+Figura16
+save_plot(filename = "Figura16.png",
+          plot = Figura16,
           dpi = 300)
 
 
-#STAT NADO
 
-my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), iqr = ~ IQR(., na.rm = TRUE)),
-                     base = sfl(complete = n_complete))
-
-stat_nado <- df %>%
-  group_by(species) %>%
-  my_skim(fst_protocol, measurement_method, cylinder_height, cylinder_diameter, water_depth, water_temperature) %>%
-  tibble::as_tibble()
-
-write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\stat_nado.xlsx")
-
+#Figura17 e Figura 18: tamanho x diametro cuba / altura agua x temperatura agua -----

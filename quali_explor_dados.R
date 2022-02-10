@@ -9,17 +9,410 @@ library(summarytools)
 library(writexl)
 library(tibble)
 
-
-library(ggcorrplot)
-library(ggradar)
-
-
 # Carregar dataframe dos dados limpos e organizados
 
 df <- data_geral_clean <- readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissAnalysis/data_geral_clean.rds")
 
+# setar estatistica padrao
 
-# Conferir variáveis e valores ------- 
+my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), 
+                                   iqr = ~ IQR(., na.rm = TRUE)),
+                     base = sfl(complete = n_complete))
+
+
+# Rename categorias ----
+
+df$language <-
+  factor(
+    df$language,
+    levels = c("English", "Persian", "Chinese"),
+    labels = c("Inglês", "Persa", "Mandarim")
+  )
+
+
+df$species <- factor(
+  df$species,
+  levels = c("mice", "rat"),
+  labels = c("Camundongo", "Rato")
+) # Ordenar niveis do fator espécie
+
+df$sex <- factor(
+  df$sex,
+  levels = c("M", "F", "M and F", "NA"),
+  labels = c("Macho", "Fêmea", "Ambos", "Sem info")
+) # Ordenar niveis do fator sexo
+
+
+df$model_phenotype <- factor(
+  df$model_phenotype,
+  levels = c(
+    "ACTH (100microg)",
+    "stroke (Middle Cerebral Artery occlusion)",  
+    "Bacillus Calmette–Guérin (BCG)",
+    "olfactory bulbectomy",
+    "pentylenetetrazol-kindled seizures",
+    "CMS",
+    "CUMs",
+    "CUS",
+    "depressed",
+    "high emotional",
+    "low emotional",
+    "temporal lobe epilepsy (pilocarpine)",
+    "streptozotocin",
+    "prenatal stress procedure",
+    "restraint-stress",
+    "subchronic stress:restraint–water immersion",
+    "melanin-concentrating hormone 50ng",
+    "1 saline injection for 4 days",
+    "Isolation-Rearing",
+    "LPS",
+    "NA",
+    "forced swim",
+    "FS and CMS",
+    "ovariectomized",
+    "ovariectomized +1 saline injection for 4 days",
+    "mother exposed to Chlorpyrifos (CPF)",
+    "mother exposed to DDT",
+    "reserpine",
+    "amphetamine withdrawal",
+    "antidepressant withdrawal",
+    "wheel running + restraint-stress",
+    "maternal-separation",
+    "PTSD-like"
+  ),
+  labels = c(
+    "ACTH (100µg)",
+    "AVC (por oclusão da artéria cerebral média)",
+    "Bacillus Calmette–Guérin (BCG)",
+    "Bulbectomia olfatória",
+    "Convulsões por pentilenotetrazol",
+    "CMS - Estresse leve crônico",
+    "CUMs - Estresse leve imprevisível crônico",
+    "CUS - Estresse imprevisível crônico" ,
+    "Deprimido",
+    "Emocional alto",
+    "Emocional baixo",
+    "Epilepsia do lobo temporal (c/ pilocarpina)",
+    "Estreptozotocina",
+    "Estresse pré-natal",
+    "Estresse por contenção",
+    "Estresse subcrônico: contenção em água",
+    "Hormônio concentrador de melanina (50ng)",
+    "Injeção salina por 4 dias",
+    "Isolamento",
+    "Lipopolissacarídeo",
+    "NA",
+    "Natação forçada",
+    "Natação forçada + Estresse leve crônico",
+    "Ovacteriomizada",
+    "Ovacteriomizada + injeção salina por 4 dias",
+    "Progenitora exposta à Chlorpyrifos (CPF)",
+    "Progenitora exposta à DDT",
+    "Reserpina",
+    "Retirada de anfetamina",
+    "Retirada de antidepressivo",
+    "Roda de corrida + estresse por contenção",
+    "Separação maternal",
+    "Tipo TEPT"
+  )
+)
+
+# Ordernar os niveis de luz
+
+df$bioterium_lightcycle <-
+  factor(
+    df$bioterium_lightcycle,
+    levels = c(
+      "12/12 normal",
+      "12/12",
+      "NA",
+      "12/12 reverse",
+      "natural",
+      "10/14"
+    ),
+    labels = c(
+      "12/12 normal",
+      "12/12",
+      "Sem info",
+      "12/12 inverso",
+      "Natural",
+      "10/14"
+    )
+  ) 
+
+# Ordernar os niveis classes
+
+levels(df$atd_class)
+
+df$atd_class <-
+  factor(
+    df$atd_class,
+    levels = c(
+      "IMAO", 
+      "melatonergic agonist", 
+      "multimodal", 
+      "NDRA", 
+      "NDRI",       
+      "NRI",         
+      "SNRI",
+      "SSRI",
+      "teca",
+      "tricyclic" 
+    ),
+    labels = c(
+      "IMAO", 
+      "Agonista melatoninérgico", 
+      "Multimodal", 
+      "ALDN", 
+      "IRND",       
+      "IRN",         
+      "IRSN",
+      "ISRS",
+      "TeCA",
+      "TCA" 
+    )
+  ) 
+
+
+# Ordenar os niveis antidepressivos
+
+levels(df$atd_type)
+
+df$atd_type <-
+  factor(
+    df$atd_type,
+    levels = c(
+      "agomelatine",
+      "amineptine",
+      "amitriptyline",
+      "amoxapine",
+      "amphetamine",
+      "bupropion",       
+      "citalopram",      
+      "clomipramine",
+      "desipramine",
+      "desvenlafaxine",
+      "duloxetine",
+      "escitalopram",
+      "fluoxetine",
+      "fluvoxamine",
+      "imipramine",     
+      "maprotiline",
+      "mianserin",
+      "milnacipran",
+      "moclobemide",
+      "nortriptyline",
+      "paroxetine",
+      "reboxetine",
+      "selegiline",
+      "sertraline",
+      "sibutramine",
+      "tramadol",
+      "tranylcypromine",
+      "venlafaxine",    
+      "vilazodone",      
+      "viloxazine",      
+      "vortiexetine" 
+    ),
+    labels = c(
+      "agomelatina",
+      "amineptina",
+      "amitriptilina",
+      "amoxapina",
+      "anfetamina",
+      "bupropiona",       
+      "citalopram",      
+      "clomipramina",
+      "desipramina",
+      "desvenlafaxina",
+      "duloxetina",
+      "escitalopram",
+      "fluoxetina",
+      "fluvoxamina",
+      "imipramina",     
+      "maprotilina",
+      "mianserina",
+      "milnaciprano",
+      "moclobemida",
+      "nortriptilina",
+      "paroxetina",
+      "reboxetina",
+      "selegilina",
+      "sertralina",
+      "sibutramina",
+      "tramadol",
+      "tranilcipromina",
+      "venlafaxina",    
+      "vilazodona",      
+      "viloxazina",      
+      "vortioxetina" 
+    )
+  ) 
+
+# ordernar freq adm
+
+df <- df %>% 
+  mutate(treatment_freq = as.factor(treatment_freq)) # alterar variavel para categorica
+
+df$treatment_freq <-
+  factor(
+    df$treatment_freq,
+    levels = c(
+      "1",
+      "2",
+      "3",
+      "NA"
+    ),
+    labels = c(
+      "1",
+      "2",
+      "3",
+      "Sem info"
+    )
+  ) 
+
+# ordernar via adm
+
+levels(df$treatment_via)
+
+df$treatment_via <-
+  factor(
+    df$treatment_via,
+    levels = c(
+      "gavage",
+      "intranasal",       
+      "IP",                       
+      "microinfusionIL",
+      "microinjection (dorsal hippocampus)",
+      "NA",
+      "oral", 
+      "oral (dietary treatment)",           
+      "subcutaneous",
+      "tablet" 
+    ),
+    labels = c(
+      "Gavagem",
+      "Intranasal",       
+      "Intraperitoneal",                       
+      "Microinfusão (IL)",
+      "Microinjeção (hipocampo)",
+      "Sem info",
+      "Oral", 
+      "Oral (dieta)",           
+      "Subcutânea",
+      "Tablete"
+    )
+  ) 
+
+#protocolo tnf
+
+df$fst_protocol <-
+  factor(
+    df$fst_protocol,
+    levels = c("NA",
+               "pre?test6score4",
+               "pre13test6",
+               "pre15score5",
+               "pre15test?",
+               "pre15test10",
+               "pre15test15",
+               "pre15test5",
+               "pre15test5(d1)test5(d7)",
+               "pre15test6",
+               "pre15test6score4",
+               "pre15test6score5",
+               "pre20test5",
+               "pre5test5",
+               "pre6test6score5",
+               "pre7x15test15",
+               "test10",
+               "test15",
+               "test15score13",
+               "test15score5",           
+               "test15score5to10",
+               "test15score6",
+               "test5",
+               "test5score4",
+               "test5scorefirst2",
+               "test6",
+               "test6score4",
+               "test6score5",
+               "test7score6",
+               "test9"           
+    ),
+    labels = c(
+      "Sem info",
+      "Pré-teste ?' + teste 6' + score 4'final",
+      "Pré-teste 13' + teste 6'",
+      "Pré-teste 15' + score 5'final",
+      "Pré-teste 15' + teste ?'",
+      "Pré-teste 15' + teste 10'",
+      "Pré-teste 15' + teste 15'",
+      "Pré-teste 15' + teste 5'",
+      "Pré-teste 15' + teste 5' (dia 1) + teste 5' (dia 7)",
+      "Pré-teste 15' + teste 6'",
+      "Pré-teste 15' + teste 6' + score 4'final",
+      "Pré-teste 15' + teste 6' + score 5'final",
+      "Pré-teste 20' + teste 5'",
+      "Pré-teste 5' + teste 5'",
+      "Pré-teste 6' + teste 6' + score 5'final",
+      "Pré-teste 7x15' + teste 15'",
+      "Teste 10'",
+      "Teste 15'",
+      "Teste 15' + score 13'final",
+      "Teste 15' + score 5'final",           
+      "Teste 15' + score 5'meio",
+      "Teste 15' + score 6'final",
+      "Teste 5'",
+      "Teste 5' + score 4'final",
+      "Teste 5' + score 2'inicial",
+      "Teste 6'",
+      "Teste 6' + score 4'final",
+      "Teste 6 + score 5'final",
+      "Teste 7' + score 6'final",
+      "Teste 9'"
+    )
+  ) 
+
+
+#fst analise
+
+df$measurement_method <-
+  factor(
+    df$measurement_method,
+    levels = c(
+      "manually",
+      "manually, chronometers",
+      "manually, score60sinterval",
+      "video analysis, automated",
+      "NA",
+      "Unclear, score5sinterval",            
+      "Unclear",
+      "video analysis",
+      "video analysis, chronometers",
+      "video analysis, manual",
+      "video analysis, manual and automated", 
+      "video analysis, score5sinterval"
+    ),
+    labels = c(
+      "Manual",
+      "Manual com cronômetro",
+      "Manual, intervalos de 60s",
+      "Videoanálise automatizada",
+      "Sem info",
+      "Inexplícito, intervalos de 60s",            
+      "Inexplícito",
+      "Videoanálise",
+      "Videoanálise com cronômetro",
+      "Videoanálise manual",
+      "Videoanálise manual e automatizada", 
+      "Videoanálise, intervalos de 5s"
+    )
+  ) 
+
+
+
+# EXEMPLOS Conferir variáveis e valores ------- 
 
 
 # Verificar quantos dados faltantes por coluna
@@ -49,7 +442,7 @@ data_miss <- data_geral_clean %>%
 
 
 
-# Tabelas estatísticas -------
+# EXEMPLOS Tabelas estatísticas -------
 
 
 # Descritivo por nivel da variavel de escolha
@@ -119,3 +512,156 @@ write_xlsx(tab_numeric,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysi
 
 write.table(tab_numeric, file = "teste.txt", sep = ",", quote = FALSE, row.names = F) # Depois colar conteudo .txt no word e transformar em tabela
 
+
+
+
+## ESTATISTICAS AUXILIARES
+
+# Figura1
+# Importar dados de localização
+
+world <- map_data("world")
+world <- subset(world, region != "Antarctica")
+
+# Criar novo df com as colunas importantes da referencia
+
+countries <- df %>%
+  select(country, study_reference, language, year) %>%
+  group_by(study_reference) %>%
+  slice(1) %>%
+  group_by(country) %>%
+  summarise(N = n()) %>% # coluna com N de publi por país
+  mutate(region = country)
+
+
+# Juntar base de dados dos paises e meus dados
+
+dados_public <- dplyr::left_join(world, countries, by = "region")
+
+
+
+
+
+# Figura2
+
+Figura2 <- df %>%
+  group_by(study_reference) %>%
+  slice(1) %>%
+  group_by(year) %>% 
+  count(sort = T)
+
+# Figura3
+
+x
+
+# Figura4
+
+x
+
+# Figura5
+
+age_ss <- df %>%
+  group_by(species, sex) %>%
+  skim(age) %>%
+  mutate(numeric.mean = round(numeric.mean, 1),
+         numeric.sd = round(numeric.sd, 1))
+
+# Figura6
+
+weight_ss <- df %>%
+  group_by(species, sex) %>%
+  skim(weight) %>%
+  mutate(numeric.mean = round(numeric.mean, 1),
+         numeric.sd = round(numeric.sd, 1))
+
+# Figura7
+
+x
+
+# Figura8
+
+x
+
+# Figura9
+
+cage_m <- df %>%
+  select(cage_measures,
+         weight,
+         study_reference,
+         animals_percage,
+         species) %>%
+  group_by(study_reference) %>%
+  slice(1) %>%
+  separate(
+    col = cage_measures,
+    sep = c("x", "X", "×"),
+    into = c("c1", "c2", "c3")
+  ) %>%
+  mutate(c1 = as.numeric(c1),
+         c2 = as.numeric(c2),
+         c3 = as.numeric(c3)) %>%
+  filter(c2 != "NA") # separei medidas da caixa em novas variaveis
+
+
+cage_3d <- cage_m %>%
+  filter(c3 != "NA") %>% # retirei estudos que nao deram medidas dos três lados da caixa
+  mutate(volume_cx = as.numeric(c1 * c2 * c3),# calculei volume da caixa
+         animals_percage = as.numeric(animals_percage))
+cage_3d <- cage_3d %>%
+  mutate(vol_panimal = as.numeric(volume_cx / animals_percage), # nova variavel: volume de caixa por animal
+         vol_ppeso = as.numeric(((
+           volume_cx / animals_percage
+         ) / weight))) # nova variavel: volume de caixa por peso do animal
+
+
+# Criar um df com os valores da media e dp arredondados
+
+vol_panimal_meansd <- cage_3d  %>%
+  group_by(species) %>%
+  skim(vol_panimal) %>%
+  mutate(numeric.mean = round(numeric.mean, 1),
+         numeric.sd = round(numeric.sd, 1))
+
+vol_ppeso_meansd <- cage_3d  %>%
+  group_by(species) %>%
+  skim(vol_ppeso) %>%
+  mutate(numeric.mean = round(numeric.mean, 1),
+         numeric.sd = round(numeric.sd, 1))
+
+
+# Figura10
+
+# Figura11
+
+# Figura12
+
+# Figura13
+
+# Figura14
+
+stat_t_d_rat <- df %>%
+  filter(species == "Rato") %>% 
+  group_by(treatment_via) %>%
+  my_skim(treatment_duration) %>%
+  tibble::as_tibble()
+
+
+write_xlsx(stat_t_d_rat,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_rat.xlsx")
+
+
+
+# Figura15
+
+# Figura16
+
+stat_nado <- df %>%
+  group_by(species) %>%
+  my_skim(fst_protocol, measurement_method, cylinder_height, cylinder_diameter, water_depth, water_temperature) %>%
+  tibble::as_tibble()
+
+write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\stat_nado.xlsx")
+
+
+# Figura17
+
+# Figura18
