@@ -22,8 +22,6 @@ library(ggdist)       # plotar densidade
 library(gghalves)     # plotar pontos
 library(writexl)      # salvar tabela
 
-library(ggcorrplot)
-library(ggradar)
 
 # Instalar fontes ----
 
@@ -3053,39 +3051,53 @@ save_plot(filename = "Figura16.png",
 
 # DIMENSOES CUBA
 
+# rotulo
+
+stat_nado <- df %>%
+  filter(!is.na(is.numeric(cylinder_height)), !is.na(is.numeric(cylinder_diameter)), !is.na(is.numeric(water_depth)), !is.na(is.numeric(water_temperature))) %>% 
+  group_by(study_reference, cylinder_height, cylinder_diameter, water_depth, water_temperature, species) %>% 
+  distinct(study_reference, cylinder_height, cylinder_diameter, water_depth, water_temperature, species) %>% 
+  group_by(species) %>%
+  my_skim(cylinder_height, cylinder_diameter, water_depth, water_temperature) %>%
+  mutate(numeric.p.50 = round(numeric.p50, 1),
+       numeric.p25 = round(numeric.p25, 1),
+       numeric.p75 = round(numeric.p75, 1))
+
+# df do rotulo
+
+label_stat_nado <-
+  data.frame(label = paste(stat_nado$numeric.median, " ", "(",  stat_nado$numeric.p25, "-", stat_nado$numeric.p75, ")", sep = ""), species = stat_nado$species, variable = stat_nado$skim_variable, y_height = stat_nado$numeric.p50, x_diameter = stat_nado$numeric.p50)
+
+
 f17a2 <-  df %>%
   filter(!is.na(is.numeric(cylinder_height)), !is.na(is.numeric(cylinder_diameter))) %>% 
   group_by(study_reference, cylinder_height, cylinder_diameter, species) %>% 
-  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>%
   ggplot(aes(x = cylinder_diameter, y = cylinder_height, color = species), na.rm = T) +
   geom_jitter(alpha = .5, size = 1) +
-  geom_text(
-    aes(label = str_wrap("10 (10-15)", width = 7)),
-    x = 10,
-    y = 4,
+  geom_text(data = filter(label_stat_nado, species == "Camundongo", variable == "cylinder_diameter"),
+    aes(label = str_wrap(label, width = 7), x = as.numeric(x_diameter), y = as.numeric(y_height)),
+    y = 3.5, # esse valor vai predominar ao dentro do aes
     color = "#FE7700",
-    size = 1.7
+    size = 2
   ) +
-  geom_text(
-    aes(label = str_wrap("25 (25-25)", width = 7)), 
-    x = 5,
-    y = 25,
-    color = "#FE7700",
-    size = 1.7
+  geom_text(data = filter(label_stat_nado, species == "Camundongo", variable == "cylinder_height"),
+            aes(label = str_wrap(label, width = 7), x = as.numeric(x_diameter), y = as.numeric(y_height)),
+            x = 5,
+            color = "#FE7700",
+            size = 2
   ) +
-  geom_text(
-    aes(label = str_wrap("20 (18-24)", width = 7)),
-    x = 20,
-    y = 4,
-    color = "#ec2b2b",
-    size = 1.7
+  geom_text(data = filter(label_stat_nado, species == "Rato", variable == "cylinder_diameter"),
+            aes(label = str_wrap(label, width = 7), x = as.numeric(x_diameter), y = as.numeric(y_height)),
+            y = 3.5,
+            color = "#ec2b2b",
+            size = 2
   ) +
-  geom_text(
-    aes(label = str_wrap("45 (40-50)", width = 7)),
-    x = 5,
-    y = 40,
-    color = "#ec2b2b",
-    size = 1.7
+  geom_text(data = filter(label_stat_nado, species == "Rato", variable == "cylinder_height"),
+            aes(label = str_wrap(label, width = 7), x = as.numeric(x_diameter), y = as.numeric(y_height)),
+            x = 5,
+            color = "#ec2b2b",
+            size = 2
   ) +
   scale_color_manual(name = "Espécie:", values = c("#ff9400", "#ec2b2b")) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 85)) +
