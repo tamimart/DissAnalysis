@@ -22,7 +22,6 @@ library(ggdist)       # plotar densidade
 library(gghalves)     # plotar pontos
 library(writexl)      # salvar tabela
 
-
 library(ggcorrplot)
 library(ggradar)
 
@@ -51,7 +50,9 @@ theme_set(theme_minimal(base_family = "Gadugi"))
 
 my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), 
                                    iqr = ~ IQR(., na.rm = TRUE)),
-                     base = sfl(complete = n_complete))
+                     base = sfl(complete = n_complete,
+                                missing = n_missing,
+                                n = length))
 
 # Renomear os níveis de variaveis categóricas para PT
 
@@ -320,8 +321,7 @@ df$treatment_via <-
       "NA",
       "oral", 
       "oral (dietary treatment)",           
-      "subcutaneous",
-      "tablet" 
+      "subcutaneous"
     ),
     labels = c(
       "Gavagem",
@@ -332,11 +332,14 @@ df$treatment_via <-
       "Sem info",
       "Oral", 
       "Oral (dieta)",           
-      "Subcutânea",
-      "Tablete"
+      "Subcutânea"
     )
   ) 
 
+
+
+df %>% 
+  filter(treatment_via == "Tablete")
 #protocolo tnf
 
 df$fst_protocol <-
@@ -433,8 +436,8 @@ df$measurement_method <-
       "Manual, intervalos de 60s",
       "Videoanálise automatizada",
       "Sem info",
-      "Inexplícito, intervalos de 60s",            
-      "Inexplícito",
+      "Incerto, intervalos de 60s",            
+      "Incerto",
       "Videoanálise",
       "Videoanálise com cronômetro",
       "Videoanálise manual",
@@ -2308,7 +2311,7 @@ f11a <- df %>%
             family = "Gadugi",
             position = "stack",
             vjust = 1.2) +
-  labs(y = "Nº de estudos", x = "Classe", title = "a") +
+  labs(y = "Nº de estudos", x = "Classes administradas em camundongos", title = "a") +
   scale_fill_manual(
     values = c(
       "#ffe170",
@@ -2452,7 +2455,7 @@ f12a <- df %>%
             family = "Gadugi",
             position = "stack",
             vjust = 1.2) +
-  labs(y = "Nº de estudos", x = "Classe", title = "a") +
+  labs(y = "Nº de estudos", x = "Classes administradas em ratos", title = "a") +
   scale_fill_manual(
     values = c(
       "#ffe170",
@@ -2596,7 +2599,7 @@ f13a <- df %>%
             vjust = -.25,
   ) +
   scale_y_continuous(limits = c(0, 230), expand = c(0, 0)) +
-  labs(y = "Nº de estudos", x = "Via de administração", title = "a") +
+  labs(y = "Nº de estudos", x = "Via de administração em camundongos", title = "a") +
   scale_fill_manual(values = c("1" = "#fec200", "2" = "#009c7e", "3" = "#a94f93")) +
   theme(
     axis.text = element_text(
@@ -2606,6 +2609,7 @@ f13a <- df %>%
     ),
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
+    axis.title.x = element_text(size = 7, hjust = 1, vjust = 35),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -2617,6 +2621,12 @@ f13a
 
 # vias de adm, frequencia de adm e duracao do tratamento
 
+stat_t_d_cam <- df %>%
+  filter(species == "Camundongo") %>% 
+  group_by(treatment_via) %>%
+  my_skim(treatment_duration) %>%
+  tibble::as_tibble()
+
 f13b <- df %>%
   filter(species == "Camundongo") %>%
   ggplot(aes(y = treatment_duration, x = fct_infreq(treatment_via))) +
@@ -2627,9 +2637,9 @@ f13b <- df %>%
     shape = 19,
     alpha = .5
   ) +
-  labs(y = "Duração do tratamento (dias)", x = "Via de administração", title = "b") +
+  labs(y = "Duração do tratamento (dias)", x = "Via de administração em camundongos", title = "b") +
   scale_color_manual(
-    name = "Administrações/dia",
+    name = "Administrações/dia:",
     values = c(
       "1" = "#fec200",
       "2" = "#009c7e",
@@ -2638,6 +2648,7 @@ f13b <- df %>%
     )
   ) +
   scale_y_continuous(expand = c(.01, 0), limits = c(0, 120)) +
+  geom_pointrange(data = stat_t_d_cam, aes(x = treatment_via, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
@@ -2647,16 +2658,15 @@ f13b <- df %>%
     ),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5)),
+    axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     plot.margin = margin(0, 0, 0, 0),
     legend.title = element_text(size = 6),
-    legend.text = element_text(size = 5),
+    legend.text = element_text(size = 6),
     legend.position = "top",
-    legend.justification = "right",
     legend.margin = margin(0,0,0,0),
     legend.box.margin = margin(-10, 0,-10,-10),
     legend.spacing.x = unit(0.1,'mm'),
@@ -2672,20 +2682,6 @@ save_plot(filename = "Figura13.png",
           plot = F13,
           dpi = 300)
 
-# stat da duracao da adm por via de adm
-
-my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), iqr = ~ IQR(., na.rm = TRUE)),
-                     base = sfl(complete = n_complete))
-
-stat_t_d_cam <- df %>%
-  filter(species == "Camundongo") %>% 
-  group_by(treatment_via) %>%
-  my_skim(treatment_duration) %>%
-  tibble::as_tibble()
-
-
-write_xlsx(stat_t_d_cam,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_cam.xlsx")
-
 
 # RATOS
 
@@ -2693,7 +2689,7 @@ write_xlsx(stat_t_d_cam,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalys
 
 f14a <- df %>% 
   filter(species == "Rato") %>% 
-  ggplot(aes(x = fct_lump_n(fct_infreq(treatment_via), n = 8, other_level = "Outros"), fill = treatment_freq)) +
+  ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_freq)) +
   geom_bar(position = position_dodge2(preserve = "single")) + 
   geom_text(aes(label = ..count..), stat = "count",
             color = "black",
@@ -2707,7 +2703,7 @@ f14a <- df %>%
     labels = function(x)
       str_wrap(x, width = 15)
   ) +
-  labs(y = "Nº de estudos", x = "Via de administração", title = "a") +
+  labs(y = "Nº de estudos", x = "Via de administração em ratos", title = "a") +
   scale_fill_manual(values = c("1" = "#fec200", "2" = "#009c7e", "3" = "#a94f93", "Sem info" = "grey80")) +
   theme(
     axis.text = element_text(
@@ -2717,6 +2713,7 @@ f14a <- df %>%
     ),
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
+    axis.title.x = element_text(size = 7, hjust = 1, vjust = 40),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -2728,9 +2725,15 @@ f14a
 
 # vias de adm, frequencia de adm e duracao do tratamento
 
+stat_t_d_rat <- df %>%
+  filter(species == "Rato") %>% 
+  group_by(treatment_via) %>%
+  my_skim(treatment_duration) %>%
+  tibble::as_tibble()
+
 f14b <- df %>%
   filter(species == "Rato") %>%
-  ggplot(aes(y = treatment_duration, x = fct_lump_n(fct_infreq(treatment_via), n = 8, other_level = "Outros"))) +
+  ggplot(aes(y = treatment_duration, x = fct_infreq(treatment_via))) +
   geom_point(
     aes(color = treatment_freq),
     position = position_jitterdodge(),
@@ -2738,9 +2741,9 @@ f14b <- df %>%
     shape = 19,
     alpha = .5
   ) +
-  labs(y = "Duração do tratamento (dias)", x = "Via de administração", title = "b") +
+  labs(y = "Duração do tratamento (dias)", x = "Via de administração em ratos", title = "b") +
   scale_color_manual(
-    name = "Administrações/dia",
+    name = "Administrações/dia:",
     values = c(
       "1" = "#fec200",
       "2" = "#009c7e",
@@ -2753,6 +2756,7 @@ f14b <- df %>%
     labels = function(x)
       str_wrap(x, width = 15)
   ) +
+  geom_pointrange(data = stat_t_d_rat, aes(x = treatment_via, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
@@ -2762,19 +2766,18 @@ f14b <- df %>%
     ),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5)),
+    axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     plot.margin = margin(0, 0, 0, 0),
     legend.title = element_text(size = 6),
-    legend.text = element_text(size = 5),
+    legend.text = element_text(size = 6),
     legend.position = "top",
-    legend.justification = "right",
     legend.margin = margin(0,0,0,0),
     legend.box.margin = margin(-10, 0,-10,-10),
-    legend.spacing.x = unit(0.1,'00'),
+    legend.spacing.x = unit(0.1,'mm'),
     panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.minor.y = element_line(color = "grey90", size = .1)
   )
@@ -2794,8 +2797,7 @@ save_plot(filename = "Figura14.png",
 
 ##Figura15 e Figura 16 : protocolo x metodos de analise ----
 
-
-#CAMUNDONGO
+# fst protocol
 
 f15a <- df %>%
   filter(species == "Camundongo") %>%
@@ -2813,19 +2815,19 @@ f15a <- df %>%
   )) +
   geom_bar() +
   scale_fill_manual(values = c(
-    "#82C236",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A"
+    "#FE7700",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400"
   )) +
-  labs(y = "Nº de publicações", x = "Protocolo do nado forçado em camundongos", title = "a") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 60)) +
+  labs(y = "Nº de publicações", x = "Camundongo", title = "a", subtitle = "Protocolo do nado forçado") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 67)) +
   scale_x_discrete(
     labels = function(x)
       str_wrap(x, width = 13)
@@ -2847,64 +2849,18 @@ f15a <- df %>%
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5, r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
+    plot.subtitle = element_text(size = 8, hjust = .5),
     legend.position = "none",
     panel.grid = element_blank(),
     plot.margin = margin(0, 0, 0, 0)
   )
 
 f15a
-#metodo de analise
 
 f15b <- df %>%
-  filter(species == "Camundongo") %>%
-  group_by(study_reference) %>% 
-  distinct(measurement_method) %>% 
-  group_by(measurement_method) %>% 
-  ggplot(aes(x = fct_lump_n(fct_infreq(measurement_method), n = 6, other_level = "Outros"), fill = fct_lump_n(fct_infreq(measurement_method), n = 6))) +
-  geom_bar() +
-  scale_fill_manual(values = c("grey80", "#692b75", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2" )) +
-  labs(y = "Nº de publicações", x = "Método de análise do nado forçado em camundongos", title = "b") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 80)) +
-  scale_x_discrete(labels = function(x)
-    str_wrap(x, width = 15)) +
-  geom_text(aes(label = ..count..), stat = "count",
-            size = 2.5,
-            family = "Gadugi",
-            position = position_dodge(width = 0.9),
-            vjust = -0.25
-  ) +
-  theme(
-    axis.text = element_text(
-      size = 6,
-      angle = 0,
-      color = "grey20"
-    ),
-    axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5, r = 5)),
-    plot.title = element_text(size = 10),
-    plot.title.position = "plot",
-    legend.position = "none",
-    panel.grid = element_blank(),
-    plot.margin = margin(0, 0, 0, 0)
-  )
-
-f15b
-
-Figura15 <- f15a / f15b
-
-save_plot(filename = "Figura15.png",
-          plot = Figura15,
-          dpi = 300)
-
-
-#RATO
-
-f16a <- df %>%
   filter(species == "Rato") %>%
   group_by(study_reference) %>%
   distinct(fst_protocol) %>%
@@ -2914,18 +2870,18 @@ f16a <- df %>%
     n = 3,
     other_level = "Outros"
   ), fill = fct_lump_n(fct_infreq(fst_protocol),
-                     n = 3))) +
+                       n = 3))) +
   geom_bar() +
   scale_fill_manual(values = c(
-    "#82C236",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A",
-    "#CBF47A"
+    "#a6243a",
+    "#ec2b2b",
+    "#ec2b2b",
+    "#ec2b2b",
+    "#ec2b2b",
+    "#ec2b2b",
+    "#ec2b2b"
   )) +
-  labs(y = "Nº de publicações", x = "Protocolo do nado forçado em ratos", title = "a") +
+  labs(y = "Nº de publicações", x = "Rato", title = "b") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 67)) +
   scale_x_discrete(labels = function(x)
     str_wrap(x, width = 13)) +
@@ -2946,7 +2902,7 @@ f16a <- df %>%
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5, r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -2954,26 +2910,55 @@ f16a <- df %>%
     plot.margin = margin(10, 0, 10, 10)
   )
 
-f16a
+f15b
+
+
+Figura15 <- f15a / f15b
+
+save_plot(filename = "Figura15.png",
+          plot = Figura15,
+          dpi = 300)
+
+
+
 #metodo de analise
 
-f16b <- df %>%
-  filter(species == "Rato") %>%
-  group_by(study_reference) %>% 
-  distinct(measurement_method) %>% 
-  group_by(measurement_method) %>% 
-  ggplot(aes(x = fct_lump_n(fct_infreq(measurement_method), n = 9, other_level = "Outros"), fill = fct_lump_n(fct_infreq(measurement_method), n = 9))) +
+f16a <- df %>%
+  filter(species == "Camundongo") %>%
+  group_by(study_reference) %>%
+  distinct(measurement_method) %>%
+  group_by(measurement_method) %>%
+  ggplot(aes(
+    x = fct_lump_n(
+      fct_infreq(measurement_method),
+      n = 6,
+      other_level = "Outros"
+    ),
+    fill = fct_lump_n(fct_infreq(measurement_method), n = 6)
+  )) +
   geom_bar() +
-  scale_fill_manual(values = c("grey80", "#692b75", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2", "#b376a2" )) +
-  labs(y = "Nº de publicações", x = "Método de análise do TNF em ratos", title = "b") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 40)) +
-  scale_x_discrete(labels = function(x)
-    str_wrap(x, width = 15)) +
-  geom_text(aes(label = ..count..), stat = "count",
-            size = 2.5,
-            family = "Gadugi",
-            position = position_dodge(width = 0.9),
-            vjust = -0.25
+  scale_fill_manual(values = c(
+    "grey80",
+    "#FE7700",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400",
+    "#ff9400"
+  )) +
+  labs(y = "Nº de publicações", x = "Camundongo", title = "a", subtitle = "Método de análise do nado forçado") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 80)) +
+  scale_x_discrete(
+    labels = function(x)
+      str_wrap(x, width = 15)
+  ) +
+  geom_text(
+    aes(label = ..count..),
+    stat = "count",
+    size = 2.5,
+    family = "Gadugi",
+    position = position_dodge(width = 0.9),
+    vjust = -0.25
   ) +
   theme(
     axis.text = element_text(
@@ -2984,7 +2969,69 @@ f16b <- df %>%
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5, r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    plot.subtitle = element_text(size = 8, hjust = .5),
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+f16a
+
+f16b <- df %>%
+  filter(species == "Rato") %>%
+  group_by(study_reference) %>%
+  distinct(measurement_method) %>%
+  group_by(measurement_method) %>%
+  ggplot(aes(
+    x = fct_lump_n(
+      fct_infreq(measurement_method),
+      n = 9,
+      other_level = "Outros"
+    ),
+    fill = fct_lump_n(fct_infreq(measurement_method), n = 9)
+  )) +
+  geom_bar() +
+  scale_fill_manual(
+    values = c(
+      "grey80",
+      "#a6243a",
+      "#ec2b2b",
+      "#ec2b2b",
+      "#ec2b2b",
+      "#ec2b2b",
+      "#ec2b2b",
+      "#ec2b2b",
+      "#ec2b2b",
+      "#ec2b2b"
+    )
+  ) +
+  labs(y = "Nº de publicações", x = "Rato", title = "b") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 80)) +
+  scale_x_discrete(
+    labels = function(x)
+      str_wrap(x, width = 15)
+  ) +
+  geom_text(
+    aes(label = ..count..),
+    stat = "count",
+    size = 2.5,
+    family = "Gadugi",
+    position = position_dodge(width = 0.9),
+    vjust = -0.25
+  ) +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -3003,3 +3050,397 @@ save_plot(filename = "Figura16.png",
 
 
 #Figura17 e Figura 18: tamanho x diametro cuba / altura agua x temperatura agua -----
+
+# DIMENSOES CUBA
+
+f17a2 <-  df %>%
+  filter(!is.na(is.numeric(cylinder_height)), !is.na(is.numeric(cylinder_diameter))) %>% 
+  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  ggplot(aes(x = cylinder_diameter, y = cylinder_height, color = species), na.rm = T) +
+  geom_jitter(alpha = .5, size = 1) +
+  geom_text(
+    aes(label = str_wrap("10 (10-15)", width = 7)),
+    x = 10,
+    y = 4,
+    color = "#FE7700",
+    size = 1.7
+  ) +
+  geom_text(
+    aes(label = str_wrap("25 (25-25)", width = 7)), 
+    x = 5,
+    y = 25,
+    color = "#FE7700",
+    size = 1.7
+  ) +
+  geom_text(
+    aes(label = str_wrap("20 (18-24)", width = 7)),
+    x = 20,
+    y = 4,
+    color = "#ec2b2b",
+    size = 1.7
+  ) +
+  geom_text(
+    aes(label = str_wrap("45 (40-50)", width = 7)),
+    x = 5,
+    y = 40,
+    color = "#ec2b2b",
+    size = 1.7
+  ) +
+  scale_color_manual(name = "Espécie:", values = c("#ff9400", "#ec2b2b")) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 85)) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 85)) +
+  labs(x = "Diâmetro do cilindro (cm)", y = "Altura do cilindro (cm)") +
+  theme_bw(base_family = "Gadugi") +
+  coord_fixed() +
+  theme(
+    axis.line = element_line(size = .2),
+    axis.text = element_text(
+      size = 7,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.title = element_text(size = 8, hjust = .5),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10),
+    legend.position = "panel",
+    panel.grid.major = element_line(color = "grey90", size = .1),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+f17a2
+
+f17a1 <-  df %>%
+  filter(is.na(cylinder_height) & !is.na(as.numeric(cylinder_diameter))) %>% 
+  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>%
+  ggplot(aes(x = cylinder_diameter, y = "Sem info" ,color = species), na.rm = T) +
+  geom_jitter(alpha = .5, size = 1) +
+  scale_color_manual(name = "Espécie:", values = c("#ff9400", "#ec2b2b")) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 85)) +
+  scale_y_discrete(expand = c(0, 5)) +
+  coord_fixed() +
+  theme_bw(base_family = "Gadugi") +
+  theme(
+    axis.line = element_line(size = .2),
+    axis.line.x = element_blank(),
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.x = element_blank(),
+    axis.title = element_blank(),
+    plot.title.position = "panel",
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    legend.position = "top",
+    legend.justification = "right",
+    legend.margin = margin(0,0,0,0),
+    legend.box.margin = margin(-10, 0,-10,-10),
+    legend.spacing.x = unit(0.1,'mm'),
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(colour = 'black', size = 8),
+    panel.grid.major = element_line(color = "grey90", size = .1),
+    plot.margin = margin(0, -10, -10, 25),
+    axis.text.y = element_text(angle = 90, hjust = .5),
+    axis.ticks = element_blank()
+  )
+f17a1
+
+
+f17a <- f17a1 / f17a2 
+f17a
+
+
+save_plot(filename = "Figura17a.png",
+          plot = f17a,
+          dpi = 300)
+   
+# PROFUNDIDADE DA AGUA
+         
+# Gerar estatistica para plot e rotulo CAMUNDONGO
+        
+label_wd_c <- df %>% 
+  filter(species == "Camundongo") %>% 
+  group_by(study_reference) %>%
+  distinct(water_depth, year) %>%
+  group_by(year) %>%
+  my_skim(water_depth)
+  
+
+
+f17b <- label_wd_c %>% 
+  ggplot(aes(x = year, y = numeric.p50)) +
+  geom_col(fill = "#ff9400") +
+  labs(subtitle = "Profundidade da água no nado forçado (cm)", x = "Camundongo") +
+  scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
+  scale_y_continuous(expand = c(0, 0),  limits = c(0,45)) +
+  geom_vline(xintercept = as.numeric(as.Date("1994-01-01")),
+    col = "grey30",
+    size = .3,
+    linetype = "dashed"
+  ) +
+  geom_text(aes(label = "ABEL et al., 1994"), 
+            y = 37,
+            x = as.numeric(as.Date("1994-01-01")),
+            color = "black",
+            size = 2,
+            hjust = 1.1,
+            family = "Gadugi") +
+  geom_curve(aes(x = as.Date("1992-01-01"), y = 40, xend = as.Date("1993-08-01"), yend = 43), 
+             colour = "black", 
+             size = .5, 
+             curvature = -0.2,
+             arrow = arrow(length = unit(0.03, "npc")))  +
+  geom_text(data = label_wd_c, aes(label = complete, x = year, y = 2),
+            color = "mintcream",
+            size = 2.5,
+            family = "Gadugi"
+  ) +
+  geom_pointrange(data = label_wd_c, aes(x = year, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1) +
+  theme(
+    axis.line = element_line(size = .3),
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_blank(),
+    plot.title.position = "panel",
+    plot.subtitle = element_text(size = 8, hjust = .5, margin = margin(b = 10)),
+    panel.grid.major = element_line(color = "grey90", size = .1),
+    plot.margin = margin(0, 0, 15, 0)
+  )
+f17b
+
+
+# Gerar estatistica para plot e rotulo RATO
+
+label_wd_r <- df %>% 
+  filter(species == "Rato") %>% 
+  group_by(study_reference) %>%
+  distinct(water_depth, year) %>%
+  group_by(year) %>%
+  my_skim(water_depth)
+
+f17c <- label_wd_r %>% 
+  ggplot(aes(x = year, y = numeric.p50)) +
+  geom_col(fill = "#ec2b2b") +
+  labs(x = "Rato") +
+  scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0,45)) +
+  geom_vline(xintercept = as.numeric(as.Date("1994-01-01")),
+             col = "grey30",
+             size = .3,
+             linetype = "dashed"
+  ) +
+  geom_text(data = label_wd_r, aes(label = complete, x = year, y = 2),
+            color = "mintcream",
+            size = 2.5,
+            family = "Gadugi"
+  ) +
+  geom_pointrange(data = label_wd_r, aes(x = year, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1) +
+  theme(
+    axis.line = element_line(size = .3),
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_blank(),
+    plot.title.position = "panel",
+    axis.title.x = element_text(margin = margin(t = 5)),
+    panel.grid.major = element_line(color = "grey90", size = .1),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+
+f17bc <- f17b / f17c 
+
+save_plot(filename = "Figura17bc.png",
+          plot = f17bc,
+          dpi = 300)
+
+# TEMPERATURA AGUA
+
+# filtro com rotulo estatistica
+
+filtro_temp_agua_c <- df %>%
+  filter(species == "Camundongo") %>% 
+  group_by(study_reference) %>%
+  slice(1) %>%
+  filter(!is.na(is.numeric(water_temperature))) %>%
+  select(water_temperature, species) 
+
+filtro_temp_agua_c <- filtro_temp_agua_c %>% 
+  ungroup() %>% 
+  my_skim(water_temperature) %>%
+  mutate(numeric.median = round(numeric.median), 1,
+         numeric.p25 = round(numeric.p25), 1,
+         numeric.p75 = round(numeric.p75), 1)
+
+
+f17d <- df %>%  
+  filter(species == "Camundongo") %>%
+  group_by(study_reference) %>%
+  distinct(water_temperature) %>%
+  ggplot(aes(x = water_temperature)) +
+  geom_histogram(fill = "#ff9400") +
+  scale_y_continuous(expand = c(0, 0), n.breaks = 4) +
+  scale_x_continuous(n.breaks = 4, limits = c(19,35)) +
+geom_text(
+  aes(
+    label = paste(
+      filtro_temp_agua_c$numeric.median,
+      " ",
+      "(",
+      filtro_temp_agua_c$numeric.p25,
+      "-",
+      filtro_temp_agua_c$numeric.p75,
+      ")",
+      sep = ""
+    )
+  ),
+  x = Inf ,
+  y = 48,
+  hjust = 1.1,
+  color = "black",
+  size = 2
+) 
+  geom_vline(
+    data = filtro_temp_agua_c,
+    aes(xintercept = numeric.p25),
+    col = "black",
+    size = .5,
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    data = filtro_temp_agua_c,
+    aes(xintercept = numeric.p75),
+    col = "black",
+    size = .5,
+    linetype = "dashed"
+  ) ++ geom_vline(
+  data = filtro_temp_agua_c,
+  aes(xintercept = numeric.p50),
+  col = "gold2",
+  size = .5
+) +
+  labs(
+    y = "Nº de publicações",
+    subtitle = "Temperatura da água no nado forçado (°C)",
+    x = "Camundongo",
+    title = "d"
+  ) +
+  theme(
+    axis.line = element_line(size = .2),
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    plot.subtitle = element_text(size = 8, hjust = .5, margin = margin(b = 10)),
+    legend.position = "none",
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(colour = 'black', size = 8),
+    panel.grid.major = element_line(color = "grey90", size = .1),
+    plot.margin = margin(10, 0, 10, 10)
+  )
+
+f17d
+
+
+# filtro com rotulo estatistica
+
+filtro_temp_agua_r <- df %>%
+  filter(species == "Rato") %>% 
+  group_by(study_reference) %>%
+  slice(1) %>%
+  filter(!is.na(is.numeric(water_temperature))) %>%
+  select(water_temperature, species) 
+
+filtro_temp_agua_r <- filtro_temp_agua_r %>% 
+  ungroup() %>% 
+  my_skim(water_temperature) %>%
+  mutate(numeric.median = round(numeric.median), 1,
+         numeric.p25 = round(numeric.p25), 1,
+         numeric.p75 = round(numeric.p75), 1)
+
+
+
+f17e <- df %>%  
+  filter(species == "Rato") %>%
+  group_by(study_reference) %>%
+  distinct(water_temperature) %>%
+  ggplot(aes(x = water_temperature)) +
+  geom_histogram(fill = "#ec2b2b") +
+  scale_y_continuous(expand = c(0, 0), n.breaks = 4) +
+  scale_x_continuous(n.breaks = 4, limits = c(19,35)) +
+  geom_text(
+    aes(
+      label = paste(filtro_temp_agua_r$numeric.median, " ", "(",  filtro_temp_agua_r$numeric.p25, "-", filtro_temp_agua_r$numeric.p75, ")", sep = "")
+    ),
+    x = Inf ,
+    y = 49,
+    hjust = 1.1,
+    color = "grey20",
+    size = 2
+  ) + geom_vline(
+    data = filtro_temp_agua_c,
+    aes(xintercept = numeric.p50),
+    col = "black",
+    size = .5
+  ) +
+  geom_vline(
+    data = filtro_temp_agua_c,
+    aes(xintercept = numeric.p25),
+    col = "black",
+    size = .5,
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    data = filtro_temp_agua_c,
+    aes(xintercept = numeric.p75),
+    col = "black",
+    size = .5,
+    linetype = "dashed"
+  ) +
+  labs(
+    y = "Nº de publicações",
+    x = "Rato"
+  ) +
+  theme(
+    axis.line = element_line(size = .2),
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    plot.subtitle = element_text(size = 8, hjust = .5, margin = margin(b = 10)),
+    legend.position = "none",
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(colour = 'black', size = 8),
+    panel.grid.major = element_line(color = "grey90", size = .1),
+    plot.margin = margin(10, 0, 10, 10)
+  )
+
+f17e
+
+f17de <- f17d / f17e 
+
+
+f17bcde <- f17bc | f17de + plot_layout(widths = c(7,3))
+f17bcde

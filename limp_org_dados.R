@@ -459,6 +459,11 @@ levels(data_geral_reord$country)[match("México", levels(data_geral_reord$countr
 levels(data_geral_reord$country)[match("United Kingdom", levels(data_geral_reord$country))] <- "UK"
 levels(data_geral_reord$country)[match("Korea", levels(data_geral_reord$country))] <- "South Korea"
 
+# treatmentvia
+
+levels(data_geral_reord$treatment_via)[match("tablet", levels(data_geral_reord$treatment_via))] <- "oral"
+
+
 
 # NÃO RODAR - Identificando e verificando os estudos com valores que parecem erros (modificavel)
 

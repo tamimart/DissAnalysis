@@ -17,9 +17,11 @@ df <- data_geral_clean <- readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissA
 
 my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), 
                                    iqr = ~ IQR(., na.rm = TRUE)),
-                     base = sfl(complete = n_complete))
+                     base = sfl(complete = n_complete,
+                                missing = n_missing,
+                                n = length))
 
-
+skimmer_function_list
 # Rename categorias ----
 
 df$language <-
@@ -637,6 +639,17 @@ vol_ppeso_meansd <- cage_3d  %>%
 
 # Figura13
 
+
+stat_t_d_cam <- df %>%
+  filter(species == "Camundongo") %>% 
+  group_by(treatment_via) %>%
+  my_skim(treatment_duration) %>%
+  tibble::as_tibble()
+
+
+write_xlsx(stat_t_d_cam,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_cam.xlsx")
+
+
 # Figura14
 
 stat_t_d_rat <- df %>%
@@ -650,18 +663,30 @@ write_xlsx(stat_t_d_rat,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalys
 
 
 
-# Figura15
+# Figura15 e 16, 
 
-# Figura16
+stat_nado_met <- df %>%
+  filter(!is.na(is.factor(fst_protocol)), !is.na(is.factor(measurement_method))) %>% 
+  group_by(study_reference, fst_protocol, measurement_method, species) %>% 
+  distinct(study_reference, fst_protocol, measurement_method, species) %>% 
+  select(study_reference, fst_protocol, measurement_method, species) %>% 
+  group_by(species) %>% 
+  my_skim(fst_protocol, measurement_method) %>%
+  tibble::as_tibble()
+
+write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\stat_nado_met.xlsx")
+
+# Figura 17 
+
 
 stat_nado <- df %>%
+  filter(!is.na(is.numeric(cylinder_height)), !is.na(is.numeric(cylinder_diameter)), !is.na(is.numeric(water_depth)), !is.na(is.numeric(water_temperature))) %>% 
+  group_by(study_reference, cylinder_height, cylinder_diameter, water_depth, water_temperature, species) %>% 
+  distinct(study_reference, cylinder_height, cylinder_diameter, water_depth, water_temperature, species) %>% 
   group_by(species) %>%
-  my_skim(fst_protocol, measurement_method, cylinder_height, cylinder_diameter, water_depth, water_temperature) %>%
+  my_skim(cylinder_height, cylinder_diameter, water_depth, water_temperature) %>%
   tibble::as_tibble()
 
 write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\stat_nado.xlsx")
 
-
-# Figura17
-
-# Figura18
+remove(stat_nado)
