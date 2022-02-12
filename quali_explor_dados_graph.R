@@ -1000,12 +1000,17 @@ ggplot(aes(
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
-    axis.text = element_text(
-      size = 5.5,
+    axis.text.x = element_text(
+      size = 6,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7),
+    axis.text.y = element_text(
+      size = 5.5,
+      angle = 0,
+      color = "black"
+    ),
+    axis.title = element_text(size = 8),
     axis.title.y = element_blank(),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
@@ -1049,7 +1054,7 @@ f4b <- df %>%
     ),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
-    axis.title = element_text(size = 7),
+    axis.title = element_text(size = 8),
     axis.title.y = element_blank(),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
@@ -1093,7 +1098,7 @@ f4c <- df %>%
     ),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
-    axis.title = element_text(size = 7),
+    axis.title = element_text(size = 8),
     axis.title.y = element_blank(),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
@@ -1133,12 +1138,18 @@ f4d <- df %>%
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
-    axis.text = element_text(
-      size = 5.5,
+    
+    axis.text.x = element_text(
+      size = 6,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7),
+    axis.text.y = element_text(
+      size = 5.5,
+      angle = 0,
+      color = "black"
+    ),
+    axis.title = element_text(size = 8),
     axis.title.y = element_blank(),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
@@ -1183,7 +1194,7 @@ f4e <- df %>%
     ),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
-    axis.title = element_text(size = 7),
+    axis.title = element_text(size = 8),
     axis.title.y = element_blank(),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
@@ -1227,7 +1238,7 @@ f4f <- df %>%
     ),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank(),
-    axis.title = element_text(size = 7),
+    axis.title = element_text(size = 8),
     axis.title.y = element_blank(),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10, hjust = 0),
@@ -1329,7 +1340,7 @@ f5 <- df %>%
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7, hjust = 0),
+    axis.title = element_text(size = 8, hjust = 0),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     legend.position = "none",
@@ -1421,7 +1432,7 @@ f6 <- df %>%
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7, hjust = 0),
+    axis.title = element_text(size = 8, hjust = 0),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     legend.position = "none",
