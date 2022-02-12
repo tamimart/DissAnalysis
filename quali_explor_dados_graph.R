@@ -1286,20 +1286,41 @@ labels_age <-
 
 f5 <- df %>%
   ggplot(aes(x = age, fill = sex)) +
-  geom_histogram(color = "black", size = 0.2) +
+  geom_histogram() +
   facet_grid(fct_infreq(sex) ~ species, scales = "free_x") +
   geom_text(
     data = labels_age,
     aes(label = label),
     x = Inf ,
-    y = 35,
-    hjust = 1.1,
+    y = Inf,
+    vjust = 1.4,
+    hjust = 1.01,
     color = "grey20",
-    size = 2
+    size = 2.5
+  ) +
+   geom_vline(
+    data = age_ss,
+    aes(xintercept = numeric.p50),
+    col = "black",
+    size = .3
+  ) +
+  geom_vline(
+    data = age_ss,
+    aes(xintercept = numeric.p25),
+    col = "black",
+    size = .3,
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    data = age_ss,
+    aes(xintercept = numeric.p75),
+    col = "black",
+    size = .3,
+    linetype = "dashed"
   ) +
   labs(y = "Nº de estudos", x = "Idade (dias)") +
   scale_x_continuous(n.breaks = 10) +
-  expand_limits(x = 0, y = 0) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,40)) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1317,7 +1338,7 @@ f5 <- df %>%
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 20, 0)
   )
-
+f5
 # Peso
 
 # Criar um df com os valores da media e dp arredondados
@@ -1357,20 +1378,41 @@ labels_weight <-
 
 f6 <- df %>%
   ggplot(aes(x = weight, fill = sex)) +
-  geom_histogram(color = "black", size = 0.2) +
+  geom_histogram() +
   facet_grid(fct_infreq(sex) ~ species, scales = "free_x") +
   geom_text(
     data = labels_weight,
     aes(label = label),
     x = Inf ,
-    y = 35,
-    hjust = 1.1,
+    y = Inf,
+    vjust = 1.4,
+    hjust = 1.01,
     color = "grey20",
-    size = 2
+    size = 2.5
+  ) +
+  geom_vline(
+    data = weight_ss,
+    aes(xintercept = numeric.p50),
+    col = "black",
+    size = .3
+  ) +
+  geom_vline(
+    data = weight_ss,
+    aes(xintercept = numeric.p25),
+    col = "black",
+    size = .3,
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    data = weight_ss,
+    aes(xintercept = numeric.p75),
+    col = "black",
+    size = .3,
+    linetype = "dashed"
   ) +
   labs(y = "Nº de estudos", x = "Peso (g)") +
   scale_x_continuous(n.breaks = 7) +
-  expand_limits(x = 0, y = 0) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,45)) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1388,7 +1430,7 @@ f6 <- df %>%
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 20, 0)
   )
-
+f6
 # Salvar
 
 save_plot(filename = "Figura5.png",
@@ -3047,412 +3089,542 @@ save_plot(filename = "Figura16.png",
 
 
 
-#Figura17 e Figura 18: tamanho x diametro cuba / altura agua x temperatura agua -----
+#Figura17: tamanho x diametro cuba / altura agua x temperatura agua -----
 
 # DIMENSOES CUBA
 
 # rotulo
 
 stat_nado <- df %>%
-  filter(!is.na(is.numeric(cylinder_height)), !is.na(is.numeric(cylinder_diameter)), !is.na(is.numeric(water_depth)), !is.na(is.numeric(water_temperature))) %>% 
-  group_by(study_reference, cylinder_height, cylinder_diameter, water_depth, water_temperature, species) %>% 
-  distinct(study_reference, cylinder_height, cylinder_diameter, water_depth, water_temperature, species) %>% 
+  filter(
+    !is.na(is.numeric(cylinder_height)),
+    !is.na(is.numeric(cylinder_diameter)),
+    !is.na(is.numeric(water_depth)),
+    !is.na(is.numeric(water_temperature))
+  ) %>%
+  group_by(
+    study_reference,
+    cylinder_height,
+    cylinder_diameter,
+    water_depth,
+    water_temperature,
+    species
+  ) %>%
+  distinct(
+    study_reference,
+    cylinder_height,
+    cylinder_diameter,
+    water_depth,
+    water_temperature,
+    species
+  ) %>%
   group_by(species) %>%
-  my_skim(cylinder_height, cylinder_diameter, water_depth, water_temperature) %>%
-  mutate(numeric.p.50 = round(numeric.p50, 1),
-       numeric.p25 = round(numeric.p25, 1),
-       numeric.p75 = round(numeric.p75, 1))
+  my_skim(cylinder_height,
+          cylinder_diameter,
+          water_depth,
+          water_temperature) %>%
+  mutate(
+    numeric.p.50 = round(numeric.p50, 1),
+    numeric.p25 = round(numeric.p25, 1),
+    numeric.p75 = round(numeric.p75, 1)
+  )
 
 # df do rotulo
 
 label_stat_nado <-
-  data.frame(label = paste(stat_nado$numeric.median, " ", "(",  stat_nado$numeric.p25, "-", stat_nado$numeric.p75, ")", sep = ""), species = stat_nado$species, variable = stat_nado$skim_variable, y_height = stat_nado$numeric.p50, x_diameter = stat_nado$numeric.p50)
+  data.frame(
+    label = paste(
+      stat_nado$numeric.median,
+      " ",
+      "(",
+      stat_nado$numeric.p25,
+      "-",
+      stat_nado$numeric.p75,
+      ")",
+      sep = ""
+    ),
+    species = stat_nado$species,
+    variable = stat_nado$skim_variable,
+    y_height = stat_nado$numeric.p50,
+    x_diameter = stat_nado$numeric.p50
+  )
 
 
 f17a2 <-  df %>%
-  filter(!is.na(is.numeric(cylinder_height)), !is.na(is.numeric(cylinder_diameter))) %>% 
-  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  filter(!is.na(is.numeric(cylinder_height)),!is.na(is.numeric(cylinder_diameter))) %>%
+  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>%
   distinct(study_reference, cylinder_height, cylinder_diameter, species) %>%
-  ggplot(aes(x = cylinder_diameter, y = cylinder_height, color = species), na.rm = T) +
+  ggplot(aes(x = cylinder_diameter, y = cylinder_height, color = species),
+         na.rm = T) +
   geom_jitter(alpha = .5, size = 1) +
-  geom_text(data = filter(label_stat_nado, species == "Camundongo", variable == "cylinder_diameter"),
-    aes(label = str_wrap(label, width = 7), x = as.numeric(x_diameter), y = as.numeric(y_height)),
-    y = 3.5, # esse valor vai predominar ao dentro do aes
+  geom_text(
+    data = filter(
+      label_stat_nado,
+      species == "Camundongo",
+      variable == "cylinder_diameter"
+    ),
+    aes(
+      label = str_wrap(label, width = 7),
+      x = as.numeric(x_diameter),
+      y = as.numeric(y_height)
+    ),
+    y = 7,
+    # esse valor vai predominar ao dentro do aes
     color = "#FE7700",
-    size = 2
+    size = 2,
+    fontface = "bold"
   ) +
-  geom_text(data = filter(label_stat_nado, species == "Camundongo", variable == "cylinder_height"),
-            aes(label = str_wrap(label, width = 7), x = as.numeric(x_diameter), y = as.numeric(y_height)),
-            x = 5,
-            color = "#FE7700",
-            size = 2
+  geom_text(
+    data = filter(
+      label_stat_nado,
+      species == "Camundongo",
+      variable == "cylinder_height"
+    ),
+    aes(
+      label = str_wrap(label, width = 7),
+      x = as.numeric(x_diameter),
+      y = as.numeric(y_height)
+    ),
+    x = 5.5,
+    color = "#FE7700",
+    size = 2,
+    fontface = "bold"
   ) +
-  geom_text(data = filter(label_stat_nado, species == "Rato", variable == "cylinder_diameter"),
-            aes(label = str_wrap(label, width = 7), x = as.numeric(x_diameter), y = as.numeric(y_height)),
-            y = 3.5,
-            color = "#ec2b2b",
-            size = 2
+  geom_text(
+    data = filter(
+      label_stat_nado,
+      species == "Rato",
+      variable == "cylinder_diameter"
+    ),
+    aes(
+      label = str_wrap(label, width = 7),
+      x = as.numeric(x_diameter),
+      y = as.numeric(y_height)
+    ),
+    y = 7,
+    color = "#ec2b2b",
+    size = 2,
+    fontface = "bold"
   ) +
-  geom_text(data = filter(label_stat_nado, species == "Rato", variable == "cylinder_height"),
-            aes(label = str_wrap(label, width = 7), x = as.numeric(x_diameter), y = as.numeric(y_height)),
-            x = 5,
-            color = "#ec2b2b",
-            size = 2
+  geom_text(
+    data = filter(
+      label_stat_nado,
+      species == "Rato",
+      variable == "cylinder_height"
+    ),
+    aes(
+      label = str_wrap(label, width = 7),
+      x = as.numeric(x_diameter),
+      y = as.numeric(y_height)
+    ),
+    x = 5.5,
+    color = "#ec2b2b",
+    size = 2,
+    fontface = "bold"
   ) +
   scale_color_manual(name = "Espécie:", values = c("#ff9400", "#ec2b2b")) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 85)) +
   scale_x_continuous(expand = c(0, 0), limits = c(0, 85)) +
   labs(x = "Diâmetro do cilindro (cm)", y = "Altura do cilindro (cm)") +
   theme_bw(base_family = "Gadugi") +
-  coord_fixed() +
   theme(
-    axis.line = element_line(size = .2),
+    axis.line = element_line(size = .1),
     axis.text = element_text(
-      size = 7,
+      size = 6,
       angle = 0,
-      color = "grey20"
+      color = "grey30"
     ),
-    axis.title = element_text(size = 8, hjust = .5),
-    axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5)),
+    axis.title = element_text(size = 7, hjust = 1),
     plot.title = element_text(size = 10),
     legend.position = "panel",
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(0, 0, 0, 0)
+    plot.margin = margin(-10, 0, 5, 0)
   )
-f17a2
 
 f17a1 <-  df %>%
-  filter(is.na(cylinder_height) & !is.na(as.numeric(cylinder_diameter))) %>% 
-  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  filter(is.na(cylinder_height) &
+           !is.na(as.numeric(cylinder_diameter))) %>%
+  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>%
   distinct(study_reference, cylinder_height, cylinder_diameter, species) %>%
-  ggplot(aes(x = cylinder_diameter, y = "Sem info" ,color = species), na.rm = T) +
+  ggplot(aes(x = cylinder_diameter, y = "?" , color = species), na.rm = T) +
   geom_jitter(alpha = .5, size = 1) +
   scale_color_manual(name = "Espécie:", values = c("#ff9400", "#ec2b2b")) +
   scale_x_continuous(expand = c(0, 0), limits = c(0, 85)) +
-  scale_y_discrete(expand = c(0, 5)) +
-  coord_fixed() +
+  scale_y_discrete(limits = NULL) +
+  labs(title = "a") +
   theme_bw(base_family = "Gadugi") +
   theme(
-    axis.line = element_line(size = .2),
+    axis.line = element_line(size = .1),
     axis.line.x = element_blank(),
     axis.text = element_text(
       size = 6,
       angle = 0,
-      color = "grey20"
+      color = "grey30"
     ),
     axis.text.x = element_blank(),
     axis.title = element_blank(),
-    plot.title.position = "panel",
+    plot.title.position = "plot",
+    plot.title = element_text(size = 10, margin = margin(b = -5)),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
     legend.position = "top",
     legend.justification = "right",
-    legend.margin = margin(0,0,0,0),
-    legend.box.margin = margin(-10, 0,-10,-10),
-    legend.spacing.x = unit(0.1,'mm'),
+    legend.margin = margin(0, 0, -8, 0),
+    legend.box.margin = margin(-10, 0,-5, -10),
+    legend.spacing.x = unit(0.1, 'mm'),
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(0, -10, -10, 25),
-    axis.text.y = element_text(angle = 90, hjust = .5),
-    axis.ticks = element_blank()
+    plot.margin = margin(0, 0,-10, 0),
+    axis.ticks.x = element_blank()
   )
-f17a1
 
+f17a <- f17a1 / f17a2 + plot_layout(ncol = 1, heights = c(2, 8))
 
-f17a <- f17a1 / f17a2 
-f17a
-
-
-save_plot(filename = "Figura17a.png",
-          plot = f17a,
-          dpi = 300)
    
 # PROFUNDIDADE DA AGUA
          
 # Gerar estatistica para plot e rotulo CAMUNDONGO
         
-label_wd_c <- df %>% 
-  filter(species == "Camundongo") %>% 
+label_wd_c <- df %>%
+  filter(species == "Camundongo") %>%
   group_by(study_reference) %>%
   distinct(water_depth, year) %>%
   group_by(year) %>%
   my_skim(water_depth)
-  
 
 
-f17b <- label_wd_c %>% 
+
+f17b <- label_wd_c %>%
   ggplot(aes(x = year, y = numeric.p50)) +
   geom_col(fill = "#ff9400") +
-  labs(subtitle = "Profundidade da água no nado forçado (cm)", x = "Camundongo") +
+  labs(x = "Ano", y = "Profundidade da água (cm)", title  = "c") +
   scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
-  scale_y_continuous(expand = c(0, 0),  limits = c(0,45)) +
-  geom_vline(xintercept = as.numeric(as.Date("1994-01-01")),
-    col = "grey30",
-    size = .3,
-    linetype = "dashed"
+  scale_y_continuous(expand = c(0, 0),  limits = c(0, 45)) +
+  geom_vline(
+    xintercept = as.numeric(as.Date("1994-01-01")),
+    col = "black",
+    size = .5,
+    linetype = "dotted"
   ) +
-  geom_text(aes(label = "ABEL et al., 1994"), 
-            y = 37,
-            x = as.numeric(as.Date("1994-01-01")),
-            color = "black",
-            size = 2,
-            hjust = 1.1,
-            family = "Gadugi") +
-  geom_curve(aes(x = as.Date("1992-01-01"), y = 40, xend = as.Date("1993-08-01"), yend = 43), 
-             colour = "black", 
-             size = .5, 
-             curvature = -0.2,
-             arrow = arrow(length = unit(0.03, "npc")))  +
-  geom_text(data = label_wd_c, aes(label = complete, x = year, y = 2),
-            color = "mintcream",
-            size = 2.5,
-            family = "Gadugi"
+  geom_text(
+    aes(label = "ABEL et al., 1994"),
+    y = 37,
+    x = as.numeric(as.Date("1994-01-01")),
+    color = "black",
+    size = 2,
+    hjust = 1.1,
+    family = "Gadugi"
   ) +
-  geom_pointrange(data = label_wd_c, aes(x = year, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1) +
+  geom_curve(
+    aes(
+      x = as.Date("1992-01-01"),
+      y = 40,
+      xend = as.Date("1993-08-01"),
+      yend = 43
+    ),
+    colour = "black",
+    size = .5,
+    curvature = -0.2,
+    arrow = arrow(length = unit(0.03, "npc"))
+  )  +
+  geom_text(
+    data = label_wd_c,
+    aes(label = complete, x = year, y = 2),
+    color = "mintcream",
+    size = 1.8,
+    family = "Gadugi",
+    fontface = "bold"
+  ) +
+  geom_pointrange(
+    data = label_wd_c,
+    aes(
+      x = year,
+      y = numeric.p50,
+      ymin = numeric.p25,
+      ymax = numeric.p75
+    ),
+    colour = "black",
+    size = .2,
+    fatten = .1
+  ) +
   theme(
-    axis.line = element_line(size = .3),
+    axis.line = element_line(size = .2),
     axis.text = element_text(
       size = 6,
       angle = 0,
-      color = "grey20"
+      color = "grey30"
     ),
+    axis.text.x = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_blank(),
-    plot.title.position = "panel",
-    plot.subtitle = element_text(size = 8, hjust = .5, margin = margin(b = 10)),
+    axis.title.x = element_blank(),
+    plot.title = element_text(size = 10, margin = margin(b = -5)),
+    plot.title.position = "plot",
+    plot.subtitle = element_text(size = 4, hjust = .5),
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(0, 0, 15, 0)
+    plot.margin = margin(10, 0, 0, 10)
   )
-f17b
 
 
 # Gerar estatistica para plot e rotulo RATO
 
-label_wd_r <- df %>% 
-  filter(species == "Rato") %>% 
+label_wd_r <- df %>%
+  filter(species == "Rato") %>%
   group_by(study_reference) %>%
   distinct(water_depth, year) %>%
   group_by(year) %>%
   my_skim(water_depth)
 
-f17c <- label_wd_r %>% 
+f17c <- label_wd_r %>%
   ggplot(aes(x = year, y = numeric.p50)) +
   geom_col(fill = "#ec2b2b") +
-  labs(x = "Rato") +
+  labs(x = "Ano", y = "Profundidade (cm)") +
   scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0,45)) +
-  geom_vline(xintercept = as.numeric(as.Date("1994-01-01")),
-             col = "grey30",
-             size = .3,
-             linetype = "dashed"
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 45)) +
+  geom_vline(
+    xintercept = as.numeric(as.Date("1994-01-01")),
+    col = "black",
+    size = .5,
+    linetype = "dotted"
   ) +
-  geom_text(data = label_wd_r, aes(label = complete, x = year, y = 2),
-            color = "mintcream",
-            size = 2.5,
-            family = "Gadugi"
+  geom_text(
+    data = label_wd_r,
+    aes(label = complete, x = year, y = 2),
+    color = "mintcream",
+    size = 1.8,
+    family = "Gadugi",
+    fontface = "bold"
   ) +
-  geom_pointrange(data = label_wd_r, aes(x = year, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1) +
+  geom_pointrange(
+    data = label_wd_r,
+    aes(
+      x = year,
+      y = numeric.p50,
+      ymin = numeric.p25,
+      ymax = numeric.p75
+    ),
+    colour = "black",
+    size = .2,
+    fatten = .1
+  ) +
   theme(
-    axis.line = element_line(size = .3),
+    axis.line = element_line(size = .2),
     axis.text = element_text(
       size = 6,
       angle = 0,
-      color = "grey20"
+      color = "grey30"
     ),
     axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_blank(),
     plot.title.position = "panel",
     axis.title.x = element_text(margin = margin(t = 5)),
+    axis.title.y = element_blank(),
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(0, 0, 0, 0)
+    plot.margin = margin(0, 0, 10, 0)
   )
-
-
-f17bc <- f17b / f17c 
-
-save_plot(filename = "Figura17bc.png",
-          plot = f17bc,
-          dpi = 300)
 
 # TEMPERATURA AGUA
 
 # filtro com rotulo estatistica
 
 filtro_temp_agua_c <- df %>%
-  filter(species == "Camundongo") %>% 
+  filter(species == "Camundongo") %>%
   group_by(study_reference) %>%
-  slice(1) %>%
+  distinct(water_temperature) %>%
   filter(!is.na(is.numeric(water_temperature))) %>%
-  select(water_temperature, species) 
+  select(water_temperature)
 
-filtro_temp_agua_c <- filtro_temp_agua_c %>% 
-  ungroup() %>% 
+filtro_temp_agua_c <- filtro_temp_agua_c %>%
+  ungroup() %>%
   my_skim(water_temperature) %>%
-  mutate(numeric.median = round(numeric.median), 1,
-         numeric.p25 = round(numeric.p25), 1,
-         numeric.p75 = round(numeric.p75), 1)
+  mutate(
+    numeric.median = round(numeric.median),
+    1,
+    numeric.p25 = round(numeric.p25),
+    1,
+    numeric.p75 = round(numeric.p75),
+    1
+  )
 
 
-f17d <- df %>%  
+f17d <- df %>%
   filter(species == "Camundongo") %>%
   group_by(study_reference) %>%
   distinct(water_temperature) %>%
   ggplot(aes(x = water_temperature)) +
   geom_histogram(fill = "#ff9400") +
-  scale_y_continuous(expand = c(0, 0), n.breaks = 4) +
-  scale_x_continuous(n.breaks = 4, limits = c(19,35)) +
-geom_text(
-  aes(
-    label = paste(
-      filtro_temp_agua_c$numeric.median,
-      " ",
-      "(",
-      filtro_temp_agua_c$numeric.p25,
-      "-",
-      filtro_temp_agua_c$numeric.p75,
-      ")",
-      sep = ""
-    )
-  ),
-  x = Inf ,
-  y = 48,
-  hjust = 1.1,
-  color = "black",
-  size = 2
-) 
+  scale_y_continuous(expand = c(0, 0),
+                     n.breaks = 4,
+                     limits = c(0, 55)) +
+  scale_x_continuous(n.breaks = 4, limits = c(19, 35)) +
+  geom_text(
+    aes(
+      label = paste(
+        filtro_temp_agua_c$numeric.median,
+        " ",
+        "(",
+        filtro_temp_agua_c$numeric.p25,
+        "-",
+        filtro_temp_agua_c$numeric.p75,
+        ")",
+        sep = ""
+      )
+    ),
+    x = Inf ,
+    y = Inf,
+    vjust = 1.1,
+    hjust = 1.1,
+    color = "grey30",
+    size = 2
+  ) +
   geom_vline(
     data = filtro_temp_agua_c,
     aes(xintercept = numeric.p25),
     col = "black",
-    size = .5,
-    linetype = "dashed"
+    size = .2,
+    linetype = "longdash"
   ) +
   geom_vline(
     data = filtro_temp_agua_c,
     aes(xintercept = numeric.p75),
     col = "black",
-    size = .5,
-    linetype = "dashed"
-  ) ++ geom_vline(
-  data = filtro_temp_agua_c,
-  aes(xintercept = numeric.p50),
-  col = "gold2",
-  size = .5
-) +
-  labs(
-    y = "Nº de publicações",
-    subtitle = "Temperatura da água no nado forçado (°C)",
-    x = "Camundongo",
-    title = "d"
+    size = .2,
+    linetype = "longdash"
   ) +
+  geom_vline(
+    data = filtro_temp_agua_c,
+    aes(xintercept = numeric.p50),
+    col = "black",
+    size = .2
+  ) +
+  labs(y = "Nº de publicações",
+       x = "Temperatura (°C)",
+       title = "b") +
   theme(
     axis.line = element_line(size = .2),
     axis.text = element_text(
       size = 6,
       angle = 0,
-      color = "grey20"
+      color = "grey30"
     ),
-    axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    axis.text.x = element_blank(),
+    axis.title.y = element_text(hjust = +1.1, size = 7),
+    axis.title.x = element_blank(),
+    plot.title = element_text(size = 10, margin = margin(b = 0)),
     plot.title.position = "plot",
-    plot.subtitle = element_text(size = 8, hjust = .5, margin = margin(b = 10)),
+    plot.subtitle = element_text(size = 4, hjust = .5),
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(10, 0, 10, 10)
+    plot.margin = margin(5, 5, 0, 5)
   )
-
-f17d
-
 
 # filtro com rotulo estatistica
 
 filtro_temp_agua_r <- df %>%
-  filter(species == "Rato") %>% 
+  filter(species == "Rato") %>%
   group_by(study_reference) %>%
-  slice(1) %>%
+  distinct(water_temperature) %>%
   filter(!is.na(is.numeric(water_temperature))) %>%
-  select(water_temperature, species) 
+  select(water_temperature)
 
-filtro_temp_agua_r <- filtro_temp_agua_r %>% 
-  ungroup() %>% 
+filtro_temp_agua_r <- filtro_temp_agua_r %>%
+  ungroup() %>%
   my_skim(water_temperature) %>%
-  mutate(numeric.median = round(numeric.median), 1,
-         numeric.p25 = round(numeric.p25), 1,
-         numeric.p75 = round(numeric.p75), 1)
+  mutate(
+    numeric.median = round(numeric.median),
+    1,
+    numeric.p25 = round(numeric.p25),
+    1,
+    numeric.p75 = round(numeric.p75),
+    1
+  )
 
 
-
-f17e <- df %>%  
+f17e <- df %>%
   filter(species == "Rato") %>%
   group_by(study_reference) %>%
   distinct(water_temperature) %>%
   ggplot(aes(x = water_temperature)) +
   geom_histogram(fill = "#ec2b2b") +
-  scale_y_continuous(expand = c(0, 0), n.breaks = 4) +
-  scale_x_continuous(n.breaks = 4, limits = c(19,35)) +
+  scale_y_continuous(expand = c(0, 0),
+                     n.breaks = 4,
+                     limits = c(0, 55)) +
+  scale_x_continuous(n.breaks = 4, limits = c(19, 35)) +
   geom_text(
     aes(
-      label = paste(filtro_temp_agua_r$numeric.median, " ", "(",  filtro_temp_agua_r$numeric.p25, "-", filtro_temp_agua_r$numeric.p75, ")", sep = "")
+      label = paste(
+        filtro_temp_agua_r$numeric.median,
+        " ",
+        "(",
+        filtro_temp_agua_r$numeric.p25,
+        "-",
+        filtro_temp_agua_r$numeric.p75,
+        ")",
+        sep = ""
+      )
     ),
     x = Inf ,
-    y = 49,
+    y = Inf,
+    vjust = 1.1,
     hjust = 1.1,
-    color = "grey20",
+    color = "grey30",
     size = 2
   ) + geom_vline(
     data = filtro_temp_agua_c,
     aes(xintercept = numeric.p50),
     col = "black",
-    size = .5
+    size = .2
   ) +
   geom_vline(
     data = filtro_temp_agua_c,
     aes(xintercept = numeric.p25),
     col = "black",
-    size = .5,
-    linetype = "dashed"
+    size = .2,
+    linetype = "longdash"
   ) +
   geom_vline(
     data = filtro_temp_agua_c,
     aes(xintercept = numeric.p75),
     col = "black",
-    size = .5,
-    linetype = "dashed"
+    size = .2,
+    linetype = "longdash"
   ) +
-  labs(
-    y = "Nº de publicações",
-    x = "Rato"
-  ) +
+  labs(y = "Nº de publicações",
+       x = "Temperatura da água (°C)") +
   theme(
     axis.line = element_line(size = .2),
     axis.text = element_text(
       size = 6,
       angle = 0,
-      color = "grey20"
+      color = "grey30"
     ),
     axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    axis.title.y = element_blank(),
+    plot.title = element_text(size = 8),
     plot.title.position = "plot",
-    plot.subtitle = element_text(size = 8, hjust = .5, margin = margin(b = 10)),
+    plot.subtitle = element_text(
+      size = 8,
+      hjust = .5,
+      margin = margin(b = 10)
+    ),
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(10, 0, 10, 10)
+    plot.margin = margin(0, 5, 0, 5)
   )
 
-f17e
 
-f17de <- f17d / f17e 
+f17 <-
+  (((f17a) / (f17d / f17e) + plot_layout(
+    nrow = 3,
+    ncol = 1,
+    heights = c(.5, 5.5, 4)
+  )) | (f17b / f17c)) + plot_layout(ncol = 2, widths = c(1.5, 2))
 
+save_plot(filename = "Figura17.png",
+          plot = f17,
+          dpi = 300)
 
-f17bcde <- f17bc | f17de + plot_layout(widths = c(7,3))
-f17bcde
+f17
