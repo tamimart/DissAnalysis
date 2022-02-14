@@ -517,7 +517,7 @@ write.table(tab_numeric, file = "teste.txt", sep = ",", quote = FALSE, row.names
 
 
 
-## ESTATISTICAS AUXILIARES
+## ESTATISTICAS AUXILIARES -----
 
 # Figura1
 # Importar dados de localização
@@ -542,8 +542,6 @@ dados_public <- dplyr::left_join(world, countries, by = "region")
 
 
 
-
-
 # Figura2
 
 Figura2 <- df %>%
@@ -564,17 +562,19 @@ x
 
 age_ss <- df %>%
   group_by(species, sex) %>%
-  skim(age) %>%
-  mutate(numeric.mean = round(numeric.mean, 1),
-         numeric.sd = round(numeric.sd, 1))
+  my_skim(age) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
 # Figura6
 
 weight_ss <- df %>%
   group_by(species, sex) %>%
-  skim(weight) %>%
-  mutate(numeric.mean = round(numeric.mean, 1),
-         numeric.sd = round(numeric.sd, 1))
+  my_skim(weight) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
 # Figura7
 
@@ -582,7 +582,35 @@ x
 
 # Figura8
 
-x
+#b
+
+filtro_bioterium_temp <- df %>%
+  group_by(study_reference) %>%
+  slice(1) %>%
+  filter(bioterium_temp != "NA") %>%
+  select(bioterium_temp) 
+
+filtro_bioterium_temp <- filtro_bioterium_temp %>% 
+  ungroup() %>% 
+  my_skim(bioterium_temp) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
+
+#c 
+
+filtro_bioterium_umid <- df %>%
+  group_by(study_reference) %>%
+  slice(1) %>%
+  filter(bioterium_umid != "NA") %>%
+  select(bioterium_umid) 
+
+filtro_bioterium_umid <- filtro_bioterium_umid %>% 
+  ungroup() %>% 
+  my_skim(bioterium_umid) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
 # Figura9
 
@@ -618,24 +646,29 @@ cage_3d <- cage_3d %>%
 
 # Criar um df com os valores da media e dp arredondados
 
-vol_panimal_meansd <- cage_3d  %>%
+vol_panimal_miqr <- cage_3d  %>%
   group_by(species) %>%
-  skim(vol_panimal) %>%
-  mutate(numeric.mean = round(numeric.mean, 1),
-         numeric.sd = round(numeric.sd, 1))
+  my_skim(vol_panimal) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
-vol_ppeso_meansd <- cage_3d  %>%
+vol_ppeso_miqr <- cage_3d  %>%
   group_by(species) %>%
-  skim(vol_ppeso) %>%
-  mutate(numeric.mean = round(numeric.mean, 1),
-         numeric.sd = round(numeric.sd, 1))
+  my_skim(vol_ppeso) %>%
+  mutate(numeric.median = round(numeric.median, 1),
+         numeric.p25 = round(numeric.p25, 1),
+         numeric.p75 = round(numeric.p75, 1))
 
 
 # Figura10
+x
 
 # Figura11
+x
 
 # Figura12
+x
 
 # Figura13
 

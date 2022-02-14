@@ -996,7 +996,8 @@ ggplot(aes(
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1043,7 +1044,8 @@ f4b <- df %>%
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1087,7 +1089,8 @@ f4c <- df %>%
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1134,7 +1137,8 @@ f4d <- df %>%
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1183,7 +1187,8 @@ f4e <- df %>%
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1227,7 +1232,8 @@ f4f <- df %>%
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1733,7 +1739,8 @@ f7b <- df %>%
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1787,7 +1794,8 @@ f7c <- df %>%
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -1895,7 +1903,7 @@ F8b <- df %>%
     y = 57,
     hjust = 1.1,
     color = "grey20",
-    size = 2
+    size = 2.5
   ) +
   geom_vline(data = filtro_bioterium_temp,
              aes(xintercept = numeric.p50),
@@ -1973,7 +1981,7 @@ F8c <- df %>%
     y = 28.5,
     hjust = 1.1,
     color = "grey20",
-    size = 2
+    size = 2.5
   ) +
   geom_vline(data = filtro_bioterium_umid,
              aes(xintercept = numeric.p50),
@@ -2101,6 +2109,24 @@ F9a <- cage_3d %>%
     color = "grey20",
     size = 2.5
   ) +
+  geom_vline(data = vol_panimal_miqr,
+             aes(xintercept = numeric.p50),
+             col = "black",
+             size = .5) +
+  geom_vline(
+    data = vol_panimal_miqr,
+    aes(xintercept = numeric.p25),
+    col = "black",
+    size = .5,
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    data = vol_panimal_miqr,
+    aes(xintercept = numeric.p75),
+    col = "black",
+    size = .5,
+    linetype = "dashed"
+  ) +
   labs(y = "Nº de publicações", x = "Volume de caixa por animal (cm³)") +
   scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values = c("#ff9400", "#ec2b2b")) +
@@ -2140,6 +2166,24 @@ F9b <- cage_3d %>%
     hjust = 1.01,
     color = "grey20",
     size = 2.5
+  ) +
+  geom_vline(data = vol_ppeso_miqr,
+             aes(xintercept = numeric.p50),
+             col = "black",
+             size = .5) +
+  geom_vline(
+    data = vol_ppeso_miqr,
+    aes(xintercept = numeric.p25),
+    col = "black",
+    size = .5,
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    data = vol_ppeso_miqr,
+    aes(xintercept = numeric.p75),
+    col = "black",
+    size = .5,
+    linetype = "dashed"
   ) +
   labs(y = "Nº de publicações", x = "Volume de caixa por peso do animal (cm³/g)") +
   scale_y_continuous(expand = c(0, 0)) +
