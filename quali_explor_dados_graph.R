@@ -2903,7 +2903,7 @@ f15a <- df %>%
     axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
-    plot.subtitle = element_text(size = 8, hjust = .5),
+    plot.subtitle = element_text(size = 7, hjust = .5),
     legend.position = "none",
     panel.grid = element_blank(),
     plot.margin = margin(0, 0, 0, 0)
@@ -2958,7 +2958,7 @@ f15b <- df %>%
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.margin = margin(10, 0, 10, 10)
+    plot.margin = margin(0, 0, 10, 10)
   )
 
 f15b
@@ -3023,7 +3023,7 @@ f16a <- df %>%
     axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
-    plot.subtitle = element_text(size = 8, hjust = .5),
+    plot.subtitle = element_text(size = 7, hjust = .5),
     legend.position = "none",
     panel.grid = element_blank(),
     plot.margin = margin(0, 0, 0, 0)
@@ -3087,7 +3087,7 @@ f16b <- df %>%
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.margin = margin(10, 0, 10, 10)
+    plot.margin = margin(0, 0, 10, 10)
   )
 
 f16b
