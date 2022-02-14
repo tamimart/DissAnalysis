@@ -1680,7 +1680,8 @@ f7a <- df %>%
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1
+    hjust = 1.1,
+    fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
