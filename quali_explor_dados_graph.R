@@ -2088,19 +2088,20 @@ vol_ppeso_label <- data.frame(
 
 F9a <- cage_3d %>%
   ggplot(aes(x = vol_panimal, fill = species)) +
-  geom_histogram(color = "black", size = 0.2) +
+  geom_histogram() +
   facet_grid( ~ species, scales = "free_x") +
   geom_text(
     data = vol_panimal_label,
     aes(label = label),
     x = Inf ,
-    y = 2.9,
-    hjust = 1.1,
+    y = Inf,
+    vjust = 1.4,
+    hjust = 1.01,
     color = "grey20",
     size = 2
   ) +
   labs(y = "Nº de publicações", x = "Volume de caixa por animal (cm³)") +
-  expand_limits(x = 0, y = 0) +
+  scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values = c("#ff9400", "#ec2b2b")) +
   labs(title = "a") +
   theme_bw(base_family = "Gadugi") +
@@ -2127,19 +2128,20 @@ F9a <- cage_3d %>%
 
 F9b <- cage_3d %>%
   ggplot(aes(x = vol_ppeso, fill = species)) +
-  geom_histogram(color = "black", size = 0.2) +
+  geom_histogram() +
   facet_grid( ~ species, scales = "free_x") +
   geom_text(
     data = vol_ppeso_label,
     aes(label = label),
     x = Inf ,
-    y = 2.9,
-    hjust = 1.1,
+    y = Inf,
+    vjust = 1.4,
+    hjust = 1.01,
     color = "grey20",
     size = 2
   ) +
   labs(y = "Nº de publicações", x = "Volume de caixa por peso do animal (cm³/g)") +
-  expand_limits(x = 0, y = 0) +
+  scale_y_continuous(expand = c(0, 0) +
   scale_fill_manual(values = c("#ff9400", "#ec2b2b")) +
   labs(title = "b") +
   theme_bw(base_family = "Gadugi") +
