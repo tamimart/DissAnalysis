@@ -552,7 +552,13 @@ Figura2 <- df %>%
 
 # Figura3
 
-x
+df %>% 
+  group_by(sex) %>% 
+  my_skim()
+
+df %>% 
+  group_by(species) %>% 
+  my_skim()
 
 # Figura4
 
@@ -566,6 +572,7 @@ age_ss <- df %>%
   mutate(numeric.median = round(numeric.median, 1),
          numeric.p25 = round(numeric.p25, 1),
          numeric.p75 = round(numeric.p75, 1))
+
 
 # Figura6
 
@@ -665,10 +672,31 @@ vol_ppeso_miqr <- cage_3d  %>%
 x
 
 # Figura11
-x
+
+#b NA
+
+
+
+
+doseunit_c <- df %>%
+  filter(species == "Camundongo") %>%  # detalhe dos estudos que relataram outra dose
+  group_by(dose_unit) %>% 
+  my_skim()
+
 
 # Figura12
-x
+#b NA
+
+doseunit_r <- df %>%
+  filter(species == "Rato")  %>% # detalhe dos estudos que relataram outra dose
+  group_by(dose_unit) %>% 
+  my_skim()
+
+
+df %>%
+  filter(species == "Rato",
+         dose_unit != "mg/kg") 
+
 
 # Figura13
 

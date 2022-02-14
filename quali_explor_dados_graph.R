@@ -2406,10 +2406,11 @@ f11a <- df %>%
   geom_bar() +
   geom_text(aes(label = ..count..), stat = "count",
             color = "mintcream",
-            size = 2,
+            size = 2.5,
             family = "Gadugi",
             position = "stack",
-            vjust = 1.2) +
+            vjust = 1.2,
+            fontface = "bold") +
   labs(y = "Nº de estudos", x = "Classes administradas em camundongos", title = "a") +
   scale_fill_manual(
     values = c(
@@ -2466,9 +2467,9 @@ f11b <- df %>%
          species == "Camundongo") %>% 
   ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 15, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"))) + 
   ggridges::stat_density_ridges(
-    alpha = .7, size = .2, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
+    alpha = .7, size = .3, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
   ) + 
-  labs(x = "Dose", title = "b", y = "Fármacos") +
+  labs(x = "Dose (mg/Kg)", title = "b", y = "Fármacos") +
   scale_fill_manual(
     values = c(
       "#ffe170",
@@ -2550,10 +2551,11 @@ f12a <- df %>%
   geom_bar() +
   geom_text(aes(label = ..count..), stat = "count",
             color = "mintcream",
-            size = 2,
+            size = 2.5,
             family = "Gadugi",
             position = "stack",
-            vjust = 1.2) +
+            vjust = 1.2,
+            fontface = "bold") +
   labs(y = "Nº de estudos", x = "Classes administradas em ratos", title = "a") +
   scale_fill_manual(
     values = c(
@@ -2606,9 +2608,9 @@ f12b <- df %>%
          species == "Rato") %>% 
   ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 12, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"))) + 
   ggridges::stat_density_ridges(
-    alpha = .7, size = .1, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
+    alpha = .7, size = .3, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
   ) + 
-  labs(x = "Dose", title = "b", y = "Fármacos") +
+  labs(x = "Dose (mg/Kg)", title = "b", y = "Fármacos") +
   scale_fill_manual(
     values = c(
       "#ffe170",
