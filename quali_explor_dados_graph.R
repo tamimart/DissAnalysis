@@ -2098,7 +2098,7 @@ F9a <- cage_3d %>%
     vjust = 1.4,
     hjust = 1.01,
     color = "grey20",
-    size = 2
+    size = 2.5
   ) +
   labs(y = "Nº de publicações", x = "Volume de caixa por animal (cm³)") +
   scale_y_continuous(expand = c(0, 0)) +
@@ -2138,10 +2138,10 @@ F9b <- cage_3d %>%
     vjust = 1.4,
     hjust = 1.01,
     color = "grey20",
-    size = 2
+    size = 2.5
   ) +
   labs(y = "Nº de publicações", x = "Volume de caixa por peso do animal (cm³/g)") +
-  scale_y_continuous(expand = c(0, 0) +
+  scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values = c("#ff9400", "#ec2b2b")) +
   labs(title = "b") +
   theme_bw(base_family = "Gadugi") +
@@ -2216,7 +2216,7 @@ f9ab <- cage_3d %>%
     panel.grid.major.x = element_blank(),
     plot.margin = margin(20, 0, 5, 20)
   )
-f9ab
+
 
 # Plotar grafico de volume de caixa por peso de animal
 
@@ -2260,6 +2260,7 @@ f9ba <- cage_3d %>%
     panel.grid.major.x = element_blank(),
     plot.margin = margin(20, 0, 5, 20)
   )
+
 
 # Combinar e salvar
 
