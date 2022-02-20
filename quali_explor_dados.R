@@ -398,16 +398,16 @@ df$measurement_method <-
     ),
     labels = c(
       "Manual",
-      "Manual com cronômetro",
+      "Manual, com cronômetro",
       "Manual, intervalos de 60s",
-      "Videoanálise automatizada",
+      "Videoanálise, automatizada",
       "Sem info",
-      "Inexplícito, intervalos de 60s",            
-      "Inexplícito",
+      "Incerto, intervalos de 60s",            
+      "Incerto",
       "Videoanálise",
-      "Videoanálise com cronômetro",
-      "Videoanálise manual",
-      "Videoanálise manual e automatizada", 
+      "Videoanálise, com cronômetro",
+      "Videoanálise, manual",
+      "Videoanálise, manual e automatizada", 
       "Videoanálise, intervalos de 5s"
     )
   ) 
@@ -741,13 +741,34 @@ write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\
 
 
 stat_nado <- df %>%
-  filter(!is.na(is.numeric(cylinder_height)), !is.na(is.numeric(cylinder_diameter)), !is.na(is.numeric(water_depth)), !is.na(is.numeric(water_temperature))) %>% 
-  group_by(study_reference, cylinder_height, cylinder_diameter, water_depth, water_temperature, species) %>% 
-  distinct(study_reference, cylinder_height, cylinder_diameter, water_depth, water_temperature, species) %>% 
-  group_by(species) %>%
-  my_skim(cylinder_height, cylinder_diameter, water_depth, water_temperature) %>%
-  tibble::as_tibble()
+  group_by(
+    study_reference,
+    cylinder_height,
+    cylinder_diameter,
+    species
+  ) %>%
+  distinct(
+    study_reference,
+    cylinder_height,
+    cylinder_diameter,
+    species
+  ) %>%
+  group_by(species, as.logical(cylinder_height), as.logical(cylinder_diameter)) %>%
+  my_skim(cylinder_height,
+          cylinder_diameter) %>%
+  mutate(
+    numeric.p.50 = round(numeric.p50, 1),
+    numeric.p25 = round(numeric.p25, 1),
+    numeric.p75 = round(numeric.p75, 1)
+  )
+
 
 write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\stat_nado.xlsx")
 
-remove(stat_nado)
+
+
+
+df %>% 
+  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  distinct(1) %>% 
+  filter(is.na(cylinder_height), is.na(cylinder_diameter))

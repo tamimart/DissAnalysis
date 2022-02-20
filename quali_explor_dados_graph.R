@@ -430,21 +430,40 @@ df$measurement_method <-
     ),
     labels = c(
       "Manual",
-      "Manual com cronômetro",
-      "Manual, intervalos de 60s",
-      "Videoanálise automatizada",
+      "Manual, Cronômetro",
+      "Manual, Intervalos de 60s",
+      "Videoanálise, Automatizada",
       "Sem info",
-      "Incerto, intervalos de 60s",            
+      "Incerto, Intervalos de 60s",            
       "Incerto",
       "Videoanálise",
-      "Videoanálise com cronômetro",
-      "Videoanálise manual",
-      "Videoanálise manual e automatizada", 
-      "Videoanálise, intervalos de 5s"
+      "Videoanálise, Cronômetro",
+      "Videoanálise, Manual",
+      "Videoanálise, Manual e automatizada", 
+      "Videoanálise, Intervalos de 5s"
     )
   ) 
 
+# Criar nova variavel com detalhe do método de analise do nado forçado
 
+
+mmd <- df %>% # separar variavel em duas
+  select(measurement_method) %>% 
+  separate(col = measurement_method, sep = ", ", into = c("measurement_method", "measurement_method_detail"))
+ 
+
+df <- df %>%
+  mutate(measurement_method_detail = as.factor(mmd$measurement_method_detail),
+         measurement_method =  as.factor(mmd$measurement_method)) # adicionar variaveis separadas no df mãe
+
+
+levels(df$measurement_method_detail) # ver os niveis
+
+
+df <- df %>% 
+  mutate(measurement_method_detail = as.character(measurement_method_detail),
+         measurement_method_detail = ifelse(is.na(measurement_method_detail), "Sem info", measurement_method_detail),
+         measurement_method_detail =  as.factor(measurement_method_detail)) # transformar NAs em fator "sem info"
 
 # PUBLICAÇÃO
 ## Figura1: Paises e idioma ---------
@@ -2927,7 +2946,7 @@ f15a <- df %>%
     "#ff9400",
     "#ff9400"
   )) +
-  labs(y = "Nº de publicações", x = "Camundongo", title = "a", subtitle = "Protocolo do nado forçado") +
+  labs(y = "Nº de publicações", x = "Camundongo", title = "a") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 67)) +
   scale_x_discrete(
     labels = function(x)
@@ -3016,6 +3035,9 @@ f15b
 
 Figura15 <- f15a / f15b
 
+Figura15 <- Figura15 + plot_annotation(title = "Protocolo do nado forçado",
+                                       theme = theme(plot.title = element_text(size = 10)))
+
 save_plot(filename = "Figura15.png",
           plot = Figura15,
           dpi = 300)
@@ -3024,43 +3046,164 @@ save_plot(filename = "Figura15.png",
 
 #metodo de analise
 
+
+# criar nova posicao para o n ficar sobre a area mas com ruido(desvio de outros textos)
+
+position_jitter_stack <- function(vjust = 1, reverse = FALSE, 
+                                  jitter.width = 1, jitter.height = 1,
+                                  jitter.seed = NULL, offset = NULL) {
+  ggproto(NULL, PositionJitterStack, vjust = vjust, reverse = reverse, 
+          jitter.width = jitter.width, jitter.height = jitter.height,
+          jitter.seed = jitter.seed, offset = offset)
+}
+
+PositionJitterStack <- ggproto("PositionJitterStack", PositionStack,
+                               type = NULL,
+                               vjust = 1,
+                               fill = FALSE,
+                               reverse = FALSE,
+                               jitter.height = 1,
+                               jitter.width = 1,
+                               jitter.seed = NULL,
+                               offset = 1,
+                               
+                               setup_params = function(self, data) {
+                                 list(
+                                   var = self$var %||% ggplot2:::stack_var(data),
+                                   fill = self$fill,
+                                   vjust = self$vjust,
+                                   reverse = self$reverse,
+                                   jitter.height = self$jitter.height,
+                                   jitter.width = self$jitter.width,
+                                   jitter.seed = self$jitter.seed,
+                                   offset = self$offset
+                                 )
+                               },
+                               
+                               setup_data = function(self, data, params) {
+                                 data <- PositionStack$setup_data(data, params)
+                                 if (!is.null(params$offset)) {
+                                   data$to_jitter <- sapply(seq(nrow(data)), function(i) {
+                                     any(abs(data$y[-i] - data$y[i]) <= params$offset)
+                                   })
+                                 } else {
+                                   data$to_jitter <- TRUE
+                                 }
+                                 data
+                               },
+                               
+                               compute_panel = function(data, params, scales) {
+                                 data <- PositionStack$compute_panel(data, params, scales)
+                                 
+                                 jitter_df <- data.frame(width = params$jitter.width,
+                                                         height = params$jitter.height)
+                                 
+                                 if (!is.null(params$jitter.seed)) jitter_df$seed = params$jitter.seed
+                                 jitter_positions <- PositionJitter$compute_layer(
+                                   data[data$to_jitter, c("x", "y")],
+                                   jitter_df
+                                 )
+                                 
+                                 data$x[data$to_jitter] <- jitter_positions$x
+                                 data$y[data$to_jitter] <- jitter_positions$y
+                                 
+                                 data
+                               }
+)
+
+
+
 f16a <- df %>%
   filter(species == "Camundongo") %>%
   group_by(study_reference) %>%
-  distinct(measurement_method) %>%
+  distinct(measurement_method, measurement_method_detail) %>%
   group_by(measurement_method) %>%
   ggplot(aes(
-    x = fct_lump_n(
+    x = 
       fct_infreq(measurement_method),
-      n = 6,
-      other_level = "Outros"
-    ),
-    fill = fct_lump_n(fct_infreq(measurement_method), n = 6)
+    fill = measurement_method_detail
   )) +
   geom_bar() +
-  scale_fill_manual(values = c(
-    "grey80",
-    "#FE7700",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400"
+  scale_fill_manual( values = c(
+    "Sem info" =  "grey80",
+    "Automatizada" = "#006f9f",
+    "Manual" = "#fec200", 
+    "Manual e automatizada" = "#82c236", 
+    "Cronômetro" = "#f24a7a",
+    "Intervalos de 5s" = "#b376a2",
+    "Intervalos de 60s" = "#a94f93"
   )) +
-  labs(y = "Nº de publicações", x = "Camundongo", title = "a", subtitle = "Método de análise do nado forçado") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 80)) +
+  labs(y = "Nº de publicações", x = "Camundongo", title = "a", fill = "Detalhe do método") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 70)) +
   scale_x_discrete(
     labels = function(x)
       str_wrap(x, width = 15)
   ) +
-  geom_text(
-    aes(label = ..count..),
-    stat = "count",
-    size = 2.5,
-    family = "Gadugi",
-    position = position_dodge(width = 0.9),
-    vjust = -0.25
+  geom_text(aes(label = ..count..), stat = "count",
+                  color = "mintcream",
+                  size = 2.5,
+                  family = "Gadugi",
+                  position = position_jitter_stack(vjust = 0.5,
+                                                   jitter.height = 0,
+                                                   jitter.width =  0.3, offset = 1),
+                  fontface = "bold",
   ) +
+  theme(
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey20"
+    ),
+    axis.text.y = element_blank(),
+    axis.title = element_text(size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
+    plot.title = element_text(size = 10),
+    plot.title.position = "plot",
+    legend.position = "none",
+    plot.subtitle = element_text(size = 7, hjust = .5),
+    panel.grid = element_blank(),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+f16a
+
+
+f16b <- df %>%
+  filter(species == "Rato") %>%
+  group_by(study_reference) %>%
+  distinct(measurement_method, measurement_method_detail) %>%
+  group_by(measurement_method) %>%
+  ggplot(aes(
+    x = 
+      fct_infreq(measurement_method),
+    fill = measurement_method_detail
+  )) +
+  geom_bar() +
+  scale_fill_manual( values = c(
+    "Sem info" =  "grey80",
+    "Automatizada" = "#006f9f",
+    "Manual" = "#fec200", 
+    "Manual e automatizada" = "#82c236", 
+    "Cronômetro" = "#f24a7a",
+    "Intervalos de 5s" = "#b376a2",
+    "Intervalos de 60s" = "#a94f93"
+  )) +
+  labs(y = "Nº de publicações", x = "Rato", title = "b", fill = "Detalhe do método:") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 70)) +
+  scale_x_discrete(
+    labels = function(x)
+      str_wrap(x, width = 15)
+  ) +
+  geom_text(aes(label = ..count..), stat = "count",
+                  color = "mintcream",
+                  size = 2.5,
+                  family = "Gadugi",
+            position = position_jitter_stack(vjust = 0.5,
+                                             jitter.height = 0,
+                                             jitter.width =  0.3, offset = 1),
+                  fontface = "bold") + 
+  guides(fill = guide_legend(override.aes = list(size = .1), nrow = 1, byrow = TRUE)) +
   theme(
     axis.text = element_text(
       size = 6,
@@ -3074,76 +3217,20 @@ f16a <- df %>%
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     plot.subtitle = element_text(size = 7, hjust = .5),
-    legend.position = "none",
     panel.grid = element_blank(),
     plot.margin = margin(0, 0, 0, 0)
   )
-
-f16a
-
-f16b <- df %>%
-  filter(species == "Rato") %>%
-  group_by(study_reference) %>%
-  distinct(measurement_method) %>%
-  group_by(measurement_method) %>%
-  ggplot(aes(
-    x = fct_lump_n(
-      fct_infreq(measurement_method),
-      n = 9,
-      other_level = "Outros"
-    ),
-    fill = fct_lump_n(fct_infreq(measurement_method), n = 9)
-  )) +
-  geom_bar() +
-  scale_fill_manual(
-    values = c(
-      "grey80",
-      "#a6243a",
-      "#ec2b2b",
-      "#ec2b2b",
-      "#ec2b2b",
-      "#ec2b2b",
-      "#ec2b2b",
-      "#ec2b2b",
-      "#ec2b2b",
-      "#ec2b2b"
-    )
-  ) +
-  labs(y = "Nº de publicações", x = "Rato", title = "b") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 80)) +
-  scale_x_discrete(
-    labels = function(x)
-      str_wrap(x, width = 15)
-  ) +
-  geom_text(
-    aes(label = ..count..),
-    stat = "count",
-    size = 2.5,
-    family = "Gadugi",
-    position = position_dodge(width = 0.9),
-    vjust = -0.25
-  ) +
-  theme(
-    axis.text = element_text(
-      size = 6,
-      angle = 0,
-      color = "grey20"
-    ),
-    axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
-    plot.title = element_text(size = 10),
-    plot.title.position = "plot",
-    legend.position = "none",
-    panel.grid = element_blank(),
-    plot.margin = margin(0, 0, 10, 10)
-  )
-
 f16b
 
-Figura16 <- f16a / f16b
-Figura16
+Figura16 <- (f16a + f16b) / guide_area() + plot_layout(guides = "collect", heights = c(9,1)) & theme(legend.title = element_text(size = 6),
+                                                                      legend.text = element_text(size = 6),
+                                                                      legend.direction = "horizontal", 
+                                                                      legend.key.size = unit(0.2, "cm"))
+
+
+Figura16 <- Figura16 + plot_annotation(title = "Método de análise do nado forçado",
+                                       theme = theme(plot.title = element_text(size = 10)))
+
 save_plot(filename = "Figura16.png",
           plot = Figura16,
           dpi = 300)
@@ -3154,40 +3241,65 @@ save_plot(filename = "Figura16.png",
 
 # DIMENSOES CUBA
 
+f17a1 <-  df %>%
+  filter(is.na(cylinder_height) &
+           !is.na(cylinder_diameter)) %>%
+  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>%
+  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  ggplot(aes(x = cylinder_diameter, y = "?" , color = species), na.rm = T) +
+  geom_jitter(alpha = .5, size = 1, width = .1, height = .1) +
+  scale_color_manual(name = "Espécie:", values = c("#ff9400", "#ec2b2b")) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 75)) +
+  scale_y_discrete(limits = NULL) +
+  labs(title = "a") +
+  theme_bw(base_family = "Gadugi") +
+  theme(
+    axis.line = element_line(size = .1),
+    axis.line.x = element_blank(),
+    axis.text = element_text(
+      size = 6,
+      angle = 0,
+      color = "grey30"
+    ),
+    axis.text.x = element_blank(),
+    axis.title = element_blank(),
+    plot.title.position = "plot",
+    plot.title = element_text(size = 10, margin = margin(b = -5)),
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    legend.position = "top",
+    legend.justification = "left",
+    legend.margin = margin(0, 0, -8, 8),
+    legend.box.margin = margin(-10, 0,-5, 5),
+    legend.spacing.x = unit(0.1, 'mm'),
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(colour = 'black', size = 8),
+    panel.grid.major = element_line(color = "grey90", size = .1),
+    plot.margin = margin(0, 0,-10, 0),
+    axis.ticks.x = element_blank()
+  )
 # rotulo
 
 stat_nado <- df %>%
-  filter(
-    !is.na(is.numeric(cylinder_height)),
-    !is.na(is.numeric(cylinder_diameter)),
-    !is.na(is.numeric(water_depth)),
-    !is.na(is.numeric(water_temperature))
-  ) %>%
   group_by(
     study_reference,
     cylinder_height,
     cylinder_diameter,
-    water_depth,
-    water_temperature,
     species
   ) %>%
   distinct(
     study_reference,
     cylinder_height,
     cylinder_diameter,
-    water_depth,
-    water_temperature,
     species
   ) %>%
   group_by(species) %>%
   my_skim(cylinder_height,
-          cylinder_diameter,
-          water_depth,
-          water_temperature) %>%
+          cylinder_diameter) %>%
   mutate(
-    numeric.p.50 = round(numeric.p50, 1),
-    numeric.p25 = round(numeric.p25, 1),
-    numeric.p75 = round(numeric.p75, 1)
+    numeric.p.50 = round(numeric.p50, 0),
+    numeric.p25 = round(numeric.p25, 0),
+    numeric.p75 = round(numeric.p75, 0)
   )
 
 # df do rotulo
@@ -3212,13 +3324,13 @@ label_stat_nado <-
 
 
 f17a2 <-  df %>%
-  filter(!is.na(is.numeric(cylinder_height)),!is.na(is.numeric(cylinder_diameter))) %>%
+  filter(!is.na(cylinder_height),!is.na(cylinder_diameter)) %>%
   group_by(study_reference, cylinder_height, cylinder_diameter, species) %>%
-  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>%
+  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>% 
   ggplot(aes(x = cylinder_diameter, y = cylinder_height, color = species),
          na.rm = T) +
   geom_jitter(alpha = .5, size = 1) +
-  geom_text(
+  geom_text_repel(
     data = filter(
       label_stat_nado,
       species == "Camundongo",
@@ -3229,13 +3341,13 @@ f17a2 <-  df %>%
       x = as.numeric(x_diameter),
       y = as.numeric(y_height)
     ),
-    y = 7,
+    y = -10,
     # esse valor vai predominar ao dentro do aes
     color = "#FE7700",
-    size = 2,
-    fontface = "bold"
+    size = 1.9,
+    fontface = "bold",
   ) +
-  geom_text(
+  geom_text_repel(
     data = filter(
       label_stat_nado,
       species == "Camundongo",
@@ -3246,12 +3358,12 @@ f17a2 <-  df %>%
       x = as.numeric(x_diameter),
       y = as.numeric(y_height)
     ),
-    x = 5.5,
+    x = -10,
     color = "#FE7700",
-    size = 2,
-    fontface = "bold"
+    size = 1.9,
+    fontface = "bold",
   ) +
-  geom_text(
+  geom_text_repel(
     data = filter(
       label_stat_nado,
       species == "Rato",
@@ -3262,12 +3374,12 @@ f17a2 <-  df %>%
       x = as.numeric(x_diameter),
       y = as.numeric(y_height)
     ),
-    y = 7,
+    y = -10,
     color = "#ec2b2b",
-    size = 2,
+    size = 1.9,
     fontface = "bold"
   ) +
-  geom_text(
+  geom_text_repel(
     data = filter(
       label_stat_nado,
       species == "Rato",
@@ -3278,14 +3390,14 @@ f17a2 <-  df %>%
       x = as.numeric(x_diameter),
       y = as.numeric(y_height)
     ),
-    x = 5.5,
+    x = -10,
     color = "#ec2b2b",
-    size = 2,
+    size = 1.9,
     fontface = "bold"
   ) +
   scale_color_manual(name = "Espécie:", values = c("#ff9400", "#ec2b2b")) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 85)) +
-  scale_x_continuous(expand = c(0, 0), limits = c(0, 85)) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 75)) +
   labs(x = "Diâmetro do cilindro (cm)", y = "Altura do cilindro (cm)") +
   theme_bw(base_family = "Gadugi") +
   theme(
@@ -3299,48 +3411,36 @@ f17a2 <-  df %>%
     plot.title = element_text(size = 10),
     legend.position = "panel",
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(-10, 0, 5, 0)
+    plot.margin = margin(-10, -20, 0, 0)
   )
 
-f17a1 <-  df %>%
-  filter(is.na(cylinder_height) &
-           !is.na(as.numeric(cylinder_diameter))) %>%
+f17a3 <-  df %>%
+  filter(!is.na(cylinder_height) &
+           is.na(cylinder_diameter)) %>%
   group_by(study_reference, cylinder_height, cylinder_diameter, species) %>%
-  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>%
-  ggplot(aes(x = cylinder_diameter, y = "?" , color = species), na.rm = T) +
-  geom_jitter(alpha = .5, size = 1) +
-  scale_color_manual(name = "Espécie:", values = c("#ff9400", "#ec2b2b")) +
-  scale_x_continuous(expand = c(0, 0), limits = c(0, 85)) +
-  scale_y_discrete(limits = NULL) +
-  labs(title = "a") +
+  distinct(study_reference, cylinder_height, cylinder_diameter, species) %>% 
+  ggplot(aes(x = "?", y = cylinder_height , color = species), na.rm = T) +
+  geom_jitter(alpha = .5, size = 1, width = .1, height = .1) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 85)) +
+  scale_x_discrete(limits = NULL) +
+  scale_color_manual(values = c("#ff9400", "#ec2b2b")) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.line = element_line(size = .1),
-    axis.line.x = element_blank(),
+    axis.line.y = element_blank(),
     axis.text = element_text(
       size = 6,
       angle = 0,
       color = "grey30"
     ),
-    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
     axis.title = element_blank(),
-    plot.title.position = "plot",
-    plot.title = element_text(size = 10, margin = margin(b = -5)),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
-    legend.position = "top",
-    legend.justification = "right",
-    legend.margin = margin(0, 0, -8, 0),
-    legend.box.margin = margin(-10, 0,-5, -10),
-    legend.spacing.x = unit(0.1, 'mm'),
-    strip.background = element_rect(fill = "white", color = "black"),
+    legend.position = "none",
     strip.text = element_text(colour = 'black', size = 8),
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(0, 0,-10, 0),
-    axis.ticks.x = element_blank()
+    plot.margin = margin(0, 0, 0, l = -20),
+    axis.ticks.y = element_blank()
   )
-
-f17a <- f17a1 / f17a2 + plot_layout(ncol = 1, heights = c(2, 8))
 
    
 # PROFUNDIDADE DA AGUA
@@ -3361,7 +3461,7 @@ f17b <- label_wd_c %>%
   geom_col(fill = "#ff9400") +
   labs(x = "Ano", y = "Profundidade da água (cm)", title  = "c") +
   scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
-  scale_y_continuous(expand = c(0, 0),  limits = c(0, 45)) +
+  scale_y_continuous(expand = c(0, 0),  limits = c(0, 30)) +
   geom_vline(
     xintercept = as.numeric(as.Date("1994-01-01")),
     col = "black",
@@ -3370,7 +3470,7 @@ f17b <- label_wd_c %>%
   ) +
   geom_text(
     aes(label = "ABEL et al., 1994"),
-    y = 37,
+    y = 20,
     x = as.numeric(as.Date("1994-01-01")),
     color = "black",
     size = 2,
@@ -3380,9 +3480,9 @@ f17b <- label_wd_c %>%
   geom_curve(
     aes(
       x = as.Date("1992-01-01"),
-      y = 40,
+      y = 22,
       xend = as.Date("1993-08-01"),
-      yend = 43
+      yend = 25
     ),
     colour = "black",
     size = .5,
@@ -3392,10 +3492,9 @@ f17b <- label_wd_c %>%
   geom_text(
     data = label_wd_c,
     aes(label = complete, x = year, y = 2),
-    color = "mintcream",
+    color = "black",
     size = 1.8,
-    family = "Gadugi",
-    fontface = "bold"
+    family = "Gadugi"
   ) +
   geom_pointrange(
     data = label_wd_c,
@@ -3449,12 +3548,11 @@ f17c <- label_wd_r %>%
     linetype = "dotted"
   ) +
   geom_text(
-    data = label_wd_r,
+    data =  subset(label_wd_r, !is.nan(numeric.mean)),
     aes(label = complete, x = year, y = 2),
-    color = "mintcream",
+    color = "black",
     size = 1.8,
-    family = "Gadugi",
-    fontface = "bold"
+    family = "Gadugi"
   ) +
   geom_pointrange(
     data = label_wd_r,
@@ -3676,16 +3774,37 @@ f17e <- df %>%
     plot.margin = margin(0, 5, 0, 5)
   )
 
-
 f17 <-
-  (((f17a) / (f17d / f17e) + plot_layout(
+  (((teste) / (f17d / f17e) + plot_layout(
     nrow = 3,
     ncol = 1,
-    heights = c(.5, 5.5, 4)
+    heights = c(.5, 5.5, 4),
+    widths = c(9, 1)
   )) | (f17b / f17c)) + plot_layout(ncol = 2, widths = c(1.5, 2))
+
+
+
+
+# estabelecer layout para organização dos painéis
+
+layout <- "
+AAAAAAAAAAA#FFFFFFFFFFFFF
+BBBBBBBBBBBCFFFFFFFFFFFFF
+BBBBBBBBBBBCFFFFFFFFFFFFF
+BBBBBBBBBBBCFFFFFFFFFFFFF
+BBBBBBBBBBBCFFFFFFFFFFFFF
+BBBBBBBBBBBCGGGGGGGGGGGGG
+DDDDDDDDDDDDGGGGGGGGGGGGG
+DDDDDDDDDDDDGGGGGGGGGGGGG
+EEEEEEEEEEEEGGGGGGGGGGGGG
+EEEEEEEEEEEEGGGGGGGGGGGGG
+"
+
+
+f17 <- f17a1 + f17a2 + f17a3 + f17d + f17e + f17b + f17c + plot_layout(design = layout)
+
 
 save_plot(filename = "Figura17.png",
           plot = f17,
           dpi = 300)
 
-f17
