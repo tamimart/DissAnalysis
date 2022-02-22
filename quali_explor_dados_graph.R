@@ -21,6 +21,7 @@ library(colorspace)   # manipular cor
 library(ggdist)       # plotar densidade
 library(gghalves)     # plotar pontos
 library(writexl)      # salvar tabela
+library(tidylog)      # feedback das operacoes tidy
 
 
 # Instalar fontes ----

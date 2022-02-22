@@ -3,11 +3,12 @@
 
 # Carregar pacotes
 
-library(tidyverse)
-library(skimr)
-library(summarytools)
-library(writexl)
-library(tibble)
+library(tidyverse)    # manipulacao de dados
+library(skimr)        # resumir estatistica
+library(summarytools) # estatisticas descritivas
+library(writexl)      # salvar tabela
+library(tibble)       # manejo de dataframe
+library(tidylog)      # feedback das operacoes tidy
 
 # Carregar dataframe dos dados limpos e organizados
 
