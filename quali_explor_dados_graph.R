@@ -2710,7 +2710,7 @@ write.table(atd , file = "data\\dose_otherunits.xlsx")
 
 f13a <- df %>% 
   filter(species == "Camundongo") %>% 
-  ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_freq)) +
+  ggplot(aes(x = fct_infreq(treatment_via), fill = treatment_freq), na.rm = TRUE) +
   geom_bar(position = position_dodge2(preserve = "single")) + 
   geom_text(aes(label = ..count..), stat = "count",
             color = "black",
@@ -2720,7 +2720,7 @@ f13a <- df %>%
             vjust = -.25,
   ) +
   scale_y_continuous(limits = c(0, 230), expand = c(0, 0)) +
-  labs(y = "Nº de estudos", x = "Via de administração em camundongos", title = "a") +
+  labs(y = "Nº de estudos", title = "a") +
   scale_fill_manual(values = c("1" = "#fec200", "2" = "#009c7e", "3" = "#a94f93")) +
   theme(
     axis.text = element_text(
@@ -2730,7 +2730,7 @@ f13a <- df %>%
     ),
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
-    axis.title.x = element_text(size = 7, hjust = 1, vjust = 35),
+    axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -2750,7 +2750,7 @@ stat_t_d_cam <- df %>%
 
 f13b <- df %>%
   filter(species == "Camundongo") %>%
-  ggplot(aes(y = treatment_duration, x = fct_infreq(treatment_via))) +
+  ggplot(aes(y = treatment_duration, x = fct_infreq(treatment_via)), na.rm = TRUE) +
   geom_point(
     aes(color = treatment_freq),
     position = position_jitterdodge(),
@@ -2769,7 +2769,7 @@ f13b <- df %>%
     )
   ) +
   scale_y_continuous(expand = c(.01, 0), limits = c(0, 120)) +
-  geom_pointrange(data = stat_t_d_cam, aes(x = treatment_via, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1) +
+  geom_pointrange(data = stat_t_d_cam, aes(x = treatment_via, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1, na.rm = TRUE) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
@@ -2777,9 +2777,8 @@ f13b <- df %>%
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_blank(),
+    axis.title.y = element_text(margin = margin(r = 5), size = 7, hjust = 1),
+    axis.title.x = element_text(margin = margin(t = 5), size = 7, hjust = .5),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     strip.background = element_rect(fill = "white", color = "black"),
@@ -2824,7 +2823,7 @@ f14a <- df %>%
     labels = function(x)
       str_wrap(x, width = 15)
   ) +
-  labs(y = "Nº de estudos", x = "Via de administração em ratos", title = "a") +
+  labs(y = "Nº de estudos", title = "a") +
   scale_fill_manual(values = c("1" = "#fec200", "2" = "#009c7e", "3" = "#a94f93", "Sem info" = "grey80")) +
   theme(
     axis.text = element_text(
@@ -2833,13 +2832,14 @@ f14a <- df %>%
       color = "grey20"
     ),
     axis.text.y = element_blank(),
+    axis.text.x = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
-    axis.title.x = element_text(size = 7, hjust = 1, vjust = 40),
+    axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.margin = margin(0, 0, 0, 0)
+    plot.margin = margin(0, 0, 10, 0)
   )
 
 f14a
@@ -2885,9 +2885,8 @@ f14b <- df %>%
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_blank(),
+    axis.title.y = element_text(margin = margin(r = 5), size = 7, hjust = 1),
+    axis.title.x = element_text(margin = margin(t = 5), size = 7, hjust = .5),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     strip.background = element_rect(fill = "white", color = "black"),
@@ -2935,19 +2934,21 @@ f15a <- df %>%
                       n = 9)
   )) +
   geom_bar() +
-  scale_fill_manual(values = c(
-    "#FE7700",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400",
-    "#ff9400"
-  )) +
-  labs(y = "Nº de publicações", x = "Camundongo", title = "a") +
+  scale_fill_manual(
+    values = c(
+      "#FE7700",
+      "#ff9400",
+      "#ff9400",
+      "#ff9400",
+      "#ff9400",
+      "#ff9400",
+      "#ff9400",
+      "#ff9400",
+      "#ff9400",
+      "#ff9400"
+    )
+  ) +
+  labs(y = "Nº de publicações", x = "Protocolo do nado forçado", title = "a") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 67)) +
   scale_x_discrete(
     labels = function(x)
@@ -2961,23 +2962,28 @@ f15a <- df %>%
     position = position_dodge(width = 0.9),
     vjust = -0.25
   ) +
-  theme(
-    axis.text = element_text(
+  geom_text(aes(label = "Camundongo", 
+                x = Inf - 3, 
+                y = 65),
+            hjust = 1.1,
+            size = 2.5,
+            family = "Gadugi",
+            color = "grey20") +
+  theme(axis.text = element_text(
       size = 6,
       angle = 0,
-      color = "grey20"
+      color = "grey30"
     ),
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
-    plot.title = element_text(size = 10),
-    plot.title.position = "plot",
-    plot.subtitle = element_text(size = 7, hjust = .5),
-    legend.position = "none",
-    panel.grid = element_blank(),
-    plot.margin = margin(0, 0, 0, 0)
-  )
+    axis.title.x = element_blank(),
+      plot.title = element_text(size = 10),
+      plot.title.position = "plot",
+      plot.subtitle = element_text(size = 7, hjust = .5),
+      legend.position = "none",
+      panel.grid = element_blank(),
+      plot.margin = margin(0, 0, 0, 0))
 
 f15a
 
@@ -3002,7 +3008,7 @@ f15b <- df %>%
     "#ec2b2b",
     "#ec2b2b"
   )) +
-  labs(y = "Nº de publicações", x = "Rato", title = "b") +
+  labs(y = "Nº de publicações", x = "Protocolo do nado forçado", title = "b") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 67)) +
   scale_x_discrete(labels = function(x)
     str_wrap(x, width = 13)) +
@@ -3014,6 +3020,13 @@ f15b <- df %>%
     position = position_dodge(width = 0.9),
     vjust = -0.25
   ) +
+  geom_text(aes(label = "Rato", 
+                x = Inf - 5, 
+                y = 65),
+            hjust = 1.1,
+            size = 2.5,
+            family = "Gadugi",
+            color = "grey30") +
   theme(
     axis.text = element_text(
       size = 6,
@@ -3023,7 +3036,7 @@ f15b <- df %>%
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
+    axis.title.x = element_text(margin = margin(t = 5), hjust = .5),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -3036,8 +3049,6 @@ f15b
 
 Figura15 <- f15a / f15b
 
-Figura15 <- Figura15 + plot_annotation(title = "Protocolo do nado forçado",
-                                       theme = theme(plot.title = element_text(size = 10)))
 
 save_plot(filename = "Figura15.png",
           plot = Figura15,
@@ -3134,7 +3145,7 @@ f16a <- df %>%
     "Intervalos de 5s" = "#b376a2",
     "Intervalos de 60s" = "#a94f93"
   )) +
-  labs(y = "Nº de publicações", x = "Camundongo", title = "a", fill = "Detalhe do método") +
+  labs(y = "Nº de publicações", x = "Método de análise do nado forçado", title = "a", fill = "Detalhe do método") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 70)) +
   scale_x_discrete(
     labels = function(x)
@@ -3149,6 +3160,13 @@ f16a <- df %>%
                                                    jitter.width =  0.3, offset = 1),
                   fontface = "bold",
   ) +
+  geom_text(aes(label = "Camundongo", 
+                x = Inf - 3, 
+                y = 68),
+            size = 2.5,
+            hjust = 1.1,
+            family = "Gadugi",
+            color = "grey30") +
   theme(
     axis.text = element_text(
       size = 6,
@@ -3158,7 +3176,7 @@ f16a <- df %>%
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
+    axis.title.x = element_text(margin = margin(t = 5), hjust = 2),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -3190,7 +3208,7 @@ f16b <- df %>%
     "Intervalos de 5s" = "#b376a2",
     "Intervalos de 60s" = "#a94f93"
   )) +
-  labs(y = "Nº de publicações", x = "Rato", title = "b", fill = "Detalhe do método:") +
+  labs(y = "Nº de publicações", title = "b", fill = "Detalhe do método:") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 70)) +
   scale_x_discrete(
     labels = function(x)
@@ -3205,6 +3223,13 @@ f16b <- df %>%
                                              jitter.width =  0.3, offset = 1),
                   fontface = "bold") + 
   guides(fill = guide_legend(override.aes = list(size = .1), nrow = 1, byrow = TRUE)) +
+  geom_text(aes(label = "Rato", 
+                x = Inf - 3, 
+                y = 68),
+            size = 2.5,
+            hjust = 1.1,
+            family = "Gadugi",
+            color = "grey30") +
   theme(
     axis.text = element_text(
       size = 6,
@@ -3214,12 +3239,12 @@ f16b <- df %>%
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5), hjust = .98),
+    axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     plot.subtitle = element_text(size = 7, hjust = .5),
     panel.grid = element_blank(),
-    plot.margin = margin(0, 0, 0, 0)
+    plot.margin = margin(0, 0, 0, 10)
   )
 f16b
 
@@ -3228,9 +3253,6 @@ Figura16 <- (f16a + f16b) / guide_area() + plot_layout(guides = "collect", heigh
                                                                       legend.direction = "horizontal", 
                                                                       legend.key.size = unit(0.2, "cm"))
 
-
-Figura16 <- Figura16 + plot_annotation(title = "Método de análise do nado forçado",
-                                       theme = theme(plot.title = element_text(size = 10)))
 
 save_plot(filename = "Figura16.png",
           plot = Figura16,
