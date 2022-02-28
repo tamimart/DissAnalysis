@@ -18,6 +18,9 @@ df <-
   data_geral_clean <-
   readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissAnalysis/data_geral_clean.rds")
 
+
+# ROB ------
+
 # Isolar variáveis do ROB SYRCLE
 
 df_rob <- df %>% 
@@ -129,20 +132,125 @@ save_plot(filename = "Figura18.png",
 rob <- read_excel("data/rob.xlsx")
 
 
+robplot_sinal <- rob_traffic_light(data = rob[1:10,], tool = "ROB1", colour = c("#82c236", "#fec200", "#ec2b2b"))
 
-robplot_farol <- rob_traffic_light(data = rob[1:10,], tool = "ROB1", colour = c("#82c236", "#fec200", "#ec2b2b"), psize = 5)
-
-
-robplot_farol <- robplot_farol + geom_point(size = 5)
-
-
+robplot_sinal <-
+  robplot_sinal + theme(
+    text = element_text(size = 5),
+    plot.caption = element_text(
+      size = 5,
+      hjust = 0,
+      vjust = 5
+    ),
+    legend.text = element_text(size = 5),
+    fill = guide_legend(override.aes = list(size = 2)))
+    
+robplot_sinal
 
 
 save_plot(filename = "Figura19.png",
-          plot = robplot_farol,
+          plot = robplot_sinal,
           dpi = 300)
 
-robplot_farol
+# CAMARADES ----
+
+# Isolar variáveis do ROB SYRCLE
+
+df_camarades <- df %>% 
+  mutate(Study = str_c(first_author, ", ", lubridate::year(year))) %>% 
+  select(starts_with("camarades"), Study) 
+
+df_camarades <- df_camarades %>% 
+  distinct() # deixar uma linha por publicação
+
+df_camarades <- df_camarades %>% 
+  rename("Publicação revisada por pares" = camarades1,
+         "Estudo seguiu algum guia" = camarades2,
+         "Declaração de conformidade com os regulamentos de bem-estar animal" = camarades3,
+         "Declaração de possíveis conflitos de interesse" = camarades4, 
+         "Relato das condições de acondicionamento ou ações para melhora do bem estar dos animais experimentais" = camarades5, 
+         "Relato da espécie/linhagem ou características específicas dos animais" = camarades6,
+         "Relato do fenótipo de interesse" = camarades7, 
+         "Relato da idade, peso ou estágio de vida dos animais" = camarades8, 
+         "Relato do sexo dos animais" = camarades9,
+         "Relato sobre o método do teste comportamental e aquisição dos desfechos comportamentais" = camarades10,
+         "Relato do cálculo amostral" = camarades11) # adicionar topicos
+  
+  
+df_camarades_longo <- df_camarades %>% # colocar em modo longo
+  pivot_longer(!c(Study),
+               names_to = "pergunta",
+               values_to = "atribuicao",
+  ) 
 
 
-rob_summary(df_rob, tool = "ROB1", overall = FALSE, weighted = FALSE)
+df_camarades_longo$pergunta <- # ordernar topicos
+  fct_relevel(
+    df_camarades_longo$pergunta, "Publicação revisada por pares",
+    "Estudo seguiu algum guia",
+    "Declaração de conformidade com os regulamentos de bem-estar animal",
+    "Declaração de possíveis conflitos de interesse", 
+    "Relato das condições de acondicionamento ou ações para melhora do bem estar dos animais experimentais", 
+    "Relato da espécie/linhagem ou características específicas dos animais",
+    "Relato do fenótipo de interesse", 
+    "Relato da idade, peso ou estágio de vida dos animais", 
+    "Relato do sexo dos animais",
+    "Relato sobre o método do teste comportamental e aquisição dos desfechos comportamentais",
+    "Relato do cálculo amostral")
+
+
+df_camarades_longo$atribuicao <-  
+  factor(
+    df_camarades_longo$atribuicao,
+    levels = c("No", "Unclear, predatory", "Yes", "Unclear", "Yes, ARRIVE", "Yes, lab animals", "Yes, no conflict"),
+    labels = c("Não", "Incerto, predatória", "Sim", "Incerto", "Sim, ARRIVE", "Sim, de animais experimentais", "Sim") # renomear atribuições para portugues. OBS categoria que especifica "sem conflito" não é necessária, deixei apenas como "sim"
+  )
+
+
+
+df_camarades_longo$atribuicao <- # ordernar atribuicoes
+  fct_relevel(
+    df_camarades_longo$atribuicao, "Não", "Incerto", "Sim", "Incerto, predatória", "Sim, ARRIVE", "Sim, de animais experimentais")
+
+
+
+c_factor_levels <- c("Não", "Incerto, predatória", "Incerto", "Sim, de animais experimentais","Sim, ARRIVE", "Sim") # reordenar niveis
+
+
+
+robcamarades <- df_camarades_longo %>% 
+  group_by(Study) %>% 
+  distinct(Study, pergunta, atribuicao) %>% 
+  ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao, levels = c_factor_levels), y = ..count..)) +
+  geom_bar(position = "fill") + 
+  scale_fill_manual("Atribuições", values = c("Sim" = "#82c236", "Incerto" = "#fec200", "Sim, ARRIVE" = "#009c7e", "Incerto, predatória" = "#ff9400", "Sim, de animais experimentais" = "olivedrab2", "Não" = "#ec2b2b")) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_discrete(
+    labels = function(x)
+      str_wrap(x, width = 55)
+  ) +
+  coord_flip()  + 
+  theme(axis.ticks.x = element_line(size = .3),
+        axis.line = element_line(size = .3),
+        axis.text = element_text(
+          size = 7,
+          color = "grey20"
+        ),
+        axis.line.y = element_blank(),
+        axis.title = element_blank(),
+        plot.title = element_text(size = 10),
+        plot.title.position = "plot",
+        legend.position = "bottom",
+        legend.text = element_text(size = 6, color = "grey20"),
+        legend.title = element_text(size = 7),
+        plot.margin = margin(5, 0, 0, 5),
+        legend.key.size = unit(.8, "line"),
+        panel.grid.major.y = element_line(color = "grey90", size = .1),
+        panel.grid.major.x = element_blank()
+  )
+
+robcamarades
+
+save_plot(filename = "Figura20.png",
+          plot = robcamarades,
+          dpi = 300)
