@@ -19,6 +19,10 @@ df <-
   readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissAnalysis/data_geral_clean.rds")
 
 
+# Estabelecer tema base para todos os próximos gráficos
+
+theme_set(theme_minimal(base_family = "Gadugi"))
+
 # ROB ------
 
 # Isolar variáveis do ROB SYRCLE
@@ -79,9 +83,6 @@ df_rob_long$pergunta <-
                "O estudo está aparentemente livre de algum outro problema que poderia resultar em alto risco de viés?") # renomear para a pergunta completa) # estabeler ordem para as perguntas
 
 
-# Estabelecer tema base para todos os próximos gráficos
-
-theme_set(theme_minimal(base_family = "Gadugi"))
 
 
 
@@ -154,7 +155,7 @@ save_plot(filename = "Figura19.png",
 
 # CAMARADES ----
 
-# Isolar variáveis do ROB SYRCLE
+# Isolar variáveis do CAMARADES
 
 df_camarades <- df %>% 
   mutate(Study = str_c(first_author, ", ", lubridate::year(year))) %>% 
@@ -227,7 +228,7 @@ robcamarades <- df_camarades_longo %>%
   scale_y_continuous(labels = scales::percent) +
   scale_x_discrete(
     labels = function(x)
-      str_wrap(x, width = 55)
+      str_wrap(x, width = 53)
   ) +
   coord_flip()  + 
   theme(axis.ticks.x = element_line(size = .3),
