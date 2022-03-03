@@ -177,6 +177,9 @@ df_camarades <- df_camarades %>%
          "Relato sobre o método do teste comportamental e aquisição dos desfechos comportamentais" = camarades10,
          "Relato do cálculo amostral" = camarades11) # adicionar topicos
   
+
+skimr::skim(df_camarades) # verificar numero de publicação por atribuição
+
   
 df_camarades_longo <- df_camarades %>% # colocar em modo longo
   pivot_longer(!c(Study),
@@ -204,18 +207,21 @@ df_camarades_longo$atribuicao <-
   factor(
     df_camarades_longo$atribuicao,
     levels = c("No", "Unclear, predatory", "Yes", "Unclear", "Yes, ARRIVE", "Yes, lab animals", "Yes, no conflict"),
-    labels = c("Não", "Incerto, predatória", "Sim", "Incerto", "Sim, ARRIVE", "Sim, de animais experimentais", "Sim") # renomear atribuições para portugues. OBS categoria que especifica "sem conflito" não é necessária, deixei apenas como "sim"
+    labels = c("Não", "Incerto", "Sim", "Incerto", "Sim", "Sim", "Sim") # renomear atribuições para portugues. OBS categoria que especifica "sem conflito" não é necessária, deixei apenas como "sim"
   )
+
+
+
 
 
 
 df_camarades_longo$atribuicao <- # ordernar atribuicoes
   fct_relevel(
-    df_camarades_longo$atribuicao, "Não", "Incerto", "Sim", "Incerto, predatória", "Sim, ARRIVE", "Sim, de animais experimentais")
+    df_camarades_longo$atribuicao, "Não", "Incerto", "Sim")
 
 
 
-c_factor_levels <- c("Não", "Incerto, predatória", "Incerto", "Sim, de animais experimentais","Sim, ARRIVE", "Sim") # reordenar niveis
+c_factor_levels <- c("Não", "Incerto", "Sim") # reordenar niveis
 
 
 
@@ -224,7 +230,7 @@ robcamarades <- df_camarades_longo %>%
   distinct(Study, pergunta, atribuicao) %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao, levels = c_factor_levels), y = ..count..)) +
   geom_bar(position = "fill") + 
-  scale_fill_manual("Atribuições", values = c("Sim" = "#82c236", "Incerto" = "#fec200", "Sim, ARRIVE" = "#009c7e", "Incerto, predatória" = "#ff9400", "Sim, de animais experimentais" = "olivedrab2", "Não" = "#ec2b2b")) +
+  scale_fill_manual("Atribuição", values = c("Sim" = "#82c236", "Incerto" = "#fec200", "Não" = "#ec2b2b")) +
   scale_y_continuous(labels = scales::percent) +
   scale_x_discrete(
     labels = function(x)

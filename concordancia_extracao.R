@@ -12,101 +12,98 @@ library(readxl)
 pacman::p_load(dplyr, rel, irr)
 
 
-# qualitativo ------
+# tratar todos os df (revisor1 e revisor2) no script "limp_org_dados" e salvar com nomes (Data_200FST_primeirorevisor, Data_200FST_segundorevisor) na pasta "data"
 
-# Carregar o banco de dados e preparação
+# carregar arquivos já tratados
 
-meus_dados_library <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Library")
+meus_dados_r1 <- read_excel("data/Data_200FST_primeirorevisor.xlsx")
 
-meus_dados_library <- meus_dados_library %>% 
-  filter(Included == TRUE) # Retirar linhas dos artigos excluidos na etapa de extracao
+meus_dados_r2 <- read_excel("data/Data_200FST_segundorevisor.xlsx")
 
-extraction_final_quali <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Extraction info")
-
-extraction_r1_quali <- read_excel("data/DataExtraction_RsGeral_sorteioI_primeirorevisor.xlsx", sheet = "Extraction info")
-
-extraction_r2_quali <- read_excel("data/DataExtraction_RsGeral_sorteioI_segundorevisor.xlsx", sheet = "Extraction info")
-
-
-# juntar dados da biblioteca com dados extraidos
-
-
-extraction_final_quali  <- dplyr::left_join(meus_dados_library, extraction_final_quali , by = "First author")
-
-extraction_r1_quali  <- dplyr::left_join(meus_dados_library, extraction_r1_quali , by = "First author")
-
-extraction_r2_quali  <- dplyr::left_join(meus_dados_library, extraction_r2_quali , by = "First author")
 
 # transformar todas colunas em character
 
-
-extraction_final_quali <- extraction_final_quali %>%
+meus_dados_r1 <- meus_dados_r1 %>%
   mutate_all(as.character)
 
-extraction_r1_quali <- extraction_r1_quali %>%
+meus_dados_r2 <- meus_dados_r2 %>%
   mutate_all(as.character)
 
-extraction_r2_quali <- extraction_r2_quali %>%
-  mutate_all(as.character)
+# selecionar variaveis de cada categoria (info, quanti, quali) e colocar dados em formato longo, para comparar apenas uma coluna com todos os dados
 
-# colocar dados em formato longo, para comparar apenas uma coluna com todos os dados
+#r1
 
-
-
-extraction_final_quali <- extraction_final_quali %>% 
-  pivot_longer(!c(IDGeral, ID, Included, authors, `First author`, year.x, title, line),
-             values_to = "extraido",
+meus_dados_r1_info <- meus_dados_r1 %>% 
+  select(language, country, obs_design:others_tests) %>% 
+  pivot_longer(cols = everything(),
+    values_to = "extraido",
              names_to = "coluna"
              )
-
-extraction_r1_quali <- extraction_r1_quali %>% 
-  pivot_longer(!c(IDGeral, ID, Included, authors, `First author`, year.x, title, line),
+  
+  meus_dados_r1_quanti <- meus_dados_r1 %>% 
+    select(source:N) %>% 
+  pivot_longer(cols = everything(),
+               values_to = "extraido",
+               names_to = "coluna"
+  ) 
+  
+  meus_dados_r1_quali <- meus_dados_r1 %>% 
+    select(rob1:camarades11) %>% 
+  pivot_longer(cols = everything(),
                values_to = "extraido",
                names_to = "coluna"
   )
+  
+  
+#r2
+  
+meus_dados_r2_info <- meus_dados_r2 %>% 
+    select(language, country, obs_design:others_tests) %>% 
+    pivot_longer(cols = everything(),
+                 values_to = "extraido",
+                 names_to = "coluna"
+    )
+  
+meus_dados_r2_quanti <- meus_dados_r2 %>% 
+    select(source:N) %>% 
+    pivot_longer(cols = everything(),
+                 values_to = "extraido",
+                 names_to = "coluna"
+    ) 
+  
+meus_dados_r2_quali <- meus_dados_r2 %>% 
+    select(rob1:camarades11) %>% 
+    pivot_longer(cols = everything(),
+                 values_to = "extraido",
+                 names_to = "coluna"
+    )
+  
+  
+  
+# juntar df REVISOR 1 versus REVISOR 2
+
+concordancia_revisores_info <- data.frame(meus_dados_r1_info$extraido, meus_dados_r2_info$extraido)
+concordancia_revisores_quanti <- data.frame(meus_dados_r1_quanti$extraido, meus_dados_r2_quanti$extraido)
+concordancia_revisores_quali <- data.frame(meus_dados_r1_quali$extraido, meus_dados_r2_quali$extraido)
 
 
-extraction_r2_quali <- extraction_r2_quali %>% 
-  pivot_longer(!c(IDGeral, ID, Included, authors, `First author`, year.x, title, line),
-               values_to = "extraido",
-               names_to = "coluna"
-  )
+# ANÁLISE DE CONCORDANCIA ENTRE REVISORES ------ 
 
+#info
 
+irr::kappa2(concordancia_revisores_info[1:2]) # Cálculo do kappa 
+rel::ckap(concordancia_revisores_info[1:2], conf.level = 0.95) ## Cálculo do IC 95%:
+irr::agree(concordancia_revisores_info[1:2]) #  Cálculo da concordância
 
-glimpse(Selection_embase)                             
+#quanti
 
-# Atribuição qualitativo------
+irr::kappa2(concordancia_revisores_quanti[1:2]) # Cálculo do kappa 
+rel::ckap(concordancia_revisores_quanti[1:2], conf.level = 0.95) ## Cálculo do IC 95%:
+irr::agree(concordancia_revisores_quanti[1:2]) #  Cálculo da concordância
 
-# Cálculo do kappa 
+#quali
 
-irr::kappa2(Selection_embase[1:2])
-
-
-## Cálculo do IC 95%:
-
-rel::ckap(Selection_embase[1:2], conf.level = 0.95)
-
-
-#  Cálculo da concordância
-
-irr::agree(Selection_embase[1:2])
-
-# Razão de exclusão EMBASE -------
-
-
-# Cálculo do kappa 
-
-irr::kappa2(Selection_embase[3:4])
-
-
-## Cálculo do IC 95%:
-
-rel::ckap(Selection_embase[3:4], conf.level = 0.95)
-
-
-#  Cálculo da concordância
-
-irr::agree(Selection_embase[3:4])
-
+irr::kappa2(concordancia_revisores_quali[1:2]) # Cálculo do kappa 
+rel::ckap(concordancia_revisores_quali[1:2], conf.level = 0.95) ## Cálculo do IC 95%:
+irr::agree(concordancia_revisores_quali[1:2]) #  Cálculo da concordância
 
