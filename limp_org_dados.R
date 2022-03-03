@@ -13,7 +13,7 @@ library(skimr)
 # OBS:As colunas em comum (de identificação) deverao ter os mesmos nomes em cada aba que sera fundida.
 
 
-meus_dados_library <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Library")
+meus_dados_library <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Library") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
 meus_dados_info <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Extraction info")
 
@@ -273,7 +273,7 @@ data_geral <- data_geral %>%
 
 data_geral <- data_geral %>%
   mutate(ctr_n_corr = as.integer(ctr_n_round / n_comparisons),
-         N = as.integer(ctr_n_corr+atd_n_round)) 
+         N = as.integer(ctr_n_corr + atd_n_round)) 
 
 
 # Reorganizar ordem das variaveis -------
@@ -472,11 +472,13 @@ levels(data_geral_reord$treatment_via)[match("tablet", levels(data_geral_reord$t
 #   select(line, first_author, fst_protocol)
 
 
-# Salvar df limpo e transformado para posterior analise ------
+# Salvar df limpo e transformado PARA POSTERIOR ANALISE DOS DADOS  ------
 
 saveRDS(data_geral_reord, "data_geral_clean.rds")
 
-write_xlsx(data_geral_reord,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\Data_200FST.xlsx")
+write_xlsx(data_geral_reord,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\Data_200FST.xlsx") #editar o nome quando salvar arquivos para analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de FST)
 
 
 glimpse(data_geral_reord)
+
+ 
