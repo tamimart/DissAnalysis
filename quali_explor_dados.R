@@ -14,6 +14,7 @@ library(tidylog)      # feedback das operacoes tidy
 
 df <- data_geral_clean <- readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissAnalysis/data_geral_clean.rds")
 
+
 # setar estatistica padrao
 
 my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE), 

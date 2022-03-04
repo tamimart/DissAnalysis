@@ -213,8 +213,6 @@ df_camarades_longo$atribuicao <-
 
 
 
-
-
 df_camarades_longo$atribuicao <- # ordernar atribuicoes
   fct_relevel(
     df_camarades_longo$atribuicao, "Não", "Incerto", "Sim")
@@ -225,12 +223,12 @@ c_factor_levels <- c("Não", "Incerto", "Sim") # reordenar niveis
 
 
 
-robcamarades <- df_camarades_longo %>% 
+camaradesplot <- df_camarades_longo %>% 
   group_by(Study) %>% 
   distinct(Study, pergunta, atribuicao) %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao, levels = c_factor_levels), y = ..count..)) +
   geom_bar(position = "fill") + 
-  scale_fill_manual("Atribuição", values = c("Sim" = "#82c236", "Incerto" = "#fec200", "Não" = "#ec2b2b")) +
+  scale_fill_manual("Julgamento", values = c("Sim" = "#82c236", "Incerto" = "#fec200", "Não" = "#ec2b2b")) +
   scale_y_continuous(labels = scales::percent) +
   scale_x_discrete(
     labels = function(x)
@@ -256,8 +254,8 @@ robcamarades <- df_camarades_longo %>%
         panel.grid.major.x = element_blank()
   )
 
-robcamarades
+camaradesplot
 
 save_plot(filename = "Figura20.png",
-          plot = robcamarades,
+          plot = camaradesplot,
           dpi = 300)
