@@ -2231,7 +2231,7 @@ F9b <- cage_3d %>%
 # Combinar e salvar
 
 Figura9 <- F9a / F9b + plot_layout(heights = c(5, 5))
-
+Figura9
 save_plot(filename = "Figura9.png",
           plot = Figura9,
           dpi = 300)
