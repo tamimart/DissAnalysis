@@ -76,6 +76,8 @@ df$sex <- factor(
 ) # Ordenar niveis do fator sexo
 
 
+levels(df$strain)[match("NA", levels(df$strain))] <- "Sem info" # mudar termo na linhagem
+
 df$model_phenotype <- factor(
   df$model_phenotype,
   levels = c(
@@ -444,6 +446,8 @@ df$measurement_method <-
       "Videoanálise, Intervalos de 5s"
     )
   ) 
+
+
 
 # Criar nova variavel com detalhe do método de analise do nado forçado
 
@@ -1182,7 +1186,7 @@ f4d <- df %>%
     plot.margin = margin(10, 10, 0, 10)
   )
 
-
+f4d
 f4e <- df %>%
   group_by(strain) %>%
   filter(species == "Rato") %>%
