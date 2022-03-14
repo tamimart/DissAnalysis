@@ -2782,7 +2782,7 @@ f13b <- df %>%
       color = "grey20"
     ),
     axis.title.y = element_text(margin = margin(r = 5), size = 7, hjust = 1),
-    axis.title.x = element_text(margin = margin(t = 5), size = 7, hjust = .5),
+    axis.title.x = element_text(margin = margin(t = 5), size = 7, hjust = 1),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     strip.background = element_rect(fill = "white", color = "black"),
@@ -2790,7 +2790,7 @@ f13b <- df %>%
     plot.margin = margin(0, 0, 0, 0),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    legend.position = "top",
+    legend.position = "bottom",
     legend.margin = margin(0,0,0,0),
     legend.box.margin = margin(-10, 0,-10,-10),
     legend.spacing.x = unit(0.1,'mm'),
@@ -2799,7 +2799,8 @@ f13b <- df %>%
   )
 f13b
 
-F13 <- (f13a + plot_spacer() + plot_layout(widths = c(6,3))) / (f13b + plot_spacer() + plot_layout(widths = c(6,3))) +  plot_layout(heights = c(3,8))
+F13 <- (f13a + plot_spacer() + plot_layout(widths = c(6,3))) / (f13b + plot_spacer() + plot_layout(widths = c(6,3))) +  plot_layout(heights = c(3,8)) 
+
 
 F13
 save_plot(filename = "Figura13.png",
@@ -2836,7 +2837,6 @@ f14a <- df %>%
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.text.x = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
@@ -2890,7 +2890,7 @@ f14b <- df %>%
       color = "grey20"
     ),
     axis.title.y = element_text(margin = margin(r = 5), size = 7, hjust = 1),
-    axis.title.x = element_text(margin = margin(t = 5), size = 7, hjust = .5),
+    axis.title.x = element_text(margin = margin(t = 5), size = 7, hjust = 1),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     strip.background = element_rect(fill = "white", color = "black"),
@@ -2898,7 +2898,7 @@ f14b <- df %>%
     plot.margin = margin(0, 0, 0, 0),
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    legend.position = "top",
+    legend.position = "bottom",
     legend.margin = margin(0,0,0,0),
     legend.box.margin = margin(-10, 0,-10,-10),
     legend.spacing.x = unit(0.1,'mm'),
