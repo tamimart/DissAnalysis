@@ -95,6 +95,7 @@ df$model_phenotype <- factor(
     "temporal lobe epilepsy (pilocarpine)",
     "streptozotocin",
     "prenatal stress procedure",
+    "foot shock stress",
     "restraint-stress",
     "subchronic stress:restraint–water immersion",
     "melanin-concentrating hormone 50ng",
@@ -130,7 +131,8 @@ df$model_phenotype <- factor(
     "Epilepsia do lobo temporal (c/ pilocarpina)",
     "Estreptozotocina",
     "Estresse pré-natal",
-    "Estresse por contenção",
+    "Estresse por choque no pé",
+    "Estresse por contenção"
     "Estresse subcrônico: contenção em água",
     "Hormônio concentrador de melanina (50ng)",
     "Injeção salina por 4 dias",
