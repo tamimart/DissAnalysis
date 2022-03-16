@@ -55,7 +55,7 @@ view(data_geral)
 # Selecionar colunas que ficarao na planilha final -------
 
 data_geral <- data_geral %>% # Excluir colunas/variaveis repetidas e desnecessarias
-  select(everything(), - ...25, - Included, - `First author.y`, - comp.y, `First author`, - FSTApparatus_conditions, - `Housing conditions`, - year.y, - source.y, -`First author.y`, - comp.y, -`Escale (mm)`, -`Escale (s or %)`, -`mean CTRL or ATD (mm)`, -`SEM CTRL or ATD (mm)`, -`mean ADT (mm)` , -`SEM ADT (mm)`) 
+  select(everything(), - ...25, - Included, - `First author.y`, - comp.y, `First author`, - exclusion_reason, - FSTApparatus_conditions, - `Housing conditions`, - year.y, - source.y, -`First author.y`, - comp.y, -`Escale (mm)`, -`Escale (s or %)`, -`mean CTRL or ATD (mm)`, -`SEM CTRL or ATD (mm)`, -`mean ADT (mm)` , -`SEM ADT (mm)`) 
   
   
 data_geral <- data_geral %>% # Renomear colunas/variaveis de acordo com as boas praticas 
