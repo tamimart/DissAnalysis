@@ -13,13 +13,13 @@ library(skimr)
 # OBS:As colunas em comum (de identificação) deverao ter os mesmos nomes em cada aba que sera fundida.
 
 
-meus_dados_library <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Library") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
+meus_dados_library <- read_excel("data/DataExtraction_RsGeral_sorteioI_segundorevisor.xlsx", sheet = "Library") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
-meus_dados_info <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Extraction info") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
+meus_dados_info <- read_excel("data/DataExtraction_RsGeral_sorteioI_segundorevisor.xlsx", sheet = "Extraction info") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
-meus_dados_outcome <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "FST imm. duration") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
+meus_dados_outcome <- read_excel("data/DataExtraction_RsGeral_sorteioI_segundorevisor.xlsx", sheet = "FST imm. duration") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
-meus_dados_quality <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "References Quality") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
+meus_dados_quality <- read_excel("data/DataExtraction_RsGeral_sorteioI_segundorevisor.xlsx", sheet = "References Quality") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
 
 # Retirar linhas dos artigos excluidos na etapa de extracao
@@ -475,7 +475,7 @@ levels(data_geral_reord$treatment_via)[match("tablet", levels(data_geral_reord$t
 # Salvar df limpo e transformado PARA POSTERIOR ANALISE DOS DADOS  ------
 
 
-write_xlsx(data_geral_reord,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\Data_200FST.xlsx") #editar o nome quando salvar arquivos para analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de FST)
+write_xlsx(data_geral_reord,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\Data_200FST_segundorevisor.xlsx") #editar o nome quando salvar arquivos para analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de FST)
 
 # Primeiro e segundo revisor so ate aqui, dados finais (que acaba com SorteioI sontinuar)
 

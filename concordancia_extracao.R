@@ -8,6 +8,7 @@ library(remotes)
 library(pacman)
 library(tidyverse)
 library(readxl)
+library(diffdf)
 
 pacman::p_load(dplyr, rel, irr)
 
@@ -91,19 +92,22 @@ concordancia_revisores_quali <- data.frame(meus_dados_r1_quali$extraido, meus_da
 
 #info
 
-
 rel::ckap(concordancia_revisores_info[1:2], conf.level = 0.95) ## Cálculo kappa e do IC 95%:
 irr::agree(concordancia_revisores_info[1:2]) #  Cálculo da concordância
 
+diffdf(meus_dados_r1_info,
+       meus_dados_r2_info) # ver onde estao as diferencas
+
 #quanti
-
-
 rel::ckap(concordancia_revisores_quanti[1:2], conf.level = 0.95) ## Cálculo kappa e do IC 95%:
 irr::agree(concordancia_revisores_quanti[1:2]) #  Cálculo da concordância
 
+diffdf(meus_dados_r1_quanti,
+       meus_dados_r2_quanti)
+
 #quali
-
-
 rel::ckap(concordancia_revisores_quali[1:2], conf.level = 0.95) ## Cálculo kappa e do IC 95%:
 irr::agree(concordancia_revisores_quali[1:2]) #  Cálculo da concordância
 
+diffdf(meus_dados_r1_quali,
+       meus_dados_r2_quali)
