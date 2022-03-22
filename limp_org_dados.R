@@ -15,11 +15,11 @@ library(skimr)
 
 meus_dados_library <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Library") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
-meus_dados_info <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Extraction info")
+meus_dados_info <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "Extraction info") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
-meus_dados_outcome <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "FST imm. duration")
+meus_dados_outcome <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "FST imm. duration") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
-meus_dados_quality <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "References Quality")
+meus_dados_quality <- read_excel("data/DataExtraction_RsGeral_sorteioI.xlsx", sheet = "References Quality") #mudar o nome do arquivo importado quando for tratar planilha para posterior analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de sorteioI)
 
 
 # Retirar linhas dos artigos excluidos na etapa de extracao
