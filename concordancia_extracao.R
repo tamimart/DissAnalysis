@@ -34,7 +34,7 @@ meus_dados_r2 <- meus_dados_r2 %>%
 #r1
 
 meus_dados_r1_info <- meus_dados_r1 %>% 
-  select(language, country, obs_design:others_tests) %>% 
+  select(year, language, country, source, species:others_tests) %>% 
   pivot_longer(cols = everything(),
     values_to = "extraido",
              names_to = "coluna"
@@ -58,7 +58,7 @@ meus_dados_r1_info <- meus_dados_r1 %>%
 #r2
   
 meus_dados_r2_info <- meus_dados_r2 %>% 
-    select(language, country, obs_design:others_tests) %>% 
+    select(year, language, country, source, species:others_tests) %>% 
     pivot_longer(cols = everything(),
                  values_to = "extraido",
                  names_to = "coluna"
@@ -91,19 +91,19 @@ concordancia_revisores_quali <- data.frame(meus_dados_r1_quali$extraido, meus_da
 
 #info
 
-irr::kappa2(concordancia_revisores_info[1:2]) # Cálculo do kappa 
-rel::ckap(concordancia_revisores_info[1:2], conf.level = 0.95) ## Cálculo do IC 95%:
+
+rel::ckap(concordancia_revisores_info[1:2], conf.level = 0.95) ## Cálculo kappa e do IC 95%:
 irr::agree(concordancia_revisores_info[1:2]) #  Cálculo da concordância
 
 #quanti
 
-irr::kappa2(concordancia_revisores_quanti[1:2]) # Cálculo do kappa 
-rel::ckap(concordancia_revisores_quanti[1:2], conf.level = 0.95) ## Cálculo do IC 95%:
+
+rel::ckap(concordancia_revisores_quanti[1:2], conf.level = 0.95) ## Cálculo kappa e do IC 95%:
 irr::agree(concordancia_revisores_quanti[1:2]) #  Cálculo da concordância
 
 #quali
 
-irr::kappa2(concordancia_revisores_quali[1:2]) # Cálculo do kappa 
-rel::ckap(concordancia_revisores_quali[1:2], conf.level = 0.95) ## Cálculo do IC 95%:
+
+rel::ckap(concordancia_revisores_quali[1:2], conf.level = 0.95) ## Cálculo kappa e do IC 95%:
 irr::agree(concordancia_revisores_quali[1:2]) #  Cálculo da concordância
 
