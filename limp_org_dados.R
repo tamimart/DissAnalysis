@@ -474,11 +474,12 @@ levels(data_geral_reord$treatment_via)[match("tablet", levels(data_geral_reord$t
 
 # Salvar df limpo e transformado PARA POSTERIOR ANALISE DOS DADOS  ------
 
-saveRDS(data_geral_reord, "data_geral_clean.rds")
 
 write_xlsx(data_geral_reord,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\Data_200FST.xlsx") #editar o nome quando salvar arquivos para analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de FST)
 
+# Primeiro e segundo revisor so ate aqui, dados finais (que acaba com SorteioI sontinuar)
 
+saveRDS(data_geral_reord, "data_geral_clean.rds")
 glimpse(data_geral_reord)
 
  
