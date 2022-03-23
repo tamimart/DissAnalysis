@@ -78,6 +78,7 @@ df$sex <- factor(
 
 levels(df$strain)[match("NA", levels(df$strain))] <- "Sem info" # mudar termo na linhagem
 
+
 df$model_phenotype <- factor(
   df$model_phenotype,
   levels = c(
@@ -132,7 +133,7 @@ df$model_phenotype <- factor(
     "Estreptozotocina",
     "Estresse pré-natal",
     "Estresse por choque no pé",
-    "Estresse por contenção"
+    "Estresse por contenção",
     "Estresse subcrônico: contenção em água",
     "Hormônio concentrador de melanina (50ng)",
     "Injeção salina por 4 dias",
@@ -339,10 +340,6 @@ df$treatment_via <-
     )
   ) 
 
-
-
-df %>% 
-  filter(treatment_via == "Tablete")
 #protocolo tnf
 
 df$fst_protocol <-
@@ -827,7 +824,8 @@ Figura1 <-
           plot_spacer()) + plot_layout(heights = c(10, 2), widths = c(8, 8))
 save_plot(filename = "Figura1.png",
           plot = Figura1,
-          dpi = 300) # Salvar gráfico
+          dpi = 300,
+          path = "Fig") # Salvar gráfico
 
 
 ## Figura2 - Quantidade de publicações no ano ----
@@ -857,7 +855,8 @@ Figura2 <- df %>%
 
 save_plot(filename = "Figura2.png",
           plot = Figura2,
-          dpi = 300) # Salvar gráfico
+          dpi = 300,
+          path = "Fig") # Salvar gráfico
 
 
 
@@ -992,7 +991,8 @@ Figura3 <-
   f3a + f3b + f3c + f3d + plot_layout(heights = c(6, 6), widths = c(3, 6))
 save_plot(filename = "Figura3.png",
           plot = Figura3,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 ## Figura4: Linhagens ----
 # Strain
@@ -1285,7 +1285,8 @@ Fig4t <- (f4a + f4b + f4c) / (f4d + f4e + f4f) + plot_layout(heights = c(11, 6),
 
 save_plot(filename = "Figura4.png",
           plot = Fig4t,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 ## Figura5 e Figura6: Idade e peso ----
@@ -1478,10 +1479,12 @@ f6
 
 save_plot(filename = "Figura5.png",
           plot = f5,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 save_plot(filename = "Figura6.png",
           plot = f6,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 ## Figura5e6ppt: Idade e peso ----
 
@@ -1674,7 +1677,8 @@ f56 <-
   (f56a + f56b) /  (f56c + f56d) + plot_layout(heights = c(8, 8))
 save_plot(filename = "Figura5e6_ppt.png",
           plot = f56,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 ## Figura7: Modelo animal -----
 
@@ -1851,7 +1855,8 @@ Figura7 <- f7a + f7b + f7c
 Figura7
 save_plot(filename = "Figura7.png",
           plot = Figura7,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 # ACONDICIONAMENTO
@@ -2055,7 +2060,8 @@ Figura8
 
 save_plot(filename = "Figura8.png",
           plot = Figura8,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 ## Figura 9: Volume caixa por animal, volume de caixa por peso do animal ----
 
@@ -2240,7 +2246,8 @@ Figura9 <- F9a / F9b + plot_layout(heights = c(5, 5))
 Figura9
 save_plot(filename = "Figura9.png",
           plot = Figura9,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 ## Figura9ppt: Volume caixa por animal, volume de caixa por peso do animal ----
@@ -2339,7 +2346,8 @@ Figura9ab <- f9ab | f9ba
 
 save_plot(filename = "Figura9_ppt.png",
           plot = Figura9ab,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 # INTERVENÇÃO
 ## Figura10: classes no tempo ----
@@ -2416,7 +2424,8 @@ Figura10
 
 save_plot(filename = "Figura10.png",
           plot = Figura10,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 ## Figura11: Classe, antidepressivos e doses CAMUNDONGO -----
@@ -2563,7 +2572,8 @@ Figura11
 #Salvar
 save_plot(filename = "Figura11.png",
           plot = Figura11,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 ## Figura12: Classe, antidepressivos e doses RATO  -----
@@ -2697,7 +2707,8 @@ Figura12
 
 save_plot(filename = "Figura12.png",
           plot = Figura12,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 # isolar estudos com outras unidades de dose que nao mg/kg
 atd <- df %>% 
@@ -2807,7 +2818,8 @@ F13 <- (f13a + plot_spacer() + plot_layout(widths = c(6,3))) / (f13b + plot_spac
 F13
 save_plot(filename = "Figura13.png",
           plot = F13,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 # RATOS
@@ -2915,7 +2927,8 @@ F14 <- f14a  / f14b  +  plot_layout(heights = c(3,8))
 F14
 save_plot(filename = "Figura14.png",
           plot = F14,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 
@@ -3058,7 +3071,8 @@ Figura15 <- f15a / f15b
 
 save_plot(filename = "Figura15.png",
           plot = Figura15,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 
@@ -3262,7 +3276,8 @@ Figura16 <- (f16a + f16b) / guide_area() + plot_layout(guides = "collect", heigh
 
 save_plot(filename = "Figura16.png",
           plot = Figura16,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
 
 
@@ -3835,5 +3850,6 @@ f17 <- f17a1 + f17a2 + f17a3 + f17d + f17e + f17b + f17c + plot_layout(design = 
 
 save_plot(filename = "Figura17.png",
           plot = f17,
-          dpi = 300)
+          dpi = 300
+          path = "Fig")
 
