@@ -402,7 +402,7 @@ summary(data_geral_reord$camarades3)
 
 levels(data_geral_reord$measurement_method)[match("VIdeo analysis",levels(data_geral_reord$measurement_method))] <- "video analysis"
 
-levels(data_geral_reord$measurement_method)[match("score5sinterval",levels(data_geral_reord$measurement_method))] <- "Unclear, score5sinterval"
+levels(data_geral_reord$measurement_method)[match("score5sinterval",levels(data_geral_reord$measurement_method))] <- "NA, score5sinterval"
 
 levels(data_geral_reord$measurement_method)[match("manually, digital chronometers",levels(data_geral_reord$measurement_method))] <- "manually, chronometers"
 

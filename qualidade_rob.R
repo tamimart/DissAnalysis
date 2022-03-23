@@ -46,15 +46,15 @@ df_rob <- df_rob %>%
          "Dados incompletos foram adequadamente endereçados?" = rob8, 
          "Os relatos do estudo são livres de seleção de desfecho relatado?" = rob9,
          "O estudo está aparentemente livre de algum outro problema que poderia resultar em alto risco de viés?" = rob10) %>% 
-         mutate(Weight = as.numeric(1),
-                overall = "Unclear") %>% 
+       #  mutate(Weight = as.numeric(1),
+       #         overall = "Unclear") %>% # tirar o # se quiser adicionar um julgamento geral
   relocate(Study, everything())
 
 
 
 
 df_rob_long <- df_rob %>% # colocar em modo longo
-  pivot_longer(!c(Study, Weight),
+  pivot_longer(!c(Study),
                names_to = "pergunta",
                values_to = "atribuicao",
                ) 
@@ -125,33 +125,9 @@ robplot
 
 save_plot(filename = "Figura18.png",
           plot = robplot,
-          dpi = 300)
+          dpi = 300,
+          path = "Fig")
 
-# Visualização ROB SYRCLE Traffic light
-
-
-rob <- read_excel("data/rob.xlsx")
-
-
-robplot_sinal <- rob_traffic_light(data = rob[1:10,], tool = "ROB1", colour = c("#82c236", "#fec200", "#ec2b2b"))
-
-robplot_sinal <-
-  robplot_sinal + theme(
-    text = element_text(size = 5),
-    plot.caption = element_text(
-      size = 5,
-      hjust = 0,
-      vjust = 5
-    ),
-    legend.text = element_text(size = 5),
-    fill = guide_legend(override.aes = list(size = 2)))
-    
-robplot_sinal
-
-
-save_plot(filename = "Figura19.png",
-          plot = robplot_sinal,
-          dpi = 300)
 
 # CAMARADES ----
 
@@ -258,4 +234,34 @@ camaradesplot
 
 save_plot(filename = "Figura20.png",
           plot = camaradesplot,
-          dpi = 300)
+          dpi = 300,
+          path = "Fig")
+
+
+
+# Visualização ROB SYRCLE Traffic light
+
+
+rob <- read_excel("data/rob.xlsx")
+
+
+robplot_sinal <- rob_traffic_light(data = rob[1:10,], tool = "ROB1", colour = c("#82c236", "#fec200", "#ec2b2b"))
+
+robplot_sinal <-
+  robplot_sinal + theme(
+    text = element_text(size = 5),
+    plot.caption = element_text(
+      size = 5,
+      hjust = 0,
+      vjust = 5
+    ),
+    legend.text = element_text(size = 5),
+    fill = guide_legend(override.aes = list(size = 2)))
+
+robplot_sinal
+
+
+save_plot(filename = "robplot_sinal.png",
+          plot = robplot_sinal,
+          dpi = 300,
+          path = "Fig")
