@@ -413,6 +413,9 @@ df$fst_protocol <-
 
 #fst analise
 
+levels(df$measurement_method)
+
+
 df$measurement_method <-
   factor(
     df$measurement_method,
@@ -422,8 +425,7 @@ df$measurement_method <-
       "manually, score60sinterval",
       "video analysis, automated",
       "NA",
-      "Unclear, score5sinterval",            
-      "Unclear",
+      "NA, score5sinterval",            
       "video analysis",
       "video analysis, chronometers",
       "video analysis, manual",
@@ -436,8 +438,7 @@ df$measurement_method <-
       "Manual, Intervalos de 60s",
       "Videoanálise, Automatizada",
       "Sem info",
-      "Incerto, Intervalos de 60s",            
-      "Incerto",
+      "Sem info, Intervalos de 60s",            
       "Videoanálise",
       "Videoanálise, Cronômetro",
       "Videoanálise, Manual",
@@ -942,7 +943,7 @@ f3c <- df %>%
     vjust = -0.25
   ) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
-  scale_y_continuous(limits = c(0, 7000), expand = c(0, 0)) + # 300 a mais para caber a anotacao da maior barra
+  scale_y_continuous(limits = c(0, 7500), expand = c(0, 0)) + # 300 a mais para caber a anotacao da maior barra
   labs(y = "Nº de animais", x = "Sexo", title = "c") +
   theme(
     axis.text = element_text(
@@ -991,7 +992,7 @@ Figura3 <-
   f3a + f3b + f3c + f3d + plot_layout(heights = c(6, 6), widths = c(3, 6))
 save_plot(filename = "Figura3.png",
           plot = Figura3,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 ## Figura4: Linhagens ----
@@ -1285,7 +1286,7 @@ Fig4t <- (f4a + f4b + f4c) / (f4d + f4e + f4f) + plot_layout(heights = c(11, 6),
 
 save_plot(filename = "Figura4.png",
           plot = Fig4t,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -1479,11 +1480,11 @@ f6
 
 save_plot(filename = "Figura5.png",
           plot = f5,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 save_plot(filename = "Figura6.png",
           plot = f6,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 ## Figura5e6ppt: Idade e peso ----
@@ -1677,7 +1678,7 @@ f56 <-
   (f56a + f56b) /  (f56c + f56d) + plot_layout(heights = c(8, 8))
 save_plot(filename = "Figura5e6_ppt.png",
           plot = f56,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 ## Figura7: Modelo animal -----
@@ -1855,7 +1856,7 @@ Figura7 <- f7a + f7b + f7c
 Figura7
 save_plot(filename = "Figura7.png",
           plot = Figura7,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -2060,7 +2061,7 @@ Figura8
 
 save_plot(filename = "Figura8.png",
           plot = Figura8,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 ## Figura 9: Volume caixa por animal, volume de caixa por peso do animal ----
@@ -2246,7 +2247,7 @@ Figura9 <- F9a / F9b + plot_layout(heights = c(5, 5))
 Figura9
 save_plot(filename = "Figura9.png",
           plot = Figura9,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -2346,7 +2347,7 @@ Figura9ab <- f9ab | f9ba
 
 save_plot(filename = "Figura9_ppt.png",
           plot = Figura9ab,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 # INTERVENÇÃO
@@ -2424,7 +2425,7 @@ Figura10
 
 save_plot(filename = "Figura10.png",
           plot = Figura10,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -2572,7 +2573,7 @@ Figura11
 #Salvar
 save_plot(filename = "Figura11.png",
           plot = Figura11,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -2707,7 +2708,7 @@ Figura12
 
 save_plot(filename = "Figura12.png",
           plot = Figura12,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 # isolar estudos com outras unidades de dose que nao mg/kg
@@ -2818,7 +2819,7 @@ F13 <- (f13a + plot_spacer() + plot_layout(widths = c(6,3))) / (f13b + plot_spac
 F13
 save_plot(filename = "Figura13.png",
           plot = F13,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -2927,7 +2928,7 @@ F14 <- f14a  / f14b  +  plot_layout(heights = c(3,8))
 F14
 save_plot(filename = "Figura14.png",
           plot = F14,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -3071,7 +3072,7 @@ Figura15 <- f15a / f15b
 
 save_plot(filename = "Figura15.png",
           plot = Figura15,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -3166,7 +3167,7 @@ f16a <- df %>%
     "Intervalos de 60s" = "#a94f93"
   )) +
   labs(y = "Nº de publicações", x = "Método de análise do nado forçado", title = "a", fill = "Detalhe do método") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 70)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 75)) +
   scale_x_discrete(
     labels = function(x)
       str_wrap(x, width = 15)
@@ -3182,7 +3183,7 @@ f16a <- df %>%
   ) +
   geom_text(aes(label = "Camundongo", 
                 x = Inf - 3, 
-                y = 68),
+                y = 73),
             size = 2.5,
             hjust = 1.1,
             family = "Gadugi",
@@ -3196,7 +3197,7 @@ f16a <- df %>%
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 5), hjust = 2),
+    axis.title.x = element_text(margin = margin(t = 10), hjust = 1.7),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     legend.position = "none",
@@ -3229,7 +3230,7 @@ f16b <- df %>%
     "Intervalos de 60s" = "#a94f93"
   )) +
   labs(y = "Nº de publicações", title = "b", fill = "Detalhe do método:") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 70)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 75)) +
   scale_x_discrete(
     labels = function(x)
       str_wrap(x, width = 15)
@@ -3245,7 +3246,7 @@ f16b <- df %>%
   guides(fill = guide_legend(override.aes = list(size = .1), nrow = 1, byrow = TRUE)) +
   geom_text(aes(label = "Rato", 
                 x = Inf - 3, 
-                y = 68),
+                y = 73),
             size = 2.5,
             hjust = 1.1,
             family = "Gadugi",
@@ -3258,7 +3259,7 @@ f16b <- df %>%
     ),
     axis.text.y = element_blank(),
     axis.title = element_text(size = 7, hjust = 1),
-    axis.title.y = element_text(margin = margin(r = 5)),
+    axis.title.y = element_blank(),
     axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
@@ -3276,7 +3277,7 @@ Figura16 <- (f16a + f16b) / guide_area() + plot_layout(guides = "collect", heigh
 
 save_plot(filename = "Figura16.png",
           plot = Figura16,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 
 
@@ -3818,15 +3819,6 @@ f17e <- df %>%
     plot.margin = margin(0, 5, 0, 5)
   )
 
-f17 <-
-  (((teste) / (f17d / f17e) + plot_layout(
-    nrow = 3,
-    ncol = 1,
-    heights = c(.5, 5.5, 4),
-    widths = c(9, 1)
-  )) | (f17b / f17c)) + plot_layout(ncol = 2, widths = c(1.5, 2))
-
-
 
 
 # estabelecer layout para organização dos painéis
@@ -3850,6 +3842,6 @@ f17 <- f17a1 + f17a2 + f17a3 + f17d + f17e + f17b + f17c + plot_layout(design = 
 
 save_plot(filename = "Figura17.png",
           plot = f17,
-          dpi = 300
+          dpi = 300,
           path = "Fig")
 

@@ -47,6 +47,9 @@ df$sex <- factor(
 ) # Ordenar niveis do fator sexo
 
 
+levels(df$strain)[match("NA", levels(df$strain))] <- "Sem info" # mudar termo na linhagem
+
+
 df$model_phenotype <- factor(
   df$model_phenotype,
   levels = c(
@@ -64,6 +67,7 @@ df$model_phenotype <- factor(
     "temporal lobe epilepsy (pilocarpine)",
     "streptozotocin",
     "prenatal stress procedure",
+    "foot shock stress",
     "restraint-stress",
     "subchronic stress:restraint–water immersion",
     "melanin-concentrating hormone 50ng",
@@ -99,6 +103,7 @@ df$model_phenotype <- factor(
     "Epilepsia do lobo temporal (c/ pilocarpina)",
     "Estreptozotocina",
     "Estresse pré-natal",
+    "Estresse por choque no pé",
     "Estresse por contenção",
     "Estresse subcrônico: contenção em água",
     "Hormônio concentrador de melanina (50ng)",
@@ -676,7 +681,6 @@ x
 # Figura11
 
 #b NA
-
 
 
 
