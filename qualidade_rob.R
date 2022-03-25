@@ -66,7 +66,7 @@ df_rob_long$atribuicao <-
   factor(
     df_rob_long$atribuicao,
     levels = c("Yes", "No", "Unclear"),
-    labels = c("Baixo risco", "Alto risco", "Incerto") # colocar significado das atribuições
+    labels = c("Baixo", "Alto", "Incerto") # colocar significado das atribuições
   )
 
 df_rob_long$pergunta <-
@@ -88,14 +88,14 @@ df_rob_long$pergunta <-
 
 # Visualização ROB SYRCLE Resumo
 
-v_factor_levels <- c("Alto risco", "Incerto", "Baixo risco")
+v_factor_levels <- c("Alto", "Incerto", "Baixo")
 
 robplot <- df_rob_long %>% 
   group_by(Study) %>% 
   distinct(Study, pergunta, atribuicao) %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao, levels = v_factor_levels), y = ..count..)) +
   geom_bar(position = "fill") + 
-  scale_fill_manual("Julgamento do risco de viés", values = c("Baixo risco" = "#82c236", "Incerto" = "#fec200", "Alto risco" = "#ec2b2b")) +
+  scale_fill_manual("Julgamento do risco de viés", values = c("Baixo" = "#82c236", "Incerto" = "#fec200", "Alto" = "#ec2b2b")) +
   scale_y_continuous(labels = scales::percent) +
   scale_x_discrete(
     labels = function(x)
@@ -105,7 +105,7 @@ robplot <- df_rob_long %>%
   theme(axis.ticks.x = element_line(size = .3),
     axis.line = element_line(size = .3),
         axis.text = element_text(
-          size = 7,
+          size = 8,
           color = "grey20"
         ),
     axis.line.y = element_blank(),
@@ -113,8 +113,8 @@ robplot <- df_rob_long %>%
         plot.title = element_text(size = 10),
         plot.title.position = "plot",
         legend.position = "bottom",
-        legend.text = element_text(size = 6, color = "grey20"),
-        legend.title = element_text(size = 7),
+        legend.text = element_text(size = 7, color = "grey20"),
+        legend.title = element_text(size = 8),
         plot.margin = margin(5, 0, 0, 5),
         legend.key.size = unit(.8, "line"),
         panel.grid.major.y = element_line(color = "grey90", size = .1),
@@ -214,7 +214,7 @@ camaradesplot <- df_camarades_longo %>%
   theme(axis.ticks.x = element_line(size = .3),
         axis.line = element_line(size = .3),
         axis.text = element_text(
-          size = 7,
+          size = 8,
           color = "grey20"
         ),
         axis.line.y = element_blank(),
@@ -222,8 +222,8 @@ camaradesplot <- df_camarades_longo %>%
         plot.title = element_text(size = 10),
         plot.title.position = "plot",
         legend.position = "bottom",
-        legend.text = element_text(size = 6, color = "grey20"),
-        legend.title = element_text(size = 7),
+        legend.text = element_text(size = 7, color = "grey20"),
+        legend.title = element_text(size = 8),
         plot.margin = margin(5, 0, 0, 5),
         legend.key.size = unit(.8, "line"),
         panel.grid.major.y = element_line(color = "grey90", size = .1),

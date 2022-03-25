@@ -656,33 +656,31 @@ F1 <-
   coord_quickmap() # ajusta proporcao certa
 
 
+
 # Separar publicações por ano
 
 countries_year <- df %>%
   select(country, study_reference, language, year) %>%
   group_by(study_reference) %>%
-  slice(1) %>%
+  slice(1) %>% 
   group_by(country, year) %>%
-  summarise(N = n()) %>% # coluna com N de publi por país
-  mutate(region = country)
+  summarise(N = n()) %>%  # coluna com N de publi por país
+  mutate(region = country) 
 
 
-# Juntar base de dados dos paises e meus dados
+countries_year_1996 <- countries_year %>%
+  filter(year <= '1996-01-01') 
 
-dados_public_year <-
-  dplyr::left_join(world, countries_year, by = "region")
+# Juntar base de dados dos paises e meus dados até 1996
 
-
-# Até 1996
-
-dados_public_year_1996 <- dados_public_year %>%
-  filter(year <= '1996-01-01')
+dados_public_year_1996 <-
+  dplyr::left_join(world, countries_year_1996, by = "region")
 
 
 F11996 <-
-  ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
+  ggplot(dados_public_year_1996, aes(x = long, y = lat, map_id = region)) + # dados
   geom_map(
-    map = dados_public,
+    map = dados_public_year_1996,
     # mapa mundo
     aes(map_id = region),
     color = "white",
@@ -717,18 +715,35 @@ F11996 <-
     legend.position = "none",
     plot.caption = element_text(hjust = 0.5, size = rel(0.6))
   ) +
-  coord_quickmap() 
+  coord_quickmap()
+
 
 # Até 2006
 
-dados_public_year_2006 <- dados_public_year %>%
-  filter(year <= '2006-01-01')
+# Separar publicações por ano
+
+countries_year <- df %>%
+  select(country, study_reference, language, year) %>%
+  group_by(study_reference) %>%
+  slice(1) %>% 
+  group_by(country, year) %>%
+  summarise(N = n()) %>%  # coluna com N de publi por país
+  mutate(region = country) 
+
+
+countries_year_2006 <- countries_year %>%
+  filter(year <= '2006-01-01') 
+
+# Juntar base de dados dos paises e meus dados até 1996
+
+dados_public_year_2006 <-
+  dplyr::left_join(world, countries_year_2006, by = "region")
 
 
 F12006 <-
-  ggplot(dados_public, aes(x = long, y = lat, map_id = region)) + # dados
+  ggplot(dados_public_year_2006, aes(x = long, y = lat, map_id = region)) + # dados
   geom_map(
-    map = dados_public,
+    map = dados_public_year_2006,
     # mapa mundo
     aes(map_id = region),
     color = "white",
@@ -764,6 +779,11 @@ F12006 <-
     plot.caption = element_text(hjust = 0.5, size = rel(0.6))
   ) +
   coord_quickmap()
+
+
+F12006
+
+ggplot_build(F12006) # visualizar os dados plotados
 
 
 # Idiomas
@@ -859,7 +879,7 @@ save_plot(filename = "Figura2.png",
           dpi = 300,
           path = "Fig") # Salvar gráfico
 
-
+ggplot_build(Figura2) # visualizar os dados plotados
 
 # POPULAÇÃO 
 ## Figura3: Sexo, especie, tempo ----
