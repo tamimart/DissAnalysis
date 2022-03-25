@@ -781,11 +781,6 @@ F12006 <-
   coord_quickmap()
 
 
-F12006
-
-ggplot_build(F12006) # visualizar os dados plotados
-
-
 # Idiomas
 
 F1idi <- df %>%
@@ -946,6 +941,8 @@ f3b <- df  %>% # especie no tempo
     plot.margin = margin(10, 0, 0, 10)
   )
 
+ggplot_build(f3b)
+
 f3c <- df %>%
   group_by(sex) %>%
   summarise(counts = sum(N)) %>% # N por sexo
@@ -1015,6 +1012,8 @@ save_plot(filename = "Figura3.png",
           dpi = 300,
           path = "Fig")
 
+
+Figura3
 ## Figura4: Linhagens ----
 # Strain
   
@@ -1403,7 +1402,10 @@ f5 <- df %>%
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 20, 0)
   )
+
 f5
+
+
 # Peso
 
 # Criar um df com os valores da media e dp arredondados
@@ -1703,11 +1705,6 @@ save_plot(filename = "Figura5e6_ppt.png",
 
 ## Figura7: Modelo animal -----
 
-df %>% group_by(study_reference, model_phenotype) %>%
-  slice(1) %>%
-  group_by(model_phenotype, species) %>%
-  filter(model_phenotype == "NA",) %>%
-  summarise(counts = n()) # calcular quantas publicaçoes são NA
 
 # Modelos por publicação
 

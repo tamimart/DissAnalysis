@@ -538,16 +538,37 @@ countries <- df %>%
   select(country, study_reference, language, year) %>%
   group_by(study_reference) %>%
   slice(1) %>%
-  group_by(country) %>%
+  group_by(country) %>% 
   summarise(N = n()) %>% # coluna com N de publi por país
-  mutate(region = country)
+  arrange(N, decreasing = T) 
 
 
-# Juntar base de dados dos paises e meus dados
-
-dados_public <- dplyr::left_join(world, countries, by = "region")
+# outros recortes de ano
 
 
+countries_year <- df %>%
+  select(country, study_reference, language, year) %>%
+  group_by(study_reference) %>%
+  slice(1) %>% 
+  group_by(country, year) %>%
+  summarise(N = n()) %>%  # coluna com N de publi por país
+  mutate(region = country) 
+
+# 1996
+
+countries_year_1996 <- countries_year %>%
+  filter(year <= '1996-01-01') %>% 
+  group_by(country) %>% 
+  summarise(N = n()) %>%
+  arrange(N, decreasing = T)
+
+#2006
+
+countries_year_2006 <- countries_year %>%
+  filter(year <= '2006-01-01') %>% 
+  group_by(country) %>% 
+  summarise(N = n()) %>%
+  arrange(N, decreasing = T)
 
 # Figura2
 
@@ -560,12 +581,13 @@ Figura2 <- df %>%
 # Figura3
 
 df %>% 
-  group_by(sex) %>% 
+  group_by(species) %>% 
   my_skim()
 
 df %>% 
-  group_by(species) %>% 
+  group_by(sex) %>% 
   my_skim()
+
 
 # Figura4
 
@@ -590,9 +612,24 @@ weight_ss <- df %>%
          numeric.p25 = round(numeric.p25, 1),
          numeric.p75 = round(numeric.p75, 1))
 
+
+peso_si <- df %>% 
+  filter(sex == "Sem info",
+         weight >= 375) # verificar se os estudos sem info de sexo (ratos) sao do mesmo autor
+
+
 # Figura7
 
-x
+model_npubli <- df %>% group_by(study_reference) %>% 
+  distinct(study_reference, model_phenotype) %>% 
+  filter(model_phenotype != "NA") %>%   
+  summarise(counts = n())   # calcular quantas publicaçoes são NA
+
+model_model <- df %>% group_by(study_reference) %>% 
+  distinct(study_reference, model_phenotype) %>% 
+  group_by(model_phenotype) %>%   
+  summarise(counts = n())   # calcular quantas publicaçoes são NA
+
 
 # Figura8
 
@@ -683,11 +720,17 @@ x
 #b NA
 
 
-
 doseunit_c <- df %>%
   filter(species == "Camundongo") %>%  # detalhe dos estudos que relataram outra dose
-  group_by(dose_unit) %>% 
-  my_skim()
+  group_by(dose_unit, atd_type) %>% 
+  my_skim(dose)
+
+
+df %>%
+  filter(species == "Camundongo",
+         dose_unit == "mg/kg")  #quantos estudos?
+  
+  
 
 
 # Figura12
@@ -695,13 +738,13 @@ doseunit_c <- df %>%
 
 doseunit_r <- df %>%
   filter(species == "Rato")  %>% # detalhe dos estudos que relataram outra dose
-  group_by(dose_unit) %>% 
-  my_skim()
+  group_by(dose_unit, atd_type) %>% 
+  my_skim(dose)
 
 
 df %>%
   filter(species == "Rato",
-         dose_unit != "mg/kg") 
+         dose_unit == "mg/kg")  #quantos estudos?
 
 
 # Figura13
