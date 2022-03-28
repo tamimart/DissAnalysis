@@ -3165,7 +3165,7 @@ PositionJitterStack <- ggproto("PositionJitterStack", PositionStack,
 
 f16a <- df %>%
   filter(species == "Camundongo") %>%
-  group_by(study_reference) %>%
+  group_by(study_reference, measurement_method, measurement_method_detail) %>%
   distinct(measurement_method, measurement_method_detail) %>%
   group_by(measurement_method) %>%
   ggplot(aes(
@@ -3228,7 +3228,7 @@ f16a
 
 f16b <- df %>%
   filter(species == "Rato") %>%
-  group_by(study_reference) %>%
+  group_by(study_reference, measurement_method, measurement_method_detail) %>%
   distinct(measurement_method, measurement_method_detail) %>%
   group_by(measurement_method) %>%
   ggplot(aes(
