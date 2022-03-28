@@ -121,6 +121,7 @@ robplot <- df_rob_long %>%
         panel.grid.major.x = element_blank()
   )
 
+
 robplot
 
 save_plot(filename = "Figura18.png",
@@ -128,6 +129,9 @@ save_plot(filename = "Figura18.png",
           dpi = 300,
           path = "Fig")
 
+# ver n de cada fator em cada pergunta
+
+my_skim(df_rob)
 
 # CAMARADES ----
 
@@ -152,9 +156,6 @@ df_camarades <- df_camarades %>%
          "Relato do sexo dos animais" = camarades9,
          "Relato sobre o método do teste comportamental e aquisição dos desfechos comportamentais" = camarades10,
          "Relato do cálculo amostral" = camarades11) # adicionar topicos
-  
-
-skimr::skim(df_camarades) # verificar numero de publicação por atribuição
 
   
 df_camarades_longo <- df_camarades %>% # colocar em modo longo
@@ -237,7 +238,9 @@ save_plot(filename = "Figura20.png",
           dpi = 300,
           path = "Fig")
 
+# ver n de cada fator em cada pergunta
 
+my_skim(df_camarades)
 
 # Visualização ROB SYRCLE Traffic light
 

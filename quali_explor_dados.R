@@ -315,6 +315,7 @@ df$treatment_via <-
 
 #protocolo tnf
 
+
 df$fst_protocol <-
   factor(
     df$fst_protocol,
@@ -386,6 +387,9 @@ df$fst_protocol <-
 
 #fst analise
 
+levels(df$measurement_method)
+
+
 df$measurement_method <-
   factor(
     df$measurement_method,
@@ -395,8 +399,7 @@ df$measurement_method <-
       "manually, score60sinterval",
       "video analysis, automated",
       "NA",
-      "Unclear, score5sinterval",            
-      "Unclear",
+      "NA, score5sinterval",            
       "video analysis",
       "video analysis, chronometers",
       "video analysis, manual",
@@ -405,19 +408,42 @@ df$measurement_method <-
     ),
     labels = c(
       "Manual",
-      "Manual, com cronômetro",
-      "Manual, intervalos de 60s",
-      "Videoanálise, automatizada",
+      "Manual, Cronômetro",
+      "Manual, Intervalos de 60s",
+      "Videoanálise, Automatizada",
       "Sem info",
-      "Incerto, intervalos de 60s",            
-      "Incerto",
+      "Sem info, Intervalos de 60s",            
       "Videoanálise",
-      "Videoanálise, com cronômetro",
-      "Videoanálise, manual",
-      "Videoanálise, manual e automatizada", 
-      "Videoanálise, intervalos de 5s"
+      "Videoanálise, Cronômetro",
+      "Videoanálise, Manual",
+      "Videoanálise, Manual e automatizada", 
+      "Videoanálise, Intervalos de 5s"
     )
   ) 
+
+
+
+# Criar nova variavel com detalhe do método de analise do nado forçado
+
+
+mmd <- df %>% # separar variavel em duas
+  select(measurement_method) %>% 
+  separate(col = measurement_method, sep = ", ", into = c("measurement_method", "measurement_method_detail"))
+
+
+df <- df %>%
+  mutate(measurement_method_detail = as.factor(mmd$measurement_method_detail),
+         measurement_method =  as.factor(mmd$measurement_method)) # adicionar variaveis separadas no df mãe
+
+
+levels(df$measurement_method_detail) # ver os niveis
+
+
+df <- df %>% 
+  mutate(measurement_method_detail = as.character(measurement_method_detail),
+         measurement_method_detail = ifelse(is.na(measurement_method_detail), "Sem info", measurement_method_detail),
+         measurement_method_detail =  as.factor(measurement_method_detail)) # transformar NAs em fator "sem info"
+
 
 
 
@@ -772,22 +798,31 @@ stat_t_d_rat <- df %>%
 # write_xlsx(stat_t_d_rat,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_rat.xlsx")
 
 
+# Figura15 
 
-# Figura15 e 16, 
 
-stat_nado_met <- df %>%
-  filter(!is.na(is.factor(fst_protocol)), !is.na(is.factor(measurement_method))) %>% 
-  group_by(study_reference, fst_protocol, measurement_method, species) %>% 
-  distinct(study_reference, fst_protocol, measurement_method, species) %>% 
-  select(study_reference, fst_protocol, measurement_method, species) %>% 
+stat_nado_protocol <- df %>%
+  group_by(study_reference, fst_protocol, species) %>% 
+  distinct(study_reference, fst_protocol, species) %>% 
+  select(study_reference, fst_protocol, species) %>% 
   group_by(species) %>% 
-  my_skim(fst_protocol, measurement_method) %>%
+  my_skim(fst_protocol) %>%
   tibble::as_tibble()
 
-write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\stat_nado_met.xlsx")
+# Figura 16
+
+stat_nado_met <- df %>%
+  group_by(study_reference, measurement_method, measurement_method_detail, species) %>% 
+  distinct(study_reference, measurement_method, measurement_method_detail, species) %>% 
+  select(study_reference, measurement_method, measurement_method_detail, species) %>% 
+  group_by(species) %>% 
+  my_skim(measurement_method, measurement_method_detail) %>%
+  tibble::as_tibble()
+
 
 # Figura 17 
 
+#a
 
 stat_nado <- df %>%
   group_by(
@@ -811,13 +846,31 @@ stat_nado <- df %>%
     numeric.p75 = round(numeric.p75, 1)
   )
 
+#b
 
-write_xlsx(stat_nado,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\stat_nado.xlsx")
+stat_nado_temp <- df %>%
+  group_by(
+    study_reference,
+    water_temperature,
+    species
+  ) %>%
+  distinct(
+    study_reference,
+    water_temperature,
+    species
+  ) %>%
+  group_by(species, as.logical(water_temperature)) %>%
+  my_skim(water_temperature) %>%
+  mutate(
+    numeric.p.50 = round(numeric.p50, 1),
+    numeric.p25 = round(numeric.p25, 1),
+    numeric.p75 = round(numeric.p75, 1)
+  )
+
+
+# QUALIDADE
 
 
 
 
-df %>% 
-  group_by(study_reference, cylinder_height, cylinder_diameter, species) %>% 
-  distinct(1) %>% 
-  filter(is.na(cylinder_height), is.na(cylinder_diameter))
+
