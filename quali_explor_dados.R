@@ -1,5 +1,5 @@
 # Referência: ~ref da dissertação~
-# ETAPA 2: Análise exploratoria 
+# ETAPA 6: Informações adicionais dos dados utilizados nos gráficos/estatística descritiva da etapa 5
 
 # Carregar pacotes
 
@@ -9,11 +9,16 @@ library(summarytools) # estatisticas descritivas
 library(writexl)      # salvar tabela
 library(tibble)       # manejo de dataframe
 library(tidylog)      # feedback das operacoes tidy
+library(readxl)       # ler excel 
+
 
 # Carregar dataframe dos dados limpos e organizados
 
-df <- data_geral_clean <- readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissAnalysis/data_geral_clean.rds")
+df <- readRDS("data_geral_clean.rds")
 
+#ou
+
+df <- read_xlsx("data/Data_200FST.xlsx")
 
 # setar estatistica padrao
 

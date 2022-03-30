@@ -1,6 +1,5 @@
 # Referência: ~ref da dissertação~
-
-# ETAPA 5: Analise da qualidade ROB SYRCLE e CAMARADES adaptado
+# ETAPA 7: Analise da qualidade ROB SYRCLE e CAMARADES adaptado 
 
 # Carregar pacotes ----
 
@@ -14,9 +13,7 @@ library(readxl)
 
 # Carregar dataframe dos dados limpos e organizados
 
-df <-
-  data_geral_clean <-
-  readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissAnalysis/data_geral_clean.rds")
+df <- read_xlsx("data/Data_200FST.xlsx")
 
 
 # Estabelecer tema base para todos os próximos gráficos
@@ -242,7 +239,8 @@ save_plot(filename = "Figura20.png",
 
 my_skim(df_camarades)
 
-# Visualização ROB SYRCLE Traffic light
+
+# Visualização ROB SYRCLE Traffic light > NÃO ESTÁ NA DISSERTACAO
 
 
 rob <- read_excel("data/rob.xlsx")

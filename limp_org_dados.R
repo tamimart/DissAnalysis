@@ -1,5 +1,5 @@
 # Referência: ~ref da dissertação~
-# ETAPA 1: Limpar e organizar os dados
+# ETAPA 3: Limpar e organizar os dados
 
 # Carregar pacotes
 
@@ -55,7 +55,7 @@ view(data_geral)
 # Selecionar colunas que ficarao na planilha final -------
 
 data_geral <- data_geral %>% # Excluir colunas/variaveis repetidas e desnecessarias
-  select(everything(), - ...25, - Included, - `First author.y`, - comp.y, `First author`, - exclusion_reason, - FSTApparatus_conditions, - `Housing conditions`, - year.y, - source.y, -`First author.y`, - comp.y, -`Escale (mm)`, -`Escale (s or %)`, -`mean CTRL or ATD (mm)`, -`SEM CTRL or ATD (mm)`, -`mean ADT (mm)` , -`SEM ADT (mm)`) 
+  select(everything(), -...25, -Included, -`First author.y`, -comp.y, `First author`, -exclusion_reason, -FSTApparatus_conditions, -`Housing conditions`, -year.y, -source.y, `First author.y`, -comp.y, -`Escale (mm)`, -`Escale (s or %)`, -`mean CTRL or ATD (mm)`, -`SEM CTRL or ATD (mm)`, -`mean ADT (mm)` , -`SEM ADT (mm)`) 
   
   
 data_geral <- data_geral %>% # Renomear colunas/variaveis de acordo com as boas praticas 
@@ -90,7 +90,7 @@ data_geral <- data_geral %>% # Renomear colunas/variaveis de acordo com as boas 
          comparator = `Comparator (CTRL or ATD: Antidepressant dose)`,
          atd_type = `Type ATD`,
          atd_class = `ATD class`,
-         treatment_duration =`duration treatment (n° days)`,
+         treatment_duration = `duration treatment (n° days)`,
          treatment_via = `Treatment type (IP, oral)`,
          treatment_freq = `Treatment frequency/day`,
          last_bf_outcome = `Last adm before outcome (h)`,
@@ -110,7 +110,7 @@ data_geral <- data_geral %>% # Renomear colunas/variaveis de acordo com as boas 
          n_comparisons = `N Comparisons`,
          atd_sd = `SDM ADT`,
          atd_n_round = `N ADT (rounded)`,
-         atd_n_ext =`N ATD (extraction)`,
+         atd_n_ext = `N ATD (extraction)`,
          atd_se = `SEM ADT`,
          atd_mean = `mean ADT (s ou %)`,
          ctr_sd = `SDM CTRL or ATD`,
@@ -148,7 +148,7 @@ marg_age <- data_geral %>%
   mutate(v1 = as.numeric(v1),
          v2 = as.numeric(v2)) # Separa a coluna em duas e transforma em numerico
 marg_age <- marg_age %>% 
-  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))   # Criar nova coluna com media dos valores que possuem margem
+  mutate(g = ifelse(v2 != "NA", ((v1 + v2) / 2)))   # Criar nova coluna com media dos valores que possuem margem
 marg_age <- marg_age %>%
   mutate(b = coalesce(marg_age$g, marg_age$v1)) %>% # Cria nova coluna com a fusao dos valores (media e valor unico)
   select(b)
@@ -161,7 +161,7 @@ marg_weight <- data_geral %>%
   mutate(v1 = as.numeric(v1),
          v2 = as.numeric(v2)) 
 marg_weight <- marg_weight %>% 
-  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))
+  mutate(g = ifelse(v2 != "NA", ((v1 + v2) / 2)))
 marg_weight <- marg_weight %>% 
   mutate(b = coalesce(marg_weight$g, marg_weight$v1)) %>% 
   select(b)
@@ -174,7 +174,7 @@ marg_bioterium_temp <- data_geral %>%
   mutate(v1 = as.numeric(v1),
          v2 = as.numeric(v2)) 
 marg_bioterium_temp <- marg_bioterium_temp %>% 
-  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))
+  mutate(g = ifelse(v2 != "NA", ((v1 + v2) / 2)))
 marg_bioterium_temp <- marg_bioterium_temp %>% 
   mutate(b = coalesce(marg_bioterium_temp$g, marg_bioterium_temp$v1)) %>% 
   select(b)
@@ -188,7 +188,7 @@ marg_bioterium_umid <- data_geral %>%
   mutate(v1 = as.numeric(v1),
          v2 = as.numeric(v2)) 
 marg_bioterium_umid <- marg_bioterium_umid %>% 
-  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))
+  mutate(g = ifelse(v2 != "NA", ((v1 + v2) / 2)))
 marg_bioterium_umid <- marg_bioterium_umid %>% 
   mutate(b = coalesce(marg_bioterium_umid$g, marg_bioterium_umid$v1)) %>% 
   select(b)
@@ -203,7 +203,7 @@ marg_water_temperature <- data_geral %>%
   mutate(v1 = as.numeric(v1),
          v2 = as.numeric(v2)) 
 marg_water_temperature <- marg_water_temperature %>% 
-  mutate(g = ifelse(v2 != "NA", ((v1+v2) / 2)))
+  mutate(g = ifelse(v2 != "NA", ((v1 + v2) / 2)))
 marg_water_temperature <- marg_water_temperature %>% 
   mutate(b = coalesce(marg_water_temperature$g, marg_water_temperature$v1)) %>% 
   select(b)

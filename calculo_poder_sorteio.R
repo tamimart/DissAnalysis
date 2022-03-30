@@ -1,5 +1,6 @@
 # Referência: ~ref da dissertação~
-# Calculo do k estudos para alcançar poder de pelo menos 80%
+# ETAPA 1: Calculo do k (estudos) para alcançar poder de pelo menos 80%
+
 
 # Carregar pacote necessario
 library(esc)

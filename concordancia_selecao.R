@@ -1,4 +1,5 @@
-# Concordância na seleção dos artigos
+# Referência: ~ref da dissertação~
+# ETAPA 2: Concordância na seleção dos artigos
 
 
 # Carregar pacotes

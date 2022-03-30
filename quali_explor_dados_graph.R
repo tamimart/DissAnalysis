@@ -1,6 +1,5 @@
 # Referência: ~ref da dissertação~
-
-# ETAPA 3: Visualização dos dados (Gráficos)
+# ETAPA 5: Visualização dos dados (Gráficos)
 
 # Carregar pacotes ----
 
@@ -22,6 +21,7 @@ library(ggdist)       # plotar densidade
 library(gghalves)     # plotar pontos
 library(writexl)      # salvar tabela
 library(tidylog)      # feedback das operacoes tidy
+library(readxl)       # ler excel 
 
 
 # Instalar fontes ----
@@ -38,8 +38,11 @@ library(tidylog)      # feedback das operacoes tidy
 # Carregar dataframe dos dados limpos e organizados
 
 df <-
-  data_geral_clean <-
-  readRDS("C:/Users/Tamires/OneDrive - UFSC/PC LAB/DissAnalysis/data_geral_clean.rds")
+  readRDS("data_geral_clean.rds")
+
+#ou
+
+df <- read_xlsx("data/Data_200FST.xlsx")
 
 # Estabelecer tema base para todos os próximos gráficos
 
