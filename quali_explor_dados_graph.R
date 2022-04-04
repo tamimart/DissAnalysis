@@ -853,7 +853,7 @@ Figura2 <- df %>%
   group_by(study_reference) %>%
   slice(1) %>%
   group_by(year) %>%
-  ggplot(aes(x = year)) +
+  ggplot(aes(x = as.Date(year))) +
   geom_bar(fill = "#82c236") +
   labs(y = "Nº de publicações", x = "Ano") +
   scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
@@ -918,7 +918,7 @@ f3a <- df %>%
   )
 
 f3b <- df  %>% # especie no tempo
-  ggplot(aes(x = year, fill = species)) +
+  ggplot(aes(x = as.Date(year), fill = species)) +
   geom_bar() +
   scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
   labs(y = "Nº de estudos",
@@ -944,7 +944,6 @@ f3b <- df  %>% # especie no tempo
     plot.margin = margin(10, 0, 0, 10)
   )
 
-ggplot_build(f3b)
 
 f3c <- df %>%
   group_by(sex) %>%
@@ -981,7 +980,7 @@ f3c <- df %>%
   )
 
 f3d <- df  %>% # sexo no tempo
-  ggplot(aes(x = year, fill = sex, order = sex)) +
+  ggplot(aes(x = as.Date(year), fill = sex, order = sex)) +
   geom_bar() +
   scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
   labs(y = "Nº de estudos", x = "Ano", title = "d") +
@@ -1352,7 +1351,7 @@ labels_age <-
   )
 
 f5 <- df %>%
-  ggplot(aes(x = age, fill = sex)) +
+  ggplot(aes(x = age, fill = sex), na.rm =T) +
   geom_histogram() +
   facet_grid(fct_infreq(sex) ~ species, scales = "free_x") +
   geom_text(
@@ -1369,21 +1368,24 @@ f5 <- df %>%
     data = age_ss,
     aes(xintercept = numeric.p50),
     col = "black",
-    size = .3
+    size = .3,
+    na.rm = T
   ) +
   geom_vline(
     data = age_ss,
     aes(xintercept = numeric.p25),
     col = "black",
     size = .3,
-    linetype = "dashed"
+    linetype = "dashed",
+    na.rm = T
   ) +
   geom_vline(
     data = age_ss,
     aes(xintercept = numeric.p75),
     col = "black",
     size = .3,
-    linetype = "dashed"
+    linetype = "dashed",
+    na.rm = T
   ) +
   labs(y = "Nº de estudos", x = "Idade (dias)") +
   scale_x_continuous(n.breaks = 10) +
@@ -1447,7 +1449,7 @@ labels_weight <-
 
 
 f6 <- df %>%
-  ggplot(aes(x = weight, fill = sex)) +
+  ggplot(aes(x = weight, fill = sex), na.rm = T) +
   geom_histogram() +
   facet_grid(fct_infreq(sex) ~ species, scales = "free_x") +
   geom_text(
@@ -1464,21 +1466,24 @@ f6 <- df %>%
     data = weight_ss,
     aes(xintercept = numeric.p50),
     col = "black",
-    size = .3
+    size = .3,
+    na.rm = T
   ) +
   geom_vline(
     data = weight_ss,
     aes(xintercept = numeric.p25),
     col = "black",
     size = .3,
-    linetype = "dashed"
+    linetype = "dashed",
+    na.rm = T
   ) +
   geom_vline(
     data = weight_ss,
     aes(xintercept = numeric.p75),
     col = "black",
     size = .3,
-    linetype = "dashed"
+    linetype = "dashed",
+    na.rm = T
   ) +
   labs(y = "Nº de estudos", x = "Peso (g)") +
   scale_x_continuous(n.breaks = 7) +
@@ -2382,7 +2387,8 @@ f10a <- df %>%
     y = counts,
     fill = fct_infreq(atd_class),
     label = counts
-  )) +
+  ),
+  na.rm = T) +
   geom_bar(stat = "identity") +
   geom_text(
     size = 2.5,
@@ -2413,7 +2419,7 @@ f10a <- df %>%
   )
 
 f10b <- df  %>% 
-  ggplot(aes(x = year, fill = fct_infreq(atd_class))) +
+  ggplot(aes(x = as.Date(year), fill = fct_infreq(atd_class)), na.rm = T) +
   geom_bar() +
   scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
   labs(y = "Nº de estudos",
@@ -2458,7 +2464,7 @@ f11a <- df %>%
     species == "Camundongo") %>%
   ggplot(aes(
     x = fct_lump(fct_infreq(atd_class), n = 6, other_level = "Outros"),
-    fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"))) +
+    fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros")), na.rm = T) +
   geom_bar() +
   geom_text(aes(label = ..count..), stat = "count",
             color = "mintcream",
@@ -2521,7 +2527,7 @@ f11a
 f11b <- df %>% 
   filter(dose_unit == "mg/kg",
          species == "Camundongo") %>% 
-  ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 15, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"))) + 
+  ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 15, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 15, other_level = "Outros")), na.rm = T) + 
   ggridges::stat_density_ridges(
     alpha = .7, size = .3, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
   ) + 
@@ -2604,7 +2610,7 @@ f12a <- df %>%
     species == "Rato") %>%
   ggplot(aes(
     x = fct_lump(fct_infreq(atd_class), n = 4, other_level = "Outros"),
-    fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"))) +
+    fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros")), na.rm = T) +
   geom_bar() +
   geom_text(aes(label = ..count..), stat = "count",
             color = "mintcream",
@@ -2663,7 +2669,7 @@ f12a
 f12b <- df %>% 
   filter(dose_unit == "mg/kg",
          species == "Rato") %>% 
-  ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 12, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"))) + 
+  ggplot(aes(x = dose, y = fct_lump_n(fct_rev(fct_infreq(atd_type)), n = 12, other_level = "Outros"), color = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros"), fill = fct_lump_n(fct_infreq(atd_type), n = 12, other_level = "Outros")), na.rm = T) + 
   ggridges::stat_density_ridges(
     alpha = .7, size = .3, rel_min_height = 0.01, quantile_lines = TRUE, quantiles = 2
   ) + 
@@ -2731,16 +2737,6 @@ save_plot(filename = "Figura12.png",
           dpi = 300,
           path = "Fig")
 
-# isolar estudos com outras unidades de dose que nao mg/kg
-atd <- df %>% 
-  filter(dose_unit != "mg/kg") %>% 
-  group_by(study_reference) %>% 
-  distinct(dose_unit) %>% 
-  count(dose_unit, sort = T)
-
-# criar a salvar tabela 
-unidades_dose <- tibble(atd)
-write.table(atd , file = "data\\dose_otherunits.xlsx")
 
 ## Figura13 e Figura14: Via de administração x frequencia adm x tempo de adm ----
 
@@ -2794,7 +2790,8 @@ f13b <- df %>%
     position = position_jitterdodge(),
     size = .8,
     shape = 19,
-    alpha = .5
+    alpha = .5,
+    na.rm = T
   ) +
   labs(y = "Duração do tratamento (dias)", x = "Via de administração em camundongos", title = "b") +
   scale_color_manual(
@@ -2899,7 +2896,8 @@ f14b <- df %>%
     position = position_jitterdodge(),
     size = .8,
     shape = 19,
-    alpha = .5
+    alpha = .5,
+    na.rm = T
   ) +
   labs(y = "Duração do tratamento (dias)", x = "Via de administração em ratos", title = "b") +
   scale_color_manual(
@@ -3522,7 +3520,7 @@ label_wd_c <- df %>%
 
 
 f17b <- label_wd_c %>%
-  ggplot(aes(x = year, y = numeric.p50)) +
+  ggplot(aes(x = as.Date(year), y = numeric.p50), na.rm = T) +
   geom_col(fill = "#ff9400") +
   labs(x = "Ano", y = "Profundidade da água (cm)", title  = "c") +
   scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
@@ -3556,7 +3554,7 @@ f17b <- label_wd_c %>%
   )  +
   geom_text(
     data = label_wd_c,
-    aes(label = complete, x = year, y = 2),
+    aes(label = complete, x = as.Date(year), y = 2),
     color = "black",
     size = 1.8,
     family = "Gadugi"
@@ -3564,7 +3562,7 @@ f17b <- label_wd_c %>%
   geom_pointrange(
     data = label_wd_c,
     aes(
-      x = year,
+      x = as.Date(year),
       y = numeric.p50,
       ymin = numeric.p25,
       ymax = numeric.p75
@@ -3601,7 +3599,7 @@ label_wd_r <- df %>%
   my_skim(water_depth)
 
 f17c <- label_wd_r %>%
-  ggplot(aes(x = year, y = numeric.p50)) +
+  ggplot(aes(x = as.Date(year), y = numeric.p50), na.rm = T) +
   geom_col(fill = "#ec2b2b") +
   labs(x = "Ano", y = "Profundidade (cm)") +
   scale_x_date(date_breaks = "5 year", date_labels = "%Y") +
@@ -3614,7 +3612,7 @@ f17c <- label_wd_r %>%
   ) +
   geom_text(
     data =  subset(label_wd_r, !is.nan(numeric.mean)),
-    aes(label = complete, x = year, y = 2),
+    aes(label = complete, x = as.Date(year), y = 2),
     color = "black",
     size = 1.8,
     family = "Gadugi"
@@ -3622,7 +3620,7 @@ f17c <- label_wd_r %>%
   geom_pointrange(
     data = label_wd_r,
     aes(
-      x = year,
+      x = as.Date(year),
       y = numeric.p50,
       ymin = numeric.p25,
       ymax = numeric.p75
@@ -3674,7 +3672,7 @@ f17d <- df %>%
   filter(species == "Camundongo") %>%
   group_by(study_reference) %>%
   distinct(water_temperature) %>%
-  ggplot(aes(x = water_temperature)) +
+  ggplot(aes(x = water_temperature), na.rm = T) +
   geom_histogram(fill = "#ff9400") +
   scale_y_continuous(expand = c(0, 0),
                      n.breaks = 4,
