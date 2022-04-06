@@ -4,14 +4,13 @@
 # Carregar pacotes
 
 
-library(bitops)
-library(metafor)
-library(robumeta)
+library(bitops)    # operadores
+library(metafor)   # pacota para rodar meta-análise
 library(Formula)
-library(dplyr)
-library(readxl)
-library(extrafont)
-library(cowplot)
+library(dplyr)     # manipulacao dos dados
+library(readxl)    # ler arquivo do excel
+library(extrafont) # fonte extra
+library(cowplot)   # alinhamento e anotacao plot
 
 # Carregar planilha
 
@@ -19,13 +18,7 @@ df <- read_excel("data/Data_200FST.xlsx")
 
 
 df <- df %>% 
-  mutate(year = format(as.Date(Efeito$year, format="%d/%m/%Y"),"%Y"))
-
-# provisório: coloquei valor "1" nos n corrigidos que deram "0"
-
-df <- df %>% 
-  mutate(ctr_n_corr = replace(ctr_n_corr, ctr_n_corr == 0, 1))
-
+  mutate(year = format(as.Date(df$year, format = "%d/%m/%Y"),"%Y"))
 
 
 
