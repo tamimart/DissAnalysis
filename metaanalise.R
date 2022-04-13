@@ -11,6 +11,9 @@ library(dplyr)     # manipulacao dos dados
 library(readxl)    # ler arquivo do excel
 library(extrafont) # fonte extra
 library(cowplot)   # alinhamento e anotacao plot
+library(metapower) # calculo de poder
+library(esc)       # calcular tamano de efeito
+
 
 # Carregar planilha
 
@@ -18,8 +21,14 @@ df <- read_excel("data/Data_200FST.xlsx")
 
 
 df <- df %>% 
-  mutate(year = format(as.Date(df$year, format = "%d/%m/%Y"),"%Y"))
+  mutate(year = format(as.Date(df$year, format = "%d/%m/%Y"),"%Y")) # mudar tipo da data
 
+# criei funcao para converter hedges g para cohens d
+
+g_to_d <- function(vg, vn) {
+  vd <- vg / (1 - 3 / (4 * (vn + vn) - 9))
+  return(vd)
+}
 
 
 # Calcular tamanho de efeito em SDM hedges g
@@ -37,36 +46,31 @@ Teste <- rma(yi, vi, data = Efeito, slab = (paste(Efeito$first_author, as.charac
 
 Teste
 
-
 # Gerar intervalo de confianca e predicao 
 
 predict(Teste, digits = 3)
 
+# Calculo do poder geral
 
-# # DETALHES SOBRE INFLUENCIA DOS ESTUDOS - Ver que estudos estao influenciando em diversos aspectos -video Quintana
-# 
-baujat.rma(Teste, slab = (paste(Efeito$first_author, as.character(Efeito$year), sep = ", ")))
-# 
-# 
-# sav <- baujat(Teste, symbol=19, xlim=c(0,20), slab = (paste(Efeito$first_author, as.character(Efeito$year), sep = ", ")) # Destacar papers com influencia "extrema" sobre ES e heterogeneidade
-# sav <- sav[sav$x >= 10 | sav$y >= 0.10,]
-# text(sav$x, sav$y, sav$slab, pos=1)
-# 
-# 
-# 
-# inf <- influence(Teste)
-# print(inf)
-# plot(inf)
+df %>% 
+  summarize(mean(N)) #obter N total
+
+g_to_d(vg = 1.7483, vn = 7.8) # converter hedges g para cohens d (sera usado no mpower())
+
+poder_geral <- mpower(effect_size = 1.852365, study_size = 7.8, k = 561, i2 = 0.83, es_type = "d") # calcular o poder 
+
+print(poder_geral)
+plot_mpower(poder_geral)
 
 
 # Plot e save forestplot - MELHOR
 
-pdf("floresta_toda.pdf", height = 120, width = 25)
+pdf("Fig/floresta_toda.pdf", height = 120, width = 25)
 
 floresta <- forest(
   Teste,
   cex = 1,
-  ylim = c(-2, 570),
+  ylim = c(-2, 567),
   slab = (paste(
     Efeito$first_author, as.character(Efeito$year), sep = ", "
   )),
@@ -86,20 +90,20 @@ floresta <- forest(
 
 
 op <- par(cex = 0.75, font = 2, family = "sans")
-text(c(-6, 8.75),     570, font = 2.5,
+text(c(-6, 7.75),     568, font = 2.5,
      cex = 2, c("Control", "Antidepressant"))
-text(c(183),
-     570,
+text(c(90),
+     568,
      font = 2.5,
      cex = 2,
      c("Weights Hedges g [95% CI]"))
-text(c(-40),
-     570,
+text(c(-35),
+     568,
      font = 2.5,
      cex = 2,
      c("Author(s), year"))
 
-text(-50, -1, pos=4, cex=1.3, bquote(paste("RE Model (Q = ", .(formatC(Teste$QE, digits = 2, format = "f")),
+text(-40, -1, pos=4, cex=1.3, bquote(paste("RE Model (Q = ", .(formatC(Teste$QE, digits = 2, format = "f")),
                                            ", df = ", .(Teste$k - Teste$p),
                                            ", p ", .(metafor:::.pval(Teste$QEp, digits = 2, showeq = TRUE, sep = " ")), "; ",
                                            I^2, " = ", .(formatC(Teste$I2, digits = 1, format = "f")), "%, ",
@@ -108,43 +112,33 @@ text(-50, -1, pos=4, cex=1.3, bquote(paste("RE Model (Q = ", .(formatC(Teste$QE,
 
 dev.off() 
 
-# Plotar grafico em floresta salvando ao mesmo tempo - OUTRA FORMA - PARECE NOTA FISCAL
 
+# # DETALHES SOBRE INFLUENCIA DOS ESTUDOS - Ver que estudos estao influenciando em diversos aspectos -video Quintana
 # 
-# ks <- c(567)
+baujat.rma(Teste, slab = (paste(Efeito$first_author, as.character(Efeito$year), sep = ", ")))
 # 
-# for (k in ks) {
-#   
-#   vi <- runif(k, .05, 1)
-#   yi <- rnorm(k, 0, sqrt(vi))
-#   
-#   
-#   png(paste0("forest_k=", formatC(k, format = "f", flag = "0", width = 3, digits = 0), ".png"), height = 200 + 40*k^.85)
 # 
-#   
-#   forest(Teste, xlim = c(-150,200), alim = c(-20, 30), efac = 30/(k + 10), cex = 1, yaxs = "i", ylim = c(0,k + 3), slab = (paste(
-#     Efeito$first_author, as.character(Efeito$year), sep = ", "
-#   )),
-#   mlab = paste("RE Model for ALL Studies", bquote(paste(.(text),
-#                                                           " (Q = ", .(formatC(Teste$QE, digits = 2, format = "f")),
-#                                                           ", df = ", .(Teste$k - Teste$p),
-#                                                           ", p ", .(metafor:::.pval(Teste$QEp, digits = 2, showeq = TRUE, sep = " ")), "; ",
-#                                                           I^2, " = ", .(formatC(Teste$I2, digits = 1, format = "f")), "%, ",
-#                                                           tau^2, " = ", .(formatC(Teste$tau2, digits = 2, format = "f")), ")"))),
-#   order = Efeito$yi,
-#   showweight = T,
-#   xlab = "Hedges g")
-#   
-#   text(-150, k + 2, "Author(s), year", pos = 4)
-#   text( 200, k + 2, "Weights Hedges g [95% CI]", pos = 2)
-#   text(-50, -3, pos=4, cex=1.3, bquote(paste("RE Model (Q = ", .(formatC(Teste$QE, digits = 2, format = "f")),
-#                                              ", df = ", .(Teste$k - Teste$p),
-#                                              ", p ", .(metafor:::.pval(Teste$QEp, digits = 2, showeq = TRUE, sep = " ")), "; ",
-#                                              I^2, " = ", .(formatC(Teste$I2, digits = 1, format = "f")), "%, ",
-#                                              tau^2, " = ", .(formatC(Teste$tau2, digits = 2, format = "f")), ")")))
-#   dev.off()
-#   
-# }
+# sav <- baujat(Teste, symbol=19, xlim=c(0,20), slab = (paste(Efeito$first_author, as.character(Efeito$year), sep = ", ")) # Destacar papers com influencia "extrema" sobre ES e heterogeneidade
+# sav <- sav[sav$x >= 10 | sav$y >= 0.10,]
+# text(sav$x, sav$y, sav$slab, pos=1)
+# 
+# 
+# 
+# inf <- influence(Teste)
+# print(inf)
+# plot(inf)
+
+# Vies de publicação
+
+# [gráfico de funil]
+
+# [eggers regression]
+
+# [trim and fill]
+
+# [weight function model]
+
+
 
 
 # Analise de subgrupos
