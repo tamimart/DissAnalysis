@@ -257,6 +257,7 @@ nao_pred <- nao_pred %>%
 fnao_pred <- nao_pred %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao), y = ..count..)) +
   geom_bar(position = "fill") +
+  scale_fill_manual("Julgamento", values = c("Yes" = "green", "Unclear" = "yellow", "No" = "red")) +
   labs(title = "nao predatoria")
 
 
@@ -272,6 +273,7 @@ pred <- pred %>%
 fpred <- pred %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao), y = ..count..)) +
   geom_bar(position = "fill") +
+  scale_fill_manual("Julgamento", values = c("Yes" = "green", "Unclear" = "yellow", "No" = "red")) +
   labs(title = "predatoria")
 
 
@@ -293,6 +295,7 @@ nao_pred_c <- nao_pred_c %>%
 fnao_pred_c <- nao_pred_c %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao), y = ..count..)) +
   geom_bar(position = "fill") +
+  scale_fill_manual("Julgamento", values = c("Yes" = "green", "Yes, ARRIVE" = "green1", "Yes, lab animals" = "green3", "Yes, no conflict" = "greenyellow", "Unclear" = "yellow", "Unclear, predatory" = "yellow2", "No" = "red")) +
   labs(title = "nao predatoria")
 
 
@@ -308,6 +311,7 @@ pred_c <- pred_c %>%
 fpred_c <- pred_c %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao), y = ..count..)) +
   geom_bar(position = "fill") +
+  scale_fill_manual("Julgamento", values = c("Yes" = "green", "Yes, ARRIVE" = "green1", "Yes, lab animals" = "green3", "Yes, no conflict" = "greenyellow", "Unclear" = "yellow", "Unclear, predatory" = "yellow2", "No" = "red")) +
   labs(title = "predatoria")
 
 
