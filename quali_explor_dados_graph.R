@@ -78,8 +78,65 @@ df$sex <- factor(
   labels = c("Macho", "Fêmea", "Ambos", "Sem info")
 ) # Ordenar niveis do fator sexo
 
-
-levels(df$strain)[match("NA", levels(df$strain))] <- "Sem info" # mudar termo na linhagem
+df$strain <- factor(
+  df$strain,
+  levels = c(
+    "129S6",
+    "B6SJL",
+    "B6SJL (R406W transgenic)",
+    "BALB",
+    "BKTO",
+    "brown norway",
+    "C57BL",
+    "C57BL6/129 svJ",
+    "CD-1",
+    "CD-COBS",
+    "DBA/2",
+    "ddY",
+    "flinders resistant",
+    "flinders sensitive",
+    "kunming",
+    "laca",
+    "long-evans",
+    "NA",
+    "NMRI",
+    "OF1",
+    "sabra",
+    "SPF",
+    "sprague dawley",
+    "swiss",                   
+    "wistar",
+    "wistar kyoto"
+  ),
+  labels = c(
+    "129S6",
+    "B6SJL",
+    "B6SJL (R406W transgenic)",
+    "BALB",
+    "BKTO",
+    "Brown Norway",
+    "C57BL",
+    "C57BL6/129 svJ",
+    "CD-1",
+    "CD-COBS",
+    "DBA/2",
+    "ddY",
+    "Flinders resistant",
+    "Flinders sensitive",
+    "Kunming",
+    "LACA",
+    "Long Evans",
+    "Sem info",
+    "NMRI",
+    "OF1",
+    "Sabra",
+    "SPF",
+    "Sprague Dawley",
+    "Swiss",                   
+    "Wistar",
+    "Wistar Kyoto"
+  )
+)
 
 
 df$model_phenotype <- factor(
@@ -145,8 +202,8 @@ df$model_phenotype <- factor(
     "NA",
     "Natação forçada",
     "Natação forçada + Estresse leve crônico",
-    "Ovacteriomizada",
-    "Ovacteriomizada + injeção salina por 4 dias",
+    "Ovariectomizada",
+    "Ovariectomizada + injeção salina por 4 dias",
     "Progenitora exposta à Chlorpyrifos (CPF)",
     "Progenitora exposta à DDT",
     "Reserpina",
@@ -183,7 +240,6 @@ df$bioterium_lightcycle <-
 
 # Ordernar os niveis classes
 
-levels(df$atd_class)
 
 df$atd_class <-
   factor(

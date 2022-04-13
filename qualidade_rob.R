@@ -240,7 +240,82 @@ save_plot(filename = "Figura20.png",
 my_skim(df_camarades)
 
 
-# Visualização ROB SYRCLE Traffic light > NÃO ESTÁ NA DISSERTACAO
+# NÃO ESTÁ NA DISSERTACAO
+
+
+# comparação da pontuação ROB para artigos que sao de revista predatorias e não sao
+
+
+nao_pred <- df %>% 
+  filter(camarades1 == "Yes") %>% 
+  select(starts_with("rob"))
+
+nao_pred <- nao_pred %>% 
+  pivot_longer(everything(),
+               names_to = "pergunta",
+               values_to = "atribuicao")
+fnao_pred <- nao_pred %>% 
+  ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao), y = ..count..)) +
+  geom_bar(position = "fill") +
+  labs(title = "nao predatoria")
+
+
+
+pred <- df %>% 
+  filter(camarades1 == "Unclear, predatory") %>% 
+  select(starts_with("rob"))
+
+pred <- pred %>% 
+  pivot_longer(everything(),
+               names_to = "pergunta",
+               values_to = "atribuicao")
+fpred <- pred %>% 
+  ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao), y = ..count..)) +
+  geom_bar(position = "fill") +
+  labs(title = "predatoria")
+
+
+comp_pred <- fpred + fnao_pred
+
+comp_pred
+
+# comparação da pontuação CAMARADES para artigos que sao de revista predatorias e não sao
+
+
+nao_pred_c <- df %>% 
+  filter(camarades1 == "Yes") %>% 
+  select(starts_with("camarades"))
+
+nao_pred_c <- nao_pred_c %>% 
+  pivot_longer(everything(),
+               names_to = "pergunta",
+               values_to = "atribuicao")
+fnao_pred_c <- nao_pred_c %>% 
+  ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao), y = ..count..)) +
+  geom_bar(position = "fill") +
+  labs(title = "nao predatoria")
+
+
+
+pred_c <- df %>% 
+  filter(camarades1 == "Unclear, predatory") %>% 
+  select(starts_with("camarades"))
+
+pred_c <- pred_c %>% 
+  pivot_longer(everything(),
+               names_to = "pergunta",
+               values_to = "atribuicao")
+fpred_c <- pred_c %>% 
+  ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao), y = ..count..)) +
+  geom_bar(position = "fill") +
+  labs(title = "predatoria")
+
+
+comp_pred_c <- fpred_c + fnao_pred_c
+
+comp_pred_c
+
+# Visualização ROB SYRCLE Traffic light 
 
 
 rob <- read_excel("data/rob.xlsx")
