@@ -737,6 +737,14 @@ Teste_viaNA_r # k < 3
 
 #protocol
 
+
+fst_pro_m <- Efeito %>% 
+  filter(species == "mice") %>% 
+  group_by(fst_protocol) %>% 
+  summarise(soma = n()) %>% 
+  arrange(desc(soma)) # ver quais protocolos foram usados e deixar só com pelo menos 3 estudos
+
+
 Teste_T6S4_m <- rma(yi, vi, subset = (fst_protocol == "test6score4" & species == "mice"), data = Efeito)
 Teste_T6S4_m
 
@@ -777,11 +785,53 @@ Efeito %>%
   filter(fst_protocol == "test5score4" & species == "mice") %>% 
   select(authors) # mesma publicação?
 
+Teste_T7S6_m <- rma(yi, vi, subset = (fst_protocol == "test7score6" & species == "mice"), data = Efeito)
+Teste_T7S6_m
+
+Efeito %>% 
+  filter(fst_protocol == "test7score6" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
 Teste_T6S5_m <- rma(yi, vi, subset = (fst_protocol == "test6score5" & species == "mice"), data = Efeito)
 Teste_T6S5_m
 
 Efeito %>% 
   filter(fst_protocol == "test6score5" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_T9_m <- rma(yi, vi, subset = (fst_protocol == "test9" & species == "mice"), data = Efeito)
+Teste_T9_m
+
+Efeito %>% 
+  filter(fst_protocol == "test9" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_PT15T6S5_m <- rma(yi, vi, subset = (fst_protocol == "pre15test6score5" & species == "mice"), data = Efeito)
+Teste_PT15T6S5_m
+
+Efeito %>% 
+  filter(fst_protocol == "pre15test6score5" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_T10_m <- rma(yi, vi, subset = (fst_protocol == "test10" & species == "mice"), data = Efeito)
+Teste_T10_m
+
+Efeito %>% 
+  filter(fst_protocol == "test10" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_PT15TNA_m <- rma(yi, vi, subset = (fst_protocol == "pre15test?" & species == "mice"), data = Efeito)
+Teste_PT15TNA_m
+
+Efeito %>% 
+  filter(fst_protocol == "pre15test?" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_T15S5_m <- rma(yi, vi, subset = (fst_protocol == "test15score5" & species == "mice"), data = Efeito)
+Teste_T15S5_m
+
+Efeito %>% 
+  filter(fst_protocol == "test15score5" & species == "mice") %>% 
   select(authors) # mesma publicação?
 
 # method
@@ -799,6 +849,13 @@ Teste_metmanual_m
 
 #protocol
 
+fst_pro_r <- Efeito %>% 
+  filter(species == "rat") %>% 
+  group_by(fst_protocol) %>% 
+  summarise(soma = n()) %>% 
+  arrange(desc(soma)) # ver quais protocolos foram usados e deixar só com pelo menos 3 estudos
+
+
 Teste_PT15T5_r <- rma(yi, vi, subset = (fst_protocol == "pre15test5" & species == "rat"), data = Efeito)
 Teste_PT15T5_r
 
@@ -812,6 +869,14 @@ Efeito %>%
   filter(fst_protocol == "pre13test6" & species == "rat") %>% 
   select(authors) # mesma publicação?
 
+Teste_PTNAT6S4_r <- rma(yi, vi, subset = (fst_protocol == "pre?test6score4" & species == "rat"), data = Efeito)
+Teste_PTNAT6S4_r
+
+Efeito %>% 
+  filter(fst_protocol == "pre?test6score4" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+
 Teste_PT5T5_r <- rma(yi, vi, subset = (fst_protocol == "pre5test5" & species == "rat"), data = Efeito)
 Teste_PT5T5_r
 
@@ -824,6 +889,13 @@ Teste_T15_r
 
 Efeito %>% 
   filter(fst_protocol == "test15" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_PT15T6S5_r <- rma(yi, vi, subset = (fst_protocol == "pre15test6score5" & species == "rat"), data = Efeito)
+Teste_PT15T6S5_r
+
+Efeito %>% 
+  filter(fst_protocol == "pre15test6score5" & species == "rat") %>% 
   select(authors) # mesma publicação?
 
 
