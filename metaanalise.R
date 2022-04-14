@@ -3,7 +3,7 @@
 
 # Carregar pacotes
 
-
+library(tidyverse)
 library(bitops)    # operadores
 library(metafor)   # pacota para rodar meta-análise
 library(Formula)
@@ -19,14 +19,28 @@ library(esc)       # calcular tamano de efeito
 
 df <- read_excel("data/Data_200FST.xlsx")
 
+# mudar tipo da data
 
 df <- df %>% 
-  mutate(year = format(as.Date(df$year, format = "%d/%m/%Y"),"%Y")) # mudar tipo da data
+  mutate(year = format(as.Date(df$year, format = "%d/%m/%Y"),"%Y"))
 
-# criei funcao para converter hedges g para cohens d
+
+# separa metodo do detalhe do metodo
+
+mmd <- Efeito %>% # separar variavel em duas
+  select(measurement_method) %>% 
+  separate(col = measurement_method, sep = ", ", into = c("measurement_method", "measurement_method_detail"))
+
+
+Efeito <- Efeito %>%
+  mutate(measurement_method_detail = as.factor(mmd$measurement_method_detail),
+         measurement_method =  as.factor(mmd$measurement_method)) # adicionar variaveis separadas no df mãe
+
+
+# criar funcao para converter hedges g para cohens d
 
 g_to_d <- function(vg, vn) {
-  vd <- vg / (1 - 3 / (4 * (vn + vn) - 9))
+  vd <- vg / (1 - 3 / (4 * (vn) - 9))
   return(vd)
 }
 
@@ -55,7 +69,7 @@ predict(Teste, digits = 3)
 df %>% 
   summarize(mean(N)) #obter N total
 
-g_to_d(vg = 1.7483, vn = 7.8) # converter hedges g para cohens d (sera usado no mpower())
+g_to_d(vg = 1.7483, vn = 15.6) # converter hedges g para cohens d (sera usado no mpower())
 
 poder_geral <- mpower(effect_size = 1.852365, study_size = 7.8, k = 561, i2 = 0.83, es_type = "d") # calcular o poder 
 
@@ -143,9 +157,8 @@ baujat.rma(Teste, slab = (paste(Efeito$first_author, as.character(Efeito$year), 
 # Analise de subgrupos
 
 
-#[POPULAÇÃO]
-
-#especie [mice]
+#[POPULAÇÃO]----
+#especie [mice] ----
 
 Teste_mice <- rma(yi, vi, subset = (species == "mice"), data = Efeito)
 Teste_mice
@@ -245,10 +258,17 @@ Efeito %>%
   filter(strain == "DBA/2") %>% 
   select(authors) # mesma publicação?
 
-Teste_B6SJL <- rma(yi, vi, subset = (strain == "B6SJL" & species == "mice"), data = Efeito)
-Teste_B6SJL # k < 3
+Teste_B6SJL <- rma(yi, vi, subset = (strain == "B6SJL (R406W transgenic)" & species == "mice"), data = Efeito)
+Teste_B6SJL 
+
+Efeito %>% 
+  filter(strain == "B6SJL (R406W transgenic)") %>% 
+  select(authors) # mesma publicação?
+
+
 Teste_129S6 <- rma(yi, vi, subset = (strain == "129S6" & species == "mice"), data = Efeito)
 Teste_129S6 # k < 3
+
 Teste_SPF <- rma(yi, vi, subset = (strain == "SPF" & species == "mice"), data = Efeito)
 Teste_SPF # k < 3
 
@@ -286,7 +306,7 @@ dez_q_m <- rma(yi, vi, subset = (bioterium_lightcycle == "10/14" & species == "m
 dez_q_m # k < 3
 
 
-#especie [rat]
+#especie [rat] ----
 
 Teste_rat <- rma(yi, vi, subset = (species == "rat"), data = Efeito)
 Teste_rat
@@ -350,8 +370,12 @@ Efeito %>%
   filter(strain == "wistar kyoto" & species == "rat") %>% 
   select(authors) # mesma publicação?
 
-Teste_FR <- rma(yi, vi, subset = (strain == "flinders resistent" & species == "rat"), data = Efeito)
-Teste_FR # k < 3
+Teste_FR <- rma(yi, vi, subset = (strain == "flinders resistant" & species == "rat"), data = Efeito)
+Teste_FR
+
+Efeito %>% 
+  filter(strain == "flinders resistant" & species == "rat") %>% 
+  select(authors) # mesma publicação?
 
 Teste_BN <- rma(yi, vi, subset = (strain == "brown norway" & species == "rat"), data = Efeito)
 Teste_BN # k < 3
@@ -372,7 +396,6 @@ Teste_nostress_r <- rma(yi, vi, subset = (model_phenotype == "NA" & species == "
 Teste_nostress_r
 
 
-
 # Ciclo de luz
 
 normal1212_r <- rma(yi, vi, subset = (bioterium_lightcycle == "12/12 normal" & species == "rat"), data = Efeito)
@@ -380,13 +403,6 @@ normal1212_r
 
 doze_doze_r <- rma(yi, vi, subset = (bioterium_lightcycle == "12/12" & species == "rat"), data = Efeito)
 doze_doze_r
-
-inverso_r <- rma(yi, vi, subset = (bioterium_lightcycle == "12/12 reverse" & species == "rat"), data = Efeito)
-inverso_r
-
-Efeito %>% 
-  filter(bioterium_lightcycle == "12/12 reverse" & species == "rat") %>% 
-  select(authors) # mesma publicação?
 
 cycle_NA_r <- rma(yi, vi, subset = (bioterium_lightcycle == "NA" & species == "rat"), data = Efeito)
 cycle_NA_r 
@@ -398,30 +414,430 @@ Efeito %>%
 natural_r <- rma(yi, vi, subset = (bioterium_lightcycle == "natural" & species == "rat"), data = Efeito)
 natural_r 
 
-dez_q_r <- rma(yi, vi, subset = (bioterium_lightcycle == "10/14" & species == "mice"), data = Efeito)
-dez_q_r # k < 3
+inverso_r <- rma(yi, vi, subset = (bioterium_lightcycle == "12/12 reverse" & species == "rat"), data = Efeito)
+inverso_r
+
+Efeito %>% 
+  filter(bioterium_lightcycle == "12/12 reverse" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+dez_q_r <- rma(yi, vi, subset = (bioterium_lightcycle == "10/14" & species == "rat"), data = Efeito)
+dez_q_r 
+
+Efeito %>% 
+  filter(bioterium_lightcycle == "10/14" & species == "rat") %>% 
+  select(authors) # mesma publicação?
 
 
+# [INTERVENÇÃO]----
 
-# [INTERVENÇÃO]
+# [mice] -----
 
-Teste_TCA <- rma(yi, vi, subset = (atd_class == "tricyclic"), data = Efeito)
+#TCA
+
 Teste_TCA_m <- rma(yi, vi, subset = (atd_class == "tricyclic" & species == "mice"), data = Efeito)
-Teste_TCA_r <- rma(yi, vi, subset = (atd_class == "tricyclic" & species == "rat"), data = Efeito)
-
-
-Teste_SSRI <- rma(yi, vi, subset = (atd_class == "SSRI"), data = Efeito)
-Teste_SSRI_m <- rma(yi, vi, subset = (atd_class == "SSRI" & species == "mice"), data = Efeito)
-Teste_SSRI_r <- rma(yi, vi, subset = (atd_class == "SSRI" & species == "rat"), data = Efeito)
-
-Teste_TCA 
-Teste_SSRI 
-Teste_TCA_r
 Teste_TCA_m
+
+Teste_imi_m <- rma(yi, vi, subset = (atd_type == "imipramine" & species == "mice"), data = Efeito)
+Teste_imi_m
+
+Teste_des_m <- rma(yi, vi, subset = (atd_type == "desipramine" & species == "mice"), data = Efeito)
+Teste_des_m
+
+Teste_ami_m <- rma(yi, vi, subset = (atd_type == "amitriptyline" & species == "mice"), data = Efeito)
+Teste_ami_m
+
+Teste_clo_m <- rma(yi, vi, subset = (atd_type == "clomipramine" & species == "mice"), data = Efeito)
+Teste_clo_m
+
+Efeito %>% 
+  filter(atd_type == "clomipramine" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_nor_m <- rma(yi, vi, subset = (atd_type == "nortriptyline" & species == "mice"), data = Efeito)
+Teste_nor_m
+
+Efeito %>% 
+  filter(atd_type == "nortriptyline" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+#SSRI
+
+Teste_SSRI_m <- rma(yi, vi, subset = (atd_class == "SSRI" & species == "mice"), data = Efeito)
 Teste_SSRI_m
+
+Teste_flu_m <- rma(yi, vi, subset = (atd_type == "fluoxetine" & species == "mice"), data = Efeito)
+Teste_flu_m
+
+Teste_par_m <- rma(yi, vi, subset = (atd_type == "paroxetine" & species == "mice"), data = Efeito)
+Teste_par_m
+
+Efeito %>% 
+  filter(atd_type == "paroxetine" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_esc_m <- rma(yi, vi, subset = (atd_type == "escitalopram" & species == "mice"), data = Efeito)
+Teste_esc_m
+
+Efeito %>% 
+  filter(atd_type == "escitalopram" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_cit_m <- rma(yi, vi, subset = (atd_type == "citalopram" & species == "mice"), data = Efeito)
+Teste_cit_m
+
+Efeito %>% 
+  filter(atd_type == "citalopram" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_fluv_m <- rma(yi, vi, subset = (atd_type == "fluvoxamine" & species == "mice"), data = Efeito)
+Teste_fluv_m
+
+Efeito %>% 
+  filter(atd_type == "fluvoxamine" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+#SNRI
+
+Teste_SNRI_m <- rma(yi, vi, subset = (atd_class == "SNRI" & species == "mice"), data = Efeito, control = list(stepadj = 0.5, maxiter = 1000)) # add parametros para ajustar comprimento do passo e maximo de iterações para a convergencia ocorrer (https://stackoverflow.com/questions/68817204/why-did-the-fisher-scoring-algorithm-not-converge-after-adjusting)
+Teste_SNRI_m
+
+Teste_ven_m <- rma(yi, vi, subset = (atd_type == "venlafaxine" & species == "mice"), data = Efeito)
+Teste_ven_m
+
+Efeito %>% 
+  filter(atd_type == "venlafaxine" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_tra_m <- rma(yi, vi, subset = (atd_type == "tramadol" & species == "mice"), data = Efeito)
+Teste_tra_m
+
+Efeito %>% 
+  filter(atd_type == "tramadol" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+#IMAO
+
+Teste_IMAO_m <- rma(yi, vi, subset = (atd_class == "IMAO" & species == "mice"), data = Efeito)
+Teste_IMAO_m
+
+Teste_sel_m <- rma(yi, vi, subset = (atd_type == "selegiline" & species == "mice"), data = Efeito)
+Teste_sel_m
+
+Efeito %>% 
+  filter(atd_type == "selegiline" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_moc_m <- rma(yi, vi, subset = (atd_type == "moclobemide" & species == "mice"), data = Efeito)
+Teste_moc_m
+
+Efeito %>% 
+  filter(atd_type == "moclobemide" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+#NDRI
+
+Teste_NDRI_m <- rma(yi, vi, subset = (atd_class == "NDRI" & species == "mice"), data = Efeito)
+Teste_NDRI_m
+
+#TECA
+
+Teste_TeCA_m <- rma(yi, vi, subset = (atd_class == "teca" & species == "mice"), data = Efeito)
+Teste_TeCA_m
+
+Teste_map_m <- rma(yi, vi, subset = (atd_type == "maprotiline" & species == "mice"), data = Efeito)
+Teste_map_m
+
+Efeito %>% 
+  filter(atd_type == "maprotiline" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_mia_m <- rma(yi, vi, subset = (atd_type == "mianserin" & species == "mice"), data = Efeito)
+Teste_mia_m
+
+Efeito %>% 
+  filter(atd_type == "mianserin" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+# VIA adm
+
+Teste_IP_m <- rma(yi, vi, subset = (treatment_via == "IP" & species == "mice"), data = Efeito)
+Teste_IP_m
+
+Teste_oral_m <- rma(yi, vi, subset = (treatment_via == "oral" & species == "mice"), data = Efeito)
+Teste_oral_m
+
+Teste_gav_m <- rma(yi, vi, subset = (treatment_via == "gavage" & species == "mice"), data = Efeito)
+Teste_gav_m
+
+Teste_subc_m <- rma(yi, vi, subset = (treatment_via == "subcutaneous" & species == "mice"), data = Efeito)
+Teste_subc_m
+
+Teste_viaNA_m <- rma(yi, vi, subset = (treatment_via == "NA" & species == "mice"), data = Efeito)
+Teste_viaNA_m
+
+Efeito %>% 
+  filter(treatment_via == "NA" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+# [rat] -----
+#TCA
+
+Teste_TCA_r <- rma(yi, vi, subset = (atd_class == "tricyclic" & species == "rat"), data = Efeito)
+Teste_TCA_r
+
+Teste_imi_r <- rma(yi, vi, subset = (atd_type == "imipramine" & species == "rat"), data = Efeito)
+Teste_imi_r
+
+Teste_des_r <- rma(yi, vi, subset = (atd_type == "desipramine" & species == "rat"), data = Efeito)
+Teste_des_r
+
+Teste_ami_r <- rma(yi, vi, subset = (atd_type == "amitriptyline" & species == "rat"), data = Efeito)
+Teste_ami_r
+
+Teste_clo_r <- rma(yi, vi, subset = (atd_type == "clomipramine" & species == "rat"), data = Efeito)
+Teste_clo_r
+
+Efeito %>% 
+  filter(atd_type == "clomipramine" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+
+#SSRI
+
+Teste_SSRI_r <- rma(yi, vi, subset = (atd_class == "SSRI" & species == "rat"), data = Efeito)
 Teste_SSRI_r
 
-# top dois farmacos de cada classe 
+Teste_flu_r <- rma(yi, vi, subset = (atd_type == "fluoxetine" & species == "rat"), data = Efeito)
+Teste_flu_r
+
+Teste_ser_r <- rma(yi, vi, subset = (atd_type == "sertraline" & species == "rat"), data = Efeito)
+Teste_ser_r
+
+Teste_par_r <- rma(yi, vi, subset = (atd_type == "paroxetine" & species == "rat"), data = Efeito)
+Teste_par_r
+
+Efeito %>% 
+  filter(atd_type == "paroxetine" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_fluv_r <- rma(yi, vi, subset = (atd_type == "fluvoxamine" & species == "rat"), data = Efeito)
+Teste_fluv_r
+
+Efeito %>% 
+  filter(atd_type == "fluvoxamine" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_cit_r <- rma(yi, vi, subset = (atd_type == "citalopram" & species == "rat"), data = Efeito)
+Teste_cit_r
+
+Efeito %>% 
+  filter(atd_type == "citalopram" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_esc_r <- rma(yi, vi, subset = (atd_type == "escitalopram" & species == "rat"), data = Efeito)
+Teste_esc_r
+
+Efeito %>% 
+  filter(atd_type == "escitalopram" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+
+#SNRI
+
+Teste_SNRI_r <- rma(yi, vi, subset = (atd_class == "SNRI" & species == "rat"), data = Efeito)
+Teste_SNRI_r
+
+Teste_ven_r <- rma(yi, vi, subset = (atd_type == "venlafaxine" & species == "rat"), data = Efeito)
+Teste_ven_r
+
+Teste_desv_r <- rma(yi, vi, subset = (atd_type == "desvenlafaxine" & species == "rat"), data = Efeito)
+Teste_desv_r
+
+Efeito %>% 
+  filter(atd_type == "desvenlafaxine" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_reb_r <- rma(yi, vi, subset = (atd_type == "reboxetine" & species == "rat"), data = Efeito)
+Teste_reb_r
+
+Efeito %>% 
+  filter(atd_type == "reboxetine" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_sib_r <- rma(yi, vi, subset = (atd_type == "sibutramine" & species == "rat"), data = Efeito)
+Teste_sib_r
+
+Efeito %>% 
+  filter(atd_type == "sibutramine" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+#TECA
+
+Teste_TeCA_r <- rma(yi, vi, subset = (atd_class == "teca" & species == "rat"), data = Efeito)
+Teste_TeCA_r
+
+Teste_mia_r <- rma(yi, vi, subset = (atd_type == "mianserin" & species == "rat"), data = Efeito)
+Teste_mia_r
+
+Teste_amo_r <- rma(yi, vi, subset = (atd_type == "amoxapine" & species == "rat"), data = Efeito)
+Teste_amo_r
+
+
+#IMAO
+
+Teste_IMAO_r <- rma(yi, vi, subset = (atd_class == "IMAO" & species == "rat"), data = Efeito)
+Teste_IMAO_r
+
+
+# VIA adm
+
+Teste_IP_r <- rma(yi, vi, subset = (treatment_via == "IP" & species == "rat"), data = Efeito)
+Teste_IP_r
+
+Teste_oral_r <- rma(yi, vi, subset = (treatment_via == "oral" & species == "rat"), data = Efeito)
+Teste_oral_r
+
+Teste_subc_r <- rma(yi, vi, subset = (treatment_via == "subcutaneous" & species == "rat"), data = Efeito)
+Teste_subc_r
+
+Teste_gav_r <- rma(yi, vi, subset = (treatment_via == "gavage" & species == "rat"), data = Efeito)
+Teste_gav_r
+
+Teste_mi_r <- rma(yi, vi, subset = (treatment_via == "microinjection (dorsal hippocampus)" & species == "rat"), data = Efeito)
+Teste_mi_r
+
+
+Efeito %>% 
+  filter(treatment_via == "microinjection (dorsal hippocampus)" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+
+Teste_od_r <- rma(yi, vi, subset = (treatment_via == "oral (dietary treatment)" & species == "rat"), data = Efeito)
+Teste_od_r
+
+Efeito %>% 
+  filter(treatment_via == "oral (dietary treatment)" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_in_r <- rma(yi, vi, subset = (treatment_via == "intranasal" & species == "rat"), data = Efeito)
+Teste_in_r
+
+
+Efeito %>% 
+  filter(treatment_via == "intranasal" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_viaNA_r <- rma(yi, vi, subset = (treatment_via == "NA" & species == "rat"), data = Efeito)
+Teste_viaNA_r # k < 3
+
+# [OUTCOME] ----
+
+# [mice]----
+
+#protocol
+
+Teste_T6S4_m <- rma(yi, vi, subset = (fst_protocol == "test6score4" & species == "mice"), data = Efeito)
+Teste_T6S4_m
+
+Teste_T6_m <- rma(yi, vi, subset = (fst_protocol == "test6" & species == "mice"), data = Efeito)
+Teste_T6_m
+
+Teste_PT15T6S4_m <- rma(yi, vi, subset = (fst_protocol == "pre15test6score4" & species == "mice"), data = Efeito)
+Teste_PT15T6S4_m
+
+Teste_PT15T6_m <- rma(yi, vi, subset = (fst_protocol == "pre15test6" & species == "mice"), data = Efeito)
+Teste_PT15T6_m
+
+Teste_PT15T5_m <- rma(yi, vi, subset = (fst_protocol == "pre15test5" & species == "mice"), data = Efeito)
+Teste_PT15T5_m
+
+Efeito %>% 
+  filter(fst_protocol == "pre15test5" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_T5_m <- rma(yi, vi, subset = (fst_protocol == "test5" & species == "mice"), data = Efeito)
+Teste_T5_m
+
+Efeito %>% 
+  filter(fst_protocol == "test5" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_PT5T5_m <- rma(yi, vi, subset = (fst_protocol == "pre5test5" & species == "mice"), data = Efeito)
+Teste_PT5T5_m
+
+Efeito %>% 
+  filter(fst_protocol == "pre5test5" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_T5S4_m <- rma(yi, vi, subset = (fst_protocol == "test5score4" & species == "mice"), data = Efeito)
+Teste_T5S4_m
+
+Efeito %>% 
+  filter(fst_protocol == "test5score4" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+Teste_T6S5_m <- rma(yi, vi, subset = (fst_protocol == "test6score5" & species == "mice"), data = Efeito)
+Teste_T6S5_m
+
+Efeito %>% 
+  filter(fst_protocol == "test6score5" & species == "mice") %>% 
+  select(authors) # mesma publicação?
+
+# method
+
+Teste_metNA_m <- rma(yi, vi, subset = (measurement_method == "NA" & species == "mice"), data = Efeito)
+Teste_metNA_m
+
+Teste_metvideo_m <- rma(yi, vi, subset = (measurement_method == "video analysis" & species == "mice"), data = Efeito)
+Teste_metvideo_m
+
+Teste_metmanual_m <- rma(yi, vi, subset = (measurement_method == "manually" & species == "mice"), data = Efeito)
+Teste_metmanual_m
+
+# [rat] ----
+
+#protocol
+
+Teste_PT15T5_r <- rma(yi, vi, subset = (fst_protocol == "pre15test5" & species == "rat"), data = Efeito)
+Teste_PT15T5_r
+
+Teste_T5_r <- rma(yi, vi, subset = (fst_protocol == "test5" & species == "rat"), data = Efeito)
+Teste_T5_r
+
+Teste_PT13T6_r <- rma(yi, vi, subset = (fst_protocol == "pre13test6" & species == "rat"), data = Efeito)
+Teste_PT13T6_r
+
+Efeito %>% 
+  filter(fst_protocol == "pre13test6" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_PT5T5_r <- rma(yi, vi, subset = (fst_protocol == "pre5test5" & species == "rat"), data = Efeito)
+Teste_PT5T5_r
+
+Efeito %>% 
+  filter(fst_protocol == "pre5test5" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+Teste_T15_r <- rma(yi, vi, subset = (fst_protocol == "test15" & species == "rat"), data = Efeito)
+Teste_T15_r
+
+Efeito %>% 
+  filter(fst_protocol == "test15" & species == "rat") %>% 
+  select(authors) # mesma publicação?
+
+
+# method
+
+Teste_metNA_r <- rma(yi, vi, subset = (measurement_method == "NA" & species == "rat"), data = Efeito)
+Teste_metNA_r
+
+Teste_metvideo_r <- rma(yi, vi, subset = (measurement_method == "video analysis" & species == "rat"), data = Efeito)
+Teste_metvideo_r
+
+Teste_metmanual_r <- rma(yi, vi, subset = (measurement_method == "manually" & species == "rat"), data = Efeito)
+Teste_metmanual_r
+
 
 
 # Metaregressao
