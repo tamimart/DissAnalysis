@@ -6,10 +6,21 @@
 library(esc)
 library(metapower)
 
-hedges_g(d = 0.54166666, totaln = 12) # Confirmar se a conversao manual do cohens d está correta
+# criar funcao para converter hedges g para cohens d
+
+g_to_d <- function(vg, vn) {
+  vd <- vg / (1 - 3 / (4 * (vn) - 9))
+  return(vd)
+}
+
+# converter hedges g para cohens d
+g_to_d(vg = 0.5, vn = 12)
+
+# Confirmar se a conversao está correta
+hedges_g(d = 0.54166667, totaln = 12) 
 
 
-kmestrado <- mpower(effect_size = .54166666, study_size = 6, k = 200, i2 = .90, es_type = "d") # calcular o poder 
+kmestrado <- mpower(effect_size = .54166667, study_size = 6, k = 200, i2 = .90, es_type = "d") # calcular o poder 
 
 print(kmestrado) # mostrar resultados de poder 
 
