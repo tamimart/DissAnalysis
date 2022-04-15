@@ -3,11 +3,10 @@
 
 # Carregar pacotes
 
-library(tidyverse)
+library(tidyverse) # manipulacao de dados
 library(bitops)    # operadores
 library(metafor)   # pacota para rodar meta-análise
 library(Formula)
-library(dplyr)     # manipulacao dos dados
 library(readxl)    # ler arquivo do excel
 library(extrafont) # fonte extra
 library(cowplot)   # alinhamento e anotacao plot
@@ -27,12 +26,12 @@ df <- df %>%
 
 # separa metodo do detalhe do metodo
 
-mmd <- Efeito %>% # separar variavel em duas
+mmd <- df %>% # separar variavel em duas
   select(measurement_method) %>% 
   separate(col = measurement_method, sep = ", ", into = c("measurement_method", "measurement_method_detail"))
 
 
-Efeito <- Efeito %>%
+df <- df %>%
   mutate(measurement_method_detail = as.factor(mmd$measurement_method_detail),
          measurement_method =  as.factor(mmd$measurement_method)) # adicionar variaveis separadas no df mãe
 
@@ -53,7 +52,7 @@ Efeito <- escalc(measure = "SMD", n1i = ctr_n_corr, n2i = atd_n_round, m1i = ctr
                  append = TRUE)
 
 
-# Metaanalise por modelo de efeitos aleatorios
+# Metaanalise por modelo de efeitos aleatorios --------------------------
 
 Teste <- rma(yi, vi, data = Efeito, slab = (paste(Efeito$first_author, as.character(Efeito$year), sep = ", ")))
 
@@ -125,6 +124,7 @@ text(-40, -1, pos = 4, cex = 2, bquote(paste("RE Model (Q = ", .(formatC(Teste$Q
 
 dev.off() 
 
+# Análise de sensibilidade ------------------------------------
 
 # # DETALHES SOBRE INFLUENCIA DOS ESTUDOS - Ver que estudos estao influenciando em diversos aspectos -video Quintana
 # 
@@ -141,7 +141,9 @@ baujat.rma(Teste, slab = (paste(Efeito$first_author, as.character(Efeito$year), 
 # print(inf)
 # plot(inf)
 
-# Vies de publicação
+
+
+# Análise de Vies de publicação -----------------------------------
 
 # [gráfico de funil]
 
@@ -154,10 +156,10 @@ baujat.rma(Teste, slab = (paste(Efeito$first_author, as.character(Efeito$year), 
 
 
 
-# Analise de subgrupos
+# Analise de subgrupos --------------------------------
 
 
-#[POPULAÇÃO]----
+# [POPULAÇÃO]------
 #especie [mice] ----
 
 Teste_mice <- rma(yi, vi, subset = (species == "mice"), data = Efeito)
@@ -429,8 +431,163 @@ Efeito %>%
   select(authors) # mesma publicação?
 
 
-# [INTERVENÇÃO]----
+# população [Cálculo Poder] ---- 
 
+# espécie
+
+g_to_d(vg = 1.62, vn = 15.8) # usar pra converter todos valores de hedges g para cohens d
+
+
+poder_especie <- subgroup_power(
+  n_groups = 2,
+  effect_sizes = c(1.95, 1.71),
+  study_size = 16,
+  k = 561,
+  i2 = 0.84,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_especie)
+plot_subgroup_power(poder_especie)
+
+# [mice]
+
+# sexo
+
+g_to_d(vg = 3.84, vn = 15.8) # aqui o vn vai ser o k
+
+poder_sexo_c <- subgroup_power(
+  n_groups = 4,
+  effect_sizes = c(1.75, 1.07, 4.6, 7.68),
+  study_size = 16,
+  k = 326,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_sexo_c)
+
+# linhagem
+
+g_to_d(vg = 0.44, vn = 15.8) # aqui o vn vai ser o k
+
+poder_linhagem_c <- subgroup_power(
+  n_groups = 13,
+  effect_sizes = c(3.39, 1.46, 0.74, 0.74, 10.27, 4.80, 1.07, 1.37, 1.42, 1.51, 7.27, 2.07, 0.46),
+  study_size = 16,
+  k = 295,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_linhagem_c)
+plot_subgroup_power(poder_linhagem_c)
+
+# estresse
+
+g_to_d(vg = 1.86, vn = 15.8) # aqui o vn vai ser o k
+
+poder_estresse_c <- subgroup_power(
+  n_groups = 2,
+  effect_sizes = c(1.88, 1.97),
+  study_size = 16,
+  k = 326,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_estresse_c)
+
+# ciclo de luz
+
+g_to_d(vg = 3.24, vn = 15.8) # aqui o vn vai ser o k
+
+poder_ciclo_c <- subgroup_power(
+  n_groups = 4,
+  effect_sizes = c(1.42, 2.50, 8.53, 3.43),
+  study_size = 16,
+  k = 324,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_ciclo_c)
+
+# [rat]
+
+# sexo
+
+g_to_d(vg = 2.26, vn = 15.8) # aqui o vn vai ser o k
+
+poder_sexo_r <- subgroup_power(
+  n_groups = 4,
+  effect_sizes = c(1.59, 2.12, 10.09, 2.39),
+  study_size = 16,
+  k = 235,
+  i2 = 0.84,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_sexo_r)
+
+# linhagem
+
+g_to_r(vg = 0.13, vn = 15.8) # aqui o vn vai ser o k
+
+poder_linhagem_r <- subgroup_power(
+  n_groups = 7,
+  effect_sizes = c(1.71, 2.55, 0.34, 1.12, 0.99, 0.39, 0.13),
+  study_size = 14, # coloquei o N pra baixo pra ficar multiplo do n_group
+  k = 230,
+  i2 = 0.84,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_linhagem_r)
+plot_subgroup_power(poder_linhagem_c)
+
+# estresse
+
+g_to_d(vg = 1.84, vn = 15.8) # aqui o vn vai ser o k
+
+poder_estresse_r <- subgroup_power(
+  n_groups = 2,
+  effect_sizes = c(1.35, 1.94),
+  study_size = 16,
+  k = 235,
+  i2 = 0.84,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_estresse_r)
+
+# ciclo de luz
+
+g_to_d(vg = 4.48, vn = 15.8) # aqui o vn vai ser o k
+
+poder_ciclo_r <- subgroup_power(
+  n_groups = 6,
+  effect_sizes = c(1.75, 1.40, 4.11, 0.86, 0.53, 4.74),
+  study_size = 18,
+  k = 235,
+  i2 = 0.84,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_ciclo_r)
+
+
+
+# [INTERVENÇÃO]------ 
 # [mice] -----
 
 #TCA
@@ -731,8 +888,225 @@ Efeito %>%
 Teste_viaNA_r <- rma(yi, vi, subset = (treatment_via == "NA" & species == "rat"), data = Efeito)
 Teste_viaNA_r # k < 3
 
-# [OUTCOME] ----
+# intervenção [Cálculo Poder] ----
 
+# [mice]
+
+#classe
+
+g_to_d(vg = 0.80, vn = 15.8) # aqui o vn vai ser o k
+
+poder_classe_c <- subgroup_power(
+  n_groups = 6,
+  effect_sizes = c(2.24, 2.22, 2.16, 0.78, 0.67, 0.85),
+  study_size = 18,
+  k = 317,
+  i2 = 0.82,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_classe_c)
+
+#TCA
+
+g_to_d(vg = 1.29, vn = 15.8) # aqui o vn vai ser o k
+
+poder_tca_c <- subgroup_power(
+  n_groups = 5,
+  effect_sizes = c(3.92, 1.56, 1.28, 0.05, 1.36),
+  study_size = 15, # arredondei pra menos
+  k = 136,
+  i2 = 0.88,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_tca_c)
+
+
+#ISRS
+
+g_to_d(vg = 0.96, vn = 15.8) # aqui o vn vai ser o k
+
+poder_isrs_c <- subgroup_power(
+  n_groups = 5,
+  effect_sizes = c(2.48, 1.10, 7.24, 0.74, 1.02),
+  study_size = 15, # arredondei pra menos
+  k = 128,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_isrs_c)
+
+#IRSN
+
+g_to_d(vg = 7.20, vn = 15.8) # aqui o vn vai ser o k
+
+poder_irsn_c <- subgroup_power(
+  n_groups = 2,
+  effect_sizes = c(1.45, 7.62),
+  study_size = 16, # arredondei pra menos
+  k = 24,
+  i2 = 0.88,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_irsn_c)
+
+#IMAO
+
+g_to_d(vg = 1.15, vn = 15.8) # aqui o vn vai ser o k
+
+poder_irsn_c <- subgroup_power(
+  n_groups = 2,
+  effect_sizes = c(0.37, 1.21),
+  study_size = 16, # arredondei pra menos
+  k = 10,
+  i2 = 0.32,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_irsn_c)
+
+#TECA
+
+g_to_d(vg = 0.33, vn = 15.8) # aqui o vn vai ser o k
+
+poder_irnd_c <- subgroup_power(
+  n_groups = 2,
+  effect_sizes = c(1.5, 0.35),
+  study_size = 16, # arredondei pra menos
+  k = 19,
+  i2 = 0.38,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_irnd_c)
+
+# via adm
+
+g_to_d(vg = 8.7, vn = 15.8) # aqui o vn vai ser o k
+
+poder_via_c <- subgroup_power(
+  n_groups = 5,
+  effect_sizes = c(1.85, 2.25, 2.56, 0.18, 9.21),
+  study_size = 15, # arredondei pra menos
+  k = 326,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_via_c)
+
+# [rat]
+
+#classe
+
+g_to_d(vg = 2.43, vn = 15.8) # aqui o vn vai ser o k
+
+poder_classe_r <- subgroup_power(
+  n_groups = 5,
+  effect_sizes = c(2.57, 1.32, 1.01, 0.73, 2.52),
+  study_size = 15,
+  k = 231,
+  i2 = 0.84,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_classe_r)
+
+#TCA
+
+g_to_d(vg = 3.4, vn = 15.8) # aqui o vn vai ser o k
+
+poder_tca_r <- subgroup_power(
+  n_groups = 4,
+  effect_sizes = c(3.10, 1.37, 4.43, 3.60),
+  study_size = 16, # arredondei pra menos
+  k = 108,
+  i2 = 0.93,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_tca_r)
+
+#ISRS
+
+g_to_d(vg = 0.58, vn = 15.8) # aqui o vn vai ser o k
+
+poder_isrs_r <- subgroup_power(
+  n_groups = 6,
+  effect_sizes = c(1.75, 2.21, 0.21, 0.51, 0.87, 0.61),
+  study_size = 18, # arredondei pra menos
+  k = 90,
+  i2 = 0.81,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_isrs_r)
+
+#IRSN
+
+g_to_d(vg = 0.31, vn = 15.8) # aqui o vn vai ser o k
+
+poder_irsn_r <- subgroup_power(
+  n_groups = 4,
+  effect_sizes = c(1.28, 3.07, 0.58, 0.33),
+  study_size = 16, # arredondei pra menos
+  k = 21,
+  i2 = 0.55,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_irsn_r)
+
+# TECA
+
+
+g_to_d(vg = 0.36, vn = 15.8) # aqui o vn vai ser o k
+
+poder_teca_r <- subgroup_power(
+  n_groups = 2,
+  effect_sizes = c(1.43, -0.38),
+  study_size = 16, # arredondei pra menos
+  k = 9,
+  i2 = 0.79,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_teca_r)
+
+# via adm
+
+g_to_d(vg = 2.32, vn = 15.8) # aqui o vn vai ser o k
+
+poder_via_r <- subgroup_power(
+  n_groups = 7,
+  effect_sizes = c(1.65, 1.78, 1.52, 4.74, 1.20, 0.68, 2.46),
+  study_size = 14, # arredondei pra menos
+  k = 233,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_via_r)
+
+
+
+# [OUTCOME] ------
 # [mice]----
 
 #protocol
@@ -876,7 +1250,6 @@ Efeito %>%
   filter(fst_protocol == "pre?test6score4" & species == "rat") %>% 
   select(authors) # mesma publicação?
 
-
 Teste_PT5T5_r <- rma(yi, vi, subset = (fst_protocol == "pre5test5" & species == "rat"), data = Efeito)
 Teste_PT5T5_r
 
@@ -912,13 +1285,91 @@ Teste_metmanual_r
 
 
 
-# Metaregressao
+# outcome [Cálculo Poder] ----
+
+# [mice]
+
+#protcolo
+
+g_to_d(vg = 0.8, vn = 15.8) # aqui o vn vai ser o k
+
+poder_proto_c <- subgroup_power(
+  n_groups = 15,
+  effect_sizes = c(1.72, 1.91, 5.89, 0.32, 2.74, 1.86, 15.30, 0.88, 0.43, 2.95, 1.42, 1.07, 1.18, 2.65, 0.85),
+  study_size = 15,
+  k = 321,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_proto_c)
+
+#metodo
+
+g_to_d(vg = 2.69, vn = 15.8) # aqui o vn vai ser o k
+
+poder_proto_c <- subgroup_power(
+  n_groups = 3,
+  effect_sizes = c(2.56,1.22, 2.84),
+  study_size = 15,
+  k = 326,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_proto_c)
+
+# [rat]
+
+#protcolo
+
+g_to_d(vg = 1.73, vn = 15.8) # aqui o vn vai ser o k
+
+poder_proto_r <- subgroup_power(
+  n_groups = 7,
+  effect_sizes = c(1.68, 1.66, 1.24, 16.6, 2.06, 1.79, 1.83),
+  study_size = 14,
+  k = 225,
+  i2 = 0.83,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_proto_r)
+
+#metodo
+
+g_to_d(vg = 2.18, vn = 15.8) # aqui o vn vai ser o k
+
+poder_proto_r <- subgroup_power(
+  n_groups = 3,
+  effect_sizes = c(2.83, 1.15, 2.31),
+  study_size = 15,
+  k = 235,
+  i2 = 0.84,
+  es_type = "d",
+  p = 0.05
+)
+
+print(poder_proto_r)
+
+
+
+# Metaregressao -------------------------------------
 
 metareg_dose <- rma(yi, vi, mods = ~last_bf_outcome, data = Efeito) 
 metareg_dose
 
+# idade
 
-# Salvar todos resultados
+# peso
 
-save(list = c("Teste"), file = "Metaresult.txt")
+# dose
 
+# profundidade agua
+
+# qualidade
+
+# ano
