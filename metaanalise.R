@@ -12,6 +12,7 @@ library(extrafont) # fonte extra
 library(cowplot)   # alinhamento e anotacao plot
 library(metapower) # calculo de poder
 library(esc)       # calcular tamano de efeito
+library(lubridate) # manipular datas
 
 
 # Carregar planilha
@@ -476,7 +477,7 @@ g_to_d(vg = 0.44, vn = 15.8) # aqui o vn vai ser o k
 poder_linhagem_c <- subgroup_power(
   n_groups = 13,
   effect_sizes = c(3.39, 1.46, 0.74, 0.74, 10.27, 4.80, 1.07, 1.37, 1.42, 1.51, 7.27, 2.07, 0.46),
-  study_size = 16,
+  study_size = 13, # botei o N pra baixo pra permitir calcular poder
   k = 295,
   i2 = 0.83,
   es_type = "d",
@@ -1359,17 +1360,109 @@ print(poder_proto_r)
 
 # Metaregressao -------------------------------------
 
-metareg_dose <- rma(yi, vi, mods = ~last_bf_outcome, data = Efeito) 
-metareg_dose
 
-# idade
+# idade 
+
+png("Fig/Reg_idade.png", height = 400, width = 1000)
+
+metareg_age_c <- rma(yi, vi, subset = species == "mice", mods = ~ age, data = Efeito)
+metareg_age_r <- rma(yi, vi, subset = species == "rat", mods = ~ age, data = Efeito)
+
+par(mfrow = c(1, 2), oma = c(0,2,0,1))
+
+regplot(metareg_age_c, xlab = "Idade (dias)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+regplot(metareg_age_r, xlab = "Idade (dias)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+
+dev.off()
+
+metareg_age_c
+metareg_age_r
 
 # peso
 
+png("Fig/Reg_peso.png", height = 400, width = 1000)
+
+metareg_peso_c <- rma(yi, vi, subset = species == "mice", mods = ~ weight, data = Efeito)
+metareg_peso_r <- rma(yi, vi, subset = species == "rat", mods = ~ weight, data = Efeito)
+
+par(mfrow = c(1, 2), oma = c(0,2,0,1))
+
+regplot(metareg_peso_c, xlab = "Peso (g)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+regplot(metareg_peso_r, xlab = "Peso (g)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+
+dev.off()
+
+metareg_peso_c
+metareg_peso_r
+
 # dose
+
+metareg_dose <- rma(yi, vi, subset = dose_unit == "mg/kg", mods = ~dose, data = Efeito) 
+png("Fig/Reg_dose.png")
+plot_metareg_dose <- regplot(metareg_dose, xlab = "Dose (mg/kg)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
+dev.off()
+
+metareg_dose
 
 # profundidade agua
 
+
+png("Fig/Reg_pa.png", height = 400, width = 1000)
+
+metareg_pa_c <- rma(yi, vi, subset = species == "mice", mods = ~ water_depth, data = Efeito)
+metareg_pa_r <- rma(yi, vi, subset = species == "rat", mods = ~ water_depth, data = Efeito)
+
+par(mfrow = c(1, 2), oma = c(0,2,0,1))
+
+regplot(metareg_pa_c, xlab = "Profundidade da água (cm)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+regplot(metareg_pa_r, xlab = "Profundidade da água (cm)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+
+dev.off()
+
+metareg_pa_c 
+metareg_pa_r
+
 # qualidade
 
+Efeito$rob1 <- ifelse(Efeito$rob1 == 'Unclear', 0, ifelse(Efeito$rob1 == 'Yes', 1, -1))
+Efeito$rob2 <- ifelse(Efeito$rob2 == 'Unclear', 0, ifelse(Efeito$rob2 == 'Yes', 1, -1))
+Efeito$rob3 <- ifelse(Efeito$rob3 == 'Unclear', 0, ifelse(Efeito$rob3 == 'Yes', 1, -1))
+Efeito$rob4 <- ifelse(Efeito$rob4 == 'Unclear', 0, ifelse(Efeito$rob4 == 'Yes', 1, -1))
+Efeito$rob5 <- ifelse(Efeito$rob5 == 'Unclear', 0, ifelse(Efeito$rob5 == 'Yes', 1, -1))
+Efeito$rob6 <- ifelse(Efeito$rob6 == 'Unclear', 0, ifelse(Efeito$rob6 == 'Yes', 1, -1))
+Efeito$rob7 <- ifelse(Efeito$rob7 == 'Unclear', 0, ifelse(Efeito$rob7 == 'Yes', 1, -1))
+Efeito$rob8 <- ifelse(Efeito$rob8 == 'Unclear', 0, ifelse(Efeito$rob8 == 'Yes', 1, -1))
+Efeito$rob9 <- ifelse(Efeito$rob9 == 'Unclear', 0, ifelse(Efeito$rob9 == 'Yes', 1, -1))
+Efeito$rob10 <- ifelse(Efeito$rob10 == 'Unclear', 0, ifelse(Efeito$rob10 == 'Yes', 1, -1))
+                      
+Efeito <- Efeito %>% 
+  mutate(pont_quali = rob1 + rob2 + rob3 + rob4 + rob5 + rob6 + rob7 + rob8 + rob9 + rob10) # Nova variavel com pontuacao rob
+
+metareg_quali <- rma(yi, vi, mods = ~pont_quali, data = Efeito) 
+png("Fig/Reg_quali.png")
+plot_metareg_quali <- regplot(metareg_quali, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
+dev.off()
+
+metareg_quali
+
+
 # ano
+
+
+Efeito$year <- as.Date(Efeito$year, "%Y") # transformar o tipo do dado em data
+  
+metareg_ano <- rma(yi, vi, mods = ~year, data = Efeito) 
+png("Fig/Reg_ano.png")
+plot_metareg_ano <- regplot(metareg_year, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
+dev.off()
+metareg_ano
+
+# ano x qualidade
+
+metareg_ano_quali <- rma(yi, vi, mods = ~ pont_quali + year, data = Efeito) 
+metareg_ano_quali
+plot_metareg_ano <- regplot(metareg_ano_quali, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
+
+
+ggplot(data = Efeito) +
+  
