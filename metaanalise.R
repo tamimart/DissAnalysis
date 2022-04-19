@@ -1396,13 +1396,21 @@ metareg_peso_c
 metareg_peso_r
 
 # dose
+png("Fig/Reg_dose.png", height = 400, width = 1000)
 
-metareg_dose <- rma(yi, vi, subset = dose_unit == "mg/kg", mods = ~dose, data = Efeito) 
-png("Fig/Reg_dose.png")
-plot_metareg_dose <- regplot(metareg_dose, xlab = "Dose (mg/kg)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
+metareg_dose_c <- rma(yi, vi, subset = species == "mice" & dose_unit == "mg/kg", mods = ~dose, data = Efeito) 
+metareg_dose_r <- rma(yi, vi, subset = species == "rat" & dose_unit == "mg/kg", mods = ~dose, data = Efeito) 
+
+par(mfrow = c(1, 2), oma = c(0,2,0,1))
+
+regplot(metareg_dose_c, xlab = "Dose (mg/kg)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+regplot(metareg_dose_r, xlab = "Dose (mg/kg)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+
 dev.off()
 
-metareg_dose
+metareg_dose_c
+metareg_dose_r
+
 
 # profundidade agua
 
@@ -1438,24 +1446,38 @@ Efeito$rob10 <- ifelse(Efeito$rob10 == 'Unclear', 0, ifelse(Efeito$rob10 == 'Yes
 Efeito <- Efeito %>% 
   mutate(pont_quali = rob1 + rob2 + rob3 + rob4 + rob5 + rob6 + rob7 + rob8 + rob9 + rob10) # Nova variavel com pontuacao rob
 
-metareg_quali <- rma(yi, vi, mods = ~pont_quali, data = Efeito) 
-png("Fig/Reg_quali.png")
-plot_metareg_quali <- regplot(metareg_quali, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
+png("Fig/Reg_quali.png", height = 400, width = 1000)
+
+metareg_quali_c <- rma(yi, vi, subset = species == "mice", mods = ~pont_quali, data = Efeito) 
+metareg_quali_r <- rma(yi, vi, subset = species == "rat", mods = ~pont_quali, data = Efeito) 
+
+par(mfrow = c(1, 2), oma = c(0,2,0,1))
+
+regplot(metareg_quali_c, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"),  main = "Camundongo", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+regplot(metareg_quali_r, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"),  main = "Rato", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
 dev.off()
 
-metareg_quali
+metareg_quali_c
+metareg_quali_r
 
 
 # ano
 
 
 Efeito$year <- as.Date(Efeito$year, "%Y") # transformar o tipo do dado em data
-  
-metareg_ano <- rma(yi, vi, mods = ~year, data = Efeito) 
-png("Fig/Reg_ano.png")
-plot_metareg_ano <- regplot(metareg_year, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
+
+png("Fig/Reg_ano.png", height = 400, width = 1000)
+metareg_ano_c <- rma(yi, vi, subset = species == "mice", mods = ~year, data = Efeito) 
+metareg_ano_r <- rma(yi, vi, subset = species == "rat", mods = ~year, data = Efeito) 
+
+par(mfrow = c(1, 2), oma = c(0,2,0,1))
+
+regplot(metareg_ano_c, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+regplot(metareg_ano_c, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"),  main = "Rato", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+
 dev.off()
-metareg_ano
+
+metareg_ano_r
 
 # ano x qualidade
 
