@@ -436,12 +436,18 @@ Efeito %>%
 
 # espécie
 
-g_to_d(vg = 1.62, vn = 15.8) # usar pra converter todos valores de hedges g para cohens d
+Efeito %>% 
+group_by(species) %>% 
+  summarise(N = mean(N)) # Ver o a media do N por subgrupo, para converter para cohens d
+
+# conversao dos tamanhos de efeito
+g_to_d(vg = 1.84, vn = 15.7)
+g_to_d(vg = 1.62, vn = 15.5) # usar pra converter todos valores de hedges g para cohens d
 
 
 poder_especie <- subgroup_power(
   n_groups = 2,
-  effect_sizes = c(1.95, 1.71),
+  effect_sizes = c(1.95, 1.72),
   study_size = 16,
   k = 561,
   i2 = 0.84,
@@ -456,12 +462,21 @@ plot_subgroup_power(poder_especie)
 
 # sexo
 
-g_to_d(vg = 3.84, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice") %>% 
+  group_by(sex) %>% 
+  summarise(N = mean(N))
+
+g_to_d(vg = 1.65, vn = 16.2) 
+g_to_d(vg = 1.01, vn = 16)
+g_to_d(vg = 3.84, vn = 13)
+g_to_d(vg = 7.26, vn = 14.8)
+
 
 poder_sexo_c <- subgroup_power(
   n_groups = 4,
-  effect_sizes = c(1.75, 1.07, 4.6, 7.68),
-  study_size = 16,
+  effect_sizes = c(1.74, 1.07, 4.13, 7.72),
+  study_size = 16, # N total arredondado
   k = 326,
   i2 = 0.83,
   es_type = "d",
@@ -472,11 +487,28 @@ print(poder_sexo_c)
 
 # linhagem
 
-g_to_d(vg = 0.44, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice") %>% 
+  group_by(strain) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 3.22, vn = 14.4) 
+g_to_d(vg = 1.38, vn = 14.8) 
+g_to_d(vg = 0.7, vn = 23.1) 
+g_to_d(vg = 0.7, vn = 17.3) 
+g_to_d(vg = 9.71, vn = 14.6) 
+g_to_d(vg = 5.47, vn = 8.77) 
+g_to_d(vg = 1.01, vn = 19.7) 
+g_to_d(vg = 1.30, vn = 15.4) 
+g_to_d(vg = 1.34, vn = 16) 
+g_to_d(vg = 1.43, vn = 7) 
+g_to_d(vg = 6.87, vn = 14) 
+g_to_d(vg = 1.96, vn = 10) 
+g_to_d(vg = 0.44, vn = 17) 
 
 poder_linhagem_c <- subgroup_power(
   n_groups = 13,
-  effect_sizes = c(3.39, 1.46, 0.74, 0.74, 10.27, 4.80, 1.07, 1.37, 1.42, 1.51, 7.27, 2.07, 0.46),
+  effect_sizes = c(3.43, 1.47, 0.73, 0.74, 10.34, 6.18, 1.06, 1.38, 1.42, 1.70, 7.34, 2.17, 0.46),
   study_size = 13, # botei o N pra baixo pra permitir calcular poder
   k = 295,
   i2 = 0.83,
@@ -489,11 +521,15 @@ plot_subgroup_power(poder_linhagem_c)
 
 # estresse
 
-g_to_d(vg = 1.86, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  group_by(species, model_phenotype == "NA") %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.86, vn = 16.5) 
 
 poder_estresse_c <- subgroup_power(
   n_groups = 2,
-  effect_sizes = c(1.88, 1.97),
+  effect_sizes = c(1.88, 1.96),
   study_size = 16,
   k = 326,
   i2 = 0.83,
@@ -505,11 +541,19 @@ print(poder_estresse_c)
 
 # ciclo de luz
 
-g_to_d(vg = 3.24, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  group_by(species, bioterium_lightcycle) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.34, vn = 16.7) 
+g_to_d(vg = 2.36, vn = 13.7) 
+g_to_d(vg = 8.06, vn = 18.1) 
+g_to_d(vg = 3.24, vn = 18.7) 
+
 
 poder_ciclo_c <- subgroup_power(
   n_groups = 4,
-  effect_sizes = c(1.42, 2.50, 8.53, 3.43),
+  effect_sizes = c(1.41, 2.52, 8.46, 3.39),
   study_size = 16,
   k = 324,
   i2 = 0.83,
@@ -523,11 +567,20 @@ print(poder_ciclo_c)
 
 # sexo
 
-g_to_d(vg = 2.26, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "rat") %>% 
+  group_by(sex) %>% 
+  summarise(N = mean(N))
+
+g_to_d(vg = 1.51, vn = 17.5) 
+g_to_d(vg = 2, vn = 15.6)
+g_to_d(vg = 9.53, vn = 10.7)
+g_to_d(vg = 2.26, vn = 12.7)
+
 
 poder_sexo_r <- subgroup_power(
   n_groups = 4,
-  effect_sizes = c(1.59, 2.12, 10.09, 2.39),
+  effect_sizes = c(1.59, 2.12, 10.46, 2.34),
   study_size = 16,
   k = 235,
   i2 = 0.84,
@@ -539,11 +592,23 @@ print(poder_sexo_r)
 
 # linhagem
 
-g_to_r(vg = 0.13, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "rat") %>% 
+  group_by(strain) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.62, vn = 14.1) 
+g_to_d(vg = 2.41, vn = 16.8) 
+g_to_d(vg = 0.32, vn = 21.4) 
+g_to_d(vg = 1.06, vn = 19.7) 
+g_to_d(vg = 0.94, vn = 21.7) 
+g_to_d(vg = 0.37, vn = 14.7) 
+g_to_d(vg = 0.13, vn = 30.7) 
+
 
 poder_linhagem_r <- subgroup_power(
   n_groups = 7,
-  effect_sizes = c(1.71, 2.55, 0.34, 1.12, 0.99, 0.39, 0.13),
+  effect_sizes = c(1.73, 2.54, 0.33, 1.11, 0.98, 0.39, 0.13),
   study_size = 14, # coloquei o N pra baixo pra ficar multiplo do n_group
   k = 230,
   i2 = 0.84,
@@ -556,11 +621,16 @@ plot_subgroup_power(poder_linhagem_c)
 
 # estresse
 
-g_to_d(vg = 1.84, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  group_by(species, model_phenotype == "NA") %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.28, vn = 17.1) 
+g_to_d(vg = 1.84, vn = 15.1) 
 
 poder_estresse_r <- subgroup_power(
   n_groups = 2,
-  effect_sizes = c(1.35, 1.94),
+  effect_sizes = c(1.35, 1.95),
   study_size = 16,
   k = 235,
   i2 = 0.84,
@@ -572,11 +642,20 @@ print(poder_estresse_r)
 
 # ciclo de luz
 
-g_to_d(vg = 4.48, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  group_by(species, bioterium_lightcycle) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.65, vn = 15.8) 
+g_to_d(vg = 1.33, vn = 14.8) 
+g_to_d(vg = 3.88, vn = 13.3) 
+g_to_d(vg = 0.81, vn = 14.3) 
+g_to_d(vg = 0.5, vn = 19.9) 
+g_to_d(vg = 4.48, vn = 16) 
 
 poder_ciclo_r <- subgroup_power(
   n_groups = 6,
-  effect_sizes = c(1.75, 1.40, 4.11, 0.86, 0.53, 4.74),
+  effect_sizes = c(1.75, 1.41, 4.16, 0.86, 0.52, 4.74),
   study_size = 18,
   k = 235,
   i2 = 0.84,
@@ -585,7 +664,6 @@ poder_ciclo_r <- subgroup_power(
 )
 
 print(poder_ciclo_r)
-
 
 
 # [INTERVENÇÃO]------ 
@@ -895,11 +973,22 @@ Teste_viaNA_r # k < 3
 
 #classe
 
-g_to_d(vg = 0.80, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice") %>% 
+  group_by(atd_class) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 2.12, vn = 16.7) 
+g_to_d(vg = 2.10, vn = 14.3) 
+g_to_d(vg = 2.04, vn = 14.6) 
+g_to_d(vg = 0.74, vn = 18.2) 
+g_to_d(vg = 0.63, vn = 12.7) 
+g_to_d(vg = 0.80, vn = 16.6) 
+
 
 poder_classe_c <- subgroup_power(
   n_groups = 6,
-  effect_sizes = c(2.24, 2.22, 2.16, 0.78, 0.67, 0.85),
+  effect_sizes = c(2.24, 2.24, 2.17, 0.78, 0.68, 0.84),
   study_size = 18,
   k = 317,
   i2 = 0.82,
@@ -911,11 +1000,21 @@ print(poder_classe_c)
 
 #TCA
 
-g_to_d(vg = 1.29, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice",
+         atd_class == "tricyclic") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 3.7, vn = 15.6) 
+g_to_d(vg = 1.47, vn = 15.3) 
+g_to_d(vg = 1.21, vn = 25) 
+g_to_d(vg = 0.05, vn = 20.6) 
+g_to_d(vg = 1.29, vn = 13.8) 
 
 poder_tca_c <- subgroup_power(
   n_groups = 5,
-  effect_sizes = c(3.92, 1.56, 1.28, 0.05, 1.36),
+  effect_sizes = c(3.92, 1.56, 1.25, 0.05, 1.38),
   study_size = 15, # arredondei pra menos
   k = 136,
   i2 = 0.88,
@@ -928,11 +1027,22 @@ print(poder_tca_c)
 
 #ISRS
 
-g_to_d(vg = 0.96, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice",
+         atd_class == "SSRI") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 2.35, vn = 16) 
+g_to_d(vg = 1.04, vn = 10.4) 
+g_to_d(vg = 6.84, vn = 8) 
+g_to_d(vg = 0.70, vn = 16) 
+g_to_d(vg = 0.96, vn = 23.2) 
+
 
 poder_isrs_c <- subgroup_power(
   n_groups = 5,
-  effect_sizes = c(2.48, 1.10, 7.24, 0.74, 1.02),
+  effect_sizes = c(2.48, 1.14, 7.87, 0.74, 1.00),
   study_size = 15, # arredondei pra menos
   k = 128,
   i2 = 0.83,
@@ -944,11 +1054,19 @@ print(poder_isrs_c)
 
 #IRSN
 
-g_to_d(vg = 7.20, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice",
+         atd_class == "SNRI") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.37, vn = 12.5) 
+g_to_d(vg = 7.2, vn = 7) 
+
 
 poder_irsn_c <- subgroup_power(
   n_groups = 2,
-  effect_sizes = c(1.45, 7.62),
+  effect_sizes = c(1.48, 8.55),
   study_size = 16, # arredondei pra menos
   k = 24,
   i2 = 0.88,
@@ -959,12 +1077,18 @@ poder_irsn_c <- subgroup_power(
 print(poder_irsn_c)
 
 #IMAO
+Efeito %>% 
+  filter(species == "mice",
+         atd_class == "IMAO") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
 
-g_to_d(vg = 1.15, vn = 15.8) # aqui o vn vai ser o k
+g_to_d(vg = 0.35, vn = 20) 
+g_to_d(vg = 1.15, vn = 16.7) 
 
 poder_irsn_c <- subgroup_power(
   n_groups = 2,
-  effect_sizes = c(0.37, 1.21),
+  effect_sizes = c(0.36, 1.21),
   study_size = 16, # arredondei pra menos
   k = 10,
   i2 = 0.32,
@@ -976,11 +1100,18 @@ print(poder_irsn_c)
 
 #TECA
 
-g_to_d(vg = 0.33, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice",
+         atd_class == "teca") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.42, vn = 13.8) 
+g_to_d(vg = 0.33, vn = 20) 
 
 poder_irnd_c <- subgroup_power(
   n_groups = 2,
-  effect_sizes = c(1.5, 0.35),
+  effect_sizes = c(1.52, 0.34),
   study_size = 16, # arredondei pra menos
   k = 19,
   i2 = 0.38,
@@ -992,11 +1123,20 @@ print(poder_irnd_c)
 
 # via adm
 
-g_to_d(vg = 8.7, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice") %>% 
+  group_by(treatment_via) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.75, vn = 15.1) 
+g_to_d(vg = 2.13, vn = 17) 
+g_to_d(vg = 2.42, vn = 15.5) 
+g_to_d(vg = 0.17, vn = 18.4) 
+g_to_d(vg = 8.7, vn = 12) 
 
 poder_via_c <- subgroup_power(
   n_groups = 5,
-  effect_sizes = c(1.85, 2.25, 2.56, 0.18, 9.21),
+  effect_sizes = c(1.86, 2.24, 2.56, 0.18, 9.42),
   study_size = 15, # arredondei pra menos
   k = 326,
   i2 = 0.83,
@@ -1010,11 +1150,21 @@ print(poder_via_c)
 
 #classe
 
-g_to_d(vg = 2.43, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "rat") %>% 
+  group_by(atd_class) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 2.43, vn = 15.2) 
+g_to_d(vg = 1.32, vn = 16.7) 
+g_to_d(vg = 1.01, vn = 13.9) 
+g_to_d(vg = 0.73, vn = 13) 
+g_to_d(vg = 2.52, vn = 10.7) 
+
 
 poder_classe_r <- subgroup_power(
   n_groups = 5,
-  effect_sizes = c(2.57, 1.32, 1.01, 0.73, 2.52),
+  effect_sizes = c(2.58, 1.39, 1.08, 0.78, 2.76),
   study_size = 15,
   k = 231,
   i2 = 0.84,
@@ -1026,11 +1176,20 @@ print(poder_classe_r)
 
 #TCA
 
-g_to_d(vg = 3.4, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "rat",
+         atd_class == "tricyclic") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 2.93, vn = 15.2) 
+g_to_d(vg = 1.30, vn = 17.73) 
+g_to_d(vg = 4.19, vn = 9.73) 
+g_to_d(vg = 3.5, vn = 11.8) 
 
 poder_tca_r <- subgroup_power(
   n_groups = 4,
-  effect_sizes = c(3.10, 1.37, 4.43, 3.60),
+  effect_sizes = c(3.11, 1.37, 4.66, 3.80),
   study_size = 16, # arredondei pra menos
   k = 108,
   i2 = 0.93,
@@ -1041,12 +1200,22 @@ poder_tca_r <- subgroup_power(
 print(poder_tca_r)
 
 #ISRS
+Efeito %>% 
+  filter(species == "rat",
+         atd_class == "SSRI") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
 
-g_to_d(vg = 0.58, vn = 15.8) # aqui o vn vai ser o k
+g_to_d(vg = 1.65, vn = 16.2) 
+g_to_d(vg = 2.09, vn = 15.6) 
+g_to_d(vg = 0.2, vn = 16) 
+g_to_d(vg = 0.48, vn = 14.5) 
+g_to_d(vg = 0.82, vn = 15.5) 
+g_to_d(vg = 0.58, vn = 30) 
 
 poder_isrs_r <- subgroup_power(
   n_groups = 6,
-  effect_sizes = c(1.75, 2.21, 0.21, 0.51, 0.87, 0.61),
+  effect_sizes = c(1.74, 2.21, 0.21, 0.51, 0.87, 0.61),
   study_size = 18, # arredondei pra menos
   k = 90,
   i2 = 0.81,
@@ -1057,12 +1226,20 @@ poder_isrs_r <- subgroup_power(
 print(poder_isrs_r)
 
 #IRSN
+Efeito %>% 
+  filter(species == "rat",
+         atd_class == "SNRI") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
 
-g_to_d(vg = 0.31, vn = 15.8) # aqui o vn vai ser o k
+g_to_d(vg = 1.21, vn = 12.1) 
+g_to_d(vg = 2.86, vn = 8) 
+g_to_d(vg = 0.55, vn = 12.7)
+g_to_d(vg = 0.31, vn = 22) 
 
 poder_irsn_r <- subgroup_power(
   n_groups = 4,
-  effect_sizes = c(1.28, 3.07, 0.58, 0.33),
+  effect_sizes = c(1.31, 3.29, 0.59, 0.32),
   study_size = 16, # arredondei pra menos
   k = 21,
   i2 = 0.55,
@@ -1074,12 +1251,18 @@ print(poder_irsn_r)
 
 # TECA
 
+Efeito %>% 
+  filter(species == "rat",
+         atd_class == "teca") %>% 
+  group_by(atd_type) %>% 
+  summarise(N = mean(N)) 
 
-g_to_d(vg = 0.36, vn = 15.8) # aqui o vn vai ser o k
+g_to_d(vg = 1.35, vn = 13) 
+g_to_d(vg = -0.36, vn = 13) 
 
 poder_teca_r <- subgroup_power(
   n_groups = 2,
-  effect_sizes = c(1.43, -0.38),
+  effect_sizes = c(1.45, -0.39),
   study_size = 16, # arredondei pra menos
   k = 9,
   i2 = 0.79,
@@ -1090,12 +1273,22 @@ poder_teca_r <- subgroup_power(
 print(poder_teca_r)
 
 # via adm
+Efeito %>% 
+  filter(species == "rat") %>% 
+  group_by(treatment_via) %>% 
+  summarise(N = mean(N)) 
 
-g_to_d(vg = 2.32, vn = 15.8) # aqui o vn vai ser o k
+g_to_d(vg = 1.56, vn = 15) 
+g_to_d(vg = 1.68, vn = 14.9)
+g_to_d(vg = 1.44, vn = 17.8) 
+g_to_d(vg = 4.48, vn = 15) 
+g_to_d(vg = 1.14, vn = 12.5) 
+g_to_d(vg = 0.64, vn = 33.5) 
+g_to_d(vg = 2.32, vn = 9.33) 
 
 poder_via_r <- subgroup_power(
   n_groups = 7,
-  effect_sizes = c(1.65, 1.78, 1.52, 4.74, 1.20, 0.68, 2.46),
+  effect_sizes = c(1.65, 1.79, 1.51, 4.76, 1.23, 0.66, 2.59),
   study_size = 14, # arredondei pra menos
   k = 233,
   i2 = 0.83,
@@ -1104,7 +1297,6 @@ poder_via_r <- subgroup_power(
 )
 
 print(poder_via_r)
-
 
 
 # [OUTCOME] ------
@@ -1292,11 +1484,33 @@ Teste_metmanual_r
 
 #protcolo
 
-g_to_d(vg = 0.8, vn = 15.8) # aqui o vn vai ser o k
+protocolos_m <- Efeito %>% 
+  filter(species == "mice") %>% 
+  group_by(fst_protocol) %>% 
+  summarise(N = mean(N)) 
+
+protocolos_m
+
+g_to_d(vg = 1.63, vn = 17.42) 
+g_to_d(vg = 1.81, vn = 11.93)
+g_to_d(vg = 5.57, vn = 11.47) 
+g_to_d(vg = 0.31, vn = 19.61) 
+g_to_d(vg = 2.59, vn = 17.5) 
+g_to_d(vg = 1.76, vn = 13.81) 
+g_to_d(vg = 14.45, vn = 12) 
+g_to_d(vg = 0.83, vn = 10.5)
+g_to_d(vg = 0.41, vn = 33.5)
+g_to_d(vg = 2.79, vn = 23.6)
+g_to_d(vg = 1.34, vn = 16)
+g_to_d(vg = 1.01, vn = 9)
+g_to_d(vg = 1.12, vn = 21)
+g_to_d(vg = 2.50, vn = 10)
+g_to_d(vg = 0.80, vn = 23.3)
+
 
 poder_proto_c <- subgroup_power(
   n_groups = 15,
-  effect_sizes = c(1.72, 1.91, 5.89, 0.32, 2.74, 1.86, 15.30, 0.88, 0.43, 2.95, 1.42, 1.07, 1.18, 2.65, 0.85),
+  effect_sizes = c(1.71, 1.96, 6.06, 0.32, 2.72, 1.88, 15.65, 0.91, 0.42, 2.89, 1.42, 1.14, 1.17, 2.77, 0.83),
   study_size = 15,
   k = 321,
   i2 = 0.83,
@@ -1308,11 +1522,18 @@ print(poder_proto_c)
 
 #metodo
 
-g_to_d(vg = 2.69, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "mice") %>% 
+  group_by(measurement_method) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 2.42, vn = 14.6)
+g_to_d(vg = 1.06, vn = 16.3) 
+g_to_d(vg = 2.69, vn = 18.9) 
 
 poder_proto_c <- subgroup_power(
   n_groups = 3,
-  effect_sizes = c(2.56,1.22, 2.84),
+  effect_sizes = c(2.57, 1.12, 2.82),
   study_size = 15,
   k = 326,
   i2 = 0.83,
@@ -1326,11 +1547,22 @@ print(poder_proto_c)
 
 #protcolo
 
-g_to_d(vg = 1.73, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "rat") %>% 
+  group_by(fst_protocol) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 1.59, vn = 20) 
+g_to_d(vg = 1.57, vn = 16)
+g_to_d(vg = 1.17, vn = 16) 
+g_to_d(vg = 15.68, vn = 9) 
+g_to_d(vg = 1.95, vn = 15) 
+g_to_d(vg = 1.69, vn = 13.8) 
+g_to_d(vg = 1.73, vn = 13) 
 
 poder_proto_r <- subgroup_power(
   n_groups = 7,
-  effect_sizes = c(1.68, 1.66, 1.24, 16.6, 2.06, 1.79, 1.83),
+  effect_sizes = c(1.66, 1.66, 1.24, 17.64, 2.07, 1.81, 1.86),
   study_size = 14,
   k = 225,
   i2 = 0.83,
@@ -1342,11 +1574,18 @@ print(poder_proto_r)
 
 #metodo
 
-g_to_d(vg = 2.18, vn = 15.8) # aqui o vn vai ser o k
+Efeito %>% 
+  filter(species == "rat") %>% 
+  group_by(measurement_method) %>% 
+  summarise(N = mean(N)) 
+
+g_to_d(vg = 2.67, vn = 14.2) 
+g_to_d(vg = 1.09, vn = 16.7) 
+g_to_d(vg = 2.18, vn = 17.5)
 
 poder_proto_r <- subgroup_power(
   n_groups = 3,
-  effect_sizes = c(2.83, 1.15, 2.31),
+  effect_sizes = c(2.85, 1.15, 2.29),
   study_size = 15,
   k = 235,
   i2 = 0.84,
