@@ -13,15 +13,18 @@ library(cowplot)   # alinhamento e anotacao plot
 library(metapower) # calculo de poder
 library(esc)       # calcular tamano de efeito
 library(lubridate) # manipular datas
+library(weightr)   # testar vies de publicação
+library("devtools")# para baixar pacote remoto
+
+devtools::install_github("dsquintana/metameta") 
+library(metameta) # para calcular poder dos estudos incluidos
 
 
-# Carregar planilha
-
-df <- read_excel("data/Data_200FST.xlsx")
+df <- read_excel("data/Data_200FST.xlsx") # Carregar planilha
 
 # mudar tipo da data p fator
 
- df <- df %>%
+df <- df %>%
    mutate(year = as.numeric(format(as.Date(df$year, format = "%d/%m/%Y"),"%Y")))
 
 glimpse(df)
@@ -128,35 +131,158 @@ dev.off()
 
 # Análise de sensibilidade ------------------------------------
 
-# # DETALHES SOBRE INFLUENCIA DOS ESTUDOS - Ver que estudos estao influenciando em diversos aspectos -video Quintana
+#ver que estudos estao influenciando em diversos aspectos -video Quintana
 # 
-baujat.rma(Teste, slab = (paste(Efeito$first_author, as.character(Efeito$year), sep = ", ")))
-# 
-# 
-# sav <- baujat(Teste, symbol=19, xlim=c(0,20), slab = (paste(Efeito$first_author, as.character(Efeito$year), sep = ", ")) # Destacar papers com influencia "extrema" sobre ES e heterogeneidade
-# sav <- sav[sav$x >= 10 | sav$y >= 0.10,]
-# text(sav$x, sav$y, sav$slab, pos=1)
-# 
-# 
-# 
+# baujat(Teste)
 # inf <- influence(Teste)
 # print(inf)
 # plot(inf)
-
-
+# 
+# leave1out(Teste, transf = exp, digits = 3)
 
 # Análise de Vies de publicação -----------------------------------
 
 # [gráfico de funil]
 
+png("Fig/funil.png", height = 900, width = 600)
+
+par(mfrow = c(2, 1), oma = c(0,1,0,0))
+
+funil <-
+  metafor::funnel(
+    Teste,
+    yaxis = "sei",
+    addtau2 = FALSE,
+    xlab = "Tamanho de efeito",
+    ylab = "Erro padrão",
+    back = "gray94",
+    level = c(90, 95, 99),
+    shade = c("white", "aquamarine", "aquamarine3"),
+    hlines = "white",
+    lty = 2,
+    pch = 19,
+    col = 25,
+    label = FALSE,
+    offset = 0.1,
+    legend = FALSE,
+    ci.res = 1000,
+    cex.lab = 1.7, 
+    cex.axis = 1.5
+  )
+
+
+funil2 <-
+  metafor::funnel(
+    Teste,
+    yaxis = "sqrtninv",
+    addtau2 = FALSE,
+    xlab = "Tamanho de efeito",
+    ylab = "1/√n",
+    back = "gray94",
+    level = c(90, 95, 99),
+    shade = c("white", "aquamarine", "aquamarine3"),
+    hlines = "white",
+    lty = 2,
+    pch = 19,
+    col = 25,
+    label = FALSE,
+    offset = 0.1,
+    legend = FALSE,
+    ci.res = 1000,
+    cex.lab = 1.7, 
+    cex.axis = 1.5
+  )
+dev.off()
+
+
 # [eggers regression]
+# evidencia de vies de estudos pequenos
+
+regtest(Teste, model = "rma", predictor = "sei")
+
+regtest(Teste, model = "rma", predictor = "sqrtninv")
 
 # [trim and fill]
 
+faltantes <- metafor::trimfill(Teste, side = "left", estimator = "R0", maxiter = 100, verbose = FALSE) #R0 preferivel quando a MA tem >k Rothstein HR, Sutton AJ, Borenstein M. Publication Bias in Meta-Analysis: Prevention, Assessment and Adjustments. Chichester, UK: John Wiley & Sons; 2005. An advantage of estimator "R0" is that it provides a test of the null hypothesis that the number of missing studies (on the chosen side) is zero
+
+print(faltantes)
+
+png("Fig/funil_ef.png", height = 900, width = 600)
+
+par(mfrow = c(2, 1), oma = c(0,1,0,0))
+
+funil_ef1 <- metafor::funnel(
+  faltantes,
+  yaxis = "sei",
+  addtau2 = FALSE,
+  xlab = "Tamanho de efeito",
+  ylab = "Erro padrão",
+  back = "gray94",
+  level = c(90, 95, 99),
+  shade = c("white", "aquamarine", "aquamarine3"),
+  hlines = "white",
+  lty = 2,
+  pch = 19,
+  pch.fill = 1,
+  col = 25,
+  label = "F",
+  offset = 0.1,
+  legend = "topright",
+  ci.res = 1000,
+  cex.lab = 1.7, 
+  cex.axis = 1.5
+)
+
+funil_ef2 <- metafor::funnel(
+  faltantes,
+  yaxis = "sqrtninv",
+  addtau2 = FALSE,
+  xlab = "Tamanho de efeito",
+  ylab = "1/√n",
+  back = "gray94",
+  level = c(90, 95, 99),
+  shade = c("white", "aquamarine", "aquamarine3"),
+  hlines = "white",
+  lty = 2,
+  pch = 19,
+  pch.fill = 1,
+  col = 25,
+  label = "F",
+  offset = 0.1,
+  legend = "topright",
+  ci.res = 1000,
+  cex.lab = 1.7, 
+  cex.axis = 1.5
+)
+
+dev.off()
+
+funil_ef
 # [weight function model]
+#Teste especcifico para publication bias - aumenta o peso dos estudos que sao menos provaveis de serem publicados e diminiu o peso daqueles que sao mais provaveis de serem publicados - baseado no valor de p
+#likehood test alfa 0.10
 
+wf <- weightfunct(Efeito$yi, Efeito$vi, table = TRUE)
 
+wf
 
+# calcular o poder dos estudos incluidos na MA 
+#calculo do CI e inserçao na planilha como duas colunas - NAO SEI SE TA CERTO
+
+# 
+# lowerCI <- exp(Efeito$yi - 1.96*sqrt(Efeito$vi))
+# upperCI <- exp(Efeito$yi + 1.96*sqrt(Efeito$vi))
+# 
+# Efeito <- mutate(Efeito, ESlowerCI = lowerCI, ESupperCI = upperCI)
+# 
+# #isolando essas tres colunas num novo dataframe
+# 
+# parapoder <- select(Efeito, yi, ESlowerCI, ESupperCI)
+# 
+# poder <- mapower_ul(dat = parapoder, observed_es = 1.7483, name = "TESTE")
+# 
+# Teste
 
 # Analise de subgrupos --------------------------------
 
@@ -1600,7 +1726,7 @@ print(poder_proto_r)
 
 # [PUBLICATION] ----- 
 
-# possibilidade para avliar ano~ 
+# possibilidade para avaliar ano atraves de analise de subgrupo de periodos de tempo - ver com profa
 
 initial_m <- Efeito %>%
   filter(species == "mice",
@@ -1723,5 +1849,3 @@ metareg_ano_quali
 plot_metareg_ano <- regplot(metareg_ano_quali, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
 
 
-ggplot(data = Efeito) +
-  
