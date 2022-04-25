@@ -157,14 +157,14 @@ funil <-
     ylab = "Erro padrão",
     back = "gray94",
     level = c(90, 95, 99),
-    shade = c("white", "aquamarine", "aquamarine3"),
+    shade = c("white", "#82c236", "#009c7e"),
     hlines = "white",
     lty = 2,
     pch = 19,
     col = 25,
     label = FALSE,
     offset = 0.1,
-    legend = FALSE,
+    legend = TRUE,
     ci.res = 1000,
     cex.lab = 1.7, 
     cex.axis = 1.5
@@ -179,8 +179,6 @@ funil2 <-
     xlab = "Tamanho de efeito",
     ylab = "1/√n",
     back = "gray94",
-    level = c(90, 95, 99),
-    shade = c("white", "aquamarine", "aquamarine3"),
     hlines = "white",
     lty = 2,
     pch = 19,
@@ -220,7 +218,7 @@ funil_ef1 <- metafor::funnel(
   ylab = "Erro padrão",
   back = "gray94",
   level = c(90, 95, 99),
-  shade = c("white", "aquamarine", "aquamarine3"),
+  shade = c("white", "#82c236", "#009c7e"),
   hlines = "white",
   lty = 2,
   pch = 19,
@@ -1844,8 +1842,9 @@ metareg_quali_r
 
 # ano x qualidade
 
-metareg_ano_quali <- rma(yi, vi, mods = ~ pont_quali + year, data = Efeito) 
+metareg_ano_quali <- rma(yi, vi, mods = ~ species + year, data = Efeito) 
 metareg_ano_quali
+
 plot_metareg_ano <- regplot(metareg_ano_quali, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
 
 
