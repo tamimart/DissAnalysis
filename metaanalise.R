@@ -81,7 +81,7 @@ print(poder_geral)
 plot_mpower(poder_geral)
 
 
-# Plot e save forestplot - MELHOR
+# Plot e save forestplot 
 
 pdf("Fig/floresta_toda.pdf", height = 120, width = 25)
 
@@ -133,7 +133,7 @@ dev.off()
 
 #ver que estudos estao influenciando em diversos aspectos -video Quintana
 # 
-# baujat(Teste)
+baujat(Teste, symbol = 19)
 # inf <- influence(Teste)
 # print(inf)
 # plot(inf)
