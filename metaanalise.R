@@ -132,13 +132,13 @@ dev.off()
 
 # Análise de sensibilidade ------------------------------------
 
-#ver que estudos estao influenciando em diversos aspectos 
+# verificar outliers e casos influentes
 
 png("Fig/baujat.png")
-
 baujat(Teste, symbol = "slab") # xaxis = indica se o estudo é um outlier e yaxis mostra a influencia do estudo sobre o resultado
-
 dev.off() 
+
+# ver quais estudos estao influenciando em diversos aspectos 
 
 pdf("Fig/influence.pdf")
 inf <- influence(Teste)
@@ -291,22 +291,152 @@ wf <- weightfunct(Efeito$yi, Efeito$vi, table = TRUE)
 
 wf
 
-# calcular o poder dos estudos incluidos na MA 
-#calculo do CI e inserçao na planilha como duas colunas - NAO SEI SE TA CERTO
+# Vies de publicacao POR ESPECIE
 
-# 
-# lowerCI <- exp(Efeito$yi - 1.96*sqrt(Efeito$vi))
-# upperCI <- exp(Efeito$yi + 1.96*sqrt(Efeito$vi))
-# 
-# Efeito <- mutate(Efeito, ESlowerCI = lowerCI, ESupperCI = upperCI)
-# 
-# #isolando essas tres colunas num novo dataframe
-# 
-# parapoder <- select(Efeito, yi, ESlowerCI, ESupperCI)
-# 
-# poder <- mapower_ul(dat = parapoder, observed_es = 1.7483, name = "TESTE")
-# 
-# Teste
+Teste_mice <- rma(yi, vi, subset = (species == "mice"), data = Efeito)
+
+regtest(Teste_mice, model = "rma", predictor = "sei")
+regtest(Teste_mice, model = "rma", predictor = "sqrtninv")
+
+Teste_rat <- rma(yi, vi, subset = (species == "rat"), data = Efeito)
+regtest(Teste_rat, model = "rma", predictor = "sei")
+regtest(Teste_rat, model = "rma", predictor = "sqrtninv")
+
+# [trim and fill]
+
+faltantes_m <- metafor::trimfill(Teste_mice, side = "left", estimator = "R0", maxiter = 100, verbose = FALSE) #R0 preferivel quando a MA tem >k Rothstein HR, Sutton AJ, Borenstein M. Publication Bias in Meta-Analysis: Prevention, Assessment and Adjustments. Chichester, UK: John Wiley & Sons; 2005. An advantage of estimator "R0" is that it provides a test of the null hypothesis that the number of missing studies (on the chosen side) is zero
+faltantes_r <- metafor::trimfill(Teste_rat, side = "left", estimator = "R0", maxiter = 100, verbose = FALSE) #R0 preferivel quando a MA tem >k Rothstein HR, Sutton AJ, Borenstein M. Publication Bias in Meta-Analysis: Prevention, Assessment and Adjustments. Chichester, UK: John Wiley & Sons; 2005. An advantage of estimator "R0" is that it provides a test of the null hypothesis that the number of missing studies (on the chosen side) is zero
+
+faltantes_m
+faltantes_r 
+
+
+print(faltantes)
+
+png("Fig/funil_esp.png", height = 900, width = 1200)
+
+par(mfrow = c(2, 2), oma = c(0,1,0,0))
+
+funil_esp1_m <- metafor::funnel(
+  faltantes_m,
+  yaxis = "sei",
+  addtau2 = FALSE,
+  main = "Camundongo",
+  xlab = "Tamanho de efeito",
+  ylab = "Erro padrão",
+  back = "gray94",
+  level = c(90, 95, 99),
+  shade = c("white", "#ff9400", "#FE7700"),
+  hlines = "white",
+  xlim = c(-60,60),
+  ylim = c(13,0), 
+  lty = 2,
+  pch = 19,
+  pch.fill = 1,
+  col = 25,
+  label = "F",
+  offset = 0.1,
+  legend = "topright",
+  ci.res = 1000,
+  cex.lab = 1.7, 
+  cex.axis = 1.5,
+  cex.main = 2.2
+)
+
+funil_esp1_r <- metafor::funnel(
+  faltantes_r,
+  yaxis = "sei",
+  addtau2 = FALSE,
+  main = "Rato",
+  xlab = "Tamanho de efeito",
+  ylab = "Erro padrão",
+  back = "gray94",
+  level = c(90, 95, 99),
+  shade = c("white", "#ec2b2b", "#a6243a"),
+  hlines = "white",
+  xlim = c(-60,60),
+  ylim = c(13,0), 
+  lty = 2,
+  pch = 19,
+  pch.fill = 1,
+  col = 25,
+  label = "F",
+  offset = 0.1,
+  legend = "topright",
+  ci.res = 1000,
+  cex.lab = 1.7, 
+  cex.axis = 1.5,
+  cex.main = 2.2
+)
+
+funil_esp2_m <- metafor::funnel(
+  faltantes_m,
+  yaxis = "sqrtninv",
+  addtau2 = FALSE,
+  xlab = "Tamanho de efeito",
+  ylab = "1/√n",
+  back = "gray94",
+  level = c(90, 95, 99),
+  shade = c("white", "#ff9400", "#FE7700"),
+  hlines = "white",
+  xlim = c(-60,60),
+  ylim = c(0.400,0.100), 
+  lty = 2,
+  pch = 19,
+  pch.fill = 1,
+  col = 25,
+  label = "F",
+  offset = 0.1,
+  legend = "topright",
+  ci.res = 1000,
+  cex.lab = 1.7, 
+  cex.axis = 1.5
+)
+
+funil_esp2_r <- metafor::funnel(
+  faltantes_r,
+  yaxis = "sqrtninv",
+  addtau2 = FALSE,
+  xlab = "Tamanho de efeito",
+  ylab = "1/√n",
+  back = "gray94",
+  level = c(90, 95, 99),
+  shade = c("white", "#a6243a", "#ec2b2b"),
+  hlines = "white",
+  xlim = c(-60,60),
+  ylim = c(0.400,0.100), 
+  lty = 2,
+  pch = 19,
+  pch.fill = 1,
+  col = 25,
+  label = "F",
+  offset = 0.1,
+  legend = "topright",
+  ci.res = 1000,
+  cex.lab = 1.7, 
+  cex.axis = 1.5
+)
+
+dev.off()
+
+
+# [weight function model]
+#Teste especcifico para publication bias - aumenta o peso dos estudos que sao menos provaveis de serem publicados e diminiu o peso daqueles que sao mais provaveis de serem publicados - baseado no valor de p
+#likehood test alfa 0.10
+
+wmice <- Efeito %>% 
+  filter(species == "mice")
+
+wfm <- weightfunct(wmice$yi, wmice$vi, table = TRUE)
+
+wfm
+
+wrat <- Efeito %>% 
+  filter(species == "rat")
+
+wfr <- weightfunct(wrat$yi, wrat$vi, table = TRUE)
+
+wfr
 
 # outra forma
 
