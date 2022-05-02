@@ -438,6 +438,7 @@ wfr <- weightfunct(wrat$yi, wrat$vi, table = TRUE)
 
 wfr
 
+
 # outra forma
 
 library(metaviz)
