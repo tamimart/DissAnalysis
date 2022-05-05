@@ -150,7 +150,9 @@ tinf$id <- Efeito$line # add coluna de id
 tinf$sr <- Efeito$study_reference # add coluna de referencia
 write_xlsx(tinf,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\influence.xlsx") # salvar em excel
 
-leave1 <- leave1out(Teste, transf = exp, digits = 3) #colocar resultado num objeto
+
+# rodar de novo
+leave1 <- leave1out(Teste, digits = 3) #colocar resultado num objeto
 leave1df <- as.data.frame(leave1) #transformar obj lista em df
 final_df <- as.data.frame(t(leave1df)) # inverter linhas e colunas
 copia_final_df <- final_df # fazer uma copia
@@ -159,7 +161,6 @@ copia_final_df <- copia_final_df %>%
   select(rn, everything()) # trazer coluna dos nomes para frente do df
 
 write_xlsx(copia_final_df, "C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\leave1.xlsx") # salvar em excel
-
 
 # Análise de Vies de publicação -----------------------------------
 
