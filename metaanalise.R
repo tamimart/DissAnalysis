@@ -132,7 +132,7 @@ dev.off()
 
 # Análise de sensibilidade ------------------------------------
 
-# verificar outliers e casos influentes
+# verificar outliers e casos influentes - nao esta na dissertacao
 
 png("Fig/baujat.png")
 baujat(Teste, symbol = "slab") # xaxis = indica se o estudo é um outlier e yaxis mostra a influencia do estudo sobre o resultado
@@ -146,22 +146,19 @@ plot(inf, layout = c(8,1))
 dev.off()
 
 tinf <- print(inf) # criar tabela com os resultados
-tinf$id <- Efeito$id # add coluna de id
+tinf$id <- Efeito$line # add coluna de id
 tinf$sr <- Efeito$study_reference # add coluna de referencia
 write_xlsx(tinf,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\influence.xlsx") # salvar em excel
 
-leave1out(Teste, transf = exp, digits = 3)
+leave1 <- leave1out(Teste, transf = exp, digits = 3) #colocar resultado num objeto
+leave1df <- as.data.frame(leave1) #transformar obj lista em df
+final_df <- as.data.frame(t(leave1df)) # inverter linhas e colunas
+copia_final_df <- final_df # fazer uma copia
+copia_final_df$rn <- row.names(final_df) # adicionar nome das linhas como coluna na copia
+copia_final_df <- copia_final_df %>%
+  select(rn, everything()) # trazer coluna dos nomes para frente do df
 
-
-tt <- Efeito %>% 
-   sample_n(10)
-# 
-ttefeito <- rma(yi, vi, data = tt)
-# 
-# leave1out(ttefeito, transf = exp, digits = 3)
-baujat(ttefeito, symbol = "slab")
-# inf <- influence(ttefeito)
-# plot(inf)
+write_xlsx(copia_final_df, "C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\leave1.xlsx") # salvar em excel
 
 
 # Análise de Vies de publicação -----------------------------------
