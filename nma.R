@@ -14,10 +14,10 @@ library(dmetar)
 library(gridExtra)
 
 # devtools::install_github("MathiasHarrer/dmetar") # rodar uma vez só
-library(dmetar)
 
-# Preparo do df - rodar uma vez só
-# ler planilha
+
+# # Preparo do df - rodar uma vez só
+# # ler planilha
 # 
 # df <- read_excel("data/Data_200FST.xlsx") # Carregar planilha
 # 
@@ -40,23 +40,23 @@ library(dmetar)
 # 
 # # Set homogeneo para camundongo
 # 
-# df_c <- df %>% 
+# df_c <- df %>%
 #   mutate(atd_type = as.factor(atd_type),
-#          comparator = as.factor(comparator)) %>% 
+#          comparator = as.factor(comparator)) %>%
 #   filter(species == "mice",
 #          sex == "M",
 #          strain == "swiss",
 #          model_phenotype == "NA",
 #          bioterium_lightcycle == "12/12 normal",
-#          fst_protocol == "test6score4") %>% 
-#   group_by(label, atd_type) %>% 
+#          fst_protocol == "test6score4") %>%
+#   group_by(label, atd_type) %>%
 #   slice_tail() #fica a maior dose se o tratamento for repetido numa mesma publicacao
 # 
 # 
 # write_xlsx(df_c,"data/df_c.xlsx") # salvar em excel
-
-# Set homogeneo para rato
-
+# 
+# # Set homogeneo para rato
+# 
 # df_r <- df %>%
 #    mutate(atd_type = as.factor(atd_type),
 #           comparator = as.factor(comparator)) %>%
@@ -65,7 +65,7 @@ library(dmetar)
 #           strain == "wistar",
 #           model_phenotype == "NA",
 #           bioterium_lightcycle == "12/12 normal",
-#           fst_protocol == "pre15test5") %>%
+#           fst_protocol == "pre15test5") %>% 
 #    group_by(label, atd_type) %>%
 #    slice_tail() #fica a maior dose se o tratamento for repetido numa mesma publicacao
 # 
@@ -80,6 +80,10 @@ df_c <- read_excel("data/df_c.xlsx")
 
 # MUDAR NOME DOS TRATAMENTOS
 
+df_c <- df_c %>% 
+  mutate(atd_type = as.factor(atd_type),
+                 comparator = as.factor(comparator))
+
 levels(df_c$atd_type)[match("nortriptyline", levels(df_c$atd_type))] <- "nortriptilina"
 levels(df_c$atd_type)[match("imipramine", levels(df_c$atd_type))] <- "imipramina"
 levels(df_c$atd_type)[match("fluoxetine", levels(df_c$atd_type))] <- "fluoxetina"
@@ -87,6 +91,7 @@ levels(df_c$atd_type)[match("amitriptyline", levels(df_c$atd_type))] <- "amitrip
 levels(df_c$comparator)[match("vehicle", levels(df_c$comparator))] <- "veículo"
 levels(df_c$comparator)[match("imipramine", levels(df_c$comparator))] <- "imipramina"
 
+df_c$atd_type
 # Calcular tamanho de efeito em SDM hedges g - formato t1 - t2 
 
 Efeito_c <- escalc(measure = "SMD", n2i = ctr_n_corr, n1i = atd_n_round, m2i = ctr_mean, m1i = atd_mean, 
@@ -116,15 +121,17 @@ nma_c <- netmeta(
   treat1 = comparator,
   treat2 = atd_type,
   sm = "SMD",
+  method.tau = "REML",
   random = TRUE,
   fixed = FALSE,
   details.chkmultiarm = TRUE,
   tol.multiarm = .5,
   tol.multiarm.se = .5,
-  reference.group = "vehicle",
+  reference.group = "veículo",
   sep.trts = " vs ",
-  small = "bad"
-)
+  small = "good",
+  method = "Inverse"
+  )
 
 nma_c
 
@@ -135,19 +142,19 @@ decomp.design(nma_c)
 
 # plot: definir rótulos e entrada do tamanho da amostra
 
-nma_c$trts <- c("amitriptilina", "citalopram", "fluoxetina", "imipramina", "nortriptilina", "Veículo")
-
-n_atd_c <- Efeito_c %>% 
+Efeito_c %>% 
   group_by(atd_type) %>% 
   summarise(sum(atd_n_round)) # acessar total n de acada tratamento
 
-n_ctr_c <- Efeito_c %>% 
+Efeito_c %>% 
   group_by(comparator) %>% 
   summarise(sum(ctr_n_corr)) # acessar total n de acada tratamento
 
-pointsizes <- c(34, 8, 10, 60, 38, 97) # add n de cada tratamento na ordem do rotulo 
+pointsizes <- c(34, 8, 10, 65, 38, 97) # add n de cada tratamento na ordem do rotulo 
 
-sqrtpointsizes <- sqrt(pointsizes / 5)
+sqrtpointsizes <- sqrt(pointsizes / 2)
+
+png("Fig/rede_c.png", height = 600, width = 600)
 
 netgraph(
   nma_c,
@@ -164,6 +171,8 @@ netgraph(
   iterate = FALSE,
   seq = nma_c$trts
 )
+
+dev.off()
 
 # em 3d
 
@@ -187,12 +196,16 @@ netgraph(
 
 # visualizacao de evi direta e indireta
 
-d.evidence <- direct.evidence.plot(nma_c)
+
+d.evidence <- direct.evidence.plot(nma_c, random = TRUE)
+
 
 d.evidence
 
 
-# rank NMA estimates using P-scores (R?cker & Schwarzer, 2015) 
+# rank NMA estimates using P-scores (R?cker & Schwarzer, 2015) - aqui o parametro de smallvalues é inverso (pq é referente aos valores obtidos no objetivo nma_c)
+
+png("Fig/ranking_c.png", height = 400, width = 600)
 
 randomnetrank <- netrank(nma_c, small.values = "bad")
 
@@ -201,7 +214,7 @@ randomnetrank
 plot(
   name = "Ranqueamento",
   randomnetrank,
-  comb.random = TRUE,
+  random = TRUE,
   col = "black",
   low = "#ec2b2b",
   high = "#82c236",
@@ -214,31 +227,34 @@ plot(
   nchar.trts = 12,
   main.face = "bold",
   axis.size = 12
-  
 )
 
+dev.off()
 
-# Forestplot com todos tratammentos versus controle
+# Forestplot com todos tratammentos versus controle - aqui o parametro de smallvalues é inverso
+
+png("Fig/forest_nma_c.png", height = 400, width = 600)
 
 forest(nma_c,
        leftcols = c("studlab", "k", "pscore"),
-       small.values = "good",
+       small.values = "bad",
        sortva = Pscore,
-       reference.group = "vehicle",
+       reference.group = "veículo",
        drop.reference.group = TRUE,
        equal.size = FALSE,
        label.left = "Favorece veículo",
        label.right = "Favorece antidepressivo",
        smlab = paste("Antidepressivos vs Veículo \n", "Imobilidade"))
 
-
+dev.off()
 
 # TABELA COM COMPARACOES
-# POSITO em favor da coluna, NEGATIVO em favor da linha
+# POSITIVO em favor da coluna, NEGATIVO em favor da linha
 
 compable_c <- netleague(nma_c, 
                       bracket = "(",
-                      digits = 2)
+                      digits = 2,
+                      seq = randomnetrank)
 
 compable_c
 
@@ -249,36 +265,45 @@ write_xlsx(compable_c$random, "data/tablenma_c.xlsx")
 
 netcontrib(nma_c)
 
-# netheat
-
-netheat(nma_c, nchar.trts = 6, showall = F, random = TRUE, seq = nma_c$trts)
-
-dev.off()
-
+netheat(nma_c, nchar.trts	= 5, random = TRUE)
 
 
 # Teste de consistencia entre evidencia direta e indireta 
 # using node-splitting (Dias et al., 2010)
 
-randomsplitobject <- netsplit(nma_c)
+randomsplitobject <- netsplit(nma_c, digits = 2)
 randomsplitobject
 
 netsplit(nma_c) %>% forest(label.left = "Favorece 2º tratamento",
                          label.right = "Favorece 1º tratamento")
 
-
 # NMA RATOS ----- 
 
-df_r <- read_excel("data/df_c.xlsx")
+df_r <- read_excel("data/df_r.xlsx")
 
 
 # MUDAR NOME DOS TRATAMENTOS
 
-levels(df_r$atd_type)[match("nortriptyline", levels(df_r$atd_type))] <- "nortriptilina"
+df_r <- df_r %>% 
+  mutate(atd_type = as.factor(atd_type),
+         comparator = as.factor(comparator))
+
+df_r$comparator
+
+
 levels(df_r$atd_type)[match("imipramine", levels(df_r$atd_type))] <- "imipramina"
 levels(df_r$atd_type)[match("fluoxetine", levels(df_r$atd_type))] <- "fluoxetina"
 levels(df_r$atd_type)[match("amitriptyline", levels(df_r$atd_type))] <- "amitriptilina"
+levels(df_r$atd_type)[match("mianserin", levels(df_r$atd_type))] <- "mianserina"
+levels(df_r$atd_type)[match("clomipramine", levels(df_r$atd_type))] <- "clomipramina"
+levels(df_r$atd_type)[match("fluvoxamine", levels(df_r$atd_type))] <- "fluvoxamina"
+levels(df_r$atd_type)[match("desipramine", levels(df_r$atd_type))] <- "desipramina"
+levels(df_r$atd_type)[match("amoxapine", levels(df_r$atd_type))] <- "amoxapina"
+
 levels(df_r$comparator)[match("vehicle", levels(df_r$comparator))] <- "veículo"
+levels(df_r$comparator)[match("amitriptyline", levels(df_r$comparator))] <- "amitriptilina"
+levels(df_r$comparator)[match("clomipramine", levels(df_r$comparator))] <- "clomipramina"
+levels(df_r$comparator)[match("desipramine", levels(df_r$comparator))] <- "desipramina"
 levels(df_r$comparator)[match("imipramine", levels(df_r$comparator))] <- "imipramina"
 
 # Calcular tamanho de efeito em SDM hedges g - formato t1 - t2 
@@ -297,10 +322,13 @@ Efeito_r <- Efeito_r %>%
 
 Efeito_r <- Efeito_r %>% 
   mutate(seTE = sqrt(Efeito_r$vi)/sqrt(Efeito_r$N)) # criar nova variavel transformando variancia em SE
-
+ 
 as.matrix(table(Efeito_r$label))
 
 # meta-analise em rede
+
+png("Fig/rede_r.png", height = 600, width = 600)
+
 
 nma_r <- netmeta(
   data = Efeito_r,
@@ -310,18 +338,18 @@ nma_r <- netmeta(
   treat1 = comparator,
   treat2 = atd_type,
   sm = "SMD",
+  method.tau = "REML",
   random = TRUE,
   fixed = FALSE,
-  details.chkmultiarm = TRUE,
-  tol.multiarm = .5,
-  tol.multiarm.se = .5,
-  reference.group = "vehicle",
+  tol.multiarm = 3,
+  tol.multiarm.se = 3,
+  reference.group = "veículo",
   sep.trts = " vs ",
-  small = "bad"
+  small = "good",
+  method = "Inverse"
 )
 
-nma_r
-
+dev.off()
 
 # calcular a inconsistência total com base no modelo completo de efeitos aleatórios de interação de design por tratamento
 
@@ -329,19 +357,20 @@ decomp.design(nma_r)
 
 # plot: definir rótulos e entrada do tamanho da amostra
 
-nma_r$trts <- c("amitriptilina", "citalopram", "fluoxetina", "imipramina", "nortriptilina", "Veículo")
 
-n_atd_r <- Efeito_r %>% 
+Efeito_r %>% 
   group_by(atd_type) %>% 
   summarise(sum(atd_n_round)) # acessar total n de acada tratamento
 
-n_ctr_r <- Efeito_r %>% 
+Efeito_r %>% 
   group_by(comparator) %>% 
   summarise(sum(ctr_n_corr)) # acessar total n de acada tratamento
 
-pointsizes <- c(34, 8, 10, 60, 38, 97) # add n de cada tratamento na ordem do rotulo 
+pointsizes <- c(56, 30, 16, 50, 96, 97, 30, 198, 60, 234) # add n de cada tratamento na ordem do rotulo 
 
-sqrtpointsizes <- sqrt(pointsizes / 5)
+sqrtpointsizes <- sqrt(pointsizes / 2)
+
+png("Fig/rede_r.png", height = 600, width = 600)
 
 netgraph(
   nma_r,
@@ -352,12 +381,14 @@ netgraph(
   multiarm = FALSE,
   thickness = "number.of.studies",
   plastic = FALSE,
-  col = "#ff9400",
-  col.points = "orangered2",
+  col = "#ec2b2b",
+  col.points = "#a6243a",
   start = "circle",
   iterate = FALSE,
   seq = nma_r$trts
 )
+
+dev.off()
 
 # em 3d
 
@@ -381,7 +412,7 @@ netgraph(
 
 # visualizacao de evi direta e indireta
 
-d.evidence <- direct.evidence.plot(nma_r)
+d.evidence <- direct.evidence.plot(nma_r, random = TRUE)
 
 d.evidence
 
@@ -390,12 +421,14 @@ d.evidence
 
 randomnetrank <- netrank(nma_r, small.values = "bad")
 
+png("Fig/ranking_r.png", height = 400, width = 600)
+
 randomnetrank
 
 plot(
   name = "Ranqueamento",
   randomnetrank,
-  comb.random = TRUE,
+  random = TRUE,
   col = "black",
   low = "#ec2b2b",
   high = "#82c236",
@@ -411,32 +444,36 @@ plot(
   
 )
 
+dev.off()
 
 # Forestplot com todos tratammentos versus controle
 
+png("Fig/forest_nma_r.png", height = 400, width = 600)
+
 forest(nma_r,
        leftcols = c("studlab", "k", "pscore"),
-       small.values = "good",
+       small.values = "bad",
        sortva = Pscore,
-       reference.group = "vehicle",
+       reference.group = "veículo",
        drop.reference.group = TRUE,
        equal.size = FALSE,
        label.left = "Favorece veículo",
        label.right = "Favorece antidepressivo",
        smlab = paste("Antidepressivos vs Veículo \n", "Imobilidade"))
 
-
+dev.off()
 
 # TABELA COM COMPARACOES
 # POSITO em favor da coluna, NEGATIVO em favor da linha
 
 compable_r <- netleague(nma_r, 
                         bracket = "(",
-                        digits = 2)
+                        digits = 2,
+                        seq = randomnetrank)
 
 compable_r
 
-write_xlsx(compable_r$random, "data/tablenma_c.xlsx")
+write_xlsx(compable_r$random, "data/tablenma_r.xlsx")
 
 
 # ver como comparações contribuiram  para as outras )
@@ -445,7 +482,9 @@ netcontrib(nma_r)
 
 # netheat
 
-netheat(nma_r, nchar.trts = 6, showall = F, random = TRUE, seq = nma_r$trts)
+png("Fig/heat_r.png", height = 800, width = 800)
+
+netheat(nma_r, nchar.trts = 8, reference = "veículo", random = TRUE, seq = nma_r$trts, cex = 10)
 
 dev.off()
 
@@ -457,6 +496,10 @@ dev.off()
 randomsplitobject <- netsplit(nma_r)
 randomsplitobject
 
-netsplit(nma_r) %>% forest(label.left = "Favorece 2º tratamento",
+png("Fig/split_r.png", height = 1200, width = 600)
+
+netsplit(nma_r) %>% forest(show = "with.direct",
+                           label.left = "Favorece 2º tratamento",
                            label.right = "Favorece 1º tratamento")
 
+dev.off()
