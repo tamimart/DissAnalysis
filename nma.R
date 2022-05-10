@@ -503,3 +503,45 @@ netsplit(nma_r) %>% forest(show = "with.direct",
                            label.right = "Favorece 1º tratamento")
 
 dev.off()
+
+# Preparar dfs para CINeMA
+
+
+cinema_c <- df_c %>%
+  select(label, comparator, atd_type, ctr_mean, atd_mean, ctr_sd, atd_sd, ctr_n_corr, atd_n_round) %>% 
+  rename(id = label,
+         t1 = comparator,
+         y1 = ctr_mean,
+         sd1 = ctr_sd,
+         n1 = ctr_n_corr,
+         t2 = atd_type,
+         y2 = atd_mean,
+         sd2 = atd_sd,
+         n2 = atd_n_round)
+
+
+
+cinema_c$rob <- c("M","M","M","M","H","M","M","M","M","M","M","L","L")
+cinema_c$Indirectness <- 1  
+  
+write_csv(cinema_c,"data/cinema_c.csv") # salvar em excel
+
+
+
+cinema_r <- df_r %>%
+  select(label, comparator, atd_type, ctr_mean, atd_mean, ctr_sd, atd_sd, ctr_n_corr, atd_n_round) %>% 
+  rename(id = label,
+         t1 = comparator,
+         y1 = ctr_mean,
+         sd1 = ctr_sd,
+         n1 = ctr_n_corr,
+         t2 = atd_type,
+         y2 = atd_mean,
+         sd2 = atd_sd,
+         n2 = atd_n_round)
+
+
+cinema_r$rob <- c()
+cinema_r$Indirectness <- 1  
+
+write_csv(cinema_r,"data/cinema_r.csv") # salvar em excel
