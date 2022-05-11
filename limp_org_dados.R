@@ -208,6 +208,19 @@ marg_water_temperature <- marg_water_temperature %>%
   mutate(b = coalesce(marg_water_temperature$g, marg_water_temperature$v1)) %>% 
   select(b)
 
+# variavel water_depth
+
+marg_water_depth <- data_geral %>%
+  select(water_depth) %>% 
+  separate(col = water_depth, sep = "-", into = c("v1", "v2")) %>% 
+  mutate(v1 = as.numeric(v1),
+         v2 = as.numeric(v2)) 
+marg_water_depth <- marg_water_depth %>% 
+  mutate(g = ifelse(v2 != "NA", ((v1 + v2) / 2)))
+marg_water_depth <- marg_water_depth %>% 
+  mutate(b = coalesce(marg_water_depth$g, marg_water_depth$v1)) %>% 
+  select(b)
+
 # Transformar variaveis de acordo com suas caracteristicas: character, factor, numeric... -------
 # No caso das numericas, se havia texto, esses serao transformados em "NA".
 
@@ -231,7 +244,8 @@ data_geral <- data_geral %>%
          last_bf_outcome = as.numeric(last_bf_outcome),
          cylinder_height = as.numeric(cylinder_height),
          cylinder_diameter = as.numeric(cylinder_diameter),
-         water_depth = as.numeric(water_depth),
+         water_temperature = marg_water_temperature$b,
+         water_depth = marg_water_depth$b,
          comparator = as.factor(comparator),
          atd_class = as.factor(atd_class),
          atd_type = as.factor(atd_type),
@@ -264,7 +278,6 @@ data_geral <- data_geral %>%
          weight = marg_weight$b,
          bioterium_temp = marg_bioterium_temp$b,
          bioterium_umid = marg_bioterium_umid$b,
-         water_temperature = marg_water_temperature$b,
          bioterium_lightcycle = as.factor(bioterium_lightcycle)
          )
 
