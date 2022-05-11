@@ -15,8 +15,7 @@ library(gridExtra)
 
 # devtools::install_github("MathiasHarrer/dmetar") # rodar uma vez só
 
-
-# # Preparo do df - rodar uma vez só
+# # Preparo do df - RODAR UM VEZ SÓ
 # # ler planilha
 # 
 # df <- read_excel("data/Data_200FST.xlsx") # Carregar planilha
@@ -65,7 +64,7 @@ library(gridExtra)
 #           strain == "wistar",
 #           model_phenotype == "NA",
 #           bioterium_lightcycle == "12/12 normal",
-#           fst_protocol == "pre15test5") %>% 
+#           fst_protocol == "pre15test5") %>%
 #    group_by(label, atd_type) %>%
 #    slice_tail() #fica a maior dose se o tratamento for repetido numa mesma publicacao
 # 
@@ -263,9 +262,14 @@ write_xlsx(compable_c$random, "data/tablenma_c.xlsx")
 
 # ver como comparações contribuiram  para as outras )
 
-netcontrib(nma_c)
+nma_contrib_c <- netcontrib(nma_c)
 
-netheat(nma_c, nchar.trts	= 5, random = TRUE)
+nma_contrib_c <- as.data.frame(nma_contrib_c$random)
+nma_contrib_c$comp <- row.names(nma_contrib_c) # adicionar nome das linhas como coluna na copia
+nma_contrib_c <- nma_contrib_c %>%
+  select(comp, everything())
+
+write_xlsx(nma_contrib_c, "data/nma_contrib_c.xlsx")
 
 
 # Teste de consistencia entre evidencia direta e indireta 
@@ -274,8 +278,13 @@ netheat(nma_c, nchar.trts	= 5, random = TRUE)
 randomsplitobject <- netsplit(nma_c, digits = 2)
 randomsplitobject
 
-netsplit(nma_c) %>% forest(label.left = "Favorece 2º tratamento",
+png("Fig/split_c.png", height = 800, width = 600)
+
+netsplit(nma_c) %>% forest(show = "with.direct",
+                           label.left = "Favorece 2º tratamento",
                          label.right = "Favorece 1º tratamento")
+
+dev.off()
 
 # NMA RATOS ----- 
 
@@ -351,6 +360,8 @@ nma_r <- netmeta(
 
 dev.off()
 
+nma_r 
+
 # calcular a inconsistência total com base no modelo completo de efeitos aleatórios de interação de design por tratamento
 
 decomp.design(nma_r)
@@ -366,7 +377,7 @@ Efeito_r %>%
   group_by(comparator) %>% 
   summarise(sum(ctr_n_corr)) # acessar total n de acada tratamento
 
-pointsizes <- c(56, 30, 16, 50, 96, 97, 30, 198, 60, 234) # add n de cada tratamento na ordem do rotulo 
+pointsizes <- c(38, 30, 16, 38, 78, 97, 30, 186, 60, 234) # add n de cada tratamento na ordem do rotulo 
 
 sqrtpointsizes <- sqrt(pointsizes / 2)
 
@@ -478,7 +489,14 @@ write_xlsx(compable_r$random, "data/tablenma_r.xlsx")
 
 # ver como comparações contribuiram  para as outras )
 
-netcontrib(nma_r)
+nma_contrib_r <- netcontrib(nma_r) #CONFERIR DEPOIS
+
+nma_contrib_r <- as.data.frame(nma_contrib_r$random)
+nma_contrib_r$comp <- row.names(nma_contrib_r) # adicionar nome das linhas como coluna na copia
+nma_contrib_r <- nma_contrib_r %>%
+  select(comp, everything())
+
+write_xlsx(nma_contrib_r, "data/nma_contrib_r.xlsx")
 
 # netheat
 
