@@ -540,7 +540,7 @@ cinema_c <- df_c %>%
 
 
 cinema_c$rob <- c("M","M","M","M","H","M","M","M","M","M","M","L","L")
-cinema_c$Indirectness <- "H"  
+cinema_c$Indirectness <- "L"  
   
 write_csv(cinema_c,"data/cinema_c.csv") # salvar em excel
 
@@ -560,6 +560,6 @@ cinema_r <- df_r %>%
 
 
 cinema_r$rob <- c("M", "M", "M", "L", "L", "L", "M", "M", "M", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "L", "M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","L","L","L")
-cinema_r$Indirectness <- "H"
+cinema_r$Indirectness <- "L"
 
 write_csv(cinema_r,"data/cinema_r.csv") # salvar em excel
