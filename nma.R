@@ -522,7 +522,7 @@ cinema_c <- df_c %>%
 
 
 cinema_c$rob <- c("M","M","M","M","H","M","M","M","M","M","M","L","L")
-cinema_c$Indirectness <- 1  
+cinema_c$Indirectness <- "H"  
   
 write_csv(cinema_c,"data/cinema_c.csv") # salvar em excel
 
@@ -541,7 +541,7 @@ cinema_r <- df_r %>%
          n2 = atd_n_round)
 
 
-cinema_r$rob <- c()
-cinema_r$Indirectness <- 1  
+cinema_r$rob <- c("M", "M", "M", "L", "L", "L", "M", "M", "M", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "L", "M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","L","L","L")
+cinema_r$Indirectness <- "H"
 
 write_csv(cinema_r,"data/cinema_r.csv") # salvar em excel

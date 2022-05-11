@@ -656,11 +656,6 @@ model_npubli <- df %>% group_by(study_reference) %>%
   filter(model_phenotype != "NA") %>%   
   summarise(counts = n())   # calcular quantas publicaçoes são NA
 
-model_model <- df %>% group_by(study_reference) %>% 
-  distinct(study_reference, model_phenotype) %>% 
-  group_by(model_phenotype) %>%   
-  summarise(counts = n())   # calcular quantas publicaçoes são NA
-
 
 # Figura8
 

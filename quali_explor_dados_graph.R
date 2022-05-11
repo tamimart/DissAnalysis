@@ -1786,7 +1786,7 @@ f7a <- df %>%
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
   labs(y = "Nº de publicações", x = "Modelo") +
-  scale_fill_manual(values = c("#82c236", "#692b75")) +
+  scale_fill_manual(values = c("#82c236", "#006f9f", "#ff9400")) +
   coord_flip() +
   scale_y_continuous(limits = c(0, 8), expand = c(0, 0), n.breaks = 3) +
   facet_wrap( ~ species, strip.position = "top") +
@@ -1827,6 +1827,11 @@ df %>% group_by(model_phenotype, species) %>%
   filter(model_phenotype == "NA", ) %>%
   summarise(counts = n())  # calcular quanto estudos sao NA
 
+df %>% group_by(authors, model_phenotype, species) %>%
+  filter(model_phenotype != "NA") %>%
+  summarise(counts = n())
+
+
 f7b <- df %>%
   group_by(model_phenotype, species) %>%
   filter(model_phenotype != "NA", ) %>%
@@ -1839,7 +1844,7 @@ f7b <- df %>%
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
   labs(y = "Nº de estudos", x = "Modelo") +
-  scale_fill_manual(values = c("#f24a7a","#82c236", "#006f9f","#692b75")) +
+  scale_fill_manual(values = c("#f24a7a","#82c236","#692b75", "#ff9400")) +
   coord_flip() +
   scale_y_continuous(limits = c(0, 12), expand = c(0, 0), n.breaks = 4) +
   facet_wrap( ~ species, strip.position = "top") +
@@ -1894,7 +1899,7 @@ f7c <- df %>%
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
   labs(y = "Nº de animais", x = "Modelo animal") +
-  scale_fill_manual(values = c("#f24a7a", "#82c236","#006f9f", "#692b75", "#ff9400")) +
+  scale_fill_manual(values = c("#f24a7a", "#82c236","#006f9f", "#692b75", "#ff9400", "#ec2b2b")) +
   coord_flip() +
   scale_y_continuous(limits = c(0, 200), expand = c(0, 0)) +
   facet_wrap( ~ species, strip.position = "top") +
@@ -3912,7 +3917,7 @@ EEEEEEEEEEEEGGGGGGGGGGGGG
 
 
 f17 <- f17a1 + f17a2 + f17a3 + f17d + f17e + f17b + f17c + plot_layout(design = layout)
-
+f17
 
 save_plot(filename = "Figura17.png",
           plot = f17,

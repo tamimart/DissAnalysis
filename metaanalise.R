@@ -17,8 +17,8 @@ library(lubridate) # manipular datas
 library(weightr)   # testar vies de publicação
 library("devtools")# para baixar pacote remoto
 
-devtools::install_github("dsquintana/metameta") 
-library(metameta) # para calcular poder dos estudos incluidos
+#devtools::install_github("dsquintana/metameta") 
+#library(metameta) # para calcular poder dos estudos incluidos
 
 
 df <- read_excel("data/Data_200FST.xlsx") # Carregar planilha
@@ -140,15 +140,15 @@ dev.off()
 
 # ver quais estudos estao influenciando em diversos aspectos 
 
-pdf("Fig/influence.pdf")
+png("Fig/influence2.png")
 inf <- influence(Teste)
-plot(inf, layout = c(8,1))
+plot(inf)
 dev.off()
 
 tinf <- print(inf) # criar tabela com os resultados
 tinf$id <- Efeito$line # add coluna de id
 tinf$sr <- Efeito$study_reference # add coluna de referencia
-write_xlsx(tinf,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\influence.xlsx") # salvar em excel
+write_xlsx(tinf,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\influence2.xlsx") # salvar em excel
 
 
 # rodar de novo
@@ -160,7 +160,7 @@ copia_final_df$rn <- row.names(final_df) # adicionar nome das linhas como coluna
 copia_final_df <- copia_final_df %>%
   select(rn, everything()) # trazer coluna dos nomes para frente do df
 
-write_xlsx(copia_final_df, "C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\leave1.xlsx") # salvar em excel
+write_xlsx(copia_final_df, "C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\leave2.xlsx") # salvar em excel
 
 # Análise de Vies de publicação -----------------------------------
 
@@ -289,6 +289,7 @@ wf <- weightfunct(Efeito$yi, Efeito$vi, table = TRUE)
 
 wf
 
+
 # Vies de publicacao POR ESPECIE
 
 Teste_mice <- rma(yi, vi, subset = (species == "mice"), data = Efeito)
@@ -309,7 +310,6 @@ faltantes_m
 faltantes_r 
 
 
-print(faltantes)
 
 png("Fig/funil_esp.png", height = 900, width = 1200)
 
