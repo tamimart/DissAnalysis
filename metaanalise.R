@@ -1319,7 +1319,7 @@ par(mfrow = c(2, 2), oma = c(0,2,0,1))
 regplot(metareg_ano_c, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 2.3, cex.lab = 1.8, cex.axis = 1.8)
 regplot(metareg_ano_r, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"),  main = "Rato", cex.main = 2.3, cex.lab = 1.8, cex.axis = 1.8)
 regplot(metareg_quali_c, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 1.8, cex.axis = 1.8)
-regplot(metareg_quali_r, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 1.8, cex.axis = 1.8)
+regplot(metareg_quali_r, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 1.8, cex.axis = 1.8, xlim = c(0,7))
 
 dev.off()
 
