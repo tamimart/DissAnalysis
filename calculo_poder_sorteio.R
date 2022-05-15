@@ -24,5 +24,8 @@ kmestrado <- mpower(effect_size = .54166667, study_size = 6, k = 200, i2 = .90, 
 
 print(kmestrado) # mostrar resultados de poder 
 
+png("Fig/poder.png", height = 350, width = 600)
+
 plot_mpower(kmestrado) # plotar grafico do poder
 
+dev.off()

@@ -1204,6 +1204,14 @@ Teste_metmanual_r
 
 # [PUBLICATION] ----- 
 
+# revista revisada por pares
+
+rma(yi, vi, subset = (camarades1 == "Yes"), data = Efeito)
+
+# revista predatoria
+
+rma(yi, vi, subset = (camarades1 == "Unclear, predatory"), data = Efeito)
+
 # possibilidade para avaliar ano atraves de analise de subgrupo de periodos de tempo - ver com profa
 
 initial_m <- Efeito %>%
