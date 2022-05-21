@@ -29,3 +29,8 @@ png("Fig/poder.png", height = 350, width = 600)
 plot_mpower(kmestrado) # plotar grafico do poder
 
 dev.off()
+
+# possivel poder na comparacao de subgrupos para uma diferença de 0.5
+
+subgrupos <- subgroup_power(n_groups = 2, effect_size = c(0.1, 0.6), study_size = 14, k = 200, i2 = .90, es_type = "d") # calcular o poder 
+subgrupos
