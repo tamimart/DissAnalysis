@@ -1,4 +1,4 @@
-# Referência: ~ref da dissertação~
+# Referência: MARTINS, T. Efeito de antidepressivos em roedores no teste do nado forçado e influência de covariáveis: uma revisão sistemática e meta-análise. Orientador: Cilene Lino de Oliveira. Dissertação — Programa de Pós-Graduação em Farmacologia, Universidade Federal de Santa Catarina, Florianópolis, 2022.
 # ETAPA 1: Calculo do k (estudos) para alcançar poder de pelo menos 80%
 
 
