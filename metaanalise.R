@@ -285,7 +285,7 @@ funil_ef
 #Teste especcifico para publication bias - aumenta o peso dos estudos que sao menos provaveis de serem publicados e diminiu o peso daqueles que sao mais provaveis de serem publicados - baseado no valor de p
 #likehood test alfa 0.10
 
-wf <- weightfunct(Efeito$yi, Efeito$vi, table = TRUE)
+wf <- weightfunct(Efeito$yi, Efeito$vi, table = TRUE, steps = 0.05)
 
 wf
 
@@ -425,14 +425,14 @@ dev.off()
 wmice <- Efeito %>% 
   filter(species == "mice")
 
-wfm <- weightfunct(wmice$yi, wmice$vi, table = TRUE)
+wfm <- weightfunct(wmice$yi, wmice$vi, table = TRUE, steps = 0.05)
 
 wfm
 
 wrat <- Efeito %>% 
   filter(species == "rat")
 
-wfr <- weightfunct(wrat$yi, wrat$vi, table = TRUE)
+wfr <- weightfunct(wrat$yi, wrat$vi, table = TRUE, steps = 0.05)
 
 wfr
 
