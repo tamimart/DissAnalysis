@@ -285,10 +285,9 @@ funil_ef
 #Teste especcifico para publication bias - aumenta o peso dos estudos que sao menos provaveis de serem publicados e diminiu o peso daqueles que sao mais provaveis de serem publicados - baseado no valor de p
 #likehood test alfa 0.10
 
-wf <- weightfunct(Efeito$yi, Efeito$vi, table = TRUE, steps = 0.05)
+wf <- weightfunct(Efeito$yi, Efeito$vi, table = TRUE, steps = .05)
 
 wf
-
 
 # Vies de publicacao POR ESPECIE
 
@@ -1327,12 +1326,4 @@ metareg_ano_c
 metareg_ano_r
 metareg_quali_c
 metareg_quali_r
-
-# ano x qualidade
-
-metareg_ano_quali <- rma(yi, vi, mods = ~ species + year, data = Efeito) 
-metareg_ano_quali
-
-plot_metareg_ano <- regplot(metareg_ano_quali, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"))
-
 
