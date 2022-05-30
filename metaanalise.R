@@ -1135,6 +1135,14 @@ Teste_metvideo_m
 Teste_metmanual_m <- rma(yi, vi, subset = (measurement_method == "manually" & species == "mice"), data = Efeito)
 Teste_metmanual_m
 
+# other tests
+
+Teste_NOotherT_m <- rma(yi, vi, subset = (others_tests == "NA" & species == "mice" | others_tests == "No" & species == "mice"), data = Efeito)
+Teste_NOotherT_m
+
+Teste_otherT_m <- rma(yi, vi, subset = (others_tests != "NA" & others_tests != "No" & species == "mice"), data = Efeito)
+Teste_otherT_m
+
 # [rat] ----
 
 #protocol
@@ -1199,6 +1207,13 @@ Teste_metvideo_r
 Teste_metmanual_r <- rma(yi, vi, subset = (measurement_method == "manually" & species == "rat"), data = Efeito)
 Teste_metmanual_r
 
+# other tests
+
+Teste_NOotherT_r <- rma(yi, vi, subset = (others_tests == "NA" & species == "rat" | others_tests == "No" & species == "rat"), data = Efeito)
+Teste_NOotherT_r
+
+Teste_otherT_r <- rma(yi, vi, subset = (others_tests != "NA" & others_tests != "No" & species == "rat"), data = Efeito)
+Teste_otherT_r
 
 
 # [PUBLICATION] ----- 
