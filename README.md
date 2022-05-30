@@ -10,6 +10,7 @@ ETAPA 5: quali_explor_dados_graph
 ETAPA 6: quali_explor_dados  
 ETAPA 7: qualidade_rob  
 ETAPA 8: metaanalise  
+ETAPA 9: nma
 
 obs: Os códigos da etapa 4 em diante necessariamente precisam ser tratados na etapa 3.  
 
