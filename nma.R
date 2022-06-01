@@ -536,7 +536,7 @@ cinema_c <- df_c %>%
 
 
 
-cinema_c$rob <- c("M","M","M","M","H","M","M","M","M","M","M","M","M")
+cinema_c$rob <- c("M","M","M","M","M","M","M","M","M","M","M","M","M")
 cinema_c$Indirectness <- "L"  
   
 write_csv(cinema_c,"data/cinema_c.csv") # salvar em excel
