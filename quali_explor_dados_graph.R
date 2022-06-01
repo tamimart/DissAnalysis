@@ -11,7 +11,7 @@ library(gghighlight)  # destacar nos plots
 library(MetBrewer)    # dar cor
 library(ggtext)       # adicionar texto 
 library(cowplot)      # salvar plot
-library(ggrepel)      # dicionar rotulo
+library(ggrepel)      # adicionar rotulo
 library(ggmap)        # plotar mapa
 library(skimr)        # resumir estatistica
 library(extrafont)    # adicionar fontes

@@ -9,7 +9,7 @@ library(readxl)    # ler arquivo do excel
 library(writexl)   # salvar excel
 library(esc)       # calcular tamano de efeito
 library(lubridate) # manipular datas
-library(netmeta)
+library(netmeta)   # para ma em rede
 library(dmetar)
 library(gridExtra)
 
@@ -159,7 +159,7 @@ netgraph(
   nma_c,
   labels = nma_c$trts,
   points = TRUE,
-  cex = 1,
+  cex = 1.5,
   cex.points = sqrtpointsizes,
   multiarm = FALSE,
   thickness = "number.of.studies",
@@ -237,7 +237,7 @@ png("Fig/forest_nma_c.png", height = 400, width = 600)
 forest(nma_c,
        leftcols = c("studlab", "k", "pscore"),
        small.values = "bad",
-       sortva = Pscore,
+       sortva = -Pscore,
        reference.group = "veículo",
        drop.reference.group = TRUE,
        equal.size = FALSE,
@@ -336,8 +336,6 @@ as.matrix(table(Efeito_r$label))
 
 # meta-analise em rede
 
-png("Fig/rede_r.png", height = 600, width = 600)
-
 
 nma_r <- netmeta(
   data = Efeito_r,
@@ -350,15 +348,14 @@ nma_r <- netmeta(
   method.tau = "REML",
   random = TRUE,
   fixed = FALSE,
-  tol.multiarm = 3,
-  tol.multiarm.se = 3,
+  tol.multiarm = 1,
+  tol.multiarm.se = .5,
   reference.group = "veículo",
   sep.trts = " vs ",
   small = "good",
   method = "Inverse"
 )
 
-dev.off()
 
 nma_r 
 
@@ -387,7 +384,7 @@ netgraph(
   nma_r,
   labels = nma_r$trts,
   points = TRUE,
-  cex = 1,
+  cex = 1.5,
   cex.points = sqrtpointsizes,
   multiarm = FALSE,
   thickness = "number.of.studies",
@@ -464,7 +461,7 @@ png("Fig/forest_nma_r.png", height = 400, width = 600)
 forest(nma_r,
        leftcols = c("studlab", "k", "pscore"),
        small.values = "bad",
-       sortva = Pscore,
+       sortva = -Pscore,
        reference.group = "veículo",
        drop.reference.group = TRUE,
        equal.size = FALSE,
@@ -500,9 +497,9 @@ write_xlsx(nma_contrib_r, "data/nma_contrib_r.xlsx")
 
 # netheat
 
-png("Fig/heat_r.png", height = 800, width = 800)
+png("Fig/heat_r.png", height = 700, width = 700)
 
-netheat(nma_r, nchar.trts = 8, reference = "veículo", random = TRUE, seq = nma_r$trts, cex = 10)
+netheat(nma_r, nchar.trts = 5, reference = "veículo", random = TRUE, seq = nma_r$trts, cex = 20)
 
 dev.off()
 
@@ -514,7 +511,7 @@ dev.off()
 randomsplitobject <- netsplit(nma_r)
 randomsplitobject
 
-png("Fig/split_r.png", height = 1200, width = 600)
+png("Fig/split_r.png", height = 1250, width = 600)
 
 netsplit(nma_r) %>% forest(show = "with.direct",
                            label.left = "Favorece 2º tratamento",
@@ -539,7 +536,7 @@ cinema_c <- df_c %>%
 
 
 
-cinema_c$rob <- c("M","M","M","M","H","M","M","M","M","M","M","L","L")
+cinema_c$rob <- c("M","M","M","M","H","M","M","M","M","M","M","M","M")
 cinema_c$Indirectness <- "L"  
   
 write_csv(cinema_c,"data/cinema_c.csv") # salvar em excel
@@ -559,7 +556,7 @@ cinema_r <- df_r %>%
          n2 = atd_n_round)
 
 
-cinema_r$rob <- c("M", "M", "M", "L", "L", "L", "M", "M", "M", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "L", "M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","L","L","L")
+cinema_r$rob <- c("M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M")
 cinema_r$Indirectness <- "L"
 
 write_csv(cinema_r,"data/cinema_r.csv") # salvar em excel
