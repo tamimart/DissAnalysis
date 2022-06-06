@@ -4,7 +4,6 @@
 # Carregar pacotes
 
 library(tidyverse) # manipulacao de dados
-library(metafor)   # pacota para rodar meta-análise
 library(readxl)    # ler arquivo do excel
 library(writexl)   # salvar excel
 library(esc)       # calcular tamano de efeito
@@ -13,8 +12,8 @@ library(netmeta)   # para ma em rede
 library(dmetar)
 library(gridExtra)
 
-# devtools::install_github("MathiasHarrer/dmetar") # rodar uma vez só
-
+# # devtools::install_github("MathiasHarrer/dmetar") # rodar uma vez só
+# 
 # # Preparo do df - RODAR UM VEZ SÓ
 # # ler planilha
 # 
@@ -50,7 +49,7 @@ library(gridExtra)
 #          fst_protocol == "test6score4") %>%
 #   group_by(label, atd_type) %>%
 #   slice_tail() #fica a maior dose se o tratamento for repetido numa mesma publicacao
-# 
+
 # 
 # write_xlsx(df_c,"data/df_c.xlsx") # salvar em excel
 # 
@@ -90,23 +89,18 @@ levels(df_c$atd_type)[match("amitriptyline", levels(df_c$atd_type))] <- "amitrip
 levels(df_c$comparator)[match("vehicle", levels(df_c$comparator))] <- "veículo"
 levels(df_c$comparator)[match("imipramine", levels(df_c$comparator))] <- "imipramina"
 
+
 df_c$atd_type
 # Calcular tamanho de efeito em SDM hedges g - formato t1 - t2 
 
-Efeito_c <- escalc(measure = "SMD", n2i = ctr_n_corr, n1i = atd_n_round, m2i = ctr_mean, m1i = atd_mean, 
-                 sd2i = ctr_sd, sd1i = atd_sd, data = df_c, 
-                 append = TRUE)
 
+Efeito_c <- pairwise(list(as.character(atd_type), as.character(comparator)),
+                   n = list(atd_n_round, ctr_n_corr),
+                   mean = list( atd_mean, ctr_mean),
+                   sd = list(atd_sd, ctr_sd),
+                   data = df_c, studlab = label, sm = "SMD")
 
-# mudar as colunas yi e vi pra TE e seTE
-
-Efeito_c <- Efeito_c %>% 
-  rename(TE = yi)
-
-# converter variancia em seTE em erro padrao
-
-Efeito_c <- Efeito_c %>% 
-  mutate(seTE = sqrt(Efeito_c$vi)/sqrt(Efeito_c$N)) # criar nova variavel transformando variancia em SE
+# ver quantos braços cada estudo
 
 as.matrix(table(Efeito_c$label))
 
@@ -125,7 +119,6 @@ nma_c <- netmeta(
   fixed = FALSE,
   details.chkmultiarm = TRUE,
   tol.multiarm = .5,
-  tol.multiarm.se = .5,
   reference.group = "veículo",
   sep.trts = " vs ",
   small = "good",
@@ -270,7 +263,7 @@ nma_contrib_c <- nma_contrib_c %>%
   select(comp, everything())
 
 write_xlsx(nma_contrib_c, "data/nma_contrib_c.xlsx")
-
+nma_contrib_c
 
 # Teste de consistencia entre evidencia direta e indireta 
 # using node-splitting (Dias et al., 2010)
@@ -317,21 +310,14 @@ levels(df_r$comparator)[match("imipramine", levels(df_r$comparator))] <- "imipra
 
 # Calcular tamanho de efeito em SDM hedges g - formato t1 - t2 
 
-Efeito_r <- escalc(measure = "SMD", n2i = ctr_n_corr, n1i = atd_n_round, m2i = ctr_mean, m1i = atd_mean, 
-                   sd2i = ctr_sd, sd1i = atd_sd, data = df_r, 
-                   append = TRUE)
 
+Efeito_r <- pairwise(list(as.character(atd_type), as.character(comparator)),
+                     n = list(atd_n_round, ctr_n_corr),
+                     mean = list( atd_mean, ctr_mean),
+                     sd = list(atd_sd, ctr_sd),
+                     data = df_r, studlab = label, sm = "SMD")
 
-# mudar as colunas yi e vi pra TE e seTE
-
-Efeito_r <- Efeito_r %>% 
-  rename(TE = yi)
-
-# converter variancia em seTE em erro padrao
-
-Efeito_r <- Efeito_r %>% 
-  mutate(seTE = sqrt(Efeito_r$vi)/sqrt(Efeito_r$N)) # criar nova variavel transformando variancia em SE
- 
+# ver quantos braços cada estudo
 as.matrix(table(Efeito_r$label))
 
 # meta-analise em rede
@@ -348,12 +334,13 @@ nma_r <- netmeta(
   method.tau = "REML",
   random = TRUE,
   fixed = FALSE,
-  tol.multiarm = 1,
-  tol.multiarm.se = .5,
+  tol.multiarm = 3,
+  tol.multiarm.se = 4,
   reference.group = "veículo",
   sep.trts = " vs ",
   small = "good",
   method = "Inverse"
+  #details.chkmultiarm = TRUE
 )
 
 
