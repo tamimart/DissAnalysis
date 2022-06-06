@@ -69,7 +69,8 @@ library(gridExtra)
 # 
 # write_xlsx(df_r,"data/df_r.xlsx") # salvar em excel
 
-# # IMPORTANTE =  abri o excel e copiei para uma nova linha todas possibilidades de comparacoes para estudos com mais de 2 braços
+
+# # IMPORTANTE =  abri o excel e copiei para novas colunas todas possibilidades de comparacoes para estudos com mais de 2 braços (formato wide), tambem exclui colunas desnecessarias
 
 # NMA CAMUNDONGOS ----- 
 
@@ -80,6 +81,7 @@ df_c <- read_excel("data/df_c.xlsx")
 
 df_c <- df_c %>% 
   mutate(atd_type = as.factor(atd_type),
+         atd_type2 = as.factor(atd_type2),
                  comparator = as.factor(comparator))
 
 levels(df_c$atd_type)[match("nortriptyline", levels(df_c$atd_type))] <- "nortriptilina"
@@ -87,19 +89,21 @@ levels(df_c$atd_type)[match("imipramine", levels(df_c$atd_type))] <- "imipramina
 levels(df_c$atd_type)[match("fluoxetine", levels(df_c$atd_type))] <- "fluoxetina"
 levels(df_c$atd_type)[match("amitriptyline", levels(df_c$atd_type))] <- "amitriptilina"
 levels(df_c$comparator)[match("vehicle", levels(df_c$comparator))] <- "veículo"
-levels(df_c$comparator)[match("imipramine", levels(df_c$comparator))] <- "imipramina"
+levels(df_c$atd_type2)[match("imipramine", levels(df_c$atd_type2))] <- "imipramina"
 
 
 df_c$atd_type
 # Calcular tamanho de efeito em SDM hedges g - formato t1 - t2 
 
 
-Efeito_c <- pairwise(list(as.character(atd_type), as.character(comparator)),
-                   n = list(atd_n_round, ctr_n_corr),
-                   mean = list( atd_mean, ctr_mean),
-                   sd = list(atd_sd, ctr_sd),
+Efeito_c <- pairwise(list(as.character(atd_type), as.character(atd_type2), as.character(comparator)),
+                   n = list(atd_n_round, atd_n_round2, ctr_n_corr),
+                   mean = list(atd_mean, atd_mean2, ctr_mean),
+                   sd = list(atd_sd, atd_sd2, ctr_sd),
                    data = df_c, studlab = label, sm = "SMD")
 
+
+Efeito_c
 # ver quantos braços cada estudo
 
 as.matrix(table(Efeito_c$label))
@@ -111,8 +115,8 @@ nma_c <- netmeta(
   studlab = label,
   TE = TE,
   seTE = seTE,
-  treat1 = comparator,
-  treat2 = atd_type,
+  treat1 = treat1,
+  treat2 = treat2,
   sm = "SMD",
   method.tau = "REML",
   random = TRUE,
@@ -121,9 +125,8 @@ nma_c <- netmeta(
   tol.multiarm = .5,
   reference.group = "veículo",
   sep.trts = " vs ",
-  small = "good",
-  method = "Inverse"
-  )
+  small = "good"
+ )
 
 nma_c
 
@@ -139,10 +142,15 @@ Efeito_c %>%
   summarise(sum(atd_n_round)) # acessar total n de acada tratamento
 
 Efeito_c %>% 
+  group_by(atd_type2) %>% 
+  summarise(sum(atd_n_round2)) # acessar total n de acada tratamento
+
+
+Efeito_c %>% 
   group_by(comparator) %>% 
   summarise(sum(ctr_n_corr)) # acessar total n de acada tratamento
 
-pointsizes <- c(34, 8, 10, 65, 38, 97) # add n de cada tratamento na ordem do rotulo 
+pointsizes <- c(51, 8, 10, 82, 38, 114) # add n de cada tratamento na ordem do rotulo 
 
 sqrtpointsizes <- sqrt(pointsizes / 2)
 
@@ -192,14 +200,14 @@ netgraph(
 d.evidence <- direct.evidence.plot(nma_c, random = TRUE)
 
 
-d.evidence
+plot(d.evidence)
 
 
 # rank NMA estimates using P-scores (R?cker & Schwarzer, 2015) - aqui o parametro de smallvalues é inverso (pq é referente aos valores obtidos no objetivo nma_c)
 
 png("Fig/ranking_c.png", height = 400, width = 600)
 
-randomnetrank <- netrank(nma_c, small.values = "bad")
+randomnetrank <- netrank(nma_c, small.values = "good")
 
 randomnetrank
 
@@ -229,14 +237,14 @@ png("Fig/forest_nma_c.png", height = 400, width = 600)
 
 forest(nma_c,
        leftcols = c("studlab", "k", "pscore"),
-       small.values = "bad",
+       small.values = "good",
        sortva = -Pscore,
        reference.group = "veículo",
        drop.reference.group = TRUE,
        equal.size = FALSE,
-       label.left = "Favorece veículo",
-       label.right = "Favorece antidepressivo",
-       smlab = paste("Antidepressivos vs Veículo \n", "Imobilidade"))
+       label.left = "Favorece antidepressivo",
+       label.right = "Favorece veículo",
+       smlab = paste("Duração da \n", "Imobilidade"))
 
 dev.off()
 
@@ -274,10 +282,11 @@ randomsplitobject
 png("Fig/split_c.png", height = 800, width = 600)
 
 netsplit(nma_c) %>% forest(show = "with.direct",
-                           label.left = "Favorece 2º tratamento",
-                         label.right = "Favorece 1º tratamento")
+                           label.left = "Favorece 1º tratamento",
+                         label.right = "Favorece 2º tratamento")
 
 dev.off()
+
 
 # NMA RATOS ----- 
 
@@ -288,6 +297,9 @@ df_r <- read_excel("data/df_r.xlsx")
 
 df_r <- df_r %>% 
   mutate(atd_type = as.factor(atd_type),
+         atd_type2 = as.factor(atd_type2),
+         atd_type3 = as.factor(atd_type3),
+         atd_type4 = as.factor(atd_type4),
          comparator = as.factor(comparator))
 
 df_r$comparator
@@ -301,21 +313,22 @@ levels(df_r$atd_type)[match("clomipramine", levels(df_r$atd_type))] <- "clomipra
 levels(df_r$atd_type)[match("fluvoxamine", levels(df_r$atd_type))] <- "fluvoxamina"
 levels(df_r$atd_type)[match("desipramine", levels(df_r$atd_type))] <- "desipramina"
 levels(df_r$atd_type)[match("amoxapine", levels(df_r$atd_type))] <- "amoxapina"
+levels(df_r$atd_type2)[match("clomipramine", levels(df_r$atd_type2))] <- "clomipramina"
+levels(df_r$atd_type3)[match("desipramine", levels(df_r$atd_type3))] <- "desipramina"
+levels(df_r$atd_type4)[match("imipramine", levels(df_r$atd_type4))] <- "imipramina"
 
 levels(df_r$comparator)[match("vehicle", levels(df_r$comparator))] <- "veículo"
-levels(df_r$comparator)[match("amitriptyline", levels(df_r$comparator))] <- "amitriptilina"
-levels(df_r$comparator)[match("clomipramine", levels(df_r$comparator))] <- "clomipramina"
-levels(df_r$comparator)[match("desipramine", levels(df_r$comparator))] <- "desipramina"
-levels(df_r$comparator)[match("imipramine", levels(df_r$comparator))] <- "imipramina"
 
 # Calcular tamanho de efeito em SDM hedges g - formato t1 - t2 
 
 
-Efeito_r <- pairwise(list(as.character(atd_type), as.character(comparator)),
-                     n = list(atd_n_round, ctr_n_corr),
-                     mean = list( atd_mean, ctr_mean),
-                     sd = list(atd_sd, ctr_sd),
+Efeito_r <- pairwise(list(as.character(comparator), as.character(atd_type), as.character(atd_type2), as.character(atd_type3), as.character(atd_type4)),
+                     n = list(ctr_n_corr, atd_n_round, atd_n_round2, atd_n_round3, atd_n_round4),
+                     mean = list(ctr_mean, atd_mean, atd_mean2, atd_mean3, atd_mean4),
+                     sd = list(ctr_sd, atd_sd,atd_sd2, atd_sd3, atd_sd4),
                      data = df_r, studlab = label, sm = "SMD")
+
+Efeito_r
 
 # ver quantos braços cada estudo
 as.matrix(table(Efeito_r$label))
@@ -328,21 +341,16 @@ nma_r <- netmeta(
   studlab = label,
   TE = TE,
   seTE = seTE,
-  treat1 = comparator,
-  treat2 = atd_type,
+  treat1 = treat1,
+  treat2 = treat2,
   sm = "SMD",
   method.tau = "REML",
   random = TRUE,
   fixed = FALSE,
-  tol.multiarm = 3,
-  tol.multiarm.se = 4,
   reference.group = "veículo",
   sep.trts = " vs ",
-  small = "good",
-  method = "Inverse"
-  #details.chkmultiarm = TRUE
+  small = "bad"
 )
-
 
 nma_r 
 
@@ -358,10 +366,23 @@ Efeito_r %>%
   summarise(sum(atd_n_round)) # acessar total n de acada tratamento
 
 Efeito_r %>% 
+  group_by(atd_type2) %>% 
+  summarise(sum(atd_n_round2))
+
+Efeito_r %>% 
+  group_by(atd_type3) %>% 
+  summarise(sum(atd_n_round3))
+
+Efeito_r %>% 
+  group_by(atd_type4) %>% 
+  summarise(sum(atd_n_round4))
+
+Efeito_r %>% 
   group_by(comparator) %>% 
   summarise(sum(ctr_n_corr)) # acessar total n de acada tratamento
 
-pointsizes <- c(38, 30, 16, 38, 78, 97, 30, 186, 60, 234) # add n de cada tratamento na ordem do rotulo 
+
+pointsizes <- c(50, 30, 16, 50, 90, 97, 30, 198, 60, 258) # add n de cada tratamento na ordem do rotulo 
 
 sqrtpointsizes <- sqrt(pointsizes / 2)
 
@@ -414,7 +435,7 @@ d.evidence
 
 # rank NMA estimates using P-scores (R?cker & Schwarzer, 2015) 
 
-randomnetrank <- netrank(nma_r, small.values = "bad")
+randomnetrank <- netrank(nma_r, small.values = "good")
 
 png("Fig/ranking_r.png", height = 400, width = 600)
 
@@ -447,14 +468,14 @@ png("Fig/forest_nma_r.png", height = 400, width = 600)
 
 forest(nma_r,
        leftcols = c("studlab", "k", "pscore"),
-       small.values = "bad",
+       small.values = "good",
        sortva = -Pscore,
        reference.group = "veículo",
        drop.reference.group = TRUE,
        equal.size = FALSE,
-       label.left = "Favorece veículo",
-       label.right = "Favorece antidepressivo",
-       smlab = paste("Antidepressivos vs Veículo \n", "Imobilidade"))
+       label.left = "Favorece antidepressivo",
+       label.right = "Favorece veículo",
+       smlab = paste("Duração da \n", "Imobilidade"))
 
 dev.off()
 
@@ -501,25 +522,26 @@ randomsplitobject
 png("Fig/split_r.png", height = 1250, width = 600)
 
 netsplit(nma_r) %>% forest(show = "with.direct",
-                           label.left = "Favorece 2º tratamento",
-                           label.right = "Favorece 1º tratamento")
+                           label.left = "Favorece 1º tratamento",
+                           label.right = "Favorece 2º tratamento")
 
 dev.off()
 
-# Preparar dfs para CINeMA
+
+# Preparar dfs para CINeMA -------
 
 
-cinema_c <- df_c %>%
-  select(label, comparator, atd_type, ctr_mean, atd_mean, ctr_sd, atd_sd, ctr_n_corr, atd_n_round) %>% 
+cinema_c <- Efeito_c%>%
+  select(label, treat1, treat2, mean1, mean2, sd1, sd2, n1, n2) %>% 
   rename(id = label,
-         t1 = comparator,
-         y1 = ctr_mean,
-         sd1 = ctr_sd,
-         n1 = ctr_n_corr,
-         t2 = atd_type,
-         y2 = atd_mean,
-         sd2 = atd_sd,
-         n2 = atd_n_round)
+         t1 = treat1,
+         y1 = mean1,
+         sd1 = sd1,
+         n1 = n1,
+         t2 = treat2,
+         y2 = mean2,
+         sd2 = sd2,
+         n2 = n2)
 
 
 
@@ -530,20 +552,70 @@ write_csv(cinema_c,"data/cinema_c.csv") # salvar em excel
 
 
 
-cinema_r <- df_r %>%
-  select(label, comparator, atd_type, ctr_mean, atd_mean, ctr_sd, atd_sd, ctr_n_corr, atd_n_round) %>% 
+cinema_r <- Efeito_r %>%
+  select(label, treat1, treat2, mean1, mean2, sd1, sd2, n1, n2) %>% 
   rename(id = label,
-         t1 = comparator,
-         y1 = ctr_mean,
-         sd1 = ctr_sd,
-         n1 = ctr_n_corr,
-         t2 = atd_type,
-         y2 = atd_mean,
-         sd2 = atd_sd,
-         n2 = atd_n_round)
+         t1 = treat1,
+         y1 = mean1,
+         sd1 = sd1,
+         n1 = n1,
+         t2 = treat2,
+         y2 = mean2,
+         sd2 = sd2,
+         n2 = n2)
 
 
 cinema_r$rob <- c("M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M","M")
 cinema_r$Indirectness <- "L"
 
 write_csv(cinema_r,"data/cinema_r.csv") # salvar em excel
+
+
+# transformar resultado em .xlsx
+
+cinema_results_c <- read.csv("data/cinema_c_random_SMD_Report.csv")
+write_xlsx(cinema_results_c,"data/cinema_results_c.xlsx")
+
+
+# ratos: tive que fazer a avaliação CINeMA manual, pq o site acusava inconsistencia e pedia para afrouxar com o parametro tol.multiarms, mas não tenho acesso ao codigo por tras do site.
+
+# extrai valores do CI e PI para avaliar imprecisão e heterogeneidade 
+
+PI <- randomsplitobject$predict
+CI <- randomsplitobject$random
+
+cinema_heterogeneity <- left_join(PI, CI, by = "comparison")
+cinema_heterogeneity <- cinema_heterogeneity %>% 
+  select(comparison, TE, lower.x, upper.x, lower.y, upper.y) %>% 
+  rename(lPI = lower.x, 
+        uPI = upper.x, 
+         lCI = lower.y, 
+          uCI = upper.y)
+
+
+library(ggplot2)
+
+cinema <- ggplot(data = cinema_heterogeneity) +  
+  geom_rect(fill = "grey",xmin = 0,xmax = Inf,
+            ymin = -.5,ymax = .5, alpha = 0.5, color = "grey") +
+  geom_pointrange(aes(
+    x = comparison,
+    y = TE,
+    ymin = lPI,
+    ymax = uPI,
+    color = "estimativa + PI"
+  )) +
+  geom_pointrange(aes(
+    x = comparison,
+    y = TE,
+    ymin = lCI,
+    ymax = uCI,
+    color = "estimativa + CI"
+  )) +
+  scale_colour_manual(values = c("black", "red")) +
+  geom_hline(yintercept = 0, lty = 2) +
+  coord_flip() +
+  theme_bw()  
+
+print(cinema) #visualizar plot para fazer conferencia 
+
