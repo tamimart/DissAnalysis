@@ -9,13 +9,12 @@ library(writexl)   # salvar excel
 library(esc)       # calcular tamano de efeito
 library(lubridate) # manipular datas
 library(netmeta)   # para ma em rede
-library(dmetar)
+library(dmetar)    # algumas funcoes de apoio de MA
 library(gridExtra)
 
-# # devtools::install_github("MathiasHarrer/dmetar") # rodar uma vez só
+# # devtools::install_github("MathiasHarrer/dmetar") # rodar uma vez 
 # 
-# # Preparo do df - RODAR UM VEZ SÓ
-# # ler planilha
+# # Preparo do df - RODAR UM VEZ 
 # 
 # df <- read_excel("data/Data_200FST.xlsx") # Carregar planilha
 # 
@@ -34,7 +33,6 @@ library(gridExtra)
 # 
 # df <- df %>%
 #   mutate(label = paste(df$label, df$seq, sep = "- "))
-# 
 # 
 # # Set homogeneo para camundongo
 # 
@@ -69,12 +67,11 @@ library(gridExtra)
 # 
 # write_xlsx(df_r,"data/df_r.xlsx") # salvar em excel
 
-
 # # IMPORTANTE =  abri o excel e copiei para novas colunas todas possibilidades de comparacoes para estudos com mais de 2 braços (formato wide), tambem exclui colunas desnecessarias
 
 # NMA CAMUNDONGOS ----- 
 
-df_c <- read_excel("data/df_c.xlsx")
+df_c <- read_excel("data/df_c.xlsx") # carregar df editado
 
 
 # MUDAR NOME DOS TRATAMENTOS
@@ -93,7 +90,8 @@ levels(df_c$atd_type2)[match("imipramine", levels(df_c$atd_type2))] <- "imiprami
 
 
 df_c$atd_type
-# Calcular tamanho de efeito em SDM hedges g - formato t1 - t2 
+
+# Calcular tamanho de efeito em SDM hedges g 
 
 
 Efeito_c <- pairwise(list(as.character(atd_type), as.character(atd_type2), as.character(comparator)),
@@ -104,6 +102,7 @@ Efeito_c <- pairwise(list(as.character(atd_type), as.character(atd_type2), as.ch
 
 
 Efeito_c
+
 # ver quantos braços cada estudo
 
 as.matrix(table(Efeito_c$label))
@@ -154,6 +153,8 @@ pointsizes <- c(51, 8, 10, 82, 38, 114) # add n de cada tratamento na ordem do r
 
 sqrtpointsizes <- sqrt(pointsizes / 2)
 
+# plotar e salvar rede
+
 png("Fig/rede_c.png", height = 600, width = 600)
 
 netgraph(
@@ -203,7 +204,7 @@ d.evidence <- direct.evidence.plot(nma_c, random = TRUE)
 plot(d.evidence)
 
 
-# rank NMA estimates using P-scores (R?cker & Schwarzer, 2015) - aqui o parametro de smallvalues é inverso (pq é referente aos valores obtidos no objetivo nma_c)
+# rank NMA estimates using P-scores (R?cker & Schwarzer, 2015) - aqui o parametro de smallvalues é inverso (pq é referente aos valores obtidos no objeto nma_c)
 
 png("Fig/ranking_c.png", height = 400, width = 600)
 
@@ -249,7 +250,7 @@ forest(nma_c,
 dev.off()
 
 # TABELA COM COMPARACOES
-# POSITIVO em favor da coluna, NEGATIVO em favor da linha
+# NEGATIVO em favor da coluna, POSITIVO em favor da linha (triangulo inferior)
 
 compable_c <- netleague(nma_c, 
                       bracket = "(",
@@ -261,7 +262,7 @@ compable_c
 write_xlsx(compable_c$random, "data/tablenma_c.xlsx")
 
 
-# ver como comparações contribuiram  para as outras )
+# Ver como comparações contribuiram para as outras
 
 nma_contrib_c <- netcontrib(nma_c)
 
@@ -274,7 +275,7 @@ write_xlsx(nma_contrib_c, "data/nma_contrib_c.xlsx")
 nma_contrib_c
 
 # Teste de consistencia entre evidencia direta e indireta 
-# using node-splitting (Dias et al., 2010)
+# using node-splitting (Dias et al., 2010) back-calculation method König et al. (2013)
 
 randomsplitobject <- netsplit(nma_c, digits = 2)
 randomsplitobject
@@ -290,7 +291,7 @@ dev.off()
 
 # NMA RATOS ----- 
 
-df_r <- read_excel("data/df_r.xlsx")
+df_r <- read_excel("data/df_r.xlsx") # carregar df editado
 
 
 # MUDAR NOME DOS TRATAMENTOS
@@ -319,7 +320,7 @@ levels(df_r$atd_type4)[match("imipramine", levels(df_r$atd_type4))] <- "imiprami
 
 levels(df_r$comparator)[match("vehicle", levels(df_r$comparator))] <- "veículo"
 
-# Calcular tamanho de efeito em SDM hedges g - formato t1 - t2 
+# Calcular tamanho de efeito em SDM hedges g
 
 
 Efeito_r <- pairwise(list(as.character(comparator), as.character(atd_type), as.character(atd_type2), as.character(atd_type3), as.character(atd_type4)),
@@ -363,19 +364,19 @@ decomp.design(nma_r)
 
 Efeito_r %>% 
   group_by(atd_type) %>% 
-  summarise(sum(atd_n_round)) # acessar total n de acada tratamento
+  summarise(sum(atd_n_round)) # acessar total n de cada tratamento
 
 Efeito_r %>% 
   group_by(atd_type2) %>% 
-  summarise(sum(atd_n_round2))
+  summarise(sum(atd_n_round2)) # acessar total n de acada tratamento
 
 Efeito_r %>% 
   group_by(atd_type3) %>% 
-  summarise(sum(atd_n_round3))
+  summarise(sum(atd_n_round3)) # acessar total n de acada tratamento
 
 Efeito_r %>% 
   group_by(atd_type4) %>% 
-  summarise(sum(atd_n_round4))
+  summarise(sum(atd_n_round4)) # acessar total n de acada tratamento
 
 Efeito_r %>% 
   group_by(comparator) %>% 
@@ -385,6 +386,8 @@ Efeito_r %>%
 pointsizes <- c(50, 30, 16, 50, 90, 97, 30, 198, 60, 258) # add n de cada tratamento na ordem do rotulo 
 
 sqrtpointsizes <- sqrt(pointsizes / 2)
+
+# plotar e salvar rede
 
 png("Fig/rede_r.png", height = 600, width = 600)
 
@@ -480,7 +483,7 @@ forest(nma_r,
 dev.off()
 
 # TABELA COM COMPARACOES
-# POSITO em favor da coluna, NEGATIVO em favor da linha
+# NEGATIVO em favor da coluna, POSITIVO em favor da linha (triangulo inferior)
 
 compable_r <- netleague(nma_r, 
                         bracket = "(",
@@ -506,7 +509,7 @@ write_xlsx(nma_contrib_r, "data/nma_contrib_r.xlsx")
 
 
 # Teste de consistencia entre evidencia direta e indireta 
-# using node-splitting (Dias et al., 2010)
+# using node-splitting (Dias et al., 2010) back-calculation method König et al. (2013)
 
 randomsplitobject <- netsplit(nma_r)
 randomsplitobject
@@ -569,7 +572,7 @@ cinema_results_c <- read.csv("data/cinema_c_random_SMD_Report.csv")
 write_xlsx(cinema_results_c,"data/cinema_results_c.xlsx")
 
 
-# ratos: tive que fazer a avaliação CINeMA manual, pq o site acusava inconsistencia e pedia para afrouxar com o parametro tol.multiarms, mas não tenho acesso ao codigo por tras do site.
+# ratos: tive que fazer a avaliação CINeMA manual, pq o site acusava inconsistencia e pedia para afrouxar com o parametro tol.multiarms, mas não tenho acesso ao codigo por trás do site.
 
 # extrai valores do CI e PI para avaliar imprecisão e heterogeneidade 
 
