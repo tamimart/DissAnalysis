@@ -20,17 +20,16 @@ library("devtools")# para baixar pacote remoto
 #devtools::install_github("dsquintana/metameta") 
 #library(metameta) # para calcular poder dos estudos incluidos
 
-
 df <- read_excel("data/Data_200FST.xlsx") # Carregar planilha
 
-# mudar tipo da data p fator
+# Mudar tipo da data para fator
 
 df <- df %>%
    mutate(year = as.numeric(format(as.Date(df$year, format = "%d/%m/%Y"),"%Y")))
 
 glimpse(df)
 
-# separa metodo do detalhe do metodo
+# Separa metodo do detalhe do metodo (FST)
 
 mmd <- df %>% # separar variavel em duas
   select(measurement_method) %>% 
@@ -132,13 +131,13 @@ dev.off()
 
 # Análise de sensibilidade ------------------------------------
 
-# verificar outliers e casos influentes - nao esta na dissertacao
+# Verificar outliers e casos influentes - nao esta na dissertacao
 
 png("Fig/baujat.png")
 baujat(Teste, symbol = "slab") # xaxis = indica se o estudo é um outlier e yaxis mostra a influencia do estudo sobre o resultado
 dev.off() 
 
-# ver quais estudos estao influenciando em diversos aspectos 
+# Ver quais estudos estao influenciando em diversos aspectos 
 
 png("Fig/influence2.png")
 inf <- influence(Teste)
@@ -151,9 +150,9 @@ tinf$sr <- Efeito$study_reference # add coluna de referencia
 write_xlsx(tinf,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\influence2.xlsx") # salvar em excel
 
 
-# rodar de novo
-leave1 <- leave1out(Teste, digits = 3) #colocar resultado num objeto
-leave1df <- as.data.frame(leave1) #transformar obj lista em df
+
+leave1 <- leave1out(Teste, digits = 3) # colocar resultado num objeto
+leave1df <- as.data.frame(leave1) # transformar obj lista em df
 final_df <- as.data.frame(t(leave1df)) # inverter linhas e colunas
 copia_final_df <- final_df # fazer uma copia
 copia_final_df$rn <- row.names(final_df) # adicionar nome das linhas como coluna na copia
@@ -282,8 +281,8 @@ dev.off()
 funil_ef
 
 # [weight function model]
-#Teste especcifico para publication bias - aumenta o peso dos estudos que sao menos provaveis de serem publicados e diminiu o peso daqueles que sao mais provaveis de serem publicados - baseado no valor de p
-#likehood test alfa 0.10
+#Teste especifico para publication bias - aumenta o peso dos estudos que sao menos provaveis de serem publicados e diminiu o peso daqueles que sao mais provaveis de serem publicados - baseado no valor de p
+# likehood test alfa = 0.10
 
 wf <- weightfunct(Efeito$yi, Efeito$vi, table = TRUE, steps = .05)
 
@@ -419,24 +418,26 @@ dev.off()
 
 # [weight function model]
 #Teste especcifico para publication bias - aumenta o peso dos estudos que sao menos provaveis de serem publicados e diminiu o peso daqueles que sao mais provaveis de serem publicados - baseado no valor de p
-#likehood test alfa 0.10
+#likehood test alfa =  0.10
+
+#camundongo
 
 wmice <- Efeito %>% 
   filter(species == "mice")
 
 wfm <- weightfunct(wmice$yi, wmice$vi, table = TRUE, steps = 0.05)
-
 wfm
+
+#rato
 
 wrat <- Efeito %>% 
   filter(species == "rat")
 
 wfr <- weightfunct(wrat$yi, wrat$vi, table = TRUE, steps = 0.05)
-
 wfr
 
 
-# outra forma
+# outra forma - não esta na dissertacao
 
 library(metaviz)
 
@@ -574,7 +575,6 @@ Teste_stress_m
 
 Teste_nostress_m <- rma(yi, vi, subset = (model_phenotype == "NA" & species == "mice"), data = Efeito)
 Teste_nostress_m
-
 
 
 # Ciclo de luz
@@ -1226,21 +1226,6 @@ rma(yi, vi, subset = (species == "mice" & camarades1 == "Yes"), data = Efeito)
 
 rma(yi, vi, subset = (species == "mice" & camarades1 == "Unclear, predatory"), data = Efeito)
 
-# possibilidade para avaliar ano atraves de analise de subgrupo de periodos de tempo - ver com profa
-
-initial_m <- Efeito %>%
-  filter(species == "mice",
-         year <= "2006-01-01")
-
-final_m <- Efeito %>%
-  filter(species == "mice",
-         year > "2006-01-01")
-
-Teste_initial_m <- rma(yi, vi, data = initial_m)
-Teste_initial_m
-
-Teste_final_m <- rma(yi, vi, data = final_m)
-Teste_final_m
 
 # Metaregressao -------------------------------------
 

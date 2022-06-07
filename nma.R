@@ -14,41 +14,41 @@ library(gridExtra)
 
 # # devtools::install_github("MathiasHarrer/dmetar") # rodar uma vez 
 # 
-# # Preparo do df - RODAR UM VEZ 
-# 
+# # Preparo do df - RODAR UM VEZ
+#
 # df <- read_excel("data/Data_200FST.xlsx") # Carregar planilha
-# 
+#
 # # mudar tipo da data p fator
-# 
+#
 # df <- df %>%
 #   mutate(year = as.numeric(format(as.Date(df$year, format = "%d/%m/%Y"),"%Y")))
-# 
+#
 # glimpse(df)
-# 
+#
 # # Adicionar rotulo com numero sequencial para cada estudo dentro de uma publicacao
-# 
+#
 # df <- df %>%
 #   mutate(label = paste(df$first_author, as.character(df$year), sep = ", ")) %>%
 #   select(label, everything())
-# 
+#
 # df <- df %>%
 #   mutate(label = paste(df$label, df$seq, sep = "- "))
-# 
+#
 # # Set homogeneo para camundongo
-# 
+#
 # df_c <- df %>%
-#   mutate(atd_type = as.factor(atd_type),
-#          comparator = as.factor(comparator)) %>%
-#   filter(species == "mice",
-#          sex == "M",
-#          strain == "swiss",
-#          model_phenotype == "NA",
-#          bioterium_lightcycle == "12/12 normal",
-#          fst_protocol == "test6score4") %>%
-#   group_by(label, atd_type) %>%
-#   slice_tail() #fica a maior dose se o tratamento for repetido numa mesma publicacao
+#    mutate(atd_type = as.factor(atd_type),
+#           comparator = as.factor(comparator)) %>%
+#    filter(species == "mice",
+#           sex == "M",
+#           strain == "swiss",
+#           model_phenotype == "NA",
+#           bioterium_lightcycle == "12/12 normal",
+#           fst_protocol == "test6score4") %>%
+#    group_by(label, atd_type) %>%
+#    slice_tail() #fica a maior dose se o tratamento for repetido numa mesma publicacao
 
-# 
+#
 # write_xlsx(df_c,"data/df_c.xlsx") # salvar em excel
 # 
 # # Set homogeneo para rato
