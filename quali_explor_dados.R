@@ -16,7 +16,7 @@ library(readxl)       # ler excel
 
 df <- readRDS("data_geral_clean.rds")
 
-#ou
+# OU
 
 df <- read_xlsx("data/Data_200FST.xlsx")
 
@@ -29,7 +29,8 @@ my_skim <- skim_with(numeric = sfl(median = ~ median(., na.rm = TRUE),
                                 n = length))
 
 skimmer_function_list
-# Rename categorias ----
+
+# Renomear categorias ----
 
 df$language <-
   factor(
@@ -452,7 +453,7 @@ df <- df %>%
 
 
 
-# EXEMPLOS Conferir variáveis e valores ------- 
+# EXEMPLOS: Conferir variáveis e valores ------- 
 
 
 # Verificar quantos dados faltantes por coluna
@@ -521,7 +522,7 @@ tab_numeric <- df %>%
 print(tab_numeric)
 
 tab_numeric <- tab_numeric %>% 
-  mutate(n = 562 - (n_missing))
+  mutate(n = 561 - (n_missing))
 
 # Ratos
 
@@ -532,7 +533,7 @@ tab_numeric_rat <- df %>%
   yank("numeric")
 
 tab_numeric_rat <- tab_numeric %>% 
-  mutate(n = 234 - (n_missing))
+  mutate(n = 235 - (n_missing))
 
 # Camundongos
 
@@ -543,12 +544,12 @@ tab_numeric_mice <- df %>%
   yank("numeric")
 
 tab_numeric_mice <- tab_numeric %>% 
-  mutate(n = 328 - (n_missing))
+  mutate(n = 326 - (n_missing))
 
 
 # Salvando tabelas
 
-write_xlsx(tab_numeric,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\teste.xlsx")
+write_xlsx(tab_numeric,"\teste.xlsx")
 
 write.table(tab_numeric, file = "teste.txt", sep = ",", quote = FALSE, row.names = F) # Depois colar conteudo .txt no word e transformar em tabela
 
@@ -782,10 +783,6 @@ stat_t_d_cam <- df %>%
   my_skim(treatment_duration) %>%
   tibble::as_tibble()
 
-
-# write_xlsx(stat_t_d_cam,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_cam.xlsx")
-
-
 # Figura14
 
 stat_t_d_rat <- df %>%
@@ -793,10 +790,6 @@ stat_t_d_rat <- df %>%
   group_by(treatment_via) %>%
   my_skim(treatment_duration) %>%
   tibble::as_tibble()
-
-
-# write_xlsx(stat_t_d_rat,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\res\\treat_dur_stat_rat.xlsx")
-
 
 # Figura15 
 
@@ -866,11 +859,5 @@ stat_nado_temp <- df %>%
     numeric.p25 = round(numeric.p25, 1),
     numeric.p75 = round(numeric.p75, 1)
   )
-
-
-# QUALIDADE
-
-
-
 
 

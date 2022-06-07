@@ -3156,7 +3156,7 @@ save_plot(filename = "Figura15.png",
 
 
 
-#metodo de analise
+# metodo de analise
 
 
 # criar nova posicao para o n ficar sobre a area mas com ruido(desvio de outros textos)

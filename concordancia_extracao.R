@@ -5,11 +5,11 @@
 # Carregar pacotes
 
 install_github("cran/rel")
-library(remotes)
-library(pacman)
-library(tidyverse)
-library(readxl)
-library(diffdf)
+library(remotes)   # para baixar pacote de repositorio
+library(pacman)    # calcular concordancia
+library(tidyverse) # manipular dados
+library(readxl)    # ler excel
+library(diffdf)    # ver diferença entre dfs
 
 pacman::p_load(dplyr, rel, irr)
 

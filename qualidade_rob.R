@@ -8,8 +8,8 @@ library(tidyverse)    # manipulacao de dados e plotar
 library(patchwork)    # juntar plots
 library(extrafont)    # adicionar fontes
 library(cowplot)      # salvar plot
-library(robvis)
-library(readxl)
+library(robvis)       # pacote fechado para visualizacao de qualidade
+library(readxl)       # ler excel
 
 # Carregar dataframe dos dados limpos e organizados
 
@@ -196,7 +196,7 @@ df_camarades_longo$atribuicao <- # ordernar atribuicoes
 c_factor_levels <- c("Não", "Incerto", "Sim") # reordenar niveis
 
 
-
+# plotar qualidade camarades
 camaradesplot <- df_camarades_longo %>% 
   group_by(Study) %>% 
   distinct(Study, pergunta, atribuicao) %>% 
@@ -240,7 +240,7 @@ save_plot(filename = "Figura20.png",
 my_skim(df_camarades)
 
 
-# NÃO ESTÁ NA DISSERTACAO
+# NÃO ESTÁ NA DISSERTACAO ------
 
 
 # comparação da pontuação ROB para artigos que sao de revista predatorias e não sao

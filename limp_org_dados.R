@@ -35,7 +35,7 @@ meus_dados_library <- meus_dados_library %>%
 #          `4 - Os animais foram acondicionados aleatoriamente?` != "NA")
 
 # Unificar abas em uma unica tabela ----- 
-#Juncao determinada por variaveis em comum.
+# Juncao determinada por variaveis em comum.
 
 
 data1 <- dplyr::left_join(meus_dados_library, meus_dados_info, by = c("First author", "year"))
@@ -135,7 +135,7 @@ data_geral <- data_geral %>% # Renomear colunas/variaveis de acordo com as boas 
 #   filter(atd_n_round == "NA") %>% 
 #   select(first_author)  # sao os mesmo artigos 
 
-# Entrei em contato com os ultimos três autores via email ou researchgate, aguardando resposta
+# Entrei em contato com os ultimos três autores via email ou researchgate, sem resposta
 
 
 # Transformar variaveis com margens (ex: 35-50) em média -----
@@ -221,7 +221,7 @@ marg_water_depth <- marg_water_depth %>%
   mutate(b = coalesce(marg_water_depth$g, marg_water_depth$v1)) %>% 
   select(b)
 
-# Transformar variaveis de acordo com suas caracteristicas: character, factor, numeric... -------
+# Transformar tipo das variaveis de acordo com suas caracteristicas: character, factor, numeric... -------
 # No caso das numericas, se havia texto, esses serao transformados em "NA".
 
 data_geral <- data_geral %>%
@@ -488,7 +488,7 @@ levels(data_geral_reord$treatment_via)[match("tablet", levels(data_geral_reord$t
 # Salvar df limpo e transformado PARA POSTERIOR ANALISE DOS DADOS  ------
 
 
-write_xlsx(data_geral_reord,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\Data_200FST.xlsx") #editar o nome quando salvar arquivos para analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de FST)
+write_xlsx(data_geral_reord,"data/Data_200FST.xlsx") #editar o nome quando salvar arquivos para analise de concordancia na extracao (add _primeirorevisor / _segundorevisor depois de FST)
 
 # Primeiro e segundo revisor so ate aqui, dados finais (que acaba com SorteioI sontinuar)
 

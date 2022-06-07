@@ -147,7 +147,7 @@ dev.off()
 tinf <- print(inf) # criar tabela com os resultados
 tinf$id <- Efeito$line # add coluna de id
 tinf$sr <- Efeito$study_reference # add coluna de referencia
-write_xlsx(tinf,"C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\influence2.xlsx") # salvar em excel
+write_xlsx(tinf,"data/influence2.xlsx") # salvar em excel
 
 
 
@@ -159,7 +159,7 @@ copia_final_df$rn <- row.names(final_df) # adicionar nome das linhas como coluna
 copia_final_df <- copia_final_df %>%
   select(rn, everything()) # trazer coluna dos nomes para frente do df
 
-write_xlsx(copia_final_df, "C:\\Users\\Tamires\\OneDrive - UFSC\\PC LAB\\DissAnalysis\\data\\leave2.xlsx") # salvar em excel
+write_xlsx(copia_final_df, "data/leave2.xlsx") # salvar em excel
 
 # Análise de Vies de publicação -----------------------------------
 
