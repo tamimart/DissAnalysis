@@ -503,14 +503,6 @@ nma_contrib_r <- nma_contrib_r %>%
 
 write_xlsx(nma_contrib_r, "data/nma_contrib_r.xlsx")
 
-# netheat
-
-png("Fig/heat_r.png", height = 700, width = 700)
-
-netheat(nma_r, nchar.trts = 5, reference = "veículo", random = TRUE, seq = nma_r$trts, cex = 20)
-
-dev.off()
-
 
 
 # Teste de consistencia entre evidencia direta e indireta 
