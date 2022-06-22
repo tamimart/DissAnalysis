@@ -3593,7 +3593,7 @@ f17b <- label_wd_c %>%
     linetype = "dotted"
   ) +
   geom_text(
-    aes(label = "ABEL et al., 1994"),
+    aes(label = "ABEL, 1994"),
     y = 20,
     x = as.numeric(as.Date("1994-01-01")),
     color = "black",

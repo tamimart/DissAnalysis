@@ -1327,3 +1327,304 @@ metareg_ano_r
 metareg_quali_c
 metareg_quali_r
 
+# PPT forestplot subgrupos
+
+dfsubgrupos <- read_excel("data/subgruposppt.xlsx")
+dfsubgrupos <- dfsubgrupos %>% 
+  rename(IC95LI = `IC95-LI`,
+         IC95LS = 'IC95-LS',
+         inconsistencia = 'I² (%)')
+
+dfsubgrupos$moderador <-
+  factor(
+    dfsubgrupos$moderador,
+    levels =  c(
+      "Camundongo",
+      "Rato",
+      "Sexo",
+      "Linhagem",
+      "Experiência de estresse",
+      "Ciclo de luz",
+      "Todos TCA",
+      "Todos ISRS",
+      "Todos IRSN",
+      "Todos IMAO",
+      "IMAO",
+      "Todos IRND",
+      "IRND",
+      "Todos TeCA",
+      "Via de administração",
+      "Protocolo do teste do nado forçado",
+      "Método de análise",
+      "Testes antes do nado"))
+
+
+theme_set(theme_minimal(base_family = "Gadugi"))
+
+#populacao
+
+ppt_sub_pop_c <- dfsubgrupos %>%
+  filter(especie == "Camundongo",
+         Tipo == "População") %>%
+  ggplot(aes(
+    x = categoria,
+    y = TEG,
+    ymin = IC95LI,
+    ymax = IC95LS,
+    color = "#ff9400"
+  )) +
+  geom_pointrange() +
+  scale_y_continuous(limits = c(-1, 18)) +
+  labs(x = "", y = "Tamanho de efeito") +
+  scale_colour_manual(values = "#ff9400") +
+  geom_hline(yintercept = 0, lty = 2) +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  geom_text(
+    aes(label = paste(
+      "k = ",
+      k,
+      ",", " I² = ", inconsistencia, " %",
+      sep = ""
+    )),
+    y = 14,
+    color = "grey30",
+    size = 3,
+    family = "Gadugi",
+    hjust = 0
+  ) +
+  coord_flip() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+
+save_plot(filename = "ppt_sub_pop_c.png",
+          plot = ppt_sub_pop_c,
+          dpi = 300,
+          path = "Fig")
+
+
+ppt_sub_pop_r <- dfsubgrupos %>%
+  filter(especie == "Rato",
+         Tipo == "População") %>%
+  ggplot(aes(
+    x = categoria,
+    y = TEG,
+    ymin = IC95LI,
+    ymax = IC95LS,
+    color = "#ec2b2b"
+  )) +
+  geom_pointrange() +
+  scale_y_continuous(limits = c(-1, 18)) +
+  labs(x = "", y = "Tamanho de efeito") +
+  scale_colour_manual(values = "#ec2b2b") +
+  geom_hline(yintercept = 0, lty = 2) +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  geom_text(
+    aes(label = paste(
+      "k = ",
+      k,
+      ",", " I² = ", inconsistencia, " %",
+      sep = ""
+    )),
+    y = 14,
+    color = "grey30",
+    size = 3,
+    family = "Gadugi",
+    hjust = 0
+  ) +
+  coord_flip() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+
+save_plot(filename = "ppt_sub_pop_r.png",
+          plot = ppt_sub_pop_r,
+          dpi = 300,
+          path = "Fig")
+
+
+#intervencao 
+
+ppt_sub_int_c <- dfsubgrupos %>%
+  filter(especie == "Camundongo",
+         Tipo == "Intervenção") %>%
+  ggplot(aes(
+    x = categoria,
+    y = TEG,
+    ymin = IC95LI,
+    ymax = IC95LS,
+    color = "#ff9400"
+  )) +
+  geom_pointrange() +
+  scale_y_continuous(limits = c(-1, 18)) +
+  labs(x = "", y = "Tamanho de efeito") +
+  scale_colour_manual(values = "#ff9400") +
+  geom_hline(yintercept = 0, lty = 2) +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  geom_text(
+    aes(label = paste(
+      "k = ",
+      k,
+      ",", " I² = ", inconsistencia, " %",
+      sep = ""
+    )),
+    y = 14,
+    color = "grey30",
+    size = 3,
+    family = "Gadugi",
+    hjust = 0
+  ) +
+  coord_flip() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+
+save_plot(filename = "ppt_sub_int_c.png",
+          plot = ppt_sub_int_c,
+          dpi = 300,
+          path = "Fig")
+
+
+ppt_sub_int_r <- dfsubgrupos %>%
+  filter(especie == "Rato",
+         Tipo == "Intervenção") %>%
+  ggplot(aes(
+    x = categoria,
+    y = TEG,
+    ymin = IC95LI,
+    ymax = IC95LS,
+    color = "#ec2b2b"
+  )) +
+  geom_pointrange() +
+  scale_y_continuous(limits = c(-1, 18)) +
+  labs(x = "", y = "Tamanho de efeito") +
+  scale_colour_manual(values = "#ec2b2b") +
+  geom_hline(yintercept = 0, lty = 2) +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  geom_text(
+    aes(label = paste(
+      "k = ",
+      k,
+      ",", " I² = ", inconsistencia, " %",
+      sep = ""
+    )),
+    y = 14,
+    color = "grey30",
+    size = 3,
+    family = "Gadugi",
+    hjust = 0
+  ) +
+  coord_flip() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+
+save_plot(filename = "ppt_sub_int_r.png",
+          plot = ppt_sub_int_r,
+          dpi = 300,
+          path = "Fig")
+
+#desfecho
+
+ppt_sub_des_c <- dfsubgrupos %>%
+  filter(especie == "Camundongo",
+         Tipo == "Desfecho") %>%
+  ggplot(aes(
+    x = categoria,
+    y = TEG,
+    ymin = IC95LI,
+    ymax = IC95LS,
+    color = "#ff9400"
+  )) +
+  geom_pointrange() +
+  scale_y_continuous(limits = c(-1, 22)) +
+  labs(x = "", y = "Tamanho de efeito") +
+  scale_colour_manual(values = "#ff9400") +
+  geom_hline(yintercept = 0, lty = 2) +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  geom_text(
+    aes(label = paste(
+      "k = ",
+      k,
+      ",", " I² = ", inconsistencia, " %",
+      sep = ""
+    )),
+    y = 16,
+    color = "grey30",
+    size = 3,
+    family = "Gadugi",
+    hjust = 0
+  ) +
+  coord_flip() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+
+save_plot(filename = "ppt_sub_des_c.png",
+          plot = ppt_sub_des_c,
+          dpi = 300,
+          path = "Fig")
+
+
+ppt_sub_des_r <- dfsubgrupos %>%
+  filter(especie == "Rato",
+         Tipo == "Desfecho") %>%
+  ggplot(aes(
+    x = categoria,
+    y = TEG,
+    ymin = IC95LI,
+    ymax = IC95LS,
+    color = "#ec2b2b"
+  )) +
+  geom_pointrange() +
+  scale_y_continuous(limits = c(-1, 22)) +
+  labs(x = "", y = "Tamanho de efeito") +
+  scale_colour_manual(values = "#ec2b2b") +
+  geom_hline(yintercept = 0, lty = 2) +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  geom_text(
+    aes(label = paste(
+      "k = ",
+      k,
+      ",", " I² = ", inconsistencia, " %",
+      sep = ""
+    )),
+    y = 16,
+    color = "grey30",
+    size = 3,
+    family = "Gadugi",
+    hjust = 0
+  ) +
+  coord_flip() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+
+save_plot(filename = "ppt_sub_des_r.png",
+          plot = ppt_sub_des_r,
+          dpi = 300,
+          path = "Fig")
