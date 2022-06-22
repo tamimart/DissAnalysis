@@ -1496,11 +1496,11 @@ ppt_sub_pop_c <- dfsubgrupos %>%
       k,
       sep = ""
     )),
-    y = 16,
+    y = Inf - 1,
     color = "grey30",
     size = 3,
     family = "Gadugi",
-    hjust = 0
+    hjust = 1
   ) +
   coord_flip() +
   theme(
@@ -1578,11 +1578,11 @@ ppt_sub_pop_r <- dfsubgrupos %>%
       k,
       sep = ""
     )),
-    y = 16,
+    y = Inf - 1,
     color = "grey30",
     size = 3,
     family = "Gadugi",
-    hjust = 0
+    hjust = 1
   ) +
   coord_flip() +
   theme(
@@ -1661,11 +1661,11 @@ ppt_sub_int_c <- dfsubgrupos %>%
       k,
       sep = ""
     )),
-    y = 16,
+    y = Inf - 1,
     color = "grey30",
     size = 3,
     family = "Gadugi",
-    hjust = 0
+    hjust = 1
   ) +
   coord_flip() +
   theme(
@@ -1732,7 +1732,7 @@ ppt_sub_int_r <- dfsubgrupos %>%
   geom_rect(fill = "grey82",xmin = 0,xmax = Inf,
             ymin = 2,ymax = Inf, color = "grey82") +
   geom_pointrange() +
-  scale_y_continuous(limits = c(-1, 18)) +
+  scale_y_continuous(limits = c(-2, 17)) +
   labs(x = "", y = "Tamanho de efeito") +
   scale_colour_manual(values = "#ec2b2b") +
   geom_hline(yintercept = 0, lty = 2) +
@@ -1743,11 +1743,11 @@ ppt_sub_int_r <- dfsubgrupos %>%
       k,
       sep = ""
     )),
-    y = 16,
+    y = Inf - 1,
     color = "grey30",
     size = 3,
     family = "Gadugi",
-    hjust = 0
+    hjust = 1
   ) +
   coord_flip() +
   theme(
@@ -1760,7 +1760,7 @@ ppt_sub_int_r <- dfsubgrupos %>%
 
 ppt_sub_int_r_i <- dfsubgrupos %>%
   filter(especie == "Rato",
-         Tipo == "População") %>%
+         Tipo == "Intervenção") %>%
   ggplot(aes(
     x = categoria,
     y = inconsistencia,
@@ -1826,11 +1826,11 @@ ppt_sub_des_c <- dfsubgrupos %>%
       k,
       sep = ""
     )),
-    y = 20,
+    y = Inf - 1,
     color = "grey30",
     size = 3,
     family = "Gadugi",
-    hjust = 0
+    hjust = 1
   ) +
   coord_flip() +
   theme(
@@ -1908,11 +1908,11 @@ ppt_sub_des_r <- dfsubgrupos %>%
       k,
       sep = ""
     )),
-    y = 20,
+    y = Inf - 1,
     color = "grey30",
     size = 3,
     family = "Gadugi",
-    hjust = 0
+    hjust = 1
   ) +
   coord_flip() +
   theme(
