@@ -16,6 +16,7 @@ library(esc)       # calcular tamano de efeito
 library(lubridate) # manipular datas
 library(weightr)   # testar vies de publicação
 library("devtools")# para baixar pacote remoto
+library(patchwork) # para juntar plot
 
 #devtools::install_github("dsquintana/metameta") 
 #library(metameta) # para calcular poder dos estudos incluidos
@@ -1356,8 +1357,104 @@ dfsubgrupos$moderador <-
       "Via de administração",
       "Protocolo do teste do nado forçado",
       "Método de análise",
-      "Testes antes do nado"))
+      "Testes antes do nado",
+      "Pred"))
 
+dfsubgrupos$categoria <-
+  factor(
+    dfsubgrupos$categoria,
+    levels =  c("Camundongo",
+                "Macho",
+                "Fêmea",
+                "Ambos",
+                "Sem info",
+                "Swiss",
+                "CD-1",
+                "C57BL",
+                "ddY",
+                "BALB",
+                "LACA",
+                "OF1",
+                "NMRI",
+                "Sabra",
+                "BKTO",
+                "DBA/2",
+                "B6SJL (R406W)",
+                "Estressado",
+                "Não estressado",
+                "Rato",
+                "Wistar",
+                "Sprague Dawley",
+                "Long Evans",
+                "Flinders sens.",
+                "CD-COBS",
+                "Wistar kyoto",
+                "Flinders res.",
+                "12/12 normal",
+                "12/12",
+                "Natural",
+                "12/12 inverso",
+                "11/14",
+                "Todos TCA",
+                "imipramina",
+                "desipramina",
+                "amitriptilina",
+                "clomipramina",
+                "nortriptilina",
+                "Todos ISRS",
+                "fluoxetina",
+                "sertralina",
+                "paroxetina",
+                "escitalopram",
+                "citalopram",
+                "fluvoxamina",
+                "Todos IRSN",
+                "venlafaxina",
+                "tramadol",
+                "desvenlafaxina",
+                "reboxetina",
+                "sibutramina",
+                "Todos IMAO",
+                "selegilina",
+                "moclobemida",
+                "bupropiona",
+                "Todos TeCA",
+                "maprotilina",
+                "mianserina",
+                "amoxapina",
+                "Intraperitoneal",
+                "Oral",
+                "Gavagem",
+                "Subcutânea",
+                "Microinjeção",
+                "Oral (dieta)",
+                "Intranasal",
+                "T6’ + S4’final",
+                "T6’",
+                "PT15’ + T6’ + S4’final",
+                "PT15’ + T6’",
+                "PT15’ + T5’",
+                "T5’",
+                "PT5’ + T5’",
+                "T5’ + S4’final",
+                "T7’ + S6’ final",
+                "T6’ + S5’final",
+                "T9’",
+                "PT15’ + T6’ + S5’ final",
+                "T10’",
+                "PT15’ + T?",
+                "T15’ + S5’",
+                "Videoanálise",
+                "Manual",
+                "Não",
+                "Sim",
+                "Revista predatória",
+                "Revista revisada por pares",
+                "PT13’ + T6’",
+                "PT?’ + T6’ + S4’ final",
+                "T15’"))
+
+                
 
 theme_set(theme_minimal(base_family = "Gadugi"))
 
@@ -1373,6 +1470,20 @@ ppt_sub_pop_c <- dfsubgrupos %>%
     ymax = IC95LS,
     color = "#ff9400"
   )) +
+  geom_rect(fill = "white",xmin = 0,xmax = Inf,
+            ymin = -Inf,ymax = 0, color = "white") +
+  geom_rect(fill = "grey100",xmin = 0,xmax = Inf,
+            ymin = 0.01,ymax = .19, color = "grey100") +
+  geom_rect(fill = "grey96",xmin = 0,xmax = Inf,
+            ymin = 0.2,ymax = .49, color = "grey96") +
+  geom_rect(fill = "grey92",xmin = 0,xmax = Inf,
+            ymin = 0.5,ymax = .79, color = "grey92") +
+  geom_rect(fill = "grey88",xmin = 0,xmax = Inf,
+            ymin = 0.8,ymax = 1.19, color = "grey88") +
+  geom_rect(fill = "grey84",xmin = 0,xmax = Inf,
+            ymin = 1.2,ymax = 1.99, color = "grey84") +
+  geom_rect(fill = "grey82",xmin = 0,xmax = Inf,
+            ymin = 2,ymax = Inf, color = "grey82") +
   geom_pointrange() +
   scale_y_continuous(limits = c(-1, 18)) +
   labs(x = "", y = "Tamanho de efeito") +
@@ -1383,10 +1494,9 @@ ppt_sub_pop_c <- dfsubgrupos %>%
     aes(label = paste(
       "k = ",
       k,
-      ",", " I² = ", inconsistencia, " %",
       sep = ""
     )),
-    y = 14,
+    y = 16,
     color = "grey30",
     size = 3,
     family = "Gadugi",
@@ -1399,6 +1509,31 @@ ppt_sub_pop_c <- dfsubgrupos %>%
     strip.text = element_blank(),
     axis.title = element_text(size = 10, color = "grey30")
   )
+
+ppt_sub_pop_c_i <- dfsubgrupos %>%
+  filter(especie == "Camundongo",
+         Tipo == "População") %>%
+  ggplot(aes(
+    x = categoria,
+    y = inconsistencia,
+    fill = "#ff9400"
+  )) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "", y = "I² (%)") +
+  scale_fill_manual(values = "#ff9400") +
+  geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  coord_flip() +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+ppt_sub_pop_c <- ppt_sub_pop_c + ppt_sub_pop_c_i + plot_layout(widths = c(6, 1))
 
 
 save_plot(filename = "ppt_sub_pop_c.png",
@@ -1417,6 +1552,20 @@ ppt_sub_pop_r <- dfsubgrupos %>%
     ymax = IC95LS,
     color = "#ec2b2b"
   )) +
+  geom_rect(fill = "white",xmin = 0,xmax = Inf,
+            ymin = -Inf,ymax = 0, color = "white") +
+  geom_rect(fill = "grey100",xmin = 0,xmax = Inf,
+            ymin = 0.01,ymax = .19, color = "grey100") +
+  geom_rect(fill = "grey96",xmin = 0,xmax = Inf,
+            ymin = 0.2,ymax = .49, color = "grey96") +
+  geom_rect(fill = "grey92",xmin = 0,xmax = Inf,
+            ymin = 0.5,ymax = .79, color = "grey92") +
+  geom_rect(fill = "grey88",xmin = 0,xmax = Inf,
+            ymin = 0.8,ymax = 1.19, color = "grey88") +
+  geom_rect(fill = "grey84",xmin = 0,xmax = Inf,
+            ymin = 1.2,ymax = 1.99, color = "grey84") +
+  geom_rect(fill = "grey82",xmin = 0,xmax = Inf,
+            ymin = 2,ymax = Inf, color = "grey82") +
   geom_pointrange() +
   scale_y_continuous(limits = c(-1, 18)) +
   labs(x = "", y = "Tamanho de efeito") +
@@ -1427,10 +1576,9 @@ ppt_sub_pop_r <- dfsubgrupos %>%
     aes(label = paste(
       "k = ",
       k,
-      ",", " I² = ", inconsistencia, " %",
       sep = ""
     )),
-    y = 14,
+    y = 16,
     color = "grey30",
     size = 3,
     family = "Gadugi",
@@ -1444,6 +1592,30 @@ ppt_sub_pop_r <- dfsubgrupos %>%
     axis.title = element_text(size = 10, color = "grey30")
   )
 
+ppt_sub_pop_r_i <- dfsubgrupos %>%
+  filter(especie == "Rato",
+         Tipo == "População") %>%
+  ggplot(aes(
+    x = categoria,
+    y = inconsistencia,
+    fill = "#ec2b2b"
+  )) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "", y = "I² (%)") +
+  scale_fill_manual(values = "#ec2b2b") +
+  geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  coord_flip() +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+ppt_sub_pop_r <- ppt_sub_pop_r + ppt_sub_pop_r_i + plot_layout(widths = c(6, 1))
 
 save_plot(filename = "ppt_sub_pop_r.png",
           plot = ppt_sub_pop_r,
@@ -1463,6 +1635,20 @@ ppt_sub_int_c <- dfsubgrupos %>%
     ymax = IC95LS,
     color = "#ff9400"
   )) +
+  geom_rect(fill = "white",xmin = 0,xmax = Inf,
+            ymin = -Inf,ymax = 0, color = "white") +
+  geom_rect(fill = "grey100",xmin = 0,xmax = Inf,
+            ymin = 0.01,ymax = .19, color = "grey100") +
+  geom_rect(fill = "grey96",xmin = 0,xmax = Inf,
+            ymin = 0.2,ymax = .49, color = "grey96") +
+  geom_rect(fill = "grey92",xmin = 0,xmax = Inf,
+            ymin = 0.5,ymax = .79, color = "grey92") +
+  geom_rect(fill = "grey88",xmin = 0,xmax = Inf,
+            ymin = 0.8,ymax = 1.19, color = "grey88") +
+  geom_rect(fill = "grey84",xmin = 0,xmax = Inf,
+            ymin = 1.2,ymax = 1.99, color = "grey84") +
+  geom_rect(fill = "grey82",xmin = 0,xmax = Inf,
+            ymin = 2,ymax = Inf, color = "grey82") +
   geom_pointrange() +
   scale_y_continuous(limits = c(-1, 18)) +
   labs(x = "", y = "Tamanho de efeito") +
@@ -1473,10 +1659,9 @@ ppt_sub_int_c <- dfsubgrupos %>%
     aes(label = paste(
       "k = ",
       k,
-      ",", " I² = ", inconsistencia, " %",
       sep = ""
     )),
-    y = 14,
+    y = 16,
     color = "grey30",
     size = 3,
     family = "Gadugi",
@@ -1489,6 +1674,31 @@ ppt_sub_int_c <- dfsubgrupos %>%
     strip.text = element_blank(),
     axis.title = element_text(size = 10, color = "grey30")
   )
+
+ppt_sub_int_c_i <- dfsubgrupos %>%
+  filter(especie == "Camundongo",
+         Tipo == "Intervenção") %>%
+  ggplot(aes(
+    x = categoria,
+    y = inconsistencia,
+    fill = "#ff9400"
+  )) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "", y = "I² (%)") +
+  scale_fill_manual(values = "#ff9400") +
+  geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  coord_flip() +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+ppt_sub_int_c <- ppt_sub_int_c + ppt_sub_int_c_i + plot_layout(widths = c(6, 1))
 
 
 save_plot(filename = "ppt_sub_int_c.png",
@@ -1507,6 +1717,20 @@ ppt_sub_int_r <- dfsubgrupos %>%
     ymax = IC95LS,
     color = "#ec2b2b"
   )) +
+  geom_rect(fill = "white",xmin = 0,xmax = Inf,
+            ymin = -Inf,ymax = 0, color = "white") +
+  geom_rect(fill = "grey100",xmin = 0,xmax = Inf,
+            ymin = 0.01,ymax = .19, color = "grey100") +
+  geom_rect(fill = "grey96",xmin = 0,xmax = Inf,
+            ymin = 0.2,ymax = .49, color = "grey96") +
+  geom_rect(fill = "grey92",xmin = 0,xmax = Inf,
+            ymin = 0.5,ymax = .79, color = "grey92") +
+  geom_rect(fill = "grey88",xmin = 0,xmax = Inf,
+            ymin = 0.8,ymax = 1.19, color = "grey88") +
+  geom_rect(fill = "grey84",xmin = 0,xmax = Inf,
+            ymin = 1.2,ymax = 1.99, color = "grey84") +
+  geom_rect(fill = "grey82",xmin = 0,xmax = Inf,
+            ymin = 2,ymax = Inf, color = "grey82") +
   geom_pointrange() +
   scale_y_continuous(limits = c(-1, 18)) +
   labs(x = "", y = "Tamanho de efeito") +
@@ -1517,10 +1741,9 @@ ppt_sub_int_r <- dfsubgrupos %>%
     aes(label = paste(
       "k = ",
       k,
-      ",", " I² = ", inconsistencia, " %",
       sep = ""
     )),
-    y = 14,
+    y = 16,
     color = "grey30",
     size = 3,
     family = "Gadugi",
@@ -1534,6 +1757,31 @@ ppt_sub_int_r <- dfsubgrupos %>%
     axis.title = element_text(size = 10, color = "grey30")
   )
 
+
+ppt_sub_int_r_i <- dfsubgrupos %>%
+  filter(especie == "Rato",
+         Tipo == "População") %>%
+  ggplot(aes(
+    x = categoria,
+    y = inconsistencia,
+    fill = "#ec2b2b"
+  )) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "", y = "I² (%)") +
+  scale_fill_manual(values = "#ec2b2b") +
+  geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  coord_flip() +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+ppt_sub_int_r <- ppt_sub_int_r + ppt_sub_int_r_i + plot_layout(widths = c(6, 1))
 
 save_plot(filename = "ppt_sub_int_r.png",
           plot = ppt_sub_int_r,
@@ -1552,6 +1800,20 @@ ppt_sub_des_c <- dfsubgrupos %>%
     ymax = IC95LS,
     color = "#ff9400"
   )) +
+  geom_rect(fill = "white",xmin = 0,xmax = Inf,
+            ymin = -Inf,ymax = 0, color = "white") +
+  geom_rect(fill = "grey100",xmin = 0,xmax = Inf,
+            ymin = 0.01,ymax = .19, color = "grey100") +
+  geom_rect(fill = "grey96",xmin = 0,xmax = Inf,
+            ymin = 0.2,ymax = .49, color = "grey96") +
+  geom_rect(fill = "grey92",xmin = 0,xmax = Inf,
+            ymin = 0.5,ymax = .79, color = "grey92") +
+  geom_rect(fill = "grey88",xmin = 0,xmax = Inf,
+            ymin = 0.8,ymax = 1.19, color = "grey88") +
+  geom_rect(fill = "grey84",xmin = 0,xmax = Inf,
+            ymin = 1.2,ymax = 1.99, color = "grey84") +
+  geom_rect(fill = "grey82",xmin = 0,xmax = Inf,
+            ymin = 2,ymax = Inf, color = "grey82") +
   geom_pointrange() +
   scale_y_continuous(limits = c(-1, 22)) +
   labs(x = "", y = "Tamanho de efeito") +
@@ -1562,10 +1824,9 @@ ppt_sub_des_c <- dfsubgrupos %>%
     aes(label = paste(
       "k = ",
       k,
-      ",", " I² = ", inconsistencia, " %",
       sep = ""
     )),
-    y = 16,
+    y = 20,
     color = "grey30",
     size = 3,
     family = "Gadugi",
@@ -1578,6 +1839,31 @@ ppt_sub_des_c <- dfsubgrupos %>%
     strip.text = element_blank(),
     axis.title = element_text(size = 10, color = "grey30")
   )
+
+ppt_sub_des_c_i <- dfsubgrupos %>%
+  filter(especie == "Camundongo",
+         Tipo == "Desfecho") %>%
+  ggplot(aes(
+    x = categoria,
+    y = inconsistencia,
+    fill = "#ff9400"
+  )) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "", y = "I² (%)") +
+  scale_fill_manual(values = "#ff9400") +
+  geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  coord_flip() +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+ppt_sub_des_c <- ppt_sub_des_c + ppt_sub_des_c_i + plot_layout(widths = c(6, 1))
 
 
 save_plot(filename = "ppt_sub_des_c.png",
@@ -1596,6 +1882,20 @@ ppt_sub_des_r <- dfsubgrupos %>%
     ymax = IC95LS,
     color = "#ec2b2b"
   )) +
+  geom_rect(fill = "white",xmin = 0,xmax = Inf,
+            ymin = -Inf,ymax = 0, color = "white") +
+  geom_rect(fill = "grey100",xmin = 0,xmax = Inf,
+            ymin = 0.01,ymax = .19, color = "grey100") +
+  geom_rect(fill = "grey96",xmin = 0,xmax = Inf,
+            ymin = 0.2,ymax = .49, color = "grey96") +
+  geom_rect(fill = "grey92",xmin = 0,xmax = Inf,
+            ymin = 0.5,ymax = .79, color = "grey92") +
+  geom_rect(fill = "grey88",xmin = 0,xmax = Inf,
+            ymin = 0.8,ymax = 1.19, color = "grey88") +
+  geom_rect(fill = "grey84",xmin = 0,xmax = Inf,
+            ymin = 1.2,ymax = 1.99, color = "grey84") +
+  geom_rect(fill = "grey82",xmin = 0,xmax = Inf,
+            ymin = 2,ymax = Inf, color = "grey82") +
   geom_pointrange() +
   scale_y_continuous(limits = c(-1, 22)) +
   labs(x = "", y = "Tamanho de efeito") +
@@ -1606,10 +1906,9 @@ ppt_sub_des_r <- dfsubgrupos %>%
     aes(label = paste(
       "k = ",
       k,
-      ",", " I² = ", inconsistencia, " %",
       sep = ""
     )),
-    y = 16,
+    y = 20,
     color = "grey30",
     size = 3,
     family = "Gadugi",
@@ -1623,6 +1922,31 @@ ppt_sub_des_r <- dfsubgrupos %>%
     axis.title = element_text(size = 10, color = "grey30")
   )
 
+
+ppt_sub_des_r_i <- dfsubgrupos %>%
+  filter(especie == "Rato",
+         Tipo == "Desfecho") %>%
+  ggplot(aes(
+    x = categoria,
+    y = inconsistencia,
+    fill = "#ec2b2b"
+  )) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = "", y = "I² (%)") +
+  scale_fill_manual(values = "#ec2b2b") +
+  geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  facet_grid(moderador ~ ., scales = "free", space = "free") +
+  coord_flip() +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_blank(),
+    axis.title = element_text(size = 10, color = "grey30")
+  )
+
+ppt_sub_des_r <- ppt_sub_des_r + ppt_sub_des_r_i + plot_layout(widths = c(6, 1))
 
 save_plot(filename = "ppt_sub_des_r.png",
           plot = ppt_sub_des_r,
