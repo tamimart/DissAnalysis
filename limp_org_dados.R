@@ -409,6 +409,9 @@ levels(data_geral_reord$camarades3)[match("yes",levels(data_geral_reord$camarade
 
 summary(data_geral_reord$camarades3)
 
+#camarades1
+
+levels(data_geral_reord$camarades1)[match("No",levels(data_geral_reord$camarades1))] <- "Yes"
 
 #measurement_method
 
