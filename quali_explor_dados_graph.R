@@ -1381,7 +1381,7 @@ age_ss <- df %>%
          numeric.p25 = round(numeric.p25, 1),
          numeric.p75 = round(numeric.p75, 1))
 
-# Vincular valores da media e sd com os fatores sexo e especie
+# Vincular valores da mediana e itqr com os fatores sexo e especie
 labels_age <-
   data.frame(
     species = c(
@@ -1478,7 +1478,7 @@ weight_ss <- df %>%
          numeric.p25 = round(numeric.p25, 1),
          numeric.p75 = round(numeric.p75, 1))
 
-# Vincular valores da media e sd com os fatores sexo e especie
+# Vincular valores da mediana e itqr com os fatores sexo e especie
 labels_weight <-
   data.frame(
     species = c(
@@ -2199,7 +2199,7 @@ vol_ppeso_miqr <- cage_3d  %>%
          numeric.p75 = round(numeric.p75, 1))
 
 
-# Vincular valores da media e sd com especie
+# Vincular valores da mediana e itqr com especie
 
 vol_panimal_label <- data.frame(
   species = c("Camundongo", "Rato"),
