@@ -113,7 +113,8 @@ robplot <- df_rob_long %>%
     legend.position = "bottom",
     legend.text = element_text(size = 9, color = "grey20"),
     legend.title = element_text(size = 9, hjust = .5),
-    plot.margin = margin(5, 5, 0, 5),
+    legend.margin = margin(t = -0.2, unit = 'cm'),
+    plot.margin = margin(0, 5, 0, 0),
     legend.key.size = unit(.8, "line"),
     panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank()
@@ -224,7 +225,8 @@ camaradesplot <- df_camarades_longo %>%
         legend.position = "bottom",
         legend.text = element_text(size = 9, color = "grey20"),
         legend.title = element_text(size = 9, hjust = .5),
-        plot.margin = margin(5, 5, 0, 5),
+        legend.margin = margin(t = -0.2, unit = 'cm'),
+        plot.margin = margin(0, 5, 0, 0),
         legend.key.size = unit(.8, "line"),
         panel.grid.major.y = element_line(color = "grey90", size = .1),
         panel.grid.major.x = element_blank()
