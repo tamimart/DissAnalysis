@@ -681,8 +681,8 @@ F1 <-
     limits = c(0, 30),
     guide = guide_colourbar(
       title.position = "top",
-      barwidth = 5,
-      barheight = 0.2
+      barwidth = 6,
+      barheight = 0.3
     )
   ) +
   theme(
@@ -691,10 +691,10 @@ F1 <-
     axis.ticks = element_blank(),
     axis.text = element_blank(),
     axis.title = element_blank(),
-    legend.title = element_text(size = 6, hjust = .5),
-    legend.text = element_text(size = 5),
+    legend.title = element_text(size = 7, hjust = .5),
+    legend.text = element_text(size = 6),
     legend.position = "top",
-    plot.caption = element_text(hjust = 0.5, size = 6),
+    plot.caption = element_text(hjust = 0.5, size = 8),
     plot.margin = margin(0, 0, 5, 0)
   ) +
   expand_limits(x = world$long, y = 85) + #Estabeleço o tamanho
@@ -705,7 +705,7 @@ F1 <-
         y = latr,
         label = region),
     color = "black",
-    size = 2,
+    size = 2.5,
     segment.size = 0.3,
     box.padding = 0.8,
     segment.curvature = -0.1,
@@ -772,7 +772,7 @@ F11996 <-
     axis.text = element_blank(),
     axis.title = element_blank(),
     legend.position = "none",
-    plot.caption = element_text(hjust = 0.5, size = rel(0.6))
+    plot.caption = element_text(hjust = 0.5, size = rel(0.8))
   ) +
   coord_quickmap()
 
@@ -835,7 +835,7 @@ F12006 <-
     axis.text = element_blank(),
     axis.title = element_blank(),
     legend.position = "none",
-    plot.caption = element_text(hjust = 0.5, size = rel(0.6))
+    plot.caption = element_text(hjust = 0.5, size = rel(0.8))
   ) +
   coord_quickmap()
 
@@ -853,21 +853,21 @@ F1idi <- df %>%
     stat = 'count',
     aes(label = ..count..),
     hjust = 0,
-    size = 1.5
+    size = 1.8
   ) +
   scale_fill_manual(values = c("#006f9f", "#ffe170", "grey80")) +
-  ylim(0, 220) +
+  ylim(0, 240) +
   coord_flip() +
   theme(
     axis.text = element_text(
       size = 5,
       hjust = 0,
-      color = "grey20"
+      color = "grey10"
     ),
     axis.text.x = element_blank(),
     legend.position = "none",
     plot.title = element_text(
-      size = 5.5,
+      size = 6,
       hjust = .08,
       margin = margin(0, 0, 0, 0)
     ),
@@ -875,7 +875,7 @@ F1idi <- df %>%
     axis.title = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
-    plot.margin = margin(5, 3, 3, 3),
+    plot.margin = margin(2, 2, 2, 2),
     plot.background = element_rect(
       colour = "grey80",
       fill = NA,
@@ -889,14 +889,15 @@ F1idi <- df %>%
 Figura1 <-
   (F1 + inset_element(
     F1idi,
-    left = 0.05,
-    bottom = 0.05,
-    right = 0.28,
-    top = 0.25
+    left = 0.03,
+    bottom = 0.03,
+    right = 0.25,
+    top = 0.22
   )) / (plot_spacer() |
           F11996 |
           F12006 |
           plot_spacer()) + plot_layout(heights = c(10, 2), widths = c(8, 8))
+
 save_plot(filename = "Figura1.png",
           plot = Figura1,
           dpi = 300,
@@ -917,15 +918,15 @@ Figura2 <- df %>%
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 9,
+      size = 10,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 10, hjust = 1),
+    axis.title = element_text(size = 12, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     panel.grid.major = element_line(color = "grey90", size = .1),
-    plot.margin = margin(20, 10, 20, 10)
+    plot.margin = margin(5, 5, 0, 5)
   )
 
 save_plot(filename = "Figura2.png",
@@ -950,7 +951,7 @@ f3a <- df %>%
   )) +
   geom_bar(stat = "identity") + # mesmo que geom_col() sem stat
   geom_text(
-    size = 2.5,
+    size = 3.5,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
     vjust = -0.25
@@ -960,13 +961,13 @@ f3a <- df %>%
   scale_fill_manual(values = met.brewer("Signac", 2)) +
   theme(
     axis.text = element_text(
-      size = 7,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 8, hjust = 1),
-    plot.title = element_text(size = 10),
+    axis.title = element_text(size = 10, hjust = 1),
+    plot.title = element_text(size = 12),
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid = element_blank(),
@@ -986,14 +987,14 @@ f3b <- df  %>% # especie no tempo
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 7,
+      size = 9,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 12),
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid.major = element_line(color = "grey90", size = .1),
@@ -1012,23 +1013,23 @@ f3c <- df %>%
   )) +
   geom_bar(stat = "identity") +
   geom_text(
-    size = 2.5,
+    size = 3.5,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
     vjust = -0.25
   ) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
-  scale_y_continuous(limits = c(0, 7500), expand = c(0, 0)) + # 300 a mais para caber a anotacao da maior barra
+  scale_y_continuous(limits = c(0, 7600), expand = c(0, 0)) + # 300 a mais para caber a anotacao da maior barra
   labs(y = "Nº de animais", x = "Sexo", title = "c") +
   theme(
     axis.text = element_text(
-      size = 7,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 8, hjust = 1),
-    plot.title = element_text(size = 10),
+    axis.title = element_text(size = 10, hjust = 1),
+    plot.title = element_text(size = 12),
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid = element_blank(),
@@ -1045,14 +1046,14 @@ f3d <- df  %>% # sexo no tempo
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 7,
+      size = 9,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 12),
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid.major = element_line(color = "grey90", size = .1),
@@ -1096,22 +1097,22 @@ ggplot(aes(
               label_key = strain) +
   scale_fill_manual(values = c("#ffe170", "#fec200", "#ff9400")) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text.x = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_text(
-      size = 5.5,
+      size = 6,
       angle = 0,
       color = "black"
     ),
@@ -1137,24 +1138,24 @@ f4b <- df %>%
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
   labs(y = "Nº de estudos", x = "Linhagem", title = "b") +
-  scale_y_continuous(n.breaks = 5, expand = c(0,0), limits = c(0,150)) +
+  scale_y_continuous(n.breaks = 5, expand = c(0,0), limits = c(0,175)) +
   coord_flip() +
   gghighlight(counts > 25,
               calculate_per_facet = TRUE,
               label_key = strain) +
   scale_fill_manual(values = c("#ffe170", "#fec200", "#ff9400")) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 5.5,
+      size = 7,
       angle = 0,
       color = "grey20"
     ),
@@ -1182,24 +1183,24 @@ f4c <- df %>%
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
   labs(y = "Nº de animais", x = "Linhagem", title = "c") +
-  scale_y_continuous(expand = c(0,0), limits = c(0,2100)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,2500)) +
   coord_flip() +
   gghighlight(counts > 500,
               calculate_per_facet = TRUE,
               label_key = strain) +
   scale_fill_manual(values = c("#ffe170", "#fec200", "#ff9400")) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 5.5,
+      size = 7,
       angle = 0,
       color = "grey20"
     ),
@@ -1237,23 +1238,23 @@ f4d <- df %>%
               label_key = strain) +
   scale_fill_manual(values = c("#ec2b2b", "#a6243a")) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     
     axis.text.x = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_text(
-      size = 5.5,
+      size = 6,
       angle = 0,
       color = "black"
     ),
@@ -1280,24 +1281,24 @@ f4e <- df %>%
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
   labs(y = "Nº de estudos", x = "Linhagem", title = "e") +
-  scale_y_continuous(n.breaks = 5, expand = c(0,0), limits = c(0, 150)) +
+  scale_y_continuous(n.breaks = 5, expand = c(0,0), limits = c(0, 175)) +
   coord_flip() +
   gghighlight(counts > 25,
               calculate_per_facet = TRUE,
               label_key = strain) +
   scale_fill_manual(values = c("#ec2b2b", "#a6243a")) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 5.5,
+      size = 7,
       angle = 0,
       color = "grey20"
     ),
@@ -1325,24 +1326,24 @@ f4f <- df %>%
   )) +
   geom_bar(color = "black", size = 0.2, stat = "identity") +
   labs(y = "Nº de animais", x = "Linhagem", title = "f") +
-  scale_y_continuous(expand = c(0,0), limits = c(0, 2100)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 2500)) +
   coord_flip() +
   gghighlight(counts > 500,
               calculate_per_facet = TRUE,
               label_key = strain) +
   scale_fill_manual(values = c("#ec2b2b", "#a6243a")) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 5.5,
+      size = 7,
       angle = 0,
       color = "grey0"
     ),
@@ -1407,18 +1408,18 @@ labels_age <-
   )
 
 f5 <- df %>%
-  ggplot(aes(x = age, fill = sex), na.rm =T) +
+  ggplot(aes(x = age, fill = sex), na.rm = T) +
   geom_histogram() +
   facet_grid(fct_infreq(sex) ~ species, scales = "free_x") +
   geom_text(
     data = labels_age,
     aes(label = label),
-    x = Inf ,
-    y = Inf,
+    x = Inf-1,
+    y = Inf-1,
     vjust = 1.4,
     hjust = 1.01,
     color = "grey20",
-    size = 2.5
+    size = 3
   ) +
    geom_vline(
     data = age_ss,
@@ -1445,21 +1446,21 @@ f5 <- df %>%
   ) +
   labs(y = "Nº de estudos", x = "Idade (dias)") +
   scale_x_continuous(n.breaks = 10) +
-  scale_y_continuous(expand = c(0,0), limits = c(0,40)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0,45)) +
   scale_fill_manual(values = c("#692b75", "#006f9f", "#009c7e", "grey80")) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 7.5,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 0),
+    axis.title = element_text(size = 10, hjust = 0),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
-    strip.text = element_text(colour = 'black', size = 8),
+    strip.text = element_text(colour = 'black', size = 9),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 20, 0)
   )
@@ -1511,12 +1512,12 @@ f6 <- df %>%
   geom_text(
     data = labels_weight,
     aes(label = label),
-    x = Inf ,
-    y = Inf,
+    x = Inf-1,
+    y = Inf-1,
     vjust = 1.4,
     hjust = 1.01,
     color = "grey20",
-    size = 2.5
+    size = 3
   ) +
   geom_vline(
     data = weight_ss,
@@ -1548,20 +1549,22 @@ f6 <- df %>%
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 7.5,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 0),
+    axis.title = element_text(size = 10, hjust = 0),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
-    strip.text = element_text(colour = 'black', size = 8),
+    strip.text = element_text(colour = 'black', size = 9),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 20, 0)
   )
+
 f6
+
 # Salvar
 
 save_plot(filename = "Figura5.png",
@@ -1794,22 +1797,21 @@ f7a <- df %>%
               calculate_per_facet = TRUE,
               label_key = model_phenotype) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
-      color = "grey20"
+      color = "grey10"
     ),
-    axis.text.x = element_text(size = 5),
-    axis.title = element_text(size = 7),
+    axis.title = element_text(size = 8),
     axis.title.x = element_text(margin = margin(t = 5)),
     axis.title.y = element_blank(),
     panel.grid.major = element_line(color = "grey90", size = .1),
@@ -1817,7 +1819,7 @@ f7a <- df %>%
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 6),
-    plot.margin = margin(10, 10, 0, 0)
+    plot.margin = margin(10, 5, 0, 0)
   )
 
 
@@ -1846,38 +1848,37 @@ f7b <- df %>%
   labs(y = "Nº de estudos", x = "Modelo") +
   scale_fill_manual(values = c("#f24a7a","#82c236","#692b75", "#ff9400")) +
   coord_flip() +
-  scale_y_continuous(limits = c(0, 12), expand = c(0, 0), n.breaks = 4) +
+  scale_y_continuous(limits = c(0, 16), expand = c(0, 0), n.breaks = 4) +
   facet_wrap( ~ species, strip.position = "top") +
   gghighlight(counts > 5,
               calculate_per_facet = TRUE,
               label_key = model_phenotype) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
-      color = "grey30"
+      color = "grey10"
     ),
     axis.text.y = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.ticks.y = element_blank(),
-    axis.title = element_text(size = 7),
+    axis.title = element_text(size = 8),
     axis.title.x = element_text(margin = margin(t = 5)),
     axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.title.position = "plot",
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 6),
-    plot.margin = margin(10, 10, 0, 0)
+    plot.margin = margin(10, 5, 0, 0)
   )
 
 # Modelos em qtd de animais
@@ -1901,38 +1902,37 @@ f7c <- df %>%
   labs(y = "Nº de animais", x = "Modelo animal") +
   scale_fill_manual(values = c("#f24a7a", "#82c236","#006f9f", "#692b75", "#ff9400", "#ec2b2b")) +
   coord_flip() +
-  scale_y_continuous(limits = c(0, 200), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 249), expand = c(0, 0)) +
   facet_wrap( ~ species, strip.position = "top") +
   gghighlight(counts > 75,
               calculate_per_facet = TRUE,
               label_key = model_phenotype) +
   geom_text(
-    color = "mintcream",
+    color = "grey20",
     size = 2,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
-    hjust = 1.1,
+    hjust = -.15,
     fontface = "bold"
   ) +
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
-      angle = 0,
-      color = "grey30"
+      size = 7,
+      angle = 45,
+      color = "grey10"
     ),
     axis.text.y = element_blank(),
-    axis.text.x = element_text(size = 5),
-    axis.ticks.y = element_blank(),
-    axis.title = element_text(size = 7),
-    axis.title.y = element_blank(),
+    axis.title = element_text(size = 8),
     axis.title.x = element_text(margin = margin(t = 5)),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.title.position = "plot",
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 6),
-    plot.margin = margin(10, 10, 0, 0)
+    plot.margin = margin(10, 5, 0, 0)
   )
 
 # Combinar e salvar
@@ -1967,19 +1967,19 @@ F8a <- df %>%
   scale_fill_manual(values = c("#fec200", "#ffe170", "grey80", "#ffe170", "#ffe170", "#ffe170")) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 110)) +
   geom_text(
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
     vjust = -0.25
   ) +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 9, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10),
@@ -2021,7 +2021,7 @@ F8b <- df %>%
     y = 57,
     hjust = 1.1,
     color = "grey20",
-    size = 2.5
+    size = 3
   ) +
   geom_vline(data = filtro_bioterium_temp,
              aes(xintercept = numeric.p50),
@@ -2046,11 +2046,11 @@ F8b <- df %>%
   theme(
     axis.line = element_line(size = .2),
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 8, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10),
@@ -2099,7 +2099,7 @@ F8c <- df %>%
     y = 28.5,
     hjust = 1.1,
     color = "grey20",
-    size = 2.5
+    size = 3
   ) +
   geom_vline(data = filtro_bioterium_umid,
              aes(xintercept = numeric.p50),
@@ -2124,11 +2124,11 @@ F8c <- df %>%
   theme(
     axis.line = element_line(size = .2),
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 8, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10),
@@ -2221,12 +2221,12 @@ F9a <- cage_3d %>%
   geom_text(
     data = vol_panimal_label,
     aes(label = label),
-    x = Inf ,
-    y = Inf,
+    x = Inf-1,
+    y = Inf-1,
     vjust = 1.4,
     hjust = 1.01,
     color = "grey20",
-    size = 2.5
+    size = 3
   ) +
   geom_vline(data = vol_panimal_miqr,
              aes(xintercept = numeric.p50),
@@ -2253,18 +2253,18 @@ F9a <- cage_3d %>%
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7, hjust = 0),
+    axis.title = element_text(size = 9, hjust = 0),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10),
     plot.title.position = "panel",
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
-    strip.text = element_text(colour = 'black', size = 8),
+    strip.text = element_text(colour = 'black', size = 10),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(20, 0, 0, 0)
   )
@@ -2279,12 +2279,12 @@ F9b <- cage_3d %>%
   geom_text(
     data = vol_ppeso_label,
     aes(label = label),
-    x = Inf ,
-    y = Inf,
+    x = Inf-1,
+    y = Inf-1,
     vjust = 1.4,
     hjust = 1.01,
     color = "grey20",
-    size = 2.5
+    size = 3
   ) +
   geom_vline(data = vol_ppeso_miqr,
              aes(xintercept = numeric.p50),
@@ -2311,18 +2311,18 @@ F9b <- cage_3d %>%
   theme_bw(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 7, hjust = 0),
+    axis.title = element_text(size = 9, hjust = 0),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
     plot.title = element_text(size = 10),
     plot.title.position = "panel",
     legend.position = "none",
     strip.background = element_rect(fill = "white", color = "black"),
-    strip.text = element_text(colour = 'black', size = 8),
+    strip.text = element_text(colour = 'black', size = 10),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 0, 20, 0)
   )
@@ -2452,7 +2452,7 @@ f10a <- df %>%
   na.rm = T) +
   geom_bar(stat = "identity") +
   geom_text(
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
     vjust = -0.25
@@ -2463,16 +2463,16 @@ f10a <- df %>%
     labels = function(x)
       str_wrap(x, width = 15)
   ) +
-  scale_y_continuous(limits = c(0, 265), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 280), expand = c(0, 0)) +
   theme(
     axis.text = element_text(
-      size = 7,
+      size = 9,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 8, hjust = 1),
-    plot.title = element_text(size = 10),
+    axis.title = element_text(size = 10, hjust = 1),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid = element_blank(),
@@ -2492,14 +2492,14 @@ f10b <- df  %>%
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 7,
+      size = 9,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     legend.position = "none",
     plot.margin = margin(10, 0, 0, 10),
@@ -2564,20 +2564,17 @@ f11a <- df %>%
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 6,
+      size = 7.5,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     legend.position = "none",
-    legend.text = element_text(size = 4, color = "grey20"),
-    legend.title = element_text(size = 5),
     plot.margin = margin(10, 0, 10, 10),
-    legend.key.size = unit(.8, "line"),
     panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank()
   )
@@ -2635,14 +2632,14 @@ f11b <- df %>%
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 7,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(t = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     legend.position = "none",
     plot.margin = margin(10, 10, 10, 10),
@@ -2707,20 +2704,17 @@ f12a <- df %>%
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 6,
+      size = 7.5,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     legend.position = "none",
-    legend.text = element_text(size = 4, color = "grey20"),
-    legend.title = element_text(size = 5),
     plot.margin = margin(10, 0, 10, 10),
-    legend.key.size = unit(.8, "line"),
     panel.grid.major.y = element_line(color = "grey90", size = .1),
     panel.grid.major.x = element_blank()
   )
@@ -2771,18 +2765,17 @@ f12b <- df %>%
   theme(
     axis.line = element_line(size = .3),
     axis.text = element_text(
-      size = 7,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
-    axis.title = element_text(size = 8, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(t = 5)),
     axis.title.x = element_text(margin = margin(t = 5)),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     legend.position = "none",
     plot.margin = margin(10, 10, 10, 10),
-    legend.key.size = unit(.5, "line"),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.major.y = element_blank()
@@ -2809,7 +2802,7 @@ f13a <- df %>%
   geom_bar(position = position_dodge2(preserve = "single")) + 
   geom_text(aes(label = ..count..), stat = "count",
             color = "black",
-            size = 2,
+            size = 3,
             family = "Gadugi",
             position = position_dodge2(preserve = "single", width = 1),
             vjust = -.25,
@@ -2819,12 +2812,12 @@ f13a <- df %>%
   scale_fill_manual(values = c("1" = "#fec200", "2" = "#009c7e", "3" = "#a94f93")) +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 9, hjust = 1),
     axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
@@ -2869,25 +2862,26 @@ f13b <- df %>%
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
-    axis.title.y = element_text(margin = margin(r = 5), size = 7, hjust = 1),
-    axis.title.x = element_text(margin = margin(t = 5), size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5), size = 9, hjust = 1),
+    axis.title.x = element_text(margin = margin(t = 5), size = 9, hjust = 1),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     plot.margin = margin(0, 0, 0, 0),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 9),
+    legend.text = element_text(size = 8),
     legend.position = "bottom",
-    legend.margin = margin(0,0,0,0),
+    legend.margin = margin(t = 0.4, unit = 'cm'),
     legend.box.margin = margin(-10, 0,-10,-10),
     legend.spacing.x = unit(0.1,'mm'),
     panel.grid.major.y = element_line(color = "grey90", size = .1),
-    panel.grid.minor.y = element_line(color = "grey90", size = .1)
+    panel.grid.minor.y = element_line(color = "grey90", size = .1),
+    axis.line = element_line(colour = 'black', size = .3)
   )
 f13b
 
@@ -2911,26 +2905,26 @@ f14a <- df %>%
   geom_bar(position = position_dodge2(preserve = "single")) + 
   geom_text(aes(label = ..count..), stat = "count",
             color = "black",
-            size = 2,
+            size = 3,
             family = "Gadugi",
             position = position_dodge2(preserve = "single", width = 1),
             vjust = -.25,
   ) +
-  scale_y_continuous(limits = c(0, 100), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0, 102), expand = c(0, 0)) +
   scale_x_discrete(
     labels = function(x)
-      str_wrap(x, width = 15)
+      str_wrap(x, width = 4)
   ) +
   labs(y = "Nº de estudos", title = "a") +
   scale_fill_manual(values = c("1" = "#fec200", "2" = "#009c7e", "3" = "#a94f93", "Sem info" = "grey80")) +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 9, hjust = 1),
     axis.title.x = element_blank(),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
@@ -2973,31 +2967,32 @@ f14b <- df %>%
   scale_y_continuous(expand = c(.001, 0), limits = c(0, 50)) +
   scale_x_discrete(
     labels = function(x)
-      str_wrap(x, width = 15)
+      str_wrap(x, width = 4)
   ) +
   geom_pointrange(data = stat_t_d_rat, aes(x = treatment_via, y = numeric.p50,  ymin = numeric.p25, ymax = numeric.p75), colour = "black", size = .2, fatten = .1) +
   theme_classic(base_family = "Gadugi") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
-    axis.title.y = element_text(margin = margin(r = 5), size = 7, hjust = 1),
-    axis.title.x = element_text(margin = margin(t = 5), size = 7, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 5), size = 9, hjust = 1),
+    axis.title.x = element_text(margin = margin(t = 5), size = 9, hjust = 1),
     plot.title = element_text(size = 10),
     plot.title.position = "plot",
     strip.background = element_rect(fill = "white", color = "black"),
     strip.text = element_text(colour = 'black', size = 8),
     plot.margin = margin(0, 0, 0, 0),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 9),
+    legend.text = element_text(size = 8),
     legend.position = "bottom",
-    legend.margin = margin(0,0,0,0),
+    legend.margin = margin(t = 0.4, unit = 'cm'),
     legend.box.margin = margin(-10, 0,-10,-10),
     legend.spacing.x = unit(0.1,'mm'),
     panel.grid.major.y = element_line(color = "grey90", size = .1),
-    panel.grid.minor.y = element_line(color = "grey90", size = .1)
+    panel.grid.minor.y = element_line(color = "grey90", size = .1),
+    axis.line = element_line(colour = 'black', size = .3)
   )
 
 f14b
@@ -3056,28 +3051,28 @@ f15a <- df %>%
   geom_text(
     aes(label = ..count..),
     stat = "count",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
     vjust = -0.25
   ) +
   geom_text(aes(label = "Camundongo", 
                 x = Inf - 3, 
-                y = 65),
+                y = 64),
             hjust = 1.1,
-            size = 2.5,
+            size = 3,
             family = "Gadugi",
             color = "grey20") +
   theme(axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey30"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 9, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_blank(),
-      plot.title = element_text(size = 10),
+      plot.title = element_text(size = 11),
       plot.title.position = "plot",
       plot.subtitle = element_text(size = 7, hjust = .5),
       legend.position = "none",
@@ -3114,29 +3109,29 @@ f15b <- df %>%
   geom_text(
     aes(label = ..count..),
     stat = "count",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     position = position_dodge(width = 0.9),
     vjust = -0.25
   ) +
   geom_text(aes(label = "Rato", 
                 x = Inf - 5, 
-                y = 65),
+                y = 64),
             hjust = 1.1,
-            size = 2.5,
+            size = 3,
             family = "Gadugi",
             color = "grey30") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 9, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
     axis.title.x = element_text(margin = margin(t = 5), hjust = .5),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     legend.position = "none",
     panel.grid = element_blank(),
@@ -3253,7 +3248,7 @@ f16a <- df %>%
   ) +
   geom_text(aes(label = ..count..), stat = "count",
                   color = "mintcream",
-                  size = 2.5,
+                  size = 3,
                   family = "Gadugi",
                   position = position_jitter_stack(vjust = 0.5,
                                                    jitter.height = 0,
@@ -3263,26 +3258,26 @@ f16a <- df %>%
   geom_text(aes(label = "Camundongo", 
                 x = Inf - 3, 
                 y = 73),
-            size = 2.5,
+            size = 3,
             hjust = 1.1,
             family = "Gadugi",
             color = "grey30") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_text(margin = margin(r = 5)),
-    axis.title.x = element_text(margin = margin(t = 10), hjust = 1.7),
-    plot.title = element_text(size = 10),
+    axis.title.x = element_text(margin = margin(t = 10), hjust = 3.5),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     legend.position = "none",
     plot.subtitle = element_text(size = 7, hjust = .5),
     panel.grid = element_blank(),
-    plot.margin = margin(0, 0, 0, 0)
+    plot.margin = margin(0, 0, 10, 0)
   )
 
 f16a
@@ -3306,8 +3301,7 @@ f16b <- df %>%
     "Manual e automatizada" = "#82c236", 
     "Cronômetro" = "#f24a7a",
     "Intervalos de 5s" = "#b376a2",
-    "Intervalos de 60s" = "#a94f93"
-  )) +
+    "Intervalos de 60s" = "#a94f93")) +
   labs(y = "Nº de publicações", title = "b", fill = "Detalhe do método:") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 75)) +
   scale_x_discrete(
@@ -3316,7 +3310,7 @@ f16b <- df %>%
   ) +
   geom_text(aes(label = ..count..), stat = "count",
                   color = "mintcream",
-                  size = 2.5,
+                  size = 3,
                   family = "Gadugi",
             position = position_jitter_stack(vjust = 0.5,
                                              jitter.height = 0,
@@ -3326,33 +3320,33 @@ f16b <- df %>%
   geom_text(aes(label = "Rato", 
                 x = Inf - 3, 
                 y = 73),
-            size = 2.5,
+            size = 3,
             hjust = 1.1,
             family = "Gadugi",
             color = "grey30") +
   theme(
     axis.text = element_text(
-      size = 6,
+      size = 8,
       angle = 0,
       color = "grey20"
     ),
     axis.text.y = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 10, hjust = 1),
     axis.title.y = element_blank(),
     axis.title.x = element_blank(),
-    plot.title = element_text(size = 10),
+    plot.title = element_text(size = 11),
     plot.title.position = "plot",
     plot.subtitle = element_text(size = 7, hjust = .5),
     panel.grid = element_blank(),
-    plot.margin = margin(0, 0, 0, 10)
+    plot.margin = margin(0, 10, 10, 10),
+    legend.position = "bottom",
   )
 f16b
 
-Figura16 <- (f16a + f16b) / guide_area() + plot_layout(guides = "collect", heights = c(9,1)) & theme(legend.title = element_text(size = 6),
-                                                                      legend.text = element_text(size = 6),
-                                                                      legend.direction = "horizontal", 
-                                                                      legend.key.size = unit(0.2, "cm"))
-
+Figura16 <- (f16a + f16b) / guide_area() + plot_layout(nrow = 2, guides = "collect", heights = c(9,1)) & theme(legend.title = element_text(size = 8, hjust = .5),
+                                                                      legend.text = element_text(size = 7.5),
+                                                                      legend.direction = "vertical", 
+                                                                      legend.key.size = unit(0.2, "cm")) 
 
 save_plot(filename = "Figura16.png",
           plot = Figura16,
@@ -3381,7 +3375,7 @@ f17a1 <-  df %>%
     axis.line = element_line(size = .1),
     axis.line.x = element_blank(),
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey30"
     ),
@@ -3389,8 +3383,8 @@ f17a1 <-  df %>%
     axis.title = element_blank(),
     plot.title.position = "plot",
     plot.title = element_text(size = 10, margin = margin(b = -5)),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 7),
     legend.position = "top",
     legend.justification = "left",
     legend.margin = margin(0, 0, -8, 8),
@@ -3527,11 +3521,11 @@ f17a2 <-  df %>%
   theme(
     axis.line = element_line(size = .1),
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey30"
     ),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 8, hjust = 1),
     plot.title = element_text(size = 10),
     legend.position = "panel",
     panel.grid.major = element_line(color = "grey90", size = .1),
@@ -3553,7 +3547,7 @@ f17a3 <-  df %>%
     axis.line = element_line(size = .1),
     axis.line.y = element_blank(),
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey30"
     ),
@@ -3597,7 +3591,7 @@ f17b <- label_wd_c %>%
     y = 20,
     x = as.numeric(as.Date("1994-01-01")),
     color = "black",
-    size = 2,
+    size = 2.5,
     hjust = 1.1,
     family = "Gadugi"
   ) +
@@ -3635,16 +3629,15 @@ f17b <- label_wd_c %>%
   theme(
     axis.line = element_line(size = .2),
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey30"
     ),
     axis.text.x = element_blank(),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 8, hjust = 1),
     axis.title.x = element_blank(),
     plot.title = element_text(size = 10, margin = margin(b = -5)),
     plot.title.position = "plot",
-    plot.subtitle = element_text(size = 4, hjust = .5),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(10, 0, 0, 10)
   )
@@ -3693,11 +3686,11 @@ f17c <- label_wd_r %>%
   theme(
     axis.line = element_line(size = .2),
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey30"
     ),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 8, hjust = 1),
     plot.title.position = "panel",
     axis.title.x = element_text(margin = margin(t = 5)),
     axis.title.y = element_blank(),
@@ -3757,7 +3750,7 @@ f17d <- df %>%
     vjust = 1.1,
     hjust = 1.1,
     color = "grey30",
-    size = 2
+    size = 2.5
   ) +
   geom_vline(
     data = filtro_temp_agua_c,
@@ -3785,19 +3778,17 @@ f17d <- df %>%
   theme(
     axis.line = element_line(size = .2),
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey30"
     ),
     axis.text.x = element_blank(),
-    axis.title.y = element_text(hjust = +1.1, size = 7),
+    axis.title.y = element_text(hjust = +1.1, size = 8),
     axis.title.x = element_blank(),
     plot.title = element_text(size = 10, margin = margin(b = 0)),
     plot.title.position = "plot",
     plot.subtitle = element_text(size = 4, hjust = .5),
     legend.position = "none",
-    strip.background = element_rect(fill = "white", color = "black"),
-    strip.text = element_text(colour = 'black', size = 8),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(5, 5, 0, 5)
   )
@@ -3852,7 +3843,7 @@ f17e <- df %>%
     vjust = 1.1,
     hjust = 1.1,
     color = "grey30",
-    size = 2
+    size = 2.5
   ) + geom_vline(
     data = filtro_temp_agua_c,
     aes(xintercept = numeric.p50),
@@ -3878,11 +3869,11 @@ f17e <- df %>%
   theme(
     axis.line = element_line(size = .2),
     axis.text = element_text(
-      size = 6,
+      size = 7,
       angle = 0,
       color = "grey30"
     ),
-    axis.title = element_text(size = 7, hjust = 1),
+    axis.title = element_text(size = 8, hjust = 1),
     axis.title.y = element_blank(),
     plot.title = element_text(size = 8),
     plot.title.position = "plot",
@@ -3892,8 +3883,6 @@ f17e <- df %>%
       margin = margin(b = 10)
     ),
     legend.position = "none",
-    strip.background = element_rect(fill = "white", color = "black"),
-    strip.text = element_text(colour = 'black', size = 8),
     panel.grid.major = element_line(color = "grey90", size = .1),
     plot.margin = margin(0, 5, 0, 5)
   )
