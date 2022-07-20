@@ -3247,13 +3247,12 @@ f16a <- df %>%
       str_wrap(x, width = 15)
   ) +
   geom_text(aes(label = ..count..), stat = "count",
-                  color = "mintcream",
-                  size = 3,
+                  color = "black",
+                  size = 2.5,
                   family = "Gadugi",
                   position = position_jitter_stack(vjust = 0.5,
                                                    jitter.height = 0,
                                                    jitter.width =  0.3, offset = 1),
-                  fontface = "bold",
   ) +
   geom_text(aes(label = "Camundongo", 
                 x = Inf - 3, 
@@ -3309,13 +3308,12 @@ f16b <- df %>%
       str_wrap(x, width = 15)
   ) +
   geom_text(aes(label = ..count..), stat = "count",
-                  color = "mintcream",
-                  size = 3,
+                  color = "black",
+                  size = 2.5,
                   family = "Gadugi",
             position = position_jitter_stack(vjust = 0.5,
                                              jitter.height = 0,
-                                             jitter.width =  0.3, offset = 1),
-                  fontface = "bold") + 
+                                             jitter.width =  0.3, offset = 1)) + 
   guides(fill = guide_legend(override.aes = list(size = .1), nrow = 1, byrow = TRUE)) +
   geom_text(aes(label = "Rato", 
                 x = Inf - 3, 
