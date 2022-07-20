@@ -168,7 +168,7 @@ write_xlsx(copia_final_df, "data/leave2.xlsx") # salvar em excel
 
 png("Fig/funil.png", height = 900, width = 600)
 
-par(mfrow = c(2, 1), oma = c(0,1,0,0))
+par(mfrow = c(2, 1), mar = c(5,5,1,1))
 
 funil <-
   metafor::funnel(
@@ -188,8 +188,8 @@ funil <-
     offset = 0.1,
     legend = TRUE,
     ci.res = 1000,
-    cex.lab = 1.7, 
-    cex.axis = 1.5
+    cex.lab = 2, 
+    cex.axis = 2
   )
 
 
@@ -209,9 +209,10 @@ funil2 <-
     offset = 0.1,
     legend = FALSE,
     ci.res = 1000,
-    cex.lab = 1.7, 
-    cex.axis = 1.5
+    cex.lab = 2, 
+    cex.axis = 2
   )
+
 dev.off()
 
 
@@ -231,7 +232,7 @@ print(faltantes)
 
 png("Fig/funil_ef.png", height = 900, width = 600)
 
-par(mfrow = c(2, 1), oma = c(0,1,0,0))
+par(mfrow = c(2, 1), mar = c(5,5,1,1))
 
 funil_ef1 <- metafor::funnel(
   faltantes,
@@ -251,8 +252,8 @@ funil_ef1 <- metafor::funnel(
   offset = 0.1,
   legend = "topright",
   ci.res = 1000,
-  cex.lab = 1.7, 
-  cex.axis = 1.5
+  cex.lab = 2, 
+  cex.axis = 2
 )
 
 funil_ef2 <- metafor::funnel(
@@ -273,8 +274,8 @@ funil_ef2 <- metafor::funnel(
   offset = 0.1,
   legend = "topright",
   ci.res = 1000,
-  cex.lab = 1.7, 
-  cex.axis = 1.5
+  cex.lab = 2, 
+  cex.axis = 2
 )
 
 dev.off()
@@ -312,7 +313,7 @@ faltantes_r
 
 png("Fig/funil_esp.png", height = 900, width = 1200)
 
-par(mfrow = c(2, 2), oma = c(0,1,0,0))
+par(mfrow = c(2, 2), oma = c(0,1,0,0), mar = c(5,5,5,1))
 
 funil_esp1_m <- metafor::funnel(
   faltantes_m,
@@ -335,8 +336,8 @@ funil_esp1_m <- metafor::funnel(
   offset = 0.1,
   legend = "topright",
   ci.res = 1000,
-  cex.lab = 1.7, 
-  cex.axis = 1.5,
+  cex.lab = 2.8, 
+  cex.axis = 2.5,
   cex.main = 2.2
 )
 
@@ -361,8 +362,8 @@ funil_esp1_r <- metafor::funnel(
   offset = 0.1,
   legend = "topright",
   ci.res = 1000,
-  cex.lab = 1.7, 
-  cex.axis = 1.5,
+  cex.lab = 2.8, 
+  cex.axis = 2.5,
   cex.main = 2.2
 )
 
@@ -386,8 +387,8 @@ funil_esp2_m <- metafor::funnel(
   offset = 0.1,
   legend = "topright",
   ci.res = 1000,
-  cex.lab = 1.7, 
-  cex.axis = 1.5
+  cex.lab = 2.8, 
+  cex.axis = 2.5
 )
 
 funil_esp2_r <- metafor::funnel(
@@ -410,8 +411,8 @@ funil_esp2_r <- metafor::funnel(
   offset = 0.1,
   legend = "topright",
   ci.res = 1000,
-  cex.lab = 1.7, 
-  cex.axis = 1.5
+  cex.lab = 2.8, 
+  cex.axis = 2.5
 )
 
 dev.off()
@@ -1241,12 +1242,12 @@ metareg_peso_c <- rma(yi, vi, subset = species == "mice", mods = ~ weight, data 
 metareg_peso_r <- rma(yi, vi, subset = species == "rat", mods = ~ weight, data = Efeito)
 
 
-par(mfrow = c(2, 2), oma = c(0,2,0,1))
+par(mfrow = c(2, 2), oma = c(0,2,0,1), cex = 1, font = 2, family = "sans")
 
-regplot(metareg_age_c, xlab = "Idade (dias)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 2.3, cex.lab = 2, cex.axis = 1.8)
-regplot(metareg_age_r, xlab = "Idade (dias)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 2.3, cex.lab = 2, cex.axis = 1.8)
-regplot(metareg_peso_c, xlab = "Peso (g)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 2, cex.axis = 1.8)
-regplot(metareg_peso_r, xlab = "Peso (g)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 2, cex.axis = 1.8)
+regplot(metareg_age_c, xlab = "Idade (dias)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 2, cex.lab = 2, cex.axis = 2)
+regplot(metareg_age_r, xlab = "Idade (dias)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 2, cex.lab = 2, cex.axis = 2)
+regplot(metareg_peso_c, xlab = "Peso (g)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 2, cex.axis = 2)
+regplot(metareg_peso_r, xlab = "Peso (g)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 2, cex.axis = 2)
 
 dev.off()
 
@@ -1262,10 +1263,10 @@ png("Fig/Reg_dose.png", height = 400, width = 1000)
 metareg_dose_c <- rma(yi, vi, subset = species == "mice" & dose_unit == "mg/kg", mods = ~dose, data = Efeito) 
 metareg_dose_r <- rma(yi, vi, subset = species == "rat" & dose_unit == "mg/kg", mods = ~dose, data = Efeito) 
 
-par(mfrow = c(1, 2), oma = c(0,2,0,1))
+par(mfrow = c(1, 2), oma = c(0,2,0,1),  cex = 1, font = 2, family = "sans")
 
-regplot(metareg_dose_c, xlab = "Dose (mg/kg)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
-regplot(metareg_dose_r, xlab = "Dose (mg/kg)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+regplot(metareg_dose_c, xlab = "Dose (mg/kg)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 2, cex.lab = 2, cex.axis = 2)
+regplot(metareg_dose_r, xlab = "Dose (mg/kg)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 2, cex.lab = 2, cex.axis = 2)
 
 dev.off()
 
@@ -1281,10 +1282,10 @@ png("Fig/Reg_pa.png", height = 400, width = 1000)
 metareg_pa_c <- rma(yi, vi, subset = species == "mice", mods = ~ water_depth, data = Efeito)
 metareg_pa_r <- rma(yi, vi, subset = species == "rat", mods = ~ water_depth, data = Efeito)
 
-par(mfrow = c(1, 2), oma = c(0,2,0,1))
+par(mfrow = c(1, 2), oma = c(0,2,0,1),  cex = 1, font = 2, family = "sans")
 
-regplot(metareg_pa_c, xlab = "Profundidade da água (cm)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
-regplot(metareg_pa_r, xlab = "Profundidade da água (cm)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 1.8, cex.lab = 1.5, cex.axis = 1.2)
+regplot(metareg_pa_c, xlab = "Profundidade da água (cm)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 2, cex.lab = 2, cex.axis = 2)
+regplot(metareg_pa_r, xlab = "Profundidade da água (cm)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Rato", cex.main = 2, cex.lab = 2, cex.axis = 2)
 
 dev.off()
 
@@ -1314,12 +1315,12 @@ metareg_quali_r <- rma(yi, vi, subset = species == "rat", mods = ~pont_quali, da
 metareg_ano_c <- rma(yi, vi, subset = species == "mice", mods = ~year, data = Efeito) 
 metareg_ano_r <- rma(yi, vi, subset = species == "rat", mods = ~year, data = Efeito) 
 
-par(mfrow = c(2, 2), oma = c(0,2,0,1))
+par(mfrow = c(2, 2), oma = c(0,2,0,1),  cex = 1, font = 2, family = "sans")
 
-regplot(metareg_ano_c, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 2.3, cex.lab = 1.8, cex.axis = 1.8)
-regplot(metareg_ano_r, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"),  main = "Rato", cex.main = 2.3, cex.lab = 1.8, cex.axis = 1.8)
-regplot(metareg_quali_c, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 1.8, cex.axis = 1.8)
-regplot(metareg_quali_r, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 1.8, cex.axis = 1.8, xlim = c(0,7))
+regplot(metareg_ano_c, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), main = "Camundongo", cex.main = 2, cex.lab = 2, cex.axis = 2)
+regplot(metareg_ano_r, xlab = "Ano", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"),  main = "Rato", cex.main = 2, cex.lab = 2, cex.axis = 2)
+regplot(metareg_quali_c, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 2, cex.axis = 2)
+regplot(metareg_quali_r, xlab = "Pontuação Qualidade (ROB SYRCLE)", ylab = "Hedges' g", lwd = 1.2, col = "black", pch = 1, pi = TRUE, shade = c("grey", "grey90"), cex.lab = 2, cex.axis = 2, xlim = c(0,7))
 
 dev.off()
 
