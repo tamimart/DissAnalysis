@@ -93,30 +93,30 @@ robplot <- df_rob_long %>%
   distinct(Study, pergunta, atribuicao) %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao, levels = v_factor_levels), y = ..count..)) +
   geom_bar(position = "fill") + 
-  scale_fill_manual("Julgamento do risco de viés", values = c("Baixo" = "#82c236", "Incerto" = "#fec200", "Alto" = "#ec2b2b")) +
-  scale_y_continuous(labels = scales::percent) +
+    scale_fill_manual("Julgamento do risco de viés", values = c("Baixo" = "#82c236", "Incerto" = "#fec200", "Alto" = "#ec2b2b"), guide = guide_legend(
+    title.position = "top")) +
+  scale_y_continuous(labels = scales::percent, ) +
   scale_x_discrete(
     labels = function(x)
       str_wrap(x, width = 55)
   ) +
-  coord_flip()  + 
-  theme(axis.ticks.x = element_line(size = .3),
+  coord_flip()  +
+  theme(
+    axis.ticks.x = element_line(size = .3),
     axis.line = element_line(size = .3),
-        axis.text = element_text(
-          size = 8,
-          color = "grey20"
-        ),
+    axis.text = element_text(size = 9,
+                             color = "grey20"),
     axis.line.y = element_blank(),
-        axis.title = element_blank(),
-        plot.title = element_text(size = 10),
-        plot.title.position = "plot",
-        legend.position = "bottom",
-        legend.text = element_text(size = 7, color = "grey20"),
-        legend.title = element_text(size = 8),
-        plot.margin = margin(5, 0, 0, 5),
-        legend.key.size = unit(.8, "line"),
-        panel.grid.major.y = element_line(color = "grey90", size = .1),
-        panel.grid.major.x = element_blank()
+    axis.title = element_blank(),
+    plot.title = element_text(size = 9),
+    plot.title.position = "plot",
+    legend.position = "bottom",
+    legend.text = element_text(size = 9, color = "grey20"),
+    legend.title = element_text(size = 9, hjust = .5),
+    plot.margin = margin(5, 5, 0, 5),
+    legend.key.size = unit(.8, "line"),
+    panel.grid.major.y = element_line(color = "grey90", size = .1),
+    panel.grid.major.x = element_blank()
   )
 
 
@@ -203,7 +203,8 @@ camaradesplot <- df_camarades_longo %>%
   distinct(Study, pergunta, atribuicao) %>% 
   ggplot(aes(x = fct_rev(fct_infreq(pergunta)), fill = factor(atribuicao, levels = c_factor_levels), y = ..count..)) +
   geom_bar(position = "fill") + 
-  scale_fill_manual("Julgamento", values = c("Sim" = "#82c236", "Incerto" = "#fec200", "Não" = "#ec2b2b")) +
+  scale_fill_manual("Julgamento", values = c("Sim" = "#82c236", "Incerto" = "#fec200", "Não" = "#ec2b2b"), guide = guide_legend(
+    title.position = "top")) +
   scale_y_continuous(labels = scales::percent) +
   scale_x_discrete(
     labels = function(x)
@@ -213,7 +214,7 @@ camaradesplot <- df_camarades_longo %>%
   theme(axis.ticks.x = element_line(size = .3),
         axis.line = element_line(size = .3),
         axis.text = element_text(
-          size = 8,
+          size = 9,
           color = "grey20"
         ),
         axis.line.y = element_blank(),
@@ -221,9 +222,9 @@ camaradesplot <- df_camarades_longo %>%
         plot.title = element_text(size = 10),
         plot.title.position = "plot",
         legend.position = "bottom",
-        legend.text = element_text(size = 7, color = "grey20"),
-        legend.title = element_text(size = 8),
-        plot.margin = margin(5, 0, 0, 5),
+        legend.text = element_text(size = 9, color = "grey20"),
+        legend.title = element_text(size = 9, hjust = .5),
+        plot.margin = margin(5, 5, 0, 5),
         legend.key.size = unit(.8, "line"),
         panel.grid.major.y = element_line(color = "grey90", size = .1),
         panel.grid.major.x = element_blank()
