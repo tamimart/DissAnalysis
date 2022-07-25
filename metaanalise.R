@@ -1360,8 +1360,7 @@ dfsubgrupos$moderador <-
       "Via de administração",
       "Protocolo do teste do nado forçado",
       "Método de análise",
-      "Testes antes do nado",
-      "Pred"))
+      "Testes antes do nado"))
 dfsubgrupos$categoria <-
   factor(
     dfsubgrupos$categoria,
@@ -1450,8 +1449,6 @@ dfsubgrupos$categoria <-
                 "Manual",
                 "Não",
                 "Sim",
-                "Revista predatória",
-                "Revista revisada por pares",
                 "PT13’ + T6’",
                 "PT?’ + T6’ + S4’ final",
                 "T15’"))
