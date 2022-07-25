@@ -1329,13 +1329,15 @@ metareg_ano_r
 metareg_quali_c
 metareg_quali_r
 
-# PPT forestplot subgrupos
+# Forestplot dos subgrupos (tabulei os resultados dos subgrupos numa planilha do excel, carregada a)
 
 dfsubgrupos <- read_excel("data/subgruposppt.xlsx")
 dfsubgrupos <- dfsubgrupos %>% 
   rename(IC95LI = `IC95-LI`,
          IC95LS = 'IC95-LS',
          inconsistencia = 'I² (%)')
+
+dfsubgrupos$tau2 <- round(dfsubgrupos$tau2, digits=1)
 
 dfsubgrupos$moderador <-
   factor(
@@ -1360,7 +1362,6 @@ dfsubgrupos$moderador <-
       "Método de análise",
       "Testes antes do nado",
       "Pred"))
-
 dfsubgrupos$categoria <-
   factor(
     dfsubgrupos$categoria,
@@ -1499,9 +1500,9 @@ ppt_sub_pop_c <- dfsubgrupos %>%
     )),
     y = Inf - 1,
     color = "grey30",
-    size = 3,
+    size = 2.5,
     family = "Gadugi",
-    hjust = 1
+    hjust = 0
   ) +
   coord_flip() +
   theme(
@@ -1520,10 +1521,18 @@ ppt_sub_pop_c_i <- dfsubgrupos %>%
     fill = "#ff9400"
   )) +
   geom_bar(stat = "identity") +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = "", y = "I² (%)") +
+  scale_y_continuous(limits = c(0, 200)) +
+  labs(x = "", y = "I² (%) | 𝜏² ") +
   scale_fill_manual(values = "#ff9400") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  geom_text(
+    aes(label = tau2),
+    y = 104,
+    color = "grey30",
+    size = 2.5,
+    family = "Gadugi",
+    hjust = 0
+  ) +
   facet_grid(moderador ~ ., scales = "free", space = "free") +
   coord_flip() +
   theme_void() +
@@ -1531,7 +1540,7 @@ ppt_sub_pop_c_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 10, color = "grey30")
+    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_pop_c <- ppt_sub_pop_c + ppt_sub_pop_c_i + plot_layout(widths = c(6, 1))
@@ -1602,10 +1611,18 @@ ppt_sub_pop_r_i <- dfsubgrupos %>%
     fill = "#ec2b2b"
   )) +
   geom_bar(stat = "identity") +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = "", y = "I² (%)") +
+  scale_y_continuous(limits = c(0, 200)) +
+  labs(x = "", y = "I² (%) | 𝜏² ") +
   scale_fill_manual(values = "#ec2b2b") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  geom_text(
+    aes(label = tau2),
+    y = 104,
+    color = "grey30",
+    size = 2.5,
+    family = "Gadugi",
+    hjust = 0
+  ) +
   facet_grid(moderador ~ ., scales = "free", space = "free") +
   coord_flip() +
   theme_void() +
@@ -1613,7 +1630,7 @@ ppt_sub_pop_r_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 10, color = "grey30")
+    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_pop_r <- ppt_sub_pop_r + ppt_sub_pop_r_i + plot_layout(widths = c(6, 1))
@@ -1685,10 +1702,18 @@ ppt_sub_int_c_i <- dfsubgrupos %>%
     fill = "#ff9400"
   )) +
   geom_bar(stat = "identity") +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = "", y = "I² (%)") +
+  scale_y_continuous(limits = c(0, 200)) +
+  labs(x = "", y = "I² (%) | 𝜏² ") +
   scale_fill_manual(values = "#ff9400") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  geom_text(
+    aes(label = tau2),
+    y = 104,
+    color = "grey30",
+    size = 2.5,
+    family = "Gadugi",
+    hjust = 0
+  ) +
   facet_grid(moderador ~ ., scales = "free", space = "free") +
   coord_flip() +
   theme_void() +
@@ -1696,7 +1721,7 @@ ppt_sub_int_c_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 10, color = "grey30")
+    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_int_c <- ppt_sub_int_c + ppt_sub_int_c_i + plot_layout(widths = c(6, 1))
@@ -1768,10 +1793,18 @@ ppt_sub_int_r_i <- dfsubgrupos %>%
     fill = "#ec2b2b"
   )) +
   geom_bar(stat = "identity") +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = "", y = "I² (%)") +
+  scale_y_continuous(limits = c(0, 200)) +
+  labs(x = "", y = "I² (%) | 𝜏² ") +
   scale_fill_manual(values = "#ec2b2b") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  geom_text(
+    aes(label = tau2),
+    y = 104,
+    color = "grey30",
+    size = 2.5,
+    family = "Gadugi",
+    hjust = 0
+  ) +
   facet_grid(moderador ~ ., scales = "free", space = "free") +
   coord_flip() +
   theme_void() +
@@ -1779,7 +1812,7 @@ ppt_sub_int_r_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 10, color = "grey30")
+    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_int_r <- ppt_sub_int_r + ppt_sub_int_r_i + plot_layout(widths = c(6, 1))
@@ -1843,17 +1876,25 @@ ppt_sub_des_c <- dfsubgrupos %>%
 
 ppt_sub_des_c_i <- dfsubgrupos %>%
   filter(especie == "Camundongo",
-         Tipo == "Desfecho") %>%
+         Tipo == "Desfecho") %>% 
   ggplot(aes(
     x = categoria,
     y = inconsistencia,
     fill = "#ff9400"
   )) +
   geom_bar(stat = "identity") +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = "", y = "I² (%)") +
+  scale_y_continuous(limits = c(0, 200)) +
+  labs(x = "", y = "I² (%) | 𝜏² ") +
   scale_fill_manual(values = "#ff9400") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  geom_text(
+    aes(label = tau2),
+    y = 104,
+    color = "grey30",
+    size = 2.5,
+    family = "Gadugi",
+    hjust = 0
+  ) +
   facet_grid(moderador ~ ., scales = "free", space = "free") +
   coord_flip() +
   theme_void() +
@@ -1861,7 +1902,7 @@ ppt_sub_des_c_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 10, color = "grey30")
+    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_des_c <- ppt_sub_des_c + ppt_sub_des_c_i + plot_layout(widths = c(6, 1))
@@ -1926,17 +1967,25 @@ ppt_sub_des_r <- dfsubgrupos %>%
 
 ppt_sub_des_r_i <- dfsubgrupos %>%
   filter(especie == "Rato",
-         Tipo == "Desfecho") %>%
+         Tipo == "Desfecho") %>% 
   ggplot(aes(
     x = categoria,
     y = inconsistencia,
     fill = "#ec2b2b"
   )) +
   geom_bar(stat = "identity") +
-  scale_y_continuous(limits = c(0, 100)) +
-  labs(x = "", y = "I² (%)") +
+  scale_y_continuous(limits = c(0, 200)) +
+  labs(x = "", y = "I² (%) | 𝜏² ") +
   scale_fill_manual(values = "#ec2b2b") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
+  geom_text(
+    aes(label = tau2),
+    y = 104,
+    color = "grey30",
+    size = 2.5,
+    family = "Gadugi",
+    hjust = 0
+  ) +
   facet_grid(moderador ~ ., scales = "free", space = "free") +
   coord_flip() +
   theme_void() +
@@ -1944,7 +1993,7 @@ ppt_sub_des_r_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 10, color = "grey30")
+    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_des_r <- ppt_sub_des_r + ppt_sub_des_r_i + plot_layout(widths = c(6, 1))
