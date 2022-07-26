@@ -1329,7 +1329,8 @@ metareg_ano_r
 metareg_quali_c
 metareg_quali_r
 
-# Forestplot dos subgrupos (tabulei os resultados dos subgrupos numa planilha do excel, carregada a)
+# Forestplot dos subgrupos ------
+#(tabulei os resultados dos subgrupos numa planilha do excel, carregada a)
 
 dfsubgrupos <- read_excel("data/subgruposppt.xlsx")
 dfsubgrupos <- dfsubgrupos %>% 
@@ -1497,9 +1498,9 @@ ppt_sub_pop_c <- dfsubgrupos %>%
     )),
     y = Inf - 1,
     color = "grey30",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
-    hjust = 0
+    hjust = 1
   ) +
   coord_flip() +
   theme(
@@ -1519,14 +1520,14 @@ ppt_sub_pop_c_i <- dfsubgrupos %>%
   )) +
   geom_bar(stat = "identity") +
   scale_y_continuous(limits = c(0, 200)) +
-  labs(x = "", y = "I² (%) | 𝜏² ") +
+  labs(x = "", y = "I² (%) |𝜏² ") +
   scale_fill_manual(values = "#ff9400") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
   geom_text(
     aes(label = tau2),
     y = 104,
     color = "grey30",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     hjust = 0
   ) +
@@ -1537,7 +1538,7 @@ ppt_sub_pop_c_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
+    axis.title = element_text(size = 9, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_pop_c <- ppt_sub_pop_c + ppt_sub_pop_c_i + plot_layout(widths = c(6, 1))
@@ -1609,14 +1610,14 @@ ppt_sub_pop_r_i <- dfsubgrupos %>%
   )) +
   geom_bar(stat = "identity") +
   scale_y_continuous(limits = c(0, 200)) +
-  labs(x = "", y = "I² (%) | 𝜏² ") +
+  labs(x = "", y = "I² (%) |𝜏² ") +
   scale_fill_manual(values = "#ec2b2b") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
   geom_text(
     aes(label = tau2),
     y = 104,
     color = "grey30",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     hjust = 0
   ) +
@@ -1627,7 +1628,7 @@ ppt_sub_pop_r_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
+    axis.title = element_text(size = 9, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_pop_r <- ppt_sub_pop_r + ppt_sub_pop_r_i + plot_layout(widths = c(6, 1))
@@ -1687,6 +1688,7 @@ ppt_sub_int_c <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
+    axis.text.y = element_text(size = 8),
     axis.title = element_text(size = 10, color = "grey30")
   )
 
@@ -1700,14 +1702,14 @@ ppt_sub_int_c_i <- dfsubgrupos %>%
   )) +
   geom_bar(stat = "identity") +
   scale_y_continuous(limits = c(0, 200)) +
-  labs(x = "", y = "I² (%) | 𝜏² ") +
+  labs(x = "", y = "I² (%) |𝜏² ") +
   scale_fill_manual(values = "#ff9400") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
   geom_text(
     aes(label = tau2),
     y = 104,
     color = "grey30",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     hjust = 0
   ) +
@@ -1718,7 +1720,7 @@ ppt_sub_int_c_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
+    axis.title = element_text(size = 9, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_int_c <- ppt_sub_int_c + ppt_sub_int_c_i + plot_layout(widths = c(6, 1))
@@ -1791,14 +1793,14 @@ ppt_sub_int_r_i <- dfsubgrupos %>%
   )) +
   geom_bar(stat = "identity") +
   scale_y_continuous(limits = c(0, 200)) +
-  labs(x = "", y = "I² (%) | 𝜏² ") +
+  labs(x = "", y = "I² (%) |𝜏² ") +
   scale_fill_manual(values = "#ec2b2b") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
   geom_text(
     aes(label = tau2),
     y = 104,
     color = "grey30",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     hjust = 0
   ) +
@@ -1809,7 +1811,8 @@ ppt_sub_int_r_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
+    axis.text.y = element_text(size = 8),
+    axis.title = element_text(size = 9, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_int_r <- ppt_sub_int_r + ppt_sub_int_r_i + plot_layout(widths = c(6, 1))
@@ -1881,14 +1884,14 @@ ppt_sub_des_c_i <- dfsubgrupos %>%
   )) +
   geom_bar(stat = "identity") +
   scale_y_continuous(limits = c(0, 200)) +
-  labs(x = "", y = "I² (%) | 𝜏² ") +
+  labs(x = "", y = "I² (%) |𝜏² ") +
   scale_fill_manual(values = "#ff9400") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
   geom_text(
     aes(label = tau2),
     y = 104,
     color = "grey30",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     hjust = 0
   ) +
@@ -1899,7 +1902,7 @@ ppt_sub_des_c_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
+    axis.title = element_text(size = 9, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_des_c <- ppt_sub_des_c + ppt_sub_des_c_i + plot_layout(widths = c(6, 1))
@@ -1972,14 +1975,14 @@ ppt_sub_des_r_i <- dfsubgrupos %>%
   )) +
   geom_bar(stat = "identity") +
   scale_y_continuous(limits = c(0, 200)) +
-  labs(x = "", y = "I² (%) | 𝜏² ") +
+  labs(x = "", y = "I² (%) |𝜏² ") +
   scale_fill_manual(values = "#ec2b2b") +
   geom_hline(yintercept = 100, lty = 1, size = .2, color = "grey80") +
   geom_text(
     aes(label = tau2),
     y = 104,
     color = "grey30",
-    size = 2.5,
+    size = 3,
     family = "Gadugi",
     hjust = 0
   ) +
@@ -1990,7 +1993,7 @@ ppt_sub_des_r_i <- dfsubgrupos %>%
     legend.position = "none",
     strip.background = element_blank(),
     strip.text = element_blank(),
-    axis.title = element_text(size = 8, color = "grey30", vjust = 1, hjust = 0.1)
+    axis.title = element_text(size = 9, color = "grey30", vjust = 1, hjust = 0.1)
   )
 
 ppt_sub_des_r <- ppt_sub_des_r + ppt_sub_des_r_i + plot_layout(widths = c(6, 1))
