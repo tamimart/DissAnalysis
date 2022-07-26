@@ -652,10 +652,18 @@ peso_si <- df %>%
 
 # Figura7
 
-model_npubli <- df %>% group_by(study_reference) %>% 
-  distinct(study_reference, model_phenotype) %>% 
-  filter(model_phenotype != "NA") %>%   
+model_npubli <- df %>% group_by(study_reference) %>%   
+  filter(species == "Rato", model_phenotype == "NA") %>%  # mudar especie
   summarise(counts = n())   # calcular quantas publicaçoes são NA
+
+model_npubli <- df %>%
+  filter(species == "Camundongo", model_phenotype != "NA") %>%    
+  summarise(counts = n()) # calcular quantos estudos n são NA
+
+
+model_npubli <- df %>%
+  filter(species == "Rato", model_phenotype != "NA") %>%  
+  summarise(counts = sum(N)) # calcular quantos animais n são NA
 
 
 # Figura8
